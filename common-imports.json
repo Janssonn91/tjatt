@@ -7,6 +7,7 @@
   "  App" : "components/App/App",
   "  Clock": "components/Clock/Clock",
   "  MainNav": "components/MainNav/MainNav",
+  "  Login": "components/Login/Login",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

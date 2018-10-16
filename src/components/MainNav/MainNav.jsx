@@ -8,10 +8,13 @@
     <Collapse isOpen={this.isOpen} navbar>
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink exact to="/" activeClassName = "active">Welcome</NavLink>
+          <NavLink exact to="/" activeClassName = "active">Welcome!</NavLink>
         </NavItem>
         <NavItem>
           <NavLink to="/clock" activeClassName = "active">Clock</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="/login" activeClassName = "active">Login</NavLink>
         </NavItem>
       </Nav>
     </Collapse>

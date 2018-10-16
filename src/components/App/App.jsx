@@ -47,6 +47,7 @@
         </Row>
       </Route>
       <Route path="/clock" component={Clock} />
+      <Route path="/login" component={Login} />
     </Container>
     <footer className="bg-light mt-3">
       <small>React Warp Core &ndash; example app&nbsp;&nbsp;© Thomas Frank</small>
