@@ -5,7 +5,9 @@
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
   "  Channel": "classes/channel.class.js",
+  "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
+ 
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

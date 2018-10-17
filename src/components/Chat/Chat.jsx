@@ -19,8 +19,15 @@
         <FontAwesomeIcon icon="users" />
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem header>Header</DropdownItem>
-          <DropdownItem disabled>Action</DropdownItem>
+          <DropdownItem header>Group Name</DropdownItem>
+          <DropdownItem>
+            <Form>
+            <FormGroup>
+           <Label for="messageArea" className="d-none">Send</Label>
+          <Input type="text" name="text" id="messageArea" />
+           </FormGroup>
+            </Form>
+          </DropdownItem>
           <DropdownItem>Another Action</DropdownItem>
           <DropdownItem divider />
           <DropdownItem>Another Action</DropdownItem>
