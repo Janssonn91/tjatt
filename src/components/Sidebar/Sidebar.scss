@@ -6,12 +6,17 @@
     width: 270px;
   }
   .profile {
+
     .user-holder {
       padding: 10px;
+
       .dropdown {
         display: inline-block;
         &:hover {
           cursor: pointer;
+        }
+        .dropdown-menu {
+          padding: 0;
         }
       }
       .fa-angle-down {
@@ -20,6 +25,7 @@
         vertical-align: middle;
         font-size: 21px;
       }
+
       h5 {
         color: white;
         font-weight: bold;
@@ -27,40 +33,54 @@
         margin: 0;
         padding-left: 5px;
       }
+
       img {
         width: 40px;
       }
     }
   }
   .menu {
-    .nav-item {
+    
       display: inline-block;
-      // width: 85%;
-      .nav-link {
-        padding: 10px 20px !important;
+      .nav-item {
+        display: inline-block;
+        width: 85%;
+  
+        .nav-link {
+          padding: 10px 20px !important;
+          color: lightgray;
+          font-weight: bold;
+          display: inline-block;
+        }
       }
-    }
-    .fas, .far {
-      padding-right: 4px;
-      display: inline-block;
-    }
-    a {
-      color: lightgray;
-      font-weight: bold;
-    }
-    .fa-star {
-      color: gold; 
-    }
-    .fa-plus, .fa-plus-square {
-      color: white;
-    }
+  
+      .fa-star {
+        color: gold;
+        padding-right: 5px; 
+      }
+      
+      .fa-plus {
+        color: white;
+        float: right;
+        padding-top: 16px;
+        padding-right: 15px;
+      }
+      
+      .fas, .far {
+        display: inline-block;
+      }
+    
+
   }
-  hr {
-    border-color: #808080;
-  }
-  .dropdown-toggle::after {
-    color: white;
-    font-size: 20px;
-    vertical-align: middle;
-  }
+  
+}
+
+hr {
+  border-color: #808080;
+}
+
+.dropdown-toggle::after {
+  color: white;
+  font-size: 20px;
+  vertical-align: middle;
 }

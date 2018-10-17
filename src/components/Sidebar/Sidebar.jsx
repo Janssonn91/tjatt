@@ -18,23 +18,19 @@
     </div>
     <hr />
     <Nav vertical className="menu">
-      <div>
         <NavItem>
           <NavLink to="#"><i className="fas fa-star"></i>Stjärnmärkta</NavLink>
         </NavItem>
-      </div>
-      <div>
+
         <NavItem>
           <NavLink to="#">Mina kontakter</NavLink>
         </NavItem>
         <i className="fas fa-plus"></i>
-      </div>
-      <div>
+
         <NavItem>
           <NavLink to="#">Mina grupper</NavLink>
         </NavItem>
         <i className="fas fa-plus"></i>
-      </div>
     </Nav>
     <hr />
   </div>
