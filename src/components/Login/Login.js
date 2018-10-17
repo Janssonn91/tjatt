@@ -9,7 +9,7 @@ export default class Login extends Component {
 
   usernameChange(e){
       this.usernameToSet = e.currentTarget.value;
-      console.log(this.usernameChange);
+      console.log(this.usernameToSet);
   }
 
   passwordChange(e){
