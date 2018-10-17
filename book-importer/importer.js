@@ -1,67 +1,33 @@
-const booksJson = require('./books.json');
+const usersJson = require('./test-users.json');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-mongoose.connect('mongodb://localhost/mongo_books');
-const db = mongoose.connection;
-db.on('error', (e)=>{ console.error(e); });
-db.once('open', ()=>{ console.info('db connected');});
-const Book = require('./book.class');
-const Author = require('./author.class');
-let bookModel = new Book(app).myModel;
-let authorModel = new Author(app).myModel;
 
-// Empty collections
-bookModel.remove({}, ()=> {
-  authorModel.remove({}, ()=> {start()});
+mongoose.connect('mongodb://localhost/tjatt');
+const db = mongoose.connection;
+db.on('error', (e) => {
+  console.error(e);
+});
+db.once('open', () => {
+  console.info('db connected');
 });
 
-function start(){
+const User = require('../express/classes/User.class');
+const userModel = new User(app).myModel;
 
-  // Author mem - to avoid duplicates
-  let authorMem = {};
+// Empty collentions
+userModel.remove({}, async () => {
+  await saveUser().then(() => {
+    console.log('Users imported!')
+    process.exit();
+  });
+})
 
-  // Import authors and store their ids in the db
-  for (let book of booksJson){
-
-    if(authorMem[book.author]){
-      continue;
-    }
-
-    let a = new authorModel({
-      books: [],
-      name: book.author,
-      description: book.author + ' is considered the best author in the world by many people.'
+const saveUser = () => {
+  usersJson.forEach(item => {
+    const user = new userModel(item);
+    user.save().then(item => {
+      console.log(`${item.name} is saved`);
     });
-
-    a.save();
-
-    authorMem[book.author] = a;
-
-  }
-
-  // Import books and store in db with their connection to an author
-  for (let book of booksJson){
-    let temp = book;
-    temp.author = authorMem[temp.author]._id;
-
-    let b = new bookModel(temp);
-
-    b.save(() => {
-      // Look up the author again and add the book id
-      authorModel.find({_id: temp.author}, (err,a) => {
-        a = a[0];
-        a.books.push(b);
-        a.save();
-      });
-    });
-
-
-  }
-
-   setTimeout(()=>{
-     console.log('Books (and authors) imported!');
-     process.exit();
-   }, 3000);
-
+  });
 }
