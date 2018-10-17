@@ -49,13 +49,13 @@
 
      sendMessage() {
 
-         this.chatHistory.push({
+         this.chatHistories.push({
              time: Date.now(),
              userId: "me",
              content: this.inputMessage,
              star: false
          });
-         console.log(this.chatHistory);
+         console.log(this.chatHistories);
          //backend
      }
 
