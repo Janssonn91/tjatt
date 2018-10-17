@@ -1,16 +1,28 @@
 .sidebar {
-  padding-top: 15px;
-  background-color: #cce5ff75;
+  padding: 15px 0 0 0;
+  background-color: #574949;
   height: 100vh;
+  @media only screen and (min-width: 768px) {
+    width: 270px;
+  }
   .profile {
     .user-holder {
+      padding: 10px;
+      .dropdown {
+        display: inline-block;
+        &:hover {
+          cursor: pointer;
+        }
+      }
       .fa-angle-down {
         padding-left: 4px;
-        color: black;
+        color: white;
         vertical-align: middle;
         font-size: 21px;
       }
-      h6 {
+      h5 {
+        color: white;
+        font-weight: bold;
         display: inline-block;
         margin: 0;
         padding-left: 5px;
@@ -21,9 +33,34 @@
     }
   }
   .menu {
-    .fa-star {
-      color: gold;
-      padding-right: 4px; 
+    .nav-item {
+      display: inline-block;
+      // width: 85%;
+      .nav-link {
+        padding: 10px 20px !important;
+      }
     }
+    .fas, .far {
+      padding-right: 4px;
+      display: inline-block;
+    }
+    a {
+      color: lightgray;
+      font-weight: bold;
+    }
+    .fa-star {
+      color: gold; 
+    }
+    .fa-plus, .fa-plus-square {
+      color: white;
+    }
+  }
+  hr {
+    border-color: #808080;
+  }
+  .dropdown-toggle::after {
+    color: white;
+    font-size: 20px;
+    vertical-align: middle;
   }
 }
