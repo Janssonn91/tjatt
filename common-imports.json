@@ -5,8 +5,6 @@
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
   "  App" : "components/App/App",
-  "  Clock": "components/Clock/Clock",
-  "  MainNav": "components/MainNav/MainNav",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -21,7 +19,6 @@
 
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
-  "    Book": "classes/Book.js",
  
   "/*4": "--------- Utilities (non-components) ---------",
   "!registerServiceWorker": "utilities/registerServiceWorker",

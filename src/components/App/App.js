@@ -17,11 +17,11 @@ import './App.scss';
     }
 
     // Find some fat German books
-    this.books = await Book.find({
-      language: 'German',
-      pages: {$gt: 500},
-      populate: 'author'
-    });
+    // this.books = await Book.find({
+    //   language: 'German',
+    //   pages: {$gt: 500},
+    //   populate: 'author'
+    // });
 
     // no focusing of buttons when you click them
     $(document).on('click', 'button', function(){ $(this).blur(); })
