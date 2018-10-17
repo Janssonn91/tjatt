@@ -1,12 +1,11 @@
 {
   "/*1": "--------- App specific (others code) ---------",
-  "{Clock as AnalogClock}": "react-clock",
 
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
+  "  User": "classes/user.class.js",
+  "  Channel": "classes/channel.class.js",
   "  App" : "components/App/App",
-  "  Clock": "components/Clock/Clock",
-  "  MainNav": "components/MainNav/MainNav",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -21,17 +20,16 @@
 
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
-  "    Book": "classes/Book.js",
- 
+
   "/*4": "--------- Utilities (non-components) ---------",
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
 
-  "/*5": "------------ React core + routing ------------", 
+  "/*5": "------------ React core + routing ------------",
   "React": "react",
   "{Component as ReactComponent}": "react",
-  "{Fragment}": "react", 
+  "{Fragment}": "react",
   "ReactDOM": "react-dom",
   "ReactDOMServer": "react-dom/server",
   "{BrowserRouter as Router}": "react-router-dom",
@@ -40,7 +38,7 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
-  
+
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
   "{computed}": "mobx",
