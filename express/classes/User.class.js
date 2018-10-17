@@ -1,7 +1,7 @@
 const Schema = require('mongoose').Schema;
 const ModelAndRoutes = require('./model-and-routes.class');
 
-module.export = class User extends ModelAndRoutes {
+module.exports = class User extends ModelAndRoutes {
 
   static get schema() {
     return {
