@@ -1,6 +1,5 @@
 {
   "/*1": "--------- App specific (others code) ---------",
-  "{Clock as AnalogClock}": "react-clock",
 
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
