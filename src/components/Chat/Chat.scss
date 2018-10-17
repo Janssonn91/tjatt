@@ -10,6 +10,7 @@ $text:#434651;
     background: #F2F5F8;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    height: 100vh;
 
     .chat-header {
         padding: 20px;
@@ -21,9 +22,9 @@ $text:#434651;
 
 
         .dropdown-menu{
-            height:573px;
+            height:80vh;
             position:absolute;
-            transform: translate3d(-150px, 50px, 0px) !important;
+            transform: translate3d(-127px, 50px, 0px) !important;
             border-radius: 0px;
             width:200px;
             border-color:#F2F5F8;
@@ -102,8 +103,8 @@ $text:#434651;
         // padding: 30px 30px 20px;
         border-bottom: 2px solid white;
         overflow-y: scroll;
-        height: 575px;
-
+        height:80vh;
+        
         ul {
             list-style: none;
             margin: 0px;
@@ -254,7 +255,7 @@ $text:#434651;
         #messageArea {
             border-radius: 0px;
             height: 60px;
-            width: 410px;
+            width: 695px;
         }
 
         .send {
