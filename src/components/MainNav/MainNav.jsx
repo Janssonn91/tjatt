@@ -2,7 +2,7 @@
   <Navbar color="light" light expand="md">
     <NavbarBrand to="/">
       <img alt="React" className="logo" src={logo} />
-      React Warp Core
+      tj@
     </NavbarBrand>
     <NavbarToggler onClick={e => this.toggle()} />
     <Collapse isOpen={this.isOpen} navbar>
