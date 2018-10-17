@@ -5,7 +5,7 @@ export default class App extends Component {
   @observable style = {
     opacity: 0
   };
-  // @observable books = [];
+  @observable users = [];
 
   async start() {
     // Note: We don't use jQuery very much,
@@ -19,12 +19,10 @@ export default class App extends Component {
       this.style.opacity += ok ? .1 : 0;
     }
 
-    // Find some fat German books
-    // this.books = await Book.find({
-    //   language: 'German',
-    //   pages: {$gt: 500},
-    //   populate: 'author'
-    // });
+    // test
+    this.users = await User.find({});
+    console.log(this.users);
+
 
     // no focusing of buttons when you click them
     $(document).on('click', 'button', function () {
