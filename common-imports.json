@@ -5,6 +5,7 @@
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
   "  App" : "components/App/App",
+  "  Sidebar": "components/Sidebar/Sidebar",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

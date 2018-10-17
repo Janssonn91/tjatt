@@ -1,0 +1,29 @@
+.sidebar {
+  padding-top: 15px;
+  background-color: #cce5ff75;
+  height: 100vh;
+  .profile {
+    .user-holder {
+      .fa-angle-down {
+        padding-left: 4px;
+        color: black;
+        vertical-align: middle;
+        font-size: 21px;
+      }
+      h6 {
+        display: inline-block;
+        margin: 0;
+        padding-left: 5px;
+      }
+      img {
+        width: 40px;
+      }
+    }
+  }
+  .menu {
+    .fa-star {
+      color: gold;
+      padding-right: 4px; 
+    }
+  }
+}

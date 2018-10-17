@@ -11,8 +11,8 @@ app.use(express.json({extended: false}));
 // Setting upp REST routes 
 // (Please note that "a Book" here is not really a book
 // but a Mongoose model + setting up routes)
-const Book = require('./classes/Book.class');
-new Book(app);
-const Author = require('./classes/Author.class');
-new Author(app);
+// const Book = require('./classes/Book.class');
+// new Book(app);
+// const Author = require('./classes/Author.class');
+// new Author(app);
 
