@@ -1,6 +1,6 @@
 <Router>
   {/* MobX observable style needs spread wrapping */}
-  <div className="App d-flex flex-column" style={{...this.style}}>
+  <div className="App d-flex flex-column" style={{ ...this.style }}>
     <header>
       <MainNav />
     </header>
@@ -13,13 +13,13 @@
           </Col>
           {this.books.map(book =>
             <Col key={book._id} className="col-12 border mt-3">
-            {Object.keys(book).filter(propName =>
-              !(['_id', '__v', 'link', 'imageLink'].includes(propName))
-            ).map(propName => 
-              <p className="m-0" key={propName}><span className="book-prop">{propName}:</span> {propName === 'author' ?
-                 book[propName].name : book[propName]
+              {Object.keys(book).filter(propName =>
+                !(['_id', '__v', 'link', 'imageLink'].includes(propName))
+              ).map(propName =>
+                <p className="m-0" key={propName}><span className="book-prop">{propName}:</span> {propName === 'author' ?
+                  book[propName].name : book[propName]
                 }</p>
-            )}
+              )}
             </Col>
           )}
         </Row>
@@ -33,7 +33,7 @@
               <ul>
                 <li><ExLink href="https://reacttraining.com/react-router/web/guides/quick-start">React Router</ExLink></li>
                 <li><ExLink href="https://mobx.js.org/getting-started.html">MobX</ExLink></li>
-                <li><ExLink href="https://getbootstrap.com/">Bootstrap</ExLink> support with <ExLink href="https://reactstrap.github.io/">reactstrap</ExLink></li> 
+                <li><ExLink href="https://getbootstrap.com/">Bootstrap</ExLink> support with <ExLink href="https://reactstrap.github.io/">reactstrap</ExLink></li>
                 <li><ExLink href="https://webpack.js.org/">webpack</ExLink> compiling of <ExLink href="https://sass-lang.com/guide">SCSS</ExLink></li>
                 <li>optional separate template files (rather nice when you want to focus on your templating <i>or</i> programming logic separately)</li>
                 <li>lazy imports from an import list (a <i>lot</i> of less import cruft at the beginning of your component code) </li>
@@ -48,6 +48,7 @@
       </Route>
       <Route path="/clock" component={Clock} />
       <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
     </Container>
     <footer className="bg-light mt-3">
       <small>React Warp Core &ndash; example app&nbsp;&nbsp;© Thomas Frank</small>
