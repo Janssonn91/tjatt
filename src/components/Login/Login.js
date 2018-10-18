@@ -26,11 +26,6 @@ import './Login.scss';
     console.log('träff');
     this.userLoggedIn = true;
   }
-
-  logout(){
-    this.userLoggedIn = false;
-  }
-
   
 
 }

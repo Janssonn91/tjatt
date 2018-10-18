@@ -1,12 +1,14 @@
 <Fragment>
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
-    <Row>
-      <Col className="mt-5 mb-5" sm="12" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
-        <h1>Inloggad!</h1>
-        <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '}
-      </Col>
-    </Row>    
+      <Row>
+         <Col sm="3" className="side-menu">
+         <Sidebar/></Col>
+         <Col sm="9"className="dialog">
+          <Chat />
+         </Col>
+       </Row>
+          
   </Container>
    :
   <Container fluid={true} className="login-area">
@@ -26,7 +28,7 @@
         </FormGroup>
           <div className="mb-5">
             <Button className="btn-create-acc">Create account</Button>{' '}
-            <Button className="btn-login" onClick={e => this.saveName()}>Login</Button>{' '}
+            <Button className="btn-login" onClick={e => this.saveName()} userLoggedIn={true}>Login</Button>{' '}
           </div>
       </Col>
     </Row>
