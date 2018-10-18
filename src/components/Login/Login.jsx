@@ -2,11 +2,12 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row>
-         <Col sm="3" className="side-menu">
-         <Sidebar/></Col>
-         <Col sm="9"className="dialog">
+        <Col sm="3" className="side-menu p-0">
+          <Sidebar/>
+        </Col>
+        <Col sm="9"className="dialog">
           <Chat />
-         </Col>
+        </Col>
        </Row>
           
   </Container>

@@ -6,7 +6,7 @@
         <UncontrolledDropdown onClick={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
             <h5>Användarnamn</h5>
-            <i className="fas fa-angle-down"></i>
+            {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="ul">
             <DropdownItem tag="li">Byta bild</DropdownItem>
@@ -18,19 +18,19 @@
     </div>
     <hr />
     <Nav vertical className="menu">
-        <NavItem>
-          <NavLink to="#"><i className="fas fa-star"></i>Stjärnmärkta</NavLink>
-        </NavItem>
+      <NavLink to="#"><i className="fas fa-star"></i>
+        <NavItem>Stjärnmärkta</NavItem>
+      </NavLink>
 
-        <NavItem>
-          <NavLink to="#">Mina kontakter</NavLink>
-        </NavItem>
-        <i className="fas fa-plus"></i>
+      <NavLink to="#">
+        <NavItem>Mina kontakter</NavItem>
+      </NavLink>
+      <i className="fas fa-plus"></i>
 
-        <NavItem>
-          <NavLink to="#">Mina grupper</NavLink>
-        </NavItem>
-        <i className="fas fa-plus"></i>
+      <NavLink to="#">
+        <NavItem>Mina grupper</NavItem>
+      </NavLink>
+      <i className="fas fa-plus"></i>
     </Nav>
     <hr />
     <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '} 

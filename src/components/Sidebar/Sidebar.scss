@@ -2,9 +2,6 @@
   padding: 15px 0 0 0;
   background-color: #574949;
   height: 100vh;
-  @media only screen and (min-width: 768px) {
-    width: 270px;
-  }
   .profile {
 
     .user-holder {
@@ -40,19 +37,26 @@
     }
   }
   .menu {
-    
+    display: inline-block;
+    .nav-link {
+      padding: 10px 0 10px 20px !important;
+      color: lightgray;
+      font-weight: bold;
       display: inline-block;
-      .nav-item {
-        display: inline-block;
-        width: 85%;
-  
-        .nav-link {
-          padding: 10px 20px !important;
-          color: lightgray;
-          font-weight: bold;
-          display: inline-block;
-        }
+      text-align: left;
+      width: 85%;
+
+      &.nav-link:first-child {
+        width: 100% !important;
+        padding-left: 23px !important;
       }
+
+      .nav-item {
+        text-align: left;
+        display: inline-block;
+        
+    }
+  }
   
       .fa-star {
         color: gold;
@@ -61,9 +65,9 @@
       
       .fa-plus {
         color: white;
-        float: right;
         padding-top: 16px;
         padding-right: 15px;
+        font-size: small;
       }
       
       .fas, .far {
