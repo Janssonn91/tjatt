@@ -24,7 +24,7 @@
             <Input type="text" id="username" placeholder="Username" value={this.usernameToSet} onChange={e => this.usernameChange(e)} />
           </FormGroup>
           <FormGroup>
-            <Input type="text" id="password" placeholder="Password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
+            <Input type="password" id="password" placeholder="Password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
             <p className="small mt-1 d-none">Can't remember your password?</p>
           </FormGroup>
           <div className="text-center">
