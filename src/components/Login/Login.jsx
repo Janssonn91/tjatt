@@ -2,11 +2,12 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row>
-         <Col sm="3" className="side-menu">
-         <Sidebar/></Col>
+         <Col sm="3" className="side-menu p-0">
+          <Sidebar logout={userLoggedIn => {this.userLoggedIn = userLoggedIn}}/>
+         </Col>
          <Col sm="9"className="dialog">
           <Chat />
-         </Col>
+        </Col>
        </Row>
           
   </Container>
@@ -28,7 +29,7 @@
         </FormGroup>
           <div className="mb-5">
             <Button className="btn-create-acc">Create account</Button>{' '}
-            <Button className="btn-login" onClick={e => this.saveName()} userLoggedIn={true}>Login</Button>{' '}
+            <Button className="btn-login" onClick={e => this.saveName()}>Login</Button>{' '}
           </div>
       </Col>
     </Row>
