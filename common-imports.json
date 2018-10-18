@@ -10,7 +10,7 @@
   "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
-
+  "  Signup": "components/Signup/Signup",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
@@ -21,7 +21,6 @@
   "  ElseIf": "utilities/ElseIf/ElseIf",
   "  Else": "utilities/Else/Else",
   "  Loop": "utilities/Loop/Loop",
-
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
 
@@ -50,13 +49,11 @@
   "{reaction}": "mobx",
   "{toJS}": "mobx",
   "{observer}": "mobx-react",
-
   "/*7": "------------------- jQuery -------------------",
   "jQuery": "jquery",
   "$": "jquery",
-
   "/*8": "---------- Bootstrap + react strap -----------",
-  "bootstrap/dist/css/bootstrap.min.css" : "",
+  "bootstrap/dist/css/bootstrap.min.css": "",
   "bootstrap": "",
   "{Alert}": "reactstrap",
   "{Container}": "reactstrap",
@@ -146,7 +143,6 @@
   "{UncontrolledNavDropdown}": "reactstrap",
   "{UncontrolledTooltip}": "reactstrap",
   "{Util}": "reactstrap",
-
   "/*9": "------------ Syntax highlighting -------------",
   "SyntaxHighlighter": "react-syntax-highlighter/prism",
   "shstyle": "react-syntax-highlighter/styles/prism/duotone-light"
