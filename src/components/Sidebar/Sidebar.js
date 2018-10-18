@@ -5,6 +5,7 @@ import './Sidebar.scss';
 
   @observable collapseOpen = false;
   @observable userLoggedIn;
+  @observable test;
  
   toggle(){
     this.collapseOpen = !this.collapseOpen;
@@ -12,8 +13,12 @@ import './Sidebar.scss';
   }
 
   logout(){
-    console.log('hej din get');
-    this.userLoggedIn = false;
+    console.log(this.props);
+    this.props.logout(this.changeLogStatus.bind(this));
+  }
+
+  changeLogStatus(){
+    return false;
   }
 
 }

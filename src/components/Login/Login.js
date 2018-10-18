@@ -23,7 +23,7 @@ import './Login.scss';
   }
 
   saveName(){
-    console.log('träff');
+    console.log('this.userLoggedIn');
     this.userLoggedIn = true;
   }
   
