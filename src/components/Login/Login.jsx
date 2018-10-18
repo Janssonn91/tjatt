@@ -2,10 +2,9 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row>
-         <Col sm="3" className="side-menu">
-         <Sidebar
-         logout={userLoggedIn => {this.userLoggedIn = userLoggedIn}}
-         /></Col>
+         <Col sm="3" className="side-menu p-0">
+          <Sidebar logout={userLoggedIn => {this.userLoggedIn = userLoggedIn}}/>
+         </Col>
          <Col sm="9"className="dialog">
           <Chat />
         </Col>
