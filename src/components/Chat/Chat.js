@@ -20,7 +20,7 @@
 
  import './Chat.scss';
 
- library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch)
+ library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
  @observer
  export default class Chat extends Component {

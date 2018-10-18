@@ -21,12 +21,7 @@
         <DropdownMenu>
           <DropdownItem header>Group Name</DropdownItem>
           <DropdownItem>
-            <Form>
-            <FormGroup>
-           <Label for="messageArea" className="d-none">Send</Label>
-          <Input type="text" name="text" id="messageArea" />
-           </FormGroup>
-            </Form>
+            Action
           </DropdownItem>
           <DropdownItem>Another Action</DropdownItem>
           <DropdownItem divider />
@@ -39,8 +34,8 @@
     
     <div className="chat-history">
     <ul>
-    <li className="clearfix me">
-            <div className="message-data ">
+    <li className="clearfix ">
+            <div className=" me">
               <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
               <span className="message-data-name " >Me</span> 
               
@@ -93,7 +88,7 @@
         </DropdownMenu>
        </ButtonDropdown>  {' '}
            <FormGroup>
-           <Label for="messageArea" className="d-none">Send</Label>
+           <Label for="messageArea" className="d-none">Message</Label>
           <Input type="textarea" name="text" id="messageArea" value={this.inputMessage} onChange={e=> this.messageChange(e)}/>
            </FormGroup> {' '}
            <Button className="send" onClick={ e => this.sendMessage()}>Send</Button>
