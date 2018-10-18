@@ -2,7 +2,7 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row>
-         <Col sm="3" className="side-menu p-0">
+         <Col sm="3" className="side-menu">
           <Sidebar logout={userLoggedIn => {this.userLoggedIn = userLoggedIn}}/>
          </Col>
          <Col sm="9"className="dialog">
@@ -27,7 +27,7 @@
           <Input type="text" id="password" placeholder="Password" value={this.passWordToSet} onChange= {e => this.passwordChange(e)} />
           <p className="small mt-1 d-none">Can't remember your password?</p>
         </FormGroup>
-          <div className="mb-5">
+          <div className="mb-5 text-center">
             <Button className="btn-create-acc">Create account</Button>{' '}
             <Button className="btn-login" onClick={e => this.saveName()}>Login</Button>{' '}
           </div>
