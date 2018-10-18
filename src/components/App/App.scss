@@ -1,6 +1,5 @@
 .App {
   min-height: 100vh;
-
   textarea:hover, 
   input:hover, 
   textarea:active, 
@@ -14,26 +13,14 @@
   .btn:active,
   .btn.active
   {
-      outline:0px !important;
-      -webkit-appearance:none;
-      box-shadow: inset 0 -1px 0 #ddd;
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: inset 0 -1px 0 #ddd;
   }
-
-  footer {
-    padding: 20px 40px;
-    text-align:center;
-  }
-
-  .jumbotron {
-    padding: 2rem;
-  }
-
   .light-blue-bg {
     background-color: #cce5ff75;
   }
-}
-
-.book-prop {
-  display: inline-block;
-  width: 100px;
+  &.container-fluid {
+    padding: 0 !important;
+  }
 }

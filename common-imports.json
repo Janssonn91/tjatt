@@ -1,13 +1,16 @@
 {
   "/*1": "--------- App specific (others code) ---------",
-  "{Clock as AnalogClock}": "react-clock",
 
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
+  "  User": "classes/user.class.js",
+  "  Channel": "classes/channel.class.js",
+  "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
-  "  Clock": "components/Clock/Clock",
+  "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
-
+  "  Login": "components/Login/Login",
+  "  Signup": "components/Signup/Signup",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
@@ -18,20 +21,18 @@
   "  ElseIf": "utilities/ElseIf/ElseIf",
   "  Else": "utilities/Else/Else",
   "  Loop": "utilities/Loop/Loop",
-
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
-  "    Book": "classes/Book.js",
- 
+
   "/*4": "--------- Utilities (non-components) ---------",
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
 
-  "/*5": "------------ React core + routing ------------", 
+  "/*5": "------------ React core + routing ------------",
   "React": "react",
   "{Component as ReactComponent}": "react",
-  "{Fragment}": "react", 
+  "{Fragment}": "react",
   "ReactDOM": "react-dom",
   "ReactDOMServer": "react-dom/server",
   "{BrowserRouter as Router}": "react-router-dom",
@@ -40,7 +41,7 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
-  
+
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
   "{computed}": "mobx",
@@ -48,13 +49,11 @@
   "{reaction}": "mobx",
   "{toJS}": "mobx",
   "{observer}": "mobx-react",
-
   "/*7": "------------------- jQuery -------------------",
   "jQuery": "jquery",
   "$": "jquery",
-
   "/*8": "---------- Bootstrap + react strap -----------",
-  "bootstrap/dist/css/bootstrap.min.css" : "",
+  "bootstrap/dist/css/bootstrap.min.css": "",
   "bootstrap": "",
   "{Alert}": "reactstrap",
   "{Container}": "reactstrap",
@@ -144,7 +143,6 @@
   "{UncontrolledNavDropdown}": "reactstrap",
   "{UncontrolledTooltip}": "reactstrap",
   "{Util}": "reactstrap",
-
   "/*9": "------------ Syntax highlighting -------------",
   "SyntaxHighlighter": "react-syntax-highlighter/prism",
   "shstyle": "react-syntax-highlighter/styles/prism/duotone-light"
