@@ -28,7 +28,9 @@
           <p className="small mt-1 d-none">Can't remember your password?</p>
         </FormGroup>
           <div className="mb-5 text-center">
+          <Link to="signup">
             <Button className="btn-create-acc">Create account</Button>{' '}
+          </Link>
             <Button className="btn-login" onClick={e => this.saveName()}>Login</Button>{' '}
           </div>
       </Col>
