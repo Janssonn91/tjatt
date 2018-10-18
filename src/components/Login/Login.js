@@ -2,9 +2,7 @@ import './Login.scss';
 @observer export default class Login extends Component {
 
   //Temporary for controlling logged in state
-  @observable userLoggedIn;
-  @observable users = [];
-  @observable logginError = false;
+  @observable userLoggedIn = false;
 
   async start() {
 
