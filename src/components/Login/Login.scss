@@ -4,7 +4,7 @@ h1 {
 
 .login-area {
     text-align: center;
-    background-color: rgb(130, 188, 255);
+    background-color: rgb(255, 255, 255);
 }
 
 .msg-area {
@@ -14,6 +14,11 @@ h1 {
     border-radius: 5px;
 }
 
-.btn-login, .btn-create-acc {
-    background-color: rgb(22, 36, 158);
+.btn-login, .btn-create-acc, .btn-logout {
+  background-color: rgb(22, 36, 158);
 }
+
+.container-fluid {
+  padding: 0;
+}
+

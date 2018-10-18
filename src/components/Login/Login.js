@@ -27,4 +27,10 @@ import './Login.scss';
     this.userLoggedIn = true;
   }
 
+  logout(){
+    this.userLoggedIn = false;
+  }
+
+  
+
 }
