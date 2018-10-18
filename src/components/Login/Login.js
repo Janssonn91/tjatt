@@ -3,6 +3,7 @@ import './Login.scss';
 
   //Temporary for controlling logged in state
   @observable userLoggedIn;
+  @observable users = [];
 
   async start() {
 
@@ -10,6 +11,10 @@ import './Login.scss';
       username: '',
       password: ''
     });
+
+    // test
+    this.users = await User.find({});
+    console.log(this.users);
   }
 
   usernameChange(e){
