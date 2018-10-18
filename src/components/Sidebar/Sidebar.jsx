@@ -5,7 +5,7 @@
         <CardImg src="/images/placeholder.png" />
         <UncontrolledDropdown onClick={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.stores.Login.username}</h5>
+            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.name}</h5>
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="ul">
