@@ -1,6 +1,11 @@
 import './Login.scss';
-export default class Login extends Component {
+@observer export default class Login extends Component {
+
+  //Temporary for controlling logged in state
+  @observable userLoggedIn;
+
   async start() {
+
     this.createStoreConnectedProperties({
       username: '',
       password: ''
@@ -17,5 +22,9 @@ export default class Login extends Component {
       console.log(this.passWordToSet);
   }
 
+  saveName(){
+    console.log('träff');
+    this.userLoggedIn = true;
+  }
 
 }
