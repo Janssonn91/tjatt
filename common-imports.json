@@ -11,6 +11,8 @@
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
+  "  Server": "components/Server/Server",
+
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",

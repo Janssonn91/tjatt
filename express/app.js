@@ -4,11 +4,14 @@
 */
 let app = global.expressApp;
 let express = require('express');
+const apiRoutes = require('./routes/api');
 
 // Middleware to get body fro posts
 app.use(express.json({
   extended: false
 }));
+
+app.use("/", apiRoutes)
 
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
