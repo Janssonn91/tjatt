@@ -17,13 +17,11 @@ import './Login.scss';
   }
 
   usernameChange(e) {
-      this.usernameToSet = e.currentTarget.value;
-      console.log(this.usernameToSet);
+    this.username = e.currentTarget.value;
   }
 
   passwordChange(e) {
-      this.passWordToSet = e.currentTarget.value;
-      console.log(this.passWordToSet);
+    this.password = e.currentTarget.value;
   }
 
   saveName() {
