@@ -18,16 +18,16 @@ const userModel = new User(app).myModel;
 // Empty collentions
 userModel.remove({}, async () => {
   await saveUser().then(() => {
-    console.log('Users imported!')
+    console.log('Users imported!');
     process.exit();
   });
 })
 
-const saveUser = () => {
-  usersJson.forEach(item => {
-    const user = new userModel(item);
-    user.save().then(item => {
+const saveUser = async () => {
+  for (const person of usersJson) {
+    const user = new userModel(person);
+    await user.save().then(item => {
       console.log(`${item.name} is saved`);
     });
-  });
+  }
 }
