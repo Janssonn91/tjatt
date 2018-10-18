@@ -1,0 +1,280 @@
+$gray: #92959E;
+$green: #88BD73;
+$blue: #94C2ED;
+$orange: #E38968;
+$text:#434651;
+
+.dialog {
+    width: 800px;
+    float: left;
+    background: #F2F5F8;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 100vh;
+
+    .chat-header {
+        padding: 20px;
+        border-bottom: 2px solid white;
+
+        Form{
+            height:0px;
+        }
+
+
+        .dropdown-menu{
+            height:80vh;
+            position:absolute;
+            transform: translate3d(-127px, 50px, 0px) !important;
+            border-radius: 0px;
+            width:200px;
+            border-color:#F2F5F8;
+
+        }
+
+        .bottom-item{
+          height:35px;
+        }
+
+        .show-edit{
+            position: absolute;
+            top:10px;
+            left:5px;
+            display:none;
+            color:lighten($gray, 20%);
+            font-size:12px;
+            width:5px;
+            height:0px;
+        }
+
+        .contacts{
+            height:410px;
+        }
+
+        #groupName:hover+.show-edit{
+            display:block !important;
+            z-index:999;
+        }
+
+        #groupName{
+            width:190px;
+            padding-left:20px;
+            font-size:12px;
+            border-color:white;
+        }
+
+        
+
+        .divider-1{
+            margin-top:0px;
+        }
+
+        .editable-gn{
+            padding:4px;
+        }
+
+        .chat-about {
+            float: left;
+            padding-left: 0px;
+            margin-top: 6px;
+        }
+
+        .chat-with {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .dialog-icon {
+            vertical-align: middle;
+            float: right;
+            color: lighten($gray, 8%);
+            font-size: 20px;
+            //margin-top: 12px;
+            right: 0px;
+        }
+        .dialog-icon:hover{
+            color:lighten($gray, 20%);
+        }
+
+        
+    }
+
+    .chat-history {
+        overflow:scroll;
+        padding: 30px 15px;
+        // padding: 30px 30px 20px;
+        border-bottom: 2px solid white;
+        overflow-y: scroll;
+        height:80vh;
+        
+        ul {
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .message-data {
+            margin-bottom: 15px;
+            //text-align: right;
+            margin-right: 5px;
+
+        }
+
+        .online {
+            color: $green;
+        }
+
+        .offline {
+            color: $gray;
+        }
+
+        .circle {
+            font-size: 8px;
+            vertical-align: middle;
+        }
+
+        .me {
+            text-align: right;
+        }
+
+        .message-data-time {
+            color: lighten($gray, 8%);
+            padding-left: 6px;
+        }
+
+        .circle-icon {
+            font-size: 8px;
+            color: $green;
+            vertical-align: middle;
+        }
+
+        .message {
+            color: $text;
+            padding: 10px 15px;
+            line-height: 26px;
+            font-size: 16px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            max-width: 90%;
+            position: relative;
+
+            &:after {
+                bottom: 100%;
+                left: 5%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-bottom-color: $green;
+                border-width: 10px;
+                margin-left: -10px;
+            }
+        }
+
+        .other-message {
+            background: white;
+            color: $text;
+
+            &:after {
+                border-bottom-color: white;
+            }
+        }
+
+        .my-message {
+            background: lighten($green, 8%);
+            float: right;
+
+            &:after {
+                border-bottom-color: lighten($green, 8%);
+                left: 88%;
+            }
+
+        }
+    }
+
+    .chat-message {
+        width: 100%;
+        padding-bottom: 30px;
+        padding-top: 10px;
+
+        .d-none {
+            display: none;
+        }
+
+        .btn-dropup {
+            height: 60px;
+            width: 65px;
+        }
+
+        Button {
+            height: 60px;
+            border-radius: 0px;
+        }
+
+
+        .dropdown-toggle {
+            width: 65px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background-color: lighten($gray, 20%);
+            border-color: lighten($gray, 20%);
+
+            svg {
+                font-size: 36px;
+                padding-bottom: 0px;
+            }
+        }
+
+        .dropdown-toggle:hover {
+            background-color: lighten($green, 16%);
+            border-color: $green;
+
+            svg {
+                font-size: 40px;
+            }
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .dropdown-menu {
+            width:300px;
+            border-radius:5px;
+            svg{
+                color:$gray;
+            }
+        }
+
+        .dropdown-item{
+            color:$gray;
+            height:35px;
+            font-size:14px;
+        }
+
+        #messageArea {
+            border-radius: 0px;
+            height: 60px;
+            width: 695px;
+        }
+
+        .send {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            width: 65px;
+            background-color: lighten($gray, 40%);
+            border-color: lighten($gray, 20%);
+            color: $blue;
+            padding-left: 6px;
+        }
+
+        .send:hover {
+            background-color: lighten($blue, 8%);
+            border-color: $blue;
+            color: white;
+            font-size: 18px;
+        }
+
+    }
+}

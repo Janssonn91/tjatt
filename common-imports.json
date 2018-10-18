@@ -5,7 +5,9 @@
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
   "  Channel": "classes/channel.class.js",
+  "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
+  "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
 

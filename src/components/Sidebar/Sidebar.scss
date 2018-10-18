@@ -1,0 +1,86 @@
+.sidebar {
+  padding: 15px 0 0 0;
+  background-color: #574949;
+  height: 100vh;
+  @media only screen and (min-width: 768px) {
+    width: 270px;
+  }
+  .profile {
+
+    .user-holder {
+      padding: 10px;
+
+      .dropdown {
+        display: inline-block;
+        &:hover {
+          cursor: pointer;
+        }
+        .dropdown-menu {
+          padding: 0;
+        }
+      }
+      .fa-angle-down {
+        padding-left: 4px;
+        color: white;
+        vertical-align: middle;
+        font-size: 21px;
+      }
+
+      h5 {
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+        margin: 0;
+        padding-left: 5px;
+      }
+
+      img {
+        width: 40px;
+      }
+    }
+  }
+  .menu {
+    
+      display: inline-block;
+      .nav-item {
+        display: inline-block;
+        width: 85%;
+  
+        .nav-link {
+          padding: 10px 20px !important;
+          color: lightgray;
+          font-weight: bold;
+          display: inline-block;
+        }
+      }
+  
+      .fa-star {
+        color: gold;
+        padding-right: 5px; 
+      }
+      
+      .fa-plus {
+        color: white;
+        float: right;
+        padding-top: 16px;
+        padding-right: 15px;
+      }
+      
+      .fas, .far {
+        display: inline-block;
+      }
+    
+
+  }
+  
+}
+
+hr {
+  border-color: #808080;
+}
+
+.dropdown-toggle::after {
+  color: white;
+  font-size: 20px;
+  vertical-align: middle;
+}
