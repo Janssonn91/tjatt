@@ -4,6 +4,8 @@
     <Container fluid={true} tag="main" className="flex-grow-1">
       <Route exact path="/" component={Login} /> 
       <Route path="/signup" component={Signup} />
+      <Route path="/server" component={Server} />
+
         
     </Container>
   </div>
