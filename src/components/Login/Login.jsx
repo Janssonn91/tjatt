@@ -31,9 +31,9 @@
             <Link to="signup">
               <Button className="btn-create-acc">Create account</Button>{' '}
             </Link>
-            <Button className="btn-login" onClick={e => this.saveName()}>Login</Button>{' '}
+            <Button className="btn-login" onClick={e => this.login()}>Login</Button>{' '}
           </div>
-          {this.logginError &&
+          {this.loginError &&
             < Alert color="danger" className="my-2">
               Användarnamn eller lösenord är inte korrekt
             </Alert>}

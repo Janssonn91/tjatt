@@ -3,17 +3,13 @@ import './Login.scss';
 
   //Temporary for controlling logged in state
   @observable userLoggedIn = false;
+  @observable loginError = false;
 
-  async start() {
-
+  start() {
     this.createStoreConnectedProperties({
       username: '',
       password: ''
     });
-
-    // test
-    this.users = await User.find({});
-    console.log(this.users);
   }
 
   usernameChange(e) {
@@ -24,15 +20,19 @@ import './Login.scss';
     this.password = e.currentTarget.value;
   }
 
-  saveName() {
-    const isUser = this.users.some(user => {
-      return user.name === this.usernameToSet && user.password === this.passWordToSet;
-    })
-    if (isUser) {
-    console.log('this.userLoggedIn');
-    this.userLoggedIn = true;
+  login() {
+    const { username, password } = this;
+
+    User.findOne({
+      name: username,
+      password: password
+    }).then(user => {
+      if (user) {
+        this.userLoggedIn = true;
+        this.loginError = false;
+      } else {
+        this.loginError = true;
+      }
+    });
   }
-    this.logginError = true;
-  }
-  
 }
