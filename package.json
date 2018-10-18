@@ -65,7 +65,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "component": "node scripts/generate-component.js"
+    "component": "node scripts/generate-component.js",
+    "setup": "node importer/importer.js"
   },
   "jest": {
     "collectCoverageFrom": [
