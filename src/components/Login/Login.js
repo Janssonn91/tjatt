@@ -1,4 +1,16 @@
 import './Login.scss';
+
+const initialUser = {
+  id: 0,
+  name: '',
+  password: '',
+  nickname: '',
+  image: '',
+  status: false,
+  group: [],
+  contact: []
+};
+
 @observer export default class Login extends Component {
 
   //Temporary for controlling logged in state
@@ -7,27 +19,27 @@ import './Login.scss';
 
   start() {
     this.createStoreConnectedProperties({
-      username: '',
-      password: ''
+      user: initialUser
     });
   }
 
   usernameChange(e) {
-    this.username = e.currentTarget.value;
+    this.user.username = e.currentTarget.value;
   }
 
   passwordChange(e) {
-    this.password = e.currentTarget.value;
+    this.user.password = e.currentTarget.value;
   }
 
   login() {
-    const { username, password } = this;
+    const { username, password } = this.user;
 
     User.findOne({
       name: username,
       password: password
     }).then(user => {
       if (user) {
+        this.user = user;
         this.userLoggedIn = true;
         this.loginError = false;
       } else {
