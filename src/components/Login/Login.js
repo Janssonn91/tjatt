@@ -4,6 +4,7 @@ import './Login.scss';
   //Temporary for controlling logged in state
   @observable userLoggedIn;
   @observable users = [];
+  @observable logginError = false;
 
   async start() {
 
@@ -17,20 +18,25 @@ import './Login.scss';
     console.log(this.users);
   }
 
-  usernameChange(e){
+  usernameChange(e) {
       this.usernameToSet = e.currentTarget.value;
       console.log(this.usernameToSet);
   }
 
-  passwordChange(e){
+  passwordChange(e) {
       this.passWordToSet = e.currentTarget.value;
       console.log(this.passWordToSet);
   }
 
-  saveName(){
+  saveName() {
+    const isUser = this.users.some(user => {
+      return user.name === this.usernameToSet && user.password === this.passWordToSet;
+    })
+    if (isUser) {
     console.log('this.userLoggedIn');
     this.userLoggedIn = true;
   }
+    this.logginError = true;
+  }
   
-
 }
