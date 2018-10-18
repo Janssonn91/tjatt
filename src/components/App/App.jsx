@@ -5,7 +5,6 @@
       <Route exact path="/">
         <Login />
       </Route>
-      <Route path="/login" component={Login} />
     </Container>
   </div>
 
