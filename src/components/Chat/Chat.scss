@@ -65,8 +65,6 @@ $text:#434651;
             border-color: white;
         }
 
-
-
         .divider-1 {
             margin-top: 0px;
         }
@@ -225,6 +223,8 @@ $text:#434651;
             width: 5vw;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
             background-color: lighten($gray, 20%);
             border-color: lighten($gray, 20%);
             padding:0px;
@@ -273,6 +273,8 @@ $text:#434651;
         .send {
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius:0px;
             width: 7vw;
             height: 8vh;
             background-color: lighten($gray, 40%);

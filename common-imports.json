@@ -10,6 +10,9 @@
   "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
+  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
+  "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
+
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

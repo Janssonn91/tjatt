@@ -1,4 +1,10 @@
+
+
+
 <Fragment>
+  {/* <MemberModal toggleModal={this.toggleModal.bind(this)} {...this.propsToModal} addMemberModal={this.addMemberModal} buttonLabel='Add members'/> */}
+
+    <AddMemberModal {...this.sendToModal}/>
     <Row className="chat-header">
     <Col sm="11" className="chat-about">
           <div className="chat-with">Chat with channel name</div>
@@ -9,19 +15,19 @@
           </Col> */}
           <Col sm="1" className="dialog-icon">
          
-          <Dropdown isOpen={this.dropdownOpen} toggle={e=>this.dropdownToggle()}>
+          <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
           <DropdownToggle
-          tag="span"
-          onClick={e=>this.dropdownToggle()}
-          data-toggle="dropdown"
-          aria-expanded={this.dropdownOpen}
-        >
-        <FontAwesomeIcon icon="users" />
+            tag="span"
+            
+            data-toggle="dropdown"
+            aria-expanded={this.dropdownOpen}
+          >
+            <FontAwesomeIcon icon="users" />
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>Group Name</DropdownItem>
-          <DropdownItem>
-            Action
+          <DropdownItem onClick={this.toggle.bind(this)}>
+            Add members
           </DropdownItem>
           <DropdownItem>Another Action</DropdownItem>
           <DropdownItem divider />
