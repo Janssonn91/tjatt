@@ -5,7 +5,7 @@
       <Col sm="12" md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
         <FormGroup className="mt-4">
           <Label for="username">Username</Label>
-          <Input type="text" name="text" id="username" placeholder="with a placeholder" value={this.userNameToSet} onChange= {e => this.usernameChange(e)} />
+          <Input type="text" name="username" id="username" placeholder="Choose username" />
         </FormGroup>
         <FormGroup className="mt-4">
           <Label for="nickname">Nickname</Label>
@@ -13,7 +13,11 @@
         </FormGroup>
         <FormGroup>
           <Label for="examplePassword">Password</Label>
-          <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" value={this.passWordToSet} onChange= {e => this.passwordChange(e)} />
+          <Input type="password" name="password" id="examplePassword" placeholder="Choose password" />
+        </FormGroup>
+        <FormGroup>
+          <Label for="confirmPassword">Confirm Password</Label>
+          <Input type="password" name="password" id="confirmPassword" placeholder="Confirm password" />
         </FormGroup>
       </Col>
     </Row>
