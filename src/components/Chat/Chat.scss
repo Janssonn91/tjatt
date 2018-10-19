@@ -13,10 +13,14 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
-        padding-left:2vw;
-        padding-top:28px;
+        padding-left: 10px;
+        @media (min-width: 768px) {
+            padding-top:28px;
+            height: 93px;
+            padding-left: 20px;
+        }
         border-bottom: 2px solid white;
-        height: 93px;
+        height: 45px;
         margin-left:0px !important;
 
         Form {
@@ -78,7 +82,6 @@ $text:#434651;
         .chat-about {
             float: left;
             padding-left: 0px;
-            margin-top: 6px;
         }
 
         .chat-with {
@@ -93,7 +96,6 @@ $text:#434651;
             float: right;
             color: lighten($gray, 8%);
             font-size: 20px;
-            //margin-top: 12px;
             right: 0px;
         }
 

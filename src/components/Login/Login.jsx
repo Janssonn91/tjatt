@@ -2,10 +2,18 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row>
-        <Col sm="3" className="side-menu">
-          <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
+        <Col md="3" className="side-menu">
+          <Navbar className="p-0" light expand="md">
+            <NavbarToggler onClick={this.toggle} />
+            <NavbarBrand className="pr-4 d-md-none">TJ@</NavbarBrand>
+            <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="ml-auto" vertical>
+                <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
+              </Nav>
+            </Collapse>
+          </Navbar>
         </Col>
-        <Col sm="9" className="dialog">
+        <Col xs="12" md="9" className="dialog">
           <Chat />
         </Col>
       </Row>

@@ -21,6 +21,17 @@ const initialUser = {
     this.createStoreConnectedProperties({
       user: initialUser
     });
+    
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   usernameChange(e) {

@@ -1,6 +1,12 @@
 .login-area {
     .side-menu{
         padding-right:0px;
+        background-color: #F2F5F8;
+        .navbar-toggler {
+            margin-left: 15px;
+            margin-top:15px;
+            margin-bottom: 15px;
+        }
     }
 
     h1 {
