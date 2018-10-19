@@ -1,31 +1,56 @@
 import './Login.scss';
+
+const initialUser = {
+  id: '',
+  username: '',
+  password: '',
+  nickname: '',
+  image: '',
+  status: false,
+  date: 0,
+  group: [],
+  contact: []
+};
+
 @observer export default class Login extends Component {
 
   //Temporary for controlling logged in state
-  @observable userLoggedIn;
+  @observable userLoggedIn = false;
+  @observable loginError = false;
+  @observable collapseOpen = false;
 
-  async start() {
-
+  start() {
     this.createStoreConnectedProperties({
-      username: '',
-      password: ''
+      user: initialUser
     });
   }
-
-  usernameChange(e){
-      this.usernameToSet = e.currentTarget.value;
-      console.log(this.usernameToSet);
-  }
-
-  passwordChange(e){
-      this.passWordToSet = e.currentTarget.value;
-      console.log(this.passWordToSet);
-  }
-
-  saveName(){
-    console.log('this.userLoggedIn');
-    this.userLoggedIn = true;
-  }
   
+  toggle(){
+    this.collapseOpen = !this.collapseOpen;
+  }
 
+  usernameChange(e) {
+    this.user.username = e.currentTarget.value;
+  }
+
+  passwordChange(e) {
+    this.user.password = e.currentTarget.value;
+  }
+
+  login() {
+    const { username, password } = this.user;
+
+    User.findOne({
+      username: username,
+      password: password
+    }).then(user => {
+      if (user) {
+        this.user = user;
+        this.userLoggedIn = true;
+        this.loginError = false;
+      } else {
+        this.loginError = true;
+      }
+    });
+  }
 }
