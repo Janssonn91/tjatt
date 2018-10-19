@@ -37,7 +37,7 @@
     </Row>
     <Row className="pb-5">
       <Col className="msg-area" sm="10" md={{ size: 4, offset: 1 }}>
-        <h5 className="left-msg">Join for free and experience the power of tj@!</h5>
+        <h5 className="left-msg image-overlay">Join for free and experience the power of tj@!</h5>
       </Col>
       <Col className="msg-area" sm="10" md={{ size: 4, offset: 2 }}>
         <h5 className="right-msg">Build powerful node.js-apps and share with teams!</h5>
