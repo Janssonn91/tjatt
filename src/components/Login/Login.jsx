@@ -1,6 +1,6 @@
 <Fragment>
   {this.userLoggedIn === true ?
-    <Container fluid={true} className="login-area">
+    <div className="login-area">
       <Row>
         <Col sm="3" className="side-menu">
           <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
@@ -10,9 +10,9 @@
         </Col>
       </Row>
 
-    </Container>
+    </div>
     :
-    <Container fluid={true} className="login-area">
+    <div className="login-area">
       <Row>
         <Col className="mt-5 overlay" sm="12" md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
           <h1>No boolshit, just tj@!</h1>
@@ -41,12 +41,12 @@
       </Row>
       <Row className="pb-5">
         <Col className="msg-area mt-3" sm="12" md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-          <h5 className="left-msg">Join for free and experience the power of tj@!</h5>
+          <h4 className="left-msg">Join for free and experience the power of tj@!</h4>
         </Col>
         <Col className="msg-area mt-5" sm="12" md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-          <h5 className="right-msg">Build powerful node.js-apps and share with teams!</h5>
+          <h4 className="right-msg">Build powerful node.js-apps and share with teams!</h4>
         </Col>
       </Row>
-    </Container>
+    </div>
   }
 </Fragment>
