@@ -1,10 +1,13 @@
 {
   "/*1": "--------- App specific (others code) ---------",
-  "{Clock as AnalogClock}": "react-clock",
+
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
-  "  App": "components/App/App",
-  "  Clock": "components/Clock/Clock",
+  "  User": "classes/user.class.js",
+  "  Channel": "classes/channel.class.js",
+  "  Chat": "components/Chat/Chat",
+  "  App" : "components/App/App",
+  "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
@@ -20,11 +23,12 @@
   "  Loop": "utilities/Loop/Loop",
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
-  "    Book": "classes/Book.js",
+
   "/*4": "--------- Utilities (non-components) ---------",
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
+
   "/*5": "------------ React core + routing ------------",
   "React": "react",
   "{Component as ReactComponent}": "react",
@@ -37,6 +41,7 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
+
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
   "{computed}": "mobx",
