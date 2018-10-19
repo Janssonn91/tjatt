@@ -45,12 +45,8 @@
         toggle: this.deleteMemberModalToggle.bind(this)
     }
  
-    //  addMemberModal:false,
-    //  removeMemberModal:false,
 
      start() {
-    
-
          this.createStoreConnectedProperties({
              chatHistories: []
          });
@@ -72,40 +68,9 @@
         this.dropdownOpen = !this.dropdownOpen;
     }
 
-    //  messageChange(e) {
-    //      this.inputMessage = e.currentTarget.value;
-    //  }
-
-     toggleModal(){
-         console.log(this.addMemberModal)
-         console.log(this)
-
-        this.addMemberModal = !this.addMemberModal;
-        // switch(modalType) {
-        //     case "add":
-        //         this.addMemberModal = !this.addMemberModal;
-        //         break;
-        //     case "remove":
-        //         this.removeMemberModal = !this.removeMemberModal;
-        //         break;
-        //     default:
-        //         console.log(type);
-        // }
-        console.log(this.addMemberModal)
-
-    }
-
      sendMessage() {
          console.log(this.message)
-         
-        //  this.chatHistories.push({
-        //      time: Date.now(),
-        //      userId: "me",
-        //      content: this.inputMessage,
-        //      star: false
-        //  });
-        //  console.log(this.chatHistories);
-         //backend
+     
      }
 
  }
