@@ -5,7 +5,7 @@
       <Col sm="12" md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
         <FormGroup className="mt-4">
           <Label for="username">Username</Label>
-          <Input type="email" name="email" id="username" placeholder="Choose username" />
+          <Input type="text" name="username" id="username" placeholder="Choose username" />
         </FormGroup>
         <FormGroup>
           <Label for="examplePassword">Password</Label>
