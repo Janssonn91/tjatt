@@ -4,7 +4,7 @@
 <Modal isOpen={this.props.isOpen}  toggle={this.props.toggle}>
     <ModalHeader toggle={this.props.toggle}>{this.props.buttonLabel}</ModalHeader>
           <ModalBody>
-           
+            <Input></Input>
                     <Label for="searchAddMemeber"> Search member</Label>
                     <Input type="text" id= "searchAddMemeber"/>
                     <Form>

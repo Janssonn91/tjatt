@@ -2,12 +2,24 @@
 {/* <div onClick={this.props.toggleMember}>{this.props.buttonLabel}</div> */}
 <div>{this.props.buttonLabel}</div> 
 <Modal isOpen={this.props.isOpen}  toggle={this.props.toggle}>
-    <ModalHeader toggle={this.props.toggle}>{this.props.buttonLabel}</ModalHeader>
+    <ModalHeader toggle={this.props.toggle}>
+    <Form>
+    <FormGroup>
+           <Label for="groupNameEdit" className="d-none" > <i className='fas fa-edit hover-show'></i></Label>
+          <Input type="text" name="text" id="groupNameEdit" bsSize="sm" placeholder="group name" />
+           </FormGroup> 
+    </Form>
+ 
+    
+    {this.props.buttonLabel}</ModalHeader>
           <ModalBody>
-           
-                    <Label for="searchAddMemeber"> Search member</Label>
-                    <Input type="text" id= "searchAddMemeber"/>
+         
+           <FormGroup>
+           <Label for="searchAddMemeber"> Search member</Label>
+                    <Input type="text" id= "searchAddMemeber" bsSize="sm" />
+                    </FormGroup> 
                     <Form>
+                  
                     <FormGroup tag="fieldset">
                         <legend>Group members</legend>
                         <FormGroup check>
@@ -23,6 +35,32 @@
                             </Label>
                         </FormGroup>
                         <FormGroup check disabled>
+                        <Label check>
+                            <Input type="checkbox" value="Member 3" />{' '}
+                            Member 3
+                            </Label>
+                        </FormGroup>
+                        <FormGroup check disabled>
+                        <Label check>
+                            <Input type="checkbox" value="Member 3" />{' '}
+                            Member 3
+                            </Label>
+                        </FormGroup><FormGroup check disabled>
+                        <Label check>
+                            <Input type="checkbox" value="Member 3" />{' '}
+                            Member 3
+                            </Label>
+                        </FormGroup><FormGroup check disabled>
+                        <Label check>
+                            <Input type="checkbox" value="Member 3" />{' '}
+                            Member 3
+                            </Label>
+                        </FormGroup><FormGroup check disabled>
+                        <Label check>
+                            <Input type="checkbox" value="Member 3" />{' '}
+                            Member 3
+                            </Label>
+                        </FormGroup><FormGroup check disabled>
                         <Label check>
                             <Input type="checkbox" value="Member 3" />{' '}
                             Member 3

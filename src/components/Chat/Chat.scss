@@ -25,12 +25,13 @@ $text:#434651;
 
 
         .dropdown-menu {
-            height: 80vh;
+            height: 77vh;
             position: absolute;
             transform: translate3d(-127px, 50px, 0px) !important;
             border-radius: 0px;
             width: 200px;
             border-color: #F2F5F8;
+            top:12px !important;
 
         }
 
@@ -38,16 +39,6 @@ $text:#434651;
             height: 35px;
         }
 
-        .show-edit {
-            position: absolute;
-            top: 10px;
-            left: 5px;
-            display: none;
-            color: lighten($gray, 20%);
-            font-size: 12px;
-            width: 5px;
-            height: 0px;
-        }
 
         .contacts {
             height: 410px;
@@ -206,9 +197,7 @@ $text:#434651;
         padding-top: 10px;
         height: 10vh;
 
-        .d-none {
-            display: none;
-        }
+        
 
         .btn-dropup {
             height: 8vh;
@@ -292,4 +281,6 @@ $text:#434651;
         }
 
     }
+
+ 
 }
