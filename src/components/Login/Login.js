@@ -1,12 +1,13 @@
 import './Login.scss';
 
 const initialUser = {
-  id: 0,
-  name: '',
+  id: '',
+  username: '',
   password: '',
   nickname: '',
   image: '',
   status: false,
+  date: 0,
   group: [],
   contact: []
 };
@@ -35,7 +36,7 @@ const initialUser = {
     const { username, password } = this.user;
 
     User.findOne({
-      name: username,
+      username: username,
       password: password
     }).then(user => {
       if (user) {
