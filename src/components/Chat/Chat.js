@@ -35,12 +35,12 @@
          });
      }
 
-     toggle(){
-        this.isOpen = !this.isOpen;
-      }
+    toggle(){
+      this.isOpen = !this.isOpen;
+    }
 
     dropdownToggle(){
-        this.dropdownOpen = !this.dropdownOpen;
+      this.dropdownOpen = !this.dropdownOpen;
     }
 
      messageChange(e) {

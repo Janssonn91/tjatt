@@ -14,12 +14,12 @@ $text:#434651;
 
     .chat-header {
         @media (min-width: 768px) {
-            padding-top:28px;
-            height: 93px;
+            padding-top:13px;
+            height: 56px;
             padding-left: 20px;
         }
         padding-left: 32px;
-        border-bottom: 2px solid white;
+        // border-bottom: 1px solid white;
         height: 45px;
         margin-left:0px !important;
 
@@ -32,10 +32,12 @@ $text:#434651;
             height: 80vh;
             position: absolute;
             transform: translate3d(-127px, 50px, 0px) !important;
-            border-radius: 0px;
+            border-radius: 5px;
             width: 200px;
-            border-color: #F2F5F8;
-
+            border-color: #484951;
+            top: -20px !important;
+            left: 76px !important;
+            margin-top: 0;
         }
 
         .bottom-item {
@@ -82,6 +84,7 @@ $text:#434651;
         .chat-about {
             float: left;
             padding-left: 0px;
+            // max-width: 100% !important;
         }
 
         .chat-with {
@@ -89,15 +92,23 @@ $text:#434651;
             font-weight: bold;
             font-size: 20px;
             color:$gray;
+            display: inline-block;
+            @media (min-width: 768px) {
+              width: 70%;
+            }
         }
 
         .dialog-icon {
-            vertical-align: middle;
-            float: right;
-            color: lighten($gray, 8%);
-            font-size: 20px;
-            right: 0px;
-            padding-right: 0;
+          // display: inline-block;
+          vertical-align: middle;
+          float: right;
+          color: lighten($gray, 8%);
+          font-size: 20px;
+          right: 0px;
+          // padding-right: 0;
+          svg {
+            vertical-align: middle !important;
+          }
         }
 
         .dialog-icon:hover {
@@ -110,7 +121,7 @@ $text:#434651;
     .chat-history {
         padding: 30px 2vw;
         // padding: 30px 30px 20px;
-        border-bottom: 2px solid white;
+        border-bottom: 1px solid rgba(128,128,128,0.1);
         overflow-y: scroll;
         height: 77vh;
 
@@ -233,8 +244,8 @@ $text:#434651;
 
             svg {
                 font-size: 2vw;
-                
-                padding:0px;
+                display: inline-block;
+                padding: 0px;
             }
         }
 
@@ -291,5 +302,8 @@ $text:#434651;
             font-size: 1.8vw;
         }
 
+    }
+    hr {
+      border-top: 1px solid rgba(0,0,0,.1);
     }
 }

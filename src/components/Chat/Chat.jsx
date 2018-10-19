@@ -1,28 +1,8 @@
 <Fragment>
-  <Row className="chat-header mr-0">
-    <Col sm="11" className="chat-about">
-      <div className="chat-with">Chat with channel name</div>
-    </Col>
-    {/* change icon if channel is group or not */}
-    {/* <Col sm="1" className="dialog-icon">
-    <FontAwesomeIcon icon="user" />
-    </Col> */}
-    <Col sm="1" className="dialog-icon">
-      <Dropdown isOpen={this.dropdownOpen} toggle={e=>this.dropdownToggle()}>
-        <DropdownToggle tag="span" onClick={e=>this.dropdownToggle()} data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
-          <FontAwesomeIcon icon="users" />
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem header>Group Name</DropdownItem>
-          <DropdownItem>Action</DropdownItem>
-          <DropdownItem>Another Action</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>Another Action</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </Col>
+  <Row className="chat-header mr-0 d-none w-100 d-md-inline-block">
+    <ChatHeader/>
   </Row>
-  
+  <hr/>
   <div className="chat-history">
     <ul>
       <li className="clearfix ">

@@ -4,9 +4,11 @@
       <Row className="mr-0">
         <Col md="3" xl="2" className="side-menu">
           <Navbar className="p-0" light expand="md">
-            <NavbarBrand className="ml-4 mr-0 d-md-none">TJ@</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
+            <NavbarBrand tag="div" className="mr-0 d-md-none">
+              <ChatHeader/>
+            </NavbarBrand>
+            <NavbarToggler onClick={e => this.toggle()} />
+            <Collapse isOpen={this.collapseOpen} navbar>
               <Nav className="ml-auto" vertical>
                 <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
               </Nav>

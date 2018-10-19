@@ -1,9 +1,7 @@
 .sidebar {
-  padding: 15px 0 0 0;
   background-color:  #484951;
   height: 100vh;
   @media (max-width: 768px) {
-    // width: 350px;
     height: fit-content;
   }
   
@@ -14,6 +12,7 @@
 
       .dropdown {
         display: inline-block;
+        border-color: black;
         &:hover {
           cursor: pointer;
         }
