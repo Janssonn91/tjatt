@@ -1,10 +1,10 @@
 import './Signup.scss';
 
-export default class Signup extends Component {
+@observer export default class Signup extends Component {
 
   usernameToSet;
   passWordToSet;
-  nicknameToSet;
+  @observable usernameExits = false;
 
   async start() {
     
@@ -12,7 +12,7 @@ export default class Signup extends Component {
 
   usernameChange(e){
     this.usernameToSet = e.currentTarget.value;
-    //console.log(this.usernameToSet);
+    //onsole.log(this.usernameToSet);
   }
 
   passwordChange(e){
@@ -20,15 +20,37 @@ export default class Signup extends Component {
     //console.log(this.passWordToSet);
   }
 
-  nicknameChange(e){
-    this.nicknameToSet = e.currentTarget.value;
-  }
-
   async createUser(e){
+    console.log(this.usernameToSet);
+    let checkUser = await User.findOne({
+      name : this.usernameToSet,
+    });
+    if(checkUser) {
+      this.usernameExits = true;
+      return;
+    }
+    console.log(checkUser);
     let person = await User.create({
         name : this.usernameToSet,
         password : this.passWordToSet,
-        nickname : this.nicknameToSet
     });
   }
+
+  /*login() {
+    const { username, password } = this.user;
+
+    User.findOne({
+      name: username,
+      password: password
+    }).then(user => {
+      if (user) {
+        this.user = user;
+        this.userLoggedIn = true;
+        this.loginError = false;
+      } else {
+        this.loginError = true;
+      }
+    });
+  }*/
+
 }
