@@ -99,7 +99,8 @@
        </ButtonDropdown>  {' '}
            <FormGroup>
            <Label for="messageArea" className="d-none">Message</Label>
-          <Input type="textarea" name="text" id="messageArea" value={this.inputMessage} onChange={e=> this.messageChange(e)}/>
+          <Input type="textarea" name="text" id="messageArea" value={this.inputMessage} onChange={e => this.message = e.currentTarget.value} 
+          onKeyPress={e => e.key === 'Enter' && this.sendMessage()}/>
            </FormGroup> {' '}
            <Button className="send" onClick={ e => this.sendMessage()}>Send</Button>
    

@@ -22,7 +22,7 @@
  @observer
  export default class Chat extends Component {
 
-     @observable inputMessage = '';
+     @observable message = '';
      @observable isOpen = false;
      @observable dropdownOpen = false;
      @observable addMemberModal = false;
@@ -72,9 +72,9 @@
         this.dropdownOpen = !this.dropdownOpen;
     }
 
-     messageChange(e) {
-         this.inputMessage = e.currentTarget.value;
-     }
+    //  messageChange(e) {
+    //      this.inputMessage = e.currentTarget.value;
+    //  }
 
      toggleModal(){
          console.log(this.addMemberModal)
@@ -96,14 +96,15 @@
     }
 
      sendMessage() {
-
-         this.chatHistories.push({
-             time: Date.now(),
-             userId: "me",
-             content: this.inputMessage,
-             star: false
-         });
-         console.log(this.chatHistories);
+         console.log(this.message)
+         
+        //  this.chatHistories.push({
+        //      time: Date.now(),
+        //      userId: "me",
+        //      content: this.inputMessage,
+        //      star: false
+        //  });
+        //  console.log(this.chatHistories);
          //backend
      }
 
