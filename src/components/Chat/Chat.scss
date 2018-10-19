@@ -5,7 +5,7 @@ $orange: #E38968;
 $text:#434651;
 
 .dialog {
-    padding-left:0px;
+    padding: 0;
     float: left;
     background: #F2F5F8;
     border-top-right-radius: 5px;
@@ -13,12 +13,12 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
-        padding-left: 10px;
         @media (min-width: 768px) {
             padding-top:28px;
             height: 93px;
             padding-left: 20px;
         }
+        padding-left: 32px;
         border-bottom: 2px solid white;
         height: 45px;
         margin-left:0px !important;
@@ -97,6 +97,7 @@ $text:#434651;
             color: lighten($gray, 8%);
             font-size: 20px;
             right: 0px;
+            padding-right: 0;
         }
 
         .dialog-icon:hover {
@@ -107,7 +108,6 @@ $text:#434651;
     }
 
     .chat-history {
-        overflow: scroll;
         padding: 30px 2vw;
         // padding: 30px 30px 20px;
         border-bottom: 2px solid white;

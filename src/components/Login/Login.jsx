@@ -1,11 +1,11 @@
 <Fragment>
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
-      <Row>
-        <Col md="3" className="side-menu">
+      <Row className="mr-0">
+        <Col md="3" xl="2" className="side-menu">
           <Navbar className="p-0" light expand="md">
+            <NavbarBrand className="ml-4 mr-0 d-md-none">TJ@</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
-            <NavbarBrand className="pr-4 d-md-none">TJ@</NavbarBrand>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" vertical>
                 <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
@@ -13,7 +13,7 @@
             </Collapse>
           </Navbar>
         </Col>
-        <Col xs="12" md="9" className="dialog">
+        <Col xs="12" md="9" xl="10" className="dialog">
           <Chat />
         </Col>
       </Row>
