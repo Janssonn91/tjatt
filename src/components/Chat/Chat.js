@@ -35,10 +35,15 @@
          btnText:""
      }
 
-     @observable sendToModal ={
+     @observable sendToAddModal ={
          isOpen: false,
-         toggle: this.toggle.bind(this)
+         toggle: this.addMemberModalToggle.bind(this)
      }
+
+     @observable sendToDeleteModal ={
+        isOpen: false,
+        toggle: this.deleteMemberModalToggle.bind(this)
+    }
  
     //  addMemberModal:false,
     //  removeMemberModal:false,
@@ -51,13 +56,17 @@
          });
      }
 
-     toggle(){
-        this.sendToModal.isOpen = !this.sendToModal.isOpen
+     addMemberModalToggle(){
+        this.sendToAddModal.isOpen = !this.sendToAddModal.isOpen
      }
 
-    //  toggle(){
-    //     this.isOpen = !this.isOpen;
-    //   }
+     deleteMemberModalToggle(){
+        this.sendToDeleteModal.isOpen = !this.sendToDeleteModal.isOpen
+     }
+
+     toggle(){
+        this.isOpen = !this.isOpen;
+      }
 
     dropdownToggle(){
         this.dropdownOpen = !this.dropdownOpen;

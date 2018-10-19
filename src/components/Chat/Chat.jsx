@@ -4,7 +4,8 @@
 <Fragment>
   {/* <MemberModal toggleModal={this.toggleModal.bind(this)} {...this.propsToModal} addMemberModal={this.addMemberModal} buttonLabel='Add members'/> */}
 
-    <AddMemberModal {...this.sendToModal}/>
+    <AddMemberModal {...this.sendToAddModal}/>
+    <AddMemberModal {...this.sendToDeleteModal}/>
     <Row className="chat-header">
     <Col sm="11" className="chat-about">
           <div className="chat-with">Chat with channel name</div>
@@ -26,8 +27,11 @@
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>Group Name</DropdownItem>
-          <DropdownItem onClick={this.toggle.bind(this)}>
+          <DropdownItem onClick={this.addMemberModalToggle.bind(this)}>
             Add members
+          </DropdownItem>
+          <DropdownItem onClick={this.deleteMemberModalToggle.bind(this)}>
+            Delete members
           </DropdownItem>
           <DropdownItem>Another Action</DropdownItem>
           <DropdownItem divider />
