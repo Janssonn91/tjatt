@@ -9,7 +9,9 @@
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="ul">
-            <DropdownItem tag="li">Byta bild</DropdownItem>
+            <DropdownItem tag="li">
+              <input type="text"></input>
+            </DropdownItem>
             <DropdownItem divider />
             <DropdownItem tag="li">Logga ut</DropdownItem>
           </DropdownMenu>

@@ -17,11 +17,16 @@ const initialUser = {
   //Temporary for controlling logged in state
   @observable userLoggedIn = false;
   @observable loginError = false;
+  @observable collapseOpen = false;
 
   start() {
     this.createStoreConnectedProperties({
       user: initialUser
     });
+  }
+  
+  toggle(){
+    this.collapseOpen = !this.collapseOpen;
   }
 
   usernameChange(e) {
