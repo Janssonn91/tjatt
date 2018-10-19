@@ -2,16 +2,14 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder">
-        <CardImg src="/images/placeholder.png" />
+        <CardImg src="/images/placeholder.png"/>
         <UncontrolledDropdown onClick={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.name}</h5>
+            <h5>Användarnamn</h5>
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="ul">
-            <DropdownItem tag="li">
-              <input type="text"></input>
-            </DropdownItem>
+            <DropdownItem tag="li">Byta bild</DropdownItem>
             <DropdownItem divider />
             <DropdownItem tag="li">Logga ut</DropdownItem>
           </DropdownMenu>
@@ -35,6 +33,6 @@
       <i className="fas fa-plus"></i>
     </Nav>
     <hr />
-    <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '}
+    <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '} 
   </div>
 </Fragment>

@@ -5,7 +5,7 @@ $orange: #E38968;
 $text:#434651;
 
 .dialog {
-    padding: 0;
+    padding-left:0px;
     float: left;
     background: #F2F5F8;
     border-top-right-radius: 5px;
@@ -13,14 +13,10 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
-        @media (min-width: 768px) {
-            padding-top:13px;
-            height: 56px;
-            padding-left: 20px;
-        }
-        padding-left: 32px;
-        // border-bottom: 1px solid white;
-        height: 45px;
+        padding-left:2vw;
+        padding-top:28px;
+        border-bottom: 2px solid white;
+        height: 93px;
         margin-left:0px !important;
 
         Form {
@@ -32,7 +28,7 @@ $text:#434651;
             height: 77vh;
             position: absolute;
             transform: translate3d(-127px, 50px, 0px) !important;
-            border-radius: 5px;
+            border-radius: 0px;
             width: 200px;
             border-color: #F2F5F8;
             top:12px !important;
@@ -71,7 +67,7 @@ $text:#434651;
         .chat-about {
             float: left;
             padding-left: 0px;
-            // max-width: 100% !important;
+            margin-top: 6px;
         }
 
         .chat-with {
@@ -80,10 +76,6 @@ $text:#434651;
             font-weight: bold;
             font-size: 20px;
             color:$gray;
-            display: inline-block;
-            @media (min-width: 768px) {
-              width: 70%;
-            }
         }
 
         .dialog-icon {
@@ -109,9 +101,10 @@ $text:#434651;
     }
 
     .chat-history {
+        overflow: scroll;
         padding: 30px 2vw;
         // padding: 30px 30px 20px;
-        border-bottom: 1px solid rgba(128,128,128,0.1);
+        border-bottom: 2px solid white;
         overflow-y: scroll;
         height: 77vh;
 
@@ -234,8 +227,8 @@ $text:#434651;
 
             svg {
                 font-size: 2vw;
-                display: inline-block;
-                padding: 0px;
+                
+                padding:0px;
             }
         }
 
@@ -295,12 +288,6 @@ $text:#434651;
         }
 
     }
-<<<<<<< HEAD
 
  
-=======
-    hr {
-      border-top: 1px solid rgba(0,0,0,.1);
-    }
->>>>>>> chat
 }

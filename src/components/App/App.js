@@ -5,6 +5,7 @@ export default class App extends Component {
   @observable style = {
     opacity: 0
   };
+  @observable users = [];
 
   async start() {
     // Note: We don't use jQuery very much,
@@ -17,6 +18,11 @@ export default class App extends Component {
       let ok = $('body').css('font-family').length > 10;
       this.style.opacity += ok ? .1 : 0;
     }
+
+    // test
+    this.users = await User.find({});
+    console.log(this.users);
+
 
     // no focusing of buttons when you click them
     $(document).on('click', 'button', function () {

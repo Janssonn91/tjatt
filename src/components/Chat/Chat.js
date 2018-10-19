@@ -65,7 +65,7 @@
       }
 
     dropdownToggle(){
-      this.dropdownOpen = !this.dropdownOpen;
+        this.dropdownOpen = !this.dropdownOpen;
     }
 
      sendMessage() {

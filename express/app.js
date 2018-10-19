@@ -17,6 +17,3 @@ new User(app);
 
 const Channel = require('./classes/Channel.class');
 new Channel(app);
-
-const Message = require('./classes/Message.class');
-new Message(app);
