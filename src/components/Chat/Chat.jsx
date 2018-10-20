@@ -45,7 +45,7 @@
           </span> 
           </Col>
     </Row>
-  {/* <hr/> */}
+  <hr/>
   <div className="chat-history">
     <ul>
       <li className="clearfix ">

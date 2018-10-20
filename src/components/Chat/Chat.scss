@@ -13,11 +13,31 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
-        border-bottom:1px solid $gray;
+
+        @media (min-width: 768px) {
+
+        .chat-about{
+            padding-top:11px;
+            padding-right:45px;
+        }
+    }
+    
+        .dropdown-menu {
+            height: 77vh;
+            position: absolute;
+            transform: translate3d(-127px, 50px, 0px) !important;
+            border-radius: 5px;
+            width: 30vw;
+            // border-color: #484951;
+            top: 10px !important;
+            left: -15vw !important;
+            margin-top: 0;
+        }
         @media (min-width: 768px) {
             padding-top:2vh;
-            height: 9.4vh;
+            height: 60px;
             padding-left: 0px;
+          
        
             .mobil-menu{
                 display:none;
@@ -25,10 +45,13 @@ $text:#434651;
         }
 
         @media (max-width: 400px) {
-           padding-top:1vh;
-           padding-left:2vw;
-           padding-right:2vw;
+           padding:2vh 2vw;
            height:6vh;
+         
+           .chat-about{
+               height:6vh;
+           }
+
 
             .mobil-menu{
                 padding:0px 0px 5px 0px;
@@ -77,7 +100,7 @@ $text:#434651;
 
 
         .dropdown-menu {
-            height: 78.8vh;
+            height: 77vh;
             position: absolute;
             transform: translate3d(-127px, 50px, 0px) !important;
             border-radius: 5px;
@@ -169,14 +192,14 @@ $text:#434651;
     }
 
     .chat-history {
-        padding: 30px 2vw;
+        padding: 0 2vw;
         // padding: 30px 30px 20px;
         border-bottom: 1px solid rgba(128,128,128,0.1);
         overflow-y: scroll;
         height: 77vh;
 
         @media (max-width: 400px) {
-            height:81vh;
+            height:75vh;
             padding-left:7vw;
         }
 
@@ -329,14 +352,7 @@ $text:#434651;
             display: none;
         }
 
-        .dropdown-menu {
-            width: 300px;
-            border-radius: 5px;
-
-            svg {
-                color: $gray;
-            }
-        }
+        
 
         .dropdown-item {
             color: $gray;
@@ -387,7 +403,16 @@ $text:#434651;
         }
 
     }
-    hr {
-      border-top: 1px solid rgba(0,0,0,.1);
+    
+        hr {
+            border-top: 1px solid rgba(0,0,0,.1);
+          }
+    
+
+    @media (max-width: 400px) {
+        hr {
+            padding:1vh;
+                  }
     }
+    
 }
