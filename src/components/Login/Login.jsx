@@ -2,8 +2,10 @@
   {this.userLoggedIn === true ?
     <Container fluid={true} className="login-area">
       <Row className="mr-0">
-        <Col md="3" xl="2" className="side-menu">
-          <Navbar className="p-0" light expand="md">
+      
+        <Col xs="12" md="3" xl="2" className="side-menu">
+        <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }}/>
+          {/* <Navbar className="p-0" light expand="md">
             <NavbarBrand tag="div" className="mr-0 d-md-none">
               <ChatHeader/>
             </NavbarBrand>
@@ -13,7 +15,7 @@
                 <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
               </Nav>
             </Collapse>
-          </Navbar>
+          </Navbar> */}
         </Col>
         <Col xs="12" md="9" xl="10" className="dialog">
           <Chat />

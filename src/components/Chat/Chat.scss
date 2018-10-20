@@ -13,10 +13,58 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
+        border-bottom:1px solid $gray;
         @media (min-width: 768px) {
-            padding-top:13px;
-            height: 56px;
-            padding-left: 20px;
+            padding-top:2vh;
+            height: 9.4vh;
+            padding-left: 0px;
+       
+            .mobil-menu{
+                display:none;
+            }
+        }
+
+        @media (max-width: 400px) {
+           padding-top:1vh;
+           padding-left:2vw;
+           padding-right:2vw;
+           height:6vh;
+
+            .mobil-menu{
+                padding:0px 0px 5px 0px;
+                display:inline-block;
+                border:none;
+                background-color: #F2F5F8 !important;
+                color:$gray;
+                width:15vw;
+            }
+            .chat-with{
+                width:70vw;
+                text-align: center !important;
+                align-self: center;
+                font-size:16px;
+            }
+
+            .dialog-icon{
+                width:8vw;
+                padding:0px;
+                .dropdown{
+                    margin-bottom:5px;
+                }
+                i{
+                    font-size:16px;
+                }
+            }
+
+            .chat-message{
+                //padding:2vw;
+                .form-inline{
+                    margin-left:15vw !important;
+                }
+               
+          
+            }
+            
         }
         padding-left: 32px;
         // border-bottom: 1px solid white;
@@ -29,14 +77,14 @@ $text:#434651;
 
 
         .dropdown-menu {
-            height: 80vh;
+            height: 78.8vh;
             position: absolute;
             transform: translate3d(-127px, 50px, 0px) !important;
             border-radius: 5px;
             width: 200px;
-            border-color: #484951;
-            top: -20px !important;
-            left: 76px !important;
+            // border-color: #484951;
+            top: 10px !important;
+            left: -45px !important;
             margin-top: 0;
         }
 
@@ -71,6 +119,14 @@ $text:#434651;
             border-color: white;
         }
 
+        .channel-manage{
+            height:66vh;
+        }
+
+        .leave-group{
+            color:$orange;
+        }
+
 
 
         .divider-1 {
@@ -81,16 +137,10 @@ $text:#434651;
             padding: 4px;
         }
 
-        .chat-about {
-            float: left;
-            padding-left: 0px;
-            // max-width: 100% !important;
-        }
 
         .chat-with {
             text-align: left;
             font-weight: bold;
-            font-size: 20px;
             color:$gray;
             display: inline-block;
             @media (min-width: 768px) {
@@ -124,6 +174,11 @@ $text:#434651;
         border-bottom: 1px solid rgba(128,128,128,0.1);
         overflow-y: scroll;
         height: 77vh;
+
+        @media (max-width: 400px) {
+            height:81vh;
+            padding-left:7vw;
+        }
 
         ul {
             list-style: none;
@@ -229,6 +284,15 @@ $text:#434651;
             height: 8vh;
             width: 5vw;
             margin-left:2vw;
+            @media (max-width: 400px) {
+                height: 6vh;
+                margin-left: 9vw;
+                width: 10vw;
+               
+                button{
+                    width:15vw;
+                }
+            }
         }
 
 
@@ -238,6 +302,8 @@ $text:#434651;
             width: 5vw;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
             background-color: lighten($gray, 20%);
             border-color: lighten($gray, 20%);
             padding:0px;
@@ -246,6 +312,7 @@ $text:#434651;
                 font-size: 2vw;
                 display: inline-block;
                 padding: 0px;
+                
             }
         }
 
@@ -280,19 +347,33 @@ $text:#434651;
         #messageArea {
             border-radius: 0px;
             height: 8vh;
-            width: 60vw;
+            width: 62vw;
+            @media (max-width: 400px) {
+                width:70vw;
+                margin-top:4.2vw;
+                height:6vh;
+            }
         }
 
         .send {
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
-            width: 7vw;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            width: 6vw;
             height: 8vh;
             background-color: lighten($gray, 40%);
             border-color: lighten($gray, 20%);
             color: $blue;
             font-size:1.5vw;
             padding:0px;
+            @media (max-width: 400px) {
+                width:10vw;
+                margin-top:4.2vw;
+                height:6vh;
+                margin-top:0px;
+                font-size:3vw;
+            }
         }
 
         .send:hover {
@@ -300,6 +381,9 @@ $text:#434651;
             border-color: $blue;
             color: white;
             font-size: 1.8vw;
+            @media (max-width: 400px) {
+                font-size:3.5vw;
+            }
         }
 
     }

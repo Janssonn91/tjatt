@@ -12,6 +12,9 @@
   "  Login": "components/Login/Login",
   "  ChatHeader": "components/ChatHeader/ChatHeader",
   "  Signup": "components/Signup/Signup",
+  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
+  "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
+
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
