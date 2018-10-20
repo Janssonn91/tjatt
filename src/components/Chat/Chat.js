@@ -77,13 +77,6 @@
         ]
     }
 
-    // messageSenderClass(name){
-    //     let me = this.stores.Login.user.nickname;
-    //     let classN = "message-data";
-    //    if(name===me){
-    //      return classN= "me";
-    //    }
-    // }
 
 
 
