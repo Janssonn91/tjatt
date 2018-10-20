@@ -3,17 +3,17 @@
     <div className="profile">
       <div className="user-holder">
         <CardImg src="/images/placeholder.png" />
-        <UncontrolledDropdown onClick={e => this.toggle()}>
+        <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
             <h5>{this.stores.Login.user.nickname || this.stores.Login.user.name}</h5>
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
-          <DropdownMenu tag="ul">
-            <DropdownItem tag="li">Byta bild</DropdownItem>
+          <DropdownMenu tag="div">
+            <DropdownItem tag="li"><label onClick={e => this.toggle()} htmlFor="files">Choose image</label><input className="d-none" id="files" type="file" /></DropdownItem>
             <DropdownItem divider />
             <DropdownItem tag="li">Logga ut</DropdownItem>
           </DropdownMenu>
-        </UncontrolledDropdown>
+        </Dropdown>
       </div>
     </div>
     <hr />
@@ -35,4 +35,4 @@
     <hr />
     <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '}
   </div>
-</Fragment>
+</Fragment >

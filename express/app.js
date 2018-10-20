@@ -10,6 +10,19 @@ app.use(express.json({
   extended: false
 }));
 
+// const multer = require('multer');
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'src/components/images/uploads')
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   }
+// });
+// const upload = multer({ storage: storage });
+
+
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');

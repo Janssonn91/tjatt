@@ -39,6 +39,7 @@
     "mobx": "^5.1.2",
     "mobx-react": "^5.2.8",
     "mongoose": "^5.3.2",
+    "multer": "^1.4.1",
     "ncp": "^2.0.0",
     "node-sass": "^4.9.3",
     "object-assign": "4.1.1",

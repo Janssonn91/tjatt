@@ -1,23 +1,24 @@
 import './Sidebar.scss';
 
 @withRouter @observer export default class Sidebar extends Component {
-  async start() {}
+  async start() { }
 
   @observable collapseOpen = false;
   @observable userLoggedIn;
   @observable test;
- 
-  toggle(){
+
+  async toggle() {
+    await sleep(1);
     this.collapseOpen = !this.collapseOpen;
     console.log("körs");
   }
 
-  logout(){
+  logout() {
     console.log(this.props);
     this.props.logout(this.changeLogStatus.bind(this));
   }
 
-  changeLogStatus(){
+  changeLogStatus() {
     return false;
   }
 
