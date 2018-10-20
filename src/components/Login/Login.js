@@ -1,6 +1,6 @@
 import './Login.scss';
 
-const initialUser = {
+export const initialUser = {
   id: '',
   username: '',
   password: '',
@@ -14,8 +14,6 @@ const initialUser = {
 
 @withRouter @observer export default class Login extends Component {
 
-  //Temporary for controlling logged in state
-  // @observable userLoggedIn = false;
   @observable loginError = false;
   @observable collapseOpen = false;
   @observable hideMenu = true;
