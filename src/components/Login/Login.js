@@ -47,10 +47,7 @@ const initialUser = {
   login() {
     const { username, password } = this.user;
 
-    User.findOne({
-      username: username,
-      password: password
-    }).then(user => {
+    User.findOne({ username, password }).then(user => {
       if (user) {
         this.user = user;
         this.userLoggedIn = true;
