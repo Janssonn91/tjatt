@@ -71,7 +71,6 @@ $text:#434651;
         }
 
         .chat-with {
-            float:left;
             text-align: left;
             font-weight: bold;
             font-size: 20px;
@@ -85,12 +84,6 @@ $text:#434651;
             font-size: 20px;
             //margin-top: 12px;
             right: 0px;
-            .leave-group{
-                color:$orange;
-            }
-            .management-list{
-                height:60vh;
-            }
         }
 
         .dialog-icon:hover {

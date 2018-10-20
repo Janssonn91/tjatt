@@ -7,15 +7,14 @@
     <AddMemberModal {...this.sendToAddModal}/>
     <AddMemberModal {...this.sendToDeleteModal}/>
     <Row className="chat-header">
-    <Col sm="12" className="chat-about">
-
-          <span className="chat-with">Chat with channel name</span>
-         
+    <Col sm="11" className="chat-about">
+          <div className="chat-with">Chat with channel name</div>
+          </Col>
           {/* change icon if channel is group or not */}
           {/* <Col sm="1" className="dialog-icon">
           <i className="fas fa-user"></i>
           </Col> */}
-          <span className="dialog-icon">
+          <Col sm="1" className="dialog-icon">
          
           <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
           <DropdownToggle
@@ -28,22 +27,18 @@
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem header>Group Name</DropdownItem>
-          <DropdownItem divider />
-          <div className="management-list">
           <DropdownItem onClick={this.addMemberModalToggle.bind(this)}>
             Add members
           </DropdownItem>
           <DropdownItem onClick={this.deleteMemberModalToggle.bind(this)}>
             Delete members
           </DropdownItem>
-          </div>
-          
-         
+          <DropdownItem>Another Action</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem className="leave-group">Leave group</DropdownItem>
+          <DropdownItem>Another Action</DropdownItem>
         </DropdownMenu>
       </Dropdown>
-          </span>
+          
           </Col> 
     </Row>
     
