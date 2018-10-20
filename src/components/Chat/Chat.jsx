@@ -48,10 +48,11 @@
   <hr/>
   <div className="chat-history">
     <ul>
-      <li className="clearfix ">
+      <Message {...this.sendToChatHistory}/>
+      {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
-          <span className="message-data-name " >Me</span>         
+          <span className="message-data-name " >{this.stores.Login.user.nickname}</span>         
         </div>
         <div className="message my-message">
           How are you?
@@ -76,7 +77,7 @@
         <div className="message other-message">
           Good!
         </div>
-      </li>
+      </li> */}
     </ul>
   </div>
   {/* End chat history */}
