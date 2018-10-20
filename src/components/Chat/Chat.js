@@ -47,6 +47,7 @@
                 id: 1,
                 time: "10:20 AM, Today",
                 sender: "Pika",
+                status: "online",
                 channel: "group one",
                 text: "How are you?",
                 textType: "text",
@@ -56,6 +57,7 @@
                 id:2,
                time: "10:21 AM, Today",
                sender: "other",
+               status: "offline",
                channel: "group one",
                text: "I am fine, thank you. And you?",
                textType: "text",
@@ -65,23 +67,25 @@
                 id:3,
                time: "10:24 AM, Today",
                sender: "another",
+               status: "online",
                channel: "group one",
                text: " Good!",
                textType: "text",
                star:false
             }
             
-        ],
-        getClass: this.messageClass.bind(this)
+        ]
     }
 
-    messageClass(name){
-        let me = this.stores.Login.user.nickname;
-        let classN = "message-data";
-       if(name===me){
-         return classN= "me";
-       }
-    }
+    // messageSenderClass(name){
+    //     let me = this.stores.Login.user.nickname;
+    //     let classN = "message-data";
+    //    if(name===me){
+    //      return classN= "me";
+    //    }
+    // }
+
+
 
     //start chat
 
