@@ -89,6 +89,8 @@
          });
      }
 
+     
+
      addMemberModalToggle(){
         this.sendToAddModal.isOpen = !this.sendToAddModal.isOpen
      }

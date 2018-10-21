@@ -5,6 +5,7 @@ $orange: #E38968;
 $text:#434651;
 
 .dialog {
+    width:100%;
     padding: 0;
     float: left;
     background: #F2F5F8;
@@ -196,7 +197,7 @@ $text:#434651;
         // padding: 30px 30px 20px;
         border-bottom: 1px solid rgba(128,128,128,0.1);
         overflow-y: scroll;
-        height: 77vh;
+        height: 75vh;
 
         @media (max-width: 400px) {
             height:75vh;
@@ -363,7 +364,7 @@ $text:#434651;
         #messageArea {
             border-radius: 0px;
             height: 8vh;
-            width: 62vw;
+            width: 60vw;
             @media (max-width: 400px) {
                 width:70vw;
                 margin-top:4.2vw;

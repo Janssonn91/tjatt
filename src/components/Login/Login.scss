@@ -1,5 +1,6 @@
 .login-area {
     .side-menu{
+        margin-left:2vw;
         height:100vh;
         padding-right:0px;
         background-color: #F2F5F8;
@@ -38,3 +39,22 @@
     padding: 0;
 }
 
+.hide-menu{
+    width:25vw;
+    height:100vh;
+    padding:0px !important;
+}
+
+.hide-chat{
+    width:75vw;
+    height:100vh;
+    padding:0px !important;
+}
+@media (max-width: 400px) {
+    .hide-menu{
+        display:none;
+    }
+    .hide-chat{
+        display:none;
+    }
+  }

@@ -18,6 +18,12 @@ const initialUser = {
   @observable userLoggedIn = false;
   @observable loginError = false;
   @observable collapseOpen = false;
+  @observable hideMenu = true;
+  @observable hideChat = false;
+  @observable sendToChat = this.showMenu.bind(this);
+  @observable sendToMenu = this.showChat.bind(this);
+
+  
 
   start() {
     this.createStoreConnectedProperties({
@@ -52,5 +58,15 @@ const initialUser = {
         this.loginError = true;
       }
     });
+  }
+
+  showMenu(){
+    this.hideMenu = false;
+    this.hideChat = true;
+  }
+
+  showChat(){
+    this.hideMenu = true;
+    this.hideChat = false;
   }
 }

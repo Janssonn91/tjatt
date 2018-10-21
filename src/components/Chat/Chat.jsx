@@ -7,7 +7,7 @@
     <AddMemberModal {...this.sendToDeleteModal}/>
     <Row className="chat-header">
     <Col sm="12" className="chat-about">
-    <span><Button className="mobil-menu"><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
+    <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
           <span className="chat-with">Chat with channel name</span>
           {/* </Col> */}
           {/* change icon if channel is group or not */}
