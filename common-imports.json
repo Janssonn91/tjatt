@@ -10,7 +10,6 @@
   "  Sidebar": "components/Sidebar/Sidebar",
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
-  "  ChatHeader": "components/ChatHeader/ChatHeader",
   "  Signup": "components/Signup/Signup",
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",

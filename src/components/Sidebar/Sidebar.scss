@@ -1,9 +1,6 @@
 .sidebar {
   background-color:  #484951;
   height: 100vh;
-  @media (max-width: 768px) {
-    height: fit-content;
-  }
   
   .profile {
 
@@ -41,7 +38,6 @@
     }
   }
   .menu {
-    height:76vh;
     display: inline-block;
     .nav-link {
       color: lightgray;
