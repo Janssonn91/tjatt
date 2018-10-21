@@ -1,5 +1,5 @@
 < Fragment > {
-  
+
   this.props.histories.map((message) => 
     message.sender === this.stores.Login.user.nickname
       ? <li key={message.id} className="clearfix ">

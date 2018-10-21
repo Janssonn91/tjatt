@@ -47,7 +47,7 @@
     </Row>
   <hr/>
   <div className="chat-history">
-    <ul>
+    <ul ref="messageList" onScroll={ this.onScroll }>
       <Message {...this.sendToChatHistory}/>
       {/* <li className="clearfix ">
         <div className=" me">
@@ -97,7 +97,11 @@
       </ButtonDropdown>
       <FormGroup>
         <Label for="messageArea" className="d-none">Message</Label>
-        <Input type="textarea" name="text" id="messageArea" value={this.inputMessage} onChange={e=> this.messageChange(e)}/>
+        <Input type="textarea" name="text" id="messageArea" 
+        placeholder="Write your message here" 
+        value={this.inputMessage} 
+        onChange={e => this.inputMessage = e.currentTarget.value} 
+        onKeyPress={e => e.key === 'Enter' && this.sendMessage()}/>
       </FormGroup>
       <Button className="send" onClick={ e => this.sendMessage()}>Send</Button>
     </Form> 
