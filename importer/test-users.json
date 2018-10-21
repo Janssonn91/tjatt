@@ -5,7 +5,7 @@
     "password": "pikapika",
     "nickname": "Pika",
     "image": "pikachu.png",
-    "status": true,
+    "status": false,
     "date": 10000
   },
   {
