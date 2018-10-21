@@ -2,14 +2,17 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder">
-        <CardImg src="/images/placeholder.png" />
+        <CardImg src={this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
             <h5>{this.stores.Login.user.nickname || this.stores.Login.user.name}</h5>
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="div">
-            <DropdownItem tag="li"><label onClick={e => this.toggle()} htmlFor="files">Choose image</label><input className="d-none" id="files" type="file" /></DropdownItem>
+            <li>
+              <label className="btn btn-secondary" htmlFor="files">Välj bild</label>
+              <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
+            </li>
             <DropdownItem divider />
             <DropdownItem tag="li">Logga ut</DropdownItem>
           </DropdownMenu>
