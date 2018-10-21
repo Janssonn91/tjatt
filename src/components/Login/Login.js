@@ -47,6 +47,11 @@ export const initialUser = {
 
     User.findOne({ username, password }).then(user => {
       if (user) {
+        // update login status
+        user = { ...user, status: true };
+        const currentUser = new User(user);
+        currentUser.save();
+        // save current user data in the store
         this.user = user;
         this.userLoggedIn = true;
         this.loginError = false;

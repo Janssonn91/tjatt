@@ -12,6 +12,11 @@ import { initialUser } from '../Login/Login';
   }
 
   logout() {
+    // update login status in MongoDB
+    this.stores.Login.user = { ...this.stores.Login.user, status: false };
+    const currentUser = new User(this.stores.Login.user);
+    currentUser.save();
+    // update login status in the store
     this.stores.Login.userLoggedIn = false;
     this.stores.Login.user = initialUser;
     this.props.history.push('/');
