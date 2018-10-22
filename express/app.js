@@ -17,11 +17,11 @@ const User = require('./classes/User.class');
 
 const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
-new User(app);
-new Channel(app);
-new Message(app);
+// new User(app);
+// new Channel(app);
+// new Message(app);
 
-app.post('/newusers', (req, res) => {
+app.post('/users', (req, res) => {
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
@@ -36,6 +36,11 @@ app.post('/newusers', (req, res) => {
       }
     }).catch(err => console.log(err));
 });
+
+app.post('/login', (req, res) => {
+  User.find({ username: req.body.username })
+    .then(user => res.json(user))
+})
 
 
 const storage = multer.diskStorage({

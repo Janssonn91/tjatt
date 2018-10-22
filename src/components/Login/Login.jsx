@@ -1,6 +1,6 @@
 <Fragment>
   {this.userLoggedIn === true ?
-    <Tjatt/>
+    <Tjatt />
     :
     <div className="login-area">
       <Row>
@@ -21,7 +21,7 @@
             <Link to="signup">
               <Button className="btn-create-acc">Create account</Button>{' '}
             </Link>
-            <Button className="btn-login" onClick={e => this.login()}>Login</Button>{' '}
+            <Button className="btn-login">Login</Button>{' '}
           </div>
           {this.loginError &&
             < Alert color="danger" className="my-2">
