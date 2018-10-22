@@ -260,7 +260,7 @@ $text:#434651;
 
             &:after {
                 bottom: 100%;
-                left: 3vw;
+                // left: 4vw;
                 border: solid transparent;
                 content: " ";
                 height: 0;
@@ -288,7 +288,7 @@ $text:#434651;
 
             &:after {
                 border-bottom-color: lighten($green, 8%);
-                left: 88%;
+                right:10px;
             }
 
         }
