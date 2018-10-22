@@ -5,7 +5,9 @@
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/signup" component={Signup} />
-        {this.stores.Login.user && <PrivateRoute path={`/${this.stores.Login.user.username}`} component={Tjatt} />}
+        {this.stores.Login && this.stores.Login.user && this.stores.Login.user.username ?
+        <PrivateRoute path={`/${this.stores.Login.user.username}`} component={Tjatt} />
+      : null}
         <Route>
           {/* 404 */}
           <h1>This site can't be reached</h1>
