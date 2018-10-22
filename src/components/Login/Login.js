@@ -16,10 +16,7 @@ export const initialUser = {
 
   @observable loginError = false;
   @observable collapseOpen = false;
-  @observable hideMenu = true;
-  @observable hideChat = false;
-  @observable sendToChat = this.showMenu.bind(this);
-  @observable sendToMenu = this.showChat.bind(this);
+
 
   
 
@@ -62,13 +59,4 @@ export const initialUser = {
     });
   }
 
-  showMenu(){
-    this.hideMenu = false;
-    this.hideChat = true;
-  }
-
-  showChat(){
-    this.hideMenu = true;
-    this.hideChat = false;
-  }
 }
