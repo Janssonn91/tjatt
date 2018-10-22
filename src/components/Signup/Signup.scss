@@ -1,0 +1,31 @@
+.Signup {
+
+  background-image: url("./img/create-account.jpg");
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+
+  h1 {
+      text-align: center;
+      color: rgb(238, 238, 238);
+      font-family: 'Chakra Petch', sans-serif;
+  }
+
+  .msg-area {
+      padding: 10px;
+      color: rgb(207, 207, 207);
+      background: rgba(0, 0, 0, .6);
+      border-radius: 5px;
+      text-align: center;
+      font-family: 'Chakra Petch', sans-serif;
+  }
+
+  .btn-txt {
+    
+  }
+
+  .btn-to-login, .btn-create-acc, .btn-logout, .overlay {
+      background: rgba(0, 0, 0, .6);
+  }
+
+}

@@ -5,16 +5,8 @@
     "password": "pikapika",
     "nickname": "Pikachu",
     "image": "pikachu.png",
-    "status": true,
-    "group": [{
-      "admin": "Pikachu",
-      "groupname": "pokemon",
-      "member": ["Pikachu", "Eevee"]
-    }],
-    "contact": [{
-      "id": 1,
-      "favorite": true
-    }]
+    "status": false,
+    "date": 10000
   },
   {
     "id": 1,
