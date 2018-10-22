@@ -27,35 +27,35 @@ export default class Chat extends Component {
 
     @observable inputMessage = '';
     @observable chatHistories = [{
-            id: 1,
-            time: "10:20 AM, Today",
-            sender: "Pika",
-            status: "online",
-            channel: "group one",
-            text: "How are you?",
-            textType: "text",
-            star: false
-        },
-        {
-            id: 2,
-            time: "10:21 AM, Today",
-            sender: "other",
-            status: "offline",
-            channel: "group one",
-            text: "I am fine, thank you. And you?",
-            textType: "text",
-            star: false
-        },
-        {
-            id: 3,
-            time: "10:24 AM, Today",
-            sender: "another",
-            status: "online",
-            channel: "group one",
-            text: " Good!",
-            textType: "text",
-            star: false
-        }
+        id: 1,
+        time: "10:20 AM, Today",
+        sender: "Pika",
+        status: "online",
+        channel: "group one",
+        text: "How are you?",
+        textType: "text",
+        star: false
+    },
+    {
+        id: 2,
+        time: "10:21 AM, Today",
+        sender: "other",
+        status: "offline",
+        channel: "group one",
+        text: "I am fine, thank you. And you?",
+        textType: "text",
+        star: false
+    },
+    {
+        id: 3,
+        time: "10:24 AM, Today",
+        sender: "another",
+        status: "online",
+        channel: "group one",
+        text: " Good!",
+        textType: "text",
+        star: false
+    }
     ];
     @observable isOpen = false;
     @observable dropdownOpen = false;
@@ -83,10 +83,10 @@ export default class Chat extends Component {
 
 
     start() {
-        socket.on(
-            'chat message',
-            inputMessage => this.chatHistories.push(inputMessage)
-        );
+        // socket.on(
+        //     'chat message',
+        //     inputMessage => this.chatHistories.push(inputMessage)
+        // );
         //  this.createStoreConnectedProperties({
         //      chatHistories: []
         //  });
@@ -151,13 +151,13 @@ export default class Chat extends Component {
         let ampm = hour >= 12 ? 'PM' : 'AM';
         hour = hour % 12;
         hour = hour ? hour : 12;
-        min = min < 10 ? '0'+min : min;
+        min = min < 10 ? '0' + min : min;
         if (today.setHours(0, 0, 0, 0) === d.setHours(0, 0, 0, 0)) {
             result += hour + ":" + min + " " + ampm + " Today";
             return result;
         } else {
             result += d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate() +
-                " " + hour + ":" + min + " " + ampm ;
+                " " + hour + ":" + min + " " + ampm;
             return result;
         }
         // var d = new Date();

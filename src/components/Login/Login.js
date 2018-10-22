@@ -18,7 +18,7 @@ export const initialUser = {
   @observable collapseOpen = false;
 
 
-  
+
 
   start() {
     this.createStoreConnectedProperties({
@@ -26,8 +26,8 @@ export const initialUser = {
       userLoggedIn: false
     });
   }
-  
-  toggle(){
+
+  toggle() {
     this.collapseOpen = !this.collapseOpen;
   }
 

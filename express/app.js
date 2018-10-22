@@ -6,16 +6,32 @@ let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
 // Middleware to get body fro posts
-app.use(express.json({
-  extended: false
-}));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');
-const userModel = new User(app);
+
 
 const Channel = require('./classes/Channel.class');
 new Channel(app);
+
+app.post('/newusers', (req, res) => {
+  User.findOne({ username: req.body.username })
+    .then(user => {
+      if (!user) {
+        new User({
+          username: req.body.username,
+          password: req.body.password
+        }).save().then(user => {
+          res.json({ success: true, user: user })
+        })
+      } else {
+        res.json({ success: false })
+      }
+    }).catch(err => console.log(err));
+});
 
 
 const storage = multer.diskStorage({
@@ -41,28 +57,28 @@ const Message = require('./classes/Message.class');
 new Message(app);
 
 // Set up socket.io (do this before normal middleware and routing!)
-const io = require('socket.io')(
-  global.httpServer, 
-  {
-    path: global.production ? '/api/socket' : '/socket',
-    serveClient: false
-  }
-); 
+// const io = require('socket.io')(
+//   global.httpServer,
+//   {
+//     path: global.production ? '/api/socket' : '/socket',
+//     serveClient: false
+//   }
+// );
 
 // Use socket.io
-io.on('connection', function(socket){
+// io.on('connection', function (socket) {
 
-  console.log('user connected');
-  
-  socket.on('chat message', function(message){
-    console.log('message: ' + message);
-    io.emit('chat message', message);
-  });
-  //close web reload 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+//   console.log('user connected');
 
-});
+//   socket.on('chat message', function (message) {
+//     console.log('message: ' + message);
+//     io.emit('chat message', message);
+//   });
+//   //close web reload 
+//   socket.on('disconnect', function () {
+//     console.log('user disconnected');
+//   });
+// });
+
 
 
