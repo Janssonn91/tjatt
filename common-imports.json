@@ -14,6 +14,7 @@
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
   "  Message": "components/Message/Message",
+  "  Tjatt": "components/Tjatt/Tjatt",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

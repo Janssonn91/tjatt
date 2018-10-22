@@ -5,6 +5,7 @@
       <Switch>
         <Route exact path="/" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path={`/${this.stores.Login.user.username}`} component={Tjatt} />
       </Switch>
     </Container>
   </div>

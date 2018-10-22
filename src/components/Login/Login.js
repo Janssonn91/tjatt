@@ -12,10 +12,10 @@ const initialUser = {
   contact: []
 };
 
-@observer export default class Login extends Component {
+@withRouter @observer export default class Login extends Component {
 
   //Temporary for controlling logged in state
-  @observable userLoggedIn = false;
+  // @observable userLoggedIn = false;
   @observable loginError = false;
   @observable collapseOpen = false;
   @observable hideMenu = true;
@@ -27,7 +27,8 @@ const initialUser = {
 
   start() {
     this.createStoreConnectedProperties({
-      user: initialUser
+      user: initialUser,
+      userLoggedIn: false
     });
   }
   
@@ -54,6 +55,7 @@ const initialUser = {
         this.user = user;
         this.userLoggedIn = true;
         this.loginError = false;
+        this.props.history.push(`/${username}`);
       } else {
         this.loginError = true;
       }
