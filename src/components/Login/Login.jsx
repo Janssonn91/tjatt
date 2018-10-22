@@ -9,15 +9,13 @@
         </div>
           {/* <Navbar className="p-0" light expand="md">
             <NavbarBrand tag="div" className="mr-0 d-md-none">
-              <ChatHeader/>
             </NavbarBrand>
-            <NavbarToggler onClick={e => this.toggle()} />
             <Collapse isOpen={this.collapseOpen} navbar>
               <Nav className="ml-auto" vertical>
                 <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
               </Nav>
             </Collapse>
-          </Navbar> */}
+          </Navbar>
         </Col>
 
         <Col xs="12" md="9" xl="10" className={this.hideChat === true ? "hide-chat" : "pr-0 pl-0"}>

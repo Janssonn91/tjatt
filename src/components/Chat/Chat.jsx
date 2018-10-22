@@ -5,7 +5,7 @@
 
    <AddMemberModal {...this.sendToAddModal}/>
     <AddMemberModal {...this.sendToDeleteModal}/>
-    <Row className="chat-header">
+    <Row className="chat-header m-0">
     <Col sm="12" className="chat-about">
     <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
           <span className="chat-with">Chat with channel name</span>
