@@ -16,31 +16,26 @@
       {/* <Col sm="1" className="dialog-icon">
           <i className="fas fa-user"></i>
           </Col> */}
-      <span className="dialog-icon">
+      <span className="dialog-icon p-0">
 
         <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-          <DropdownToggle
-            tag="span"
-
-            data-toggle="dropdown"
-            aria-expanded={this.dropdownOpen}
-          ><i className="fas fa-users"></i>
+          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
+            <i className="fas fa-users"></i>
             {/*<i className="fas fa-user"></i> */}
           </DropdownToggle>
           <DropdownMenu className="channel-management">
-            <DropdownItem header>Group Name</DropdownItem>
+            <DropdownItem className="py-2 px-3" header>Group Name</DropdownItem>
+            <DropdownItem className="m-0" divider/>
             <div className="channel-manage">
-              <DropdownItem onClick={this.addMemberModalToggle.bind(this)}>
+              <DropdownItem className="py-2 px-3" onClick={this.addMemberModalToggle.bind(this)}>
                 Add members
-          </DropdownItem>
-              <DropdownItem onClick={this.deleteMemberModalToggle.bind(this)}>
+              </DropdownItem>
+              <DropdownItem className="py-2 px-3" onClick={this.deleteMemberModalToggle.bind(this)}>
                 Delete members
-          </DropdownItem>
+              </DropdownItem>
             </div>
-
-
-            <DropdownItem divider />
-            <DropdownItem className="leave-group">Leave group</DropdownItem>
+            <DropdownItem className="m-0" divider />
+            <DropdownItem className="leave-group py-2 px-3">Leave group</DropdownItem>
           </DropdownMenu>
         </Dropdown>
 

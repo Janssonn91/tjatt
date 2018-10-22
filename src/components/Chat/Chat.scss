@@ -9,28 +9,30 @@ $text:#434651;
     padding: 0;
     float: left;
     background: #F2F5F8;
-    // border-top-right-radius: 5px;
-    // border-bottom-right-radius: 5px;
     height: 100vh;
-
     .chat-header {
-
         @media (min-width: 768px) {
             .chat-about{
                 padding: 10px !important;
             }
         }
-    
         .dropdown-menu {
-            height: 77vh;
             position: absolute;
-            transform: translate3d(-127px, 50px, 0px) !important;
             border-radius: 5px;
-            width: 30vw;
-            // border-color: #484951;
             top: 10px !important;
-            left: -15vw !important;
+            left: -134px !important;
             margin-top: 0;
+            transform: translate3d(-5px, 17px, 0px) !important;
+            height: auto;
+            padding: 0;
+            .dropdown-header {
+                font-size: unset;
+            }
+            .channel-manage {
+                button:hover {
+                    background-color: $orange;
+                }
+            }
         }
         @media (min-width: 768px) {
             height: 80px;
@@ -43,16 +45,12 @@ $text:#434651;
         }
 
         @media (max-width: 767.5px) {
-        //    padding:2vh 2vw;
-        //    height:6vh;
             padding: 5px 10px 0 10px;
             .mobil-menu{
-                // padding:0px 0px 5px 0px;
                 display:inline-block;
                 border:none;
                 background-color: #F2F5F8 !important;
                 color:$gray;
-                // width:15vw;
             }
             .chat-with{
                 padding-left: 25px;
@@ -60,18 +58,12 @@ $text:#434651;
             }
 
             .dialog-icon{
-                // width:8vw;
-                padding:0px;
-                .dropdown{
-                    // margin-bottom:5px;
-                }
                 i{
                     font-size:16px;
                 }
             }
 
             .chat-message{
-                //padding:2vw;
                 .form-inline{
                     margin-left:15vw !important;
                 }
@@ -82,22 +74,6 @@ $text:#434651;
         }
         padding-left: 32px;
         margin-left:0px !important;
-        Form {
-            height: 0px;
-        }
-
-
-        .dropdown-menu {
-            height: 79vh;
-            position: absolute;
-            transform: translate3d(-100px, 40px, 0px) !important;
-            border-radius: 5px;
-            width: 200px;
-            // border-color: #484951;
-            // top: 10px !important;
-            left: -45px !important;
-            margin-top: 0;
-        }
 
         .bottom-item {
             height: 35px;
@@ -130,12 +106,14 @@ $text:#434651;
             border-color: white;
         }
 
-        .channel-manage{
-            height:66vh;
-        }
-
         .leave-group{
             color:$orange;
+            &:hover {
+                -webkit-box-shadow: unset;
+                box-shadow: unset;
+                background-color: #dc3545!important;
+                color: black;
+            }
         }
 
 
