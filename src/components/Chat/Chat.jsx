@@ -7,7 +7,7 @@
     <AddMemberModal {...this.sendToDeleteModal}/>
     <Row className="chat-header m-0">
     <Col sm="12" className="chat-about">
-    <span><Button className="mobil-menu"><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
+    <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
           <span className="chat-with">Chat with channel name</span>
           {/* </Col> */}
           {/* change icon if channel is group or not */}
@@ -45,13 +45,14 @@
           </span> 
           </Col>
     </Row>
-  {/* <hr/> */}
+  <hr/>
   <div className="chat-history">
-    <ul>
-      <li className="clearfix ">
+    <ul ref="messageList" onScroll={ this.onScroll }>
+      <Message {...this.sendToChatHistory}/>
+      {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
-          <span className="message-data-name " >Me</span>         
+          <span className="message-data-name " >{this.stores.Login.user.nickname}</span>         
         </div>
         <div className="message my-message">
           How are you?
@@ -76,7 +77,7 @@
         <div className="message other-message">
           Good!
         </div>
-      </li>
+      </li> */}
     </ul>
   </div>
   {/* End chat history */}
@@ -96,7 +97,11 @@
       </ButtonDropdown>
       <FormGroup>
         <Label for="messageArea" className="d-none">Message</Label>
-        <Input type="textarea" name="text" id="messageArea" value={this.inputMessage} onChange={e=> this.messageChange(e)}/>
+        <Input type="textarea" name="text" id="messageArea" 
+        placeholder="Write your message here" 
+        value={this.inputMessage} 
+        onChange={e => this.inputMessage = e.currentTarget.value} 
+        onKeyPress={e => e.key === 'Enter' && this.sendMessage()}/>
       </FormGroup>
       <Button className="send" onClick={ e => this.sendMessage()}>Send</Button>
     </Form> 

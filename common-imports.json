@@ -13,6 +13,7 @@
   "  Signup": "components/Signup/Signup",
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
+  "  Message": "components/Message/Message",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -31,6 +32,7 @@
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
+  "!socket": "utilities/socket",
 
   "/*5": "------------ React core + routing ------------",
   "React": "react",

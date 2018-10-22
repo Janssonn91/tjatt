@@ -36,5 +36,6 @@
     </Nav>
     <hr />
     <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '}
+    <Button className="btn-showChat mb-5" onClick={this.props.toMenu}>Show Chat</Button>{' '}
   </div>
 </Fragment>
