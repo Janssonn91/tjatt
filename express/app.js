@@ -5,18 +5,20 @@
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
+
 // Middleware to get body fro posts
 app.use(express.json({
   extended: false
 }));
+
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');
-const userModel = new User(app);
-
 const Channel = require('./classes/Channel.class');
+const Message = require('./classes/Message.class');
+new User(app);
 new Channel(app);
-
+new Message(app);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
