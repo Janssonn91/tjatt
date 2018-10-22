@@ -4,7 +4,12 @@ import './Signup.scss';
 
   usernameToSet;
   passWordToSet;
+  confirmPasswordToSet;
   @observable usernameExits = false;
+  @observable passwordMissing = false;
+  @observable passwordsNotMacthing = false;
+  @observable usernameMissing = false;
+  @observable passwordMissing = false;
 
   async start() {
 
@@ -18,6 +23,10 @@ import './Signup.scss';
     this.passWordToSet = e.currentTarget.value;
   }
 
+  confirmPasswordChange(e) {
+    this.confirmPasswordToSet = e.currentTarget.value;
+  }
+
   generateUuid() {
     const chars = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".split("");
 
@@ -29,20 +38,44 @@ import './Signup.scss';
     return chars.join("");
   }
 
-  async createUser(e) {
+  async checkUserInput() {
+    
+    if(!this.usernameToSet || !this.passWordToSet) {
+      if(!this.usernameToSet){
+        this.usernameMissing = true;
+        return;
+      }
+      else if(!this.passWordToSet){
+        this.passwordMissing = true;
+        return;
+      }
+    }
+    if(!this.passWordToSet){
+      this.passwordMissing = true;
+      return;
+    }
+    if(this.passWordToSet !== this.confirmPasswordToSet){
+      this.passwordsNotMacthing = true;
+      return;
+    }
+    
     let checkUser = await User.findOne({
-      username: this.usernameToSet,
+      username: this.usernameToSet
     });
     if (checkUser) {
       this.usernameExits = true;
       return;
     }
+    this.createUser();
+  }
 
+  async createUser() {
+    
     await User.create({
       id: this.generateUuid(),
       username: this.usernameToSet,
       password: this.passWordToSet,
-      nickname: '',
+      nickname: this.usernameToSet,
       image: '',
       status: true,
       date: new Date(),
@@ -51,6 +84,7 @@ import './Signup.scss';
     }).then((person) => {
       console.log(`${person.username} created`);
     });
+    document.getElementById("crete-account-form").reset();
   }
 
   /*login() {
