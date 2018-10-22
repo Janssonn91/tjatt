@@ -1,8 +1,7 @@
 .sidebar {
-  padding: 15px 0 0 0;
   background-color:  #484951;
   height: 100vh;
-
+  
   .profile {
 
     .user-holder {
@@ -10,6 +9,7 @@
 
       .dropdown {
         display: inline-block;
+        border-color: black;
         &:hover {
           cursor: pointer;
         }
@@ -38,6 +38,7 @@
     }
   }
   .menu {
+    // height:73vh;
     display: inline-block;
     .nav-link {
       color: lightgray;
@@ -82,4 +83,10 @@ hr {
   color: white;
   font-size: 20px;
   vertical-align: middle;
+}
+
+@media (min-width:768px){
+  .btn-showChat{
+    display:none;
+  }
 }

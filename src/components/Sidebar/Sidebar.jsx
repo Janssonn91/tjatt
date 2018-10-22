@@ -9,9 +9,11 @@
             {/* <i className="fas fa-angle-down"></i> */}
           </DropdownToggle >
           <DropdownMenu tag="ul">
-            <DropdownItem tag="li">Byta bild</DropdownItem>
+            <DropdownItem tag="li">
+              <input type="text"></input>
+            </DropdownItem>
             <DropdownItem divider />
-            <DropdownItem tag="li">Logga ut</DropdownItem>
+            <DropdownItem tag="li" onClick={e => this.logout()}>Logga ut</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>
@@ -33,6 +35,6 @@
       <i className="fas fa-plus"></i>
     </Nav>
     <hr />
-    <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '}
+    <Button className="btn-showChat mb-5" onClick={this.props.toMenu}>Show Chat</Button>{' '}
   </div>
 </Fragment>

@@ -10,7 +10,15 @@
     }
 
     .side-menu{
+        // margin-left:2vw;
+        height:100vh;
         padding-right:0px;
+        background-color: #F2F5F8;
+        .navbar-toggler {
+            margin-left: 15px;
+            margin-top:15px;
+            margin-bottom: 15px;
+        }
     }
 
     h1 {
@@ -38,3 +46,22 @@
     padding: 0;
 }
 
+.hide-menu{
+    width:25vw;
+    height:100vh;
+    padding:0px !important;
+}
+
+.hide-chat{
+    width:75vw;
+    height:100vh;
+    padding:0px !important;
+}
+@media (max-width: 768px) {
+    .hide-menu{
+        display:none;
+    }
+    .hide-chat{
+        display:none;
+    }
+  }

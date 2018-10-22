@@ -1,6 +1,6 @@
 <Fragment>
   {this.userLoggedIn === true ?
-    <div className="login-area">
+    <Container fluid={true} className="login-area">
       <Row>
         <Col sm="3" className="side-menu">
           <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
@@ -10,7 +10,7 @@
         </Col>
       </Row>
 
-    </div>
+    </Container>
     :
     <div className="login-area">
       <Row>

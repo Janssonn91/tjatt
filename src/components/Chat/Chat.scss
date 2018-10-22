@@ -5,7 +5,8 @@ $orange: #E38968;
 $text:#434651;
 
 .dialog {
-    padding-left:0px;
+    width:100%;
+    padding: 0;
     float: left;
     background: #F2F5F8;
     border-top-right-radius: 5px;
@@ -13,25 +14,93 @@ $text:#434651;
     height: 100vh;
 
     .chat-header {
-        padding-left:2vw;
-        padding-top:28px;
-        border-bottom: 2px solid white;
-        height: 93px;
-        margin-left:0px !important;
 
+        @media (min-width: 768px) {
+            .chat-about{
+                padding: 10px !important;
+            }
+
+            @media (max-width: 768px){
+            }
+        }
+    
+        .dropdown-menu {
+            height: 77vh;
+            position: absolute;
+            transform: translate3d(-127px, 50px, 0px) !important;
+            border-radius: 5px;
+            width: 30vw;
+            // border-color: #484951;
+            top: 10px !important;
+            left: -15vw !important;
+            margin-top: 0;
+        }
+        @media (min-width: 768px) {
+            padding-top:2vh;
+            height: 60px;
+            padding-left: 0px;
+          
+       
+            .mobil-menu{
+                display:none;
+            }
+        }
+
+        @media (max-width: 768px) {
+        //    padding:2vh 2vw;
+        //    height:6vh;
+            padding: 15px 15px 0 15px;
+            .mobil-menu{
+                padding:0px 0px 5px 0px;
+                display:inline-block;
+                border:none;
+                background-color: #F2F5F8 !important;
+                color:$gray;
+                // width:15vw;
+            }
+            .chat-with{
+                padding-left: 25px;
+                font-size:16px;
+            }
+
+            .dialog-icon{
+                // width:8vw;
+                padding:0px;
+                .dropdown{
+                    // margin-bottom:5px;
+                }
+                i{
+                    font-size:16px;
+                }
+            }
+
+            .chat-message{
+                //padding:2vw;
+                .form-inline{
+                    margin-left:15vw !important;
+                }
+               
+          
+            }
+            
+        }
+        padding-left: 32px;
+        margin-left:0px !important;
         Form {
             height: 0px;
         }
 
 
         .dropdown-menu {
-            height: 80vh;
+            height: 79vh;
             position: absolute;
-            transform: translate3d(-127px, 50px, 0px) !important;
-            border-radius: 0px;
+            transform: translate3d(-100px, 40px, 0px) !important;
+            border-radius: 5px;
             width: 200px;
-            border-color: #F2F5F8;
-
+            // border-color: #484951;
+            // top: 10px !important;
+            left: -45px !important;
+            margin-top: 0;
         }
 
         .bottom-item {
@@ -65,6 +134,14 @@ $text:#434651;
             border-color: white;
         }
 
+        .channel-manage{
+            height:66vh;
+        }
+
+        .leave-group{
+            color:$orange;
+        }
+
 
 
         .divider-1 {
@@ -75,26 +152,28 @@ $text:#434651;
             padding: 4px;
         }
 
-        .chat-about {
-            float: left;
-            padding-left: 0px;
-            margin-top: 6px;
-        }
 
         .chat-with {
             text-align: left;
             font-weight: bold;
-            font-size: 20px;
             color:$gray;
+            display: inline-block;
+            @media (min-width: 768px) {
+              width: 70%;
+            }
         }
 
         .dialog-icon {
-            vertical-align: middle;
-            float: right;
-            color: lighten($gray, 8%);
-            font-size: 20px;
-            //margin-top: 12px;
-            right: 0px;
+          // display: inline-block;
+          vertical-align: middle;
+          float: right;
+          color: lighten($gray, 8%);
+          font-size: 20px;
+          right: 0px;
+          // padding-right: 0;
+          svg {
+            vertical-align: middle !important;
+          }
         }
 
         .dialog-icon:hover {
@@ -105,12 +184,16 @@ $text:#434651;
     }
 
     .chat-history {
-        overflow: scroll;
-        padding: 30px 2vw;
+        padding: 0 2vw;
         // padding: 30px 30px 20px;
-        border-bottom: 2px solid white;
+        border-bottom: 1px solid rgba(128,128,128,0.1);
         overflow-y: scroll;
-        height: 77vh;
+        height: 75vh;
+
+        @media (max-width: 400px) {
+            height:75vh;
+            padding-left:7vw;
+        }
 
         ul {
             list-style: none;
@@ -168,7 +251,7 @@ $text:#434651;
 
             &:after {
                 bottom: 100%;
-                left: 3vw;
+                // left: 4vw;
                 border: solid transparent;
                 content: " ";
                 height: 0;
@@ -196,7 +279,7 @@ $text:#434651;
 
             &:after {
                 border-bottom-color: lighten($green, 8%);
-                left: 88%;
+                right:10px;
             }
 
         }
@@ -214,25 +297,37 @@ $text:#434651;
 
         .btn-dropup {
             height: 8vh;
-            width: 5vw;
-            margin-left:2vw;
+            width: 6vw;
+            margin-left:1vw;
+            @media (max-width: 400px) {
+                height: 6vh;
+                margin-left: 9vw;
+                width: 10vw;
+               
+                button{
+                    width:15vw;
+                }
+            }
         }
 
 
        
 
         .dropdown-toggle {
-            width: 5vw;
+            width: 6vw;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
             background-color: lighten($gray, 20%);
             border-color: lighten($gray, 20%);
             padding:0px;
 
             svg {
                 font-size: 2vw;
+                display: inline-block;
+                padding: 0px;
                 
-                padding:0px;
             }
         }
 
@@ -249,14 +344,7 @@ $text:#434651;
             display: none;
         }
 
-        .dropdown-menu {
-            width: 300px;
-            border-radius: 5px;
-
-            svg {
-                color: $gray;
-            }
-        }
+        
 
         .dropdown-item {
             color: $gray;
@@ -268,18 +356,32 @@ $text:#434651;
             border-radius: 0px;
             height: 8vh;
             width: 60vw;
+            @media (max-width: 400px) {
+                width:70vw;
+                margin-top:4.2vw;
+                height:6vh;
+            }
         }
 
         .send {
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
-            width: 7vw;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            width: 6vw;
             height: 8vh;
             background-color: lighten($gray, 40%);
             border-color: lighten($gray, 20%);
             color: $blue;
             font-size:1.5vw;
             padding:0px;
+            @media (max-width: 400px) {
+                width:10vw;
+                margin-top:4.2vw;
+                height:6vh;
+                margin-top:0px;
+                font-size:3vw;
+            }
         }
 
         .send:hover {
@@ -287,7 +389,22 @@ $text:#434651;
             border-color: $blue;
             color: white;
             font-size: 1.8vw;
+            @media (max-width: 400px) {
+                font-size:3.5vw;
+            }
         }
 
     }
+    
+        hr {
+            border-top: 1px solid rgba(0,0,0,.1);
+          }
+    
+
+    @media (max-width: 400px) {
+        hr {
+            padding:1vh;
+                  }
+    }
+    
 }

@@ -5,14 +5,21 @@ module.exports = class Channel extends ModelAndRoutes {
 
   static get schema() {
     return {
-      id: Number,
-      time: String,
-      users: [{
+      id: String,
+      channelname: String,
+      admin: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
       }],
-      content: String,
-      star: Boolean,
+      members: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }],
+      content: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Message'
+      }],
+      favorite: Boolean,
     }
   }
 }

@@ -11,6 +11,12 @@
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
+  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
+  "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
+  "  Message": "components/Message/Message",
+  "  Tjatt": "components/Tjatt/Tjatt",
+  "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
+
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
@@ -28,6 +34,7 @@
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
+  "!socket": "utilities/socket",
 
   "/*5": "------------ React core + routing ------------",
   "React": "react",
@@ -41,6 +48,7 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
+  "{Redirect}": "react-router-dom",
 
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
