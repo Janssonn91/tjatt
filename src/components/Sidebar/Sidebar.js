@@ -39,7 +39,7 @@ import './Sidebar.scss';
       .then(res => {
         let path = res.path;
         this.imgPath = path.split('public')[1];
-        console.log('Image uploaded to ' + store.Login.user.name)
+        console.log('Image uploaded to ' + store.Login.user.username)
       });
 
   }
