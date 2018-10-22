@@ -7,7 +7,9 @@
   <AddMemberModal {...this.sendToDeleteModal} />
   <Row className="chat-header m-0">
     <Col sm="12" className="chat-about p-0">
-      <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
+      <Button className="mobil-menu" onClick={this.props.toChat}>
+        <i class="fas fa-ellipsis-v"></i>
+      </Button>
       <span className="chat-with">Chat with channel name</span>
       {/* </Col> */}
       {/* change icon if channel is group or not */}
@@ -45,7 +47,7 @@
       </span>
     </Col>
   </Row>
-  <hr />
+  <hr className="mt-0" />
   <div className="chat-history">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message {...this.sendToChatHistory} />

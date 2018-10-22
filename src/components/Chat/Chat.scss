@@ -9,8 +9,8 @@ $text:#434651;
     padding: 0;
     float: left;
     background: #F2F5F8;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    // border-top-right-radius: 5px;
+    // border-bottom-right-radius: 5px;
     height: 100vh;
 
     .chat-header {
@@ -18,9 +18,6 @@ $text:#434651;
         @media (min-width: 768px) {
             .chat-about{
                 padding: 10px !important;
-            }
-
-            @media (max-width: 768px){
             }
         }
     
@@ -36,8 +33,7 @@ $text:#434651;
             margin-top: 0;
         }
         @media (min-width: 768px) {
-            padding-top:2vh;
-            height: 60px;
+            height: 80px;
             padding-left: 0px;
           
        
@@ -46,12 +42,12 @@ $text:#434651;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 767.5px) {
         //    padding:2vh 2vw;
         //    height:6vh;
-            padding: 15px 15px 0 15px;
+            padding: 5px 10px 0 10px;
             .mobil-menu{
-                padding:0px 0px 5px 0px;
+                // padding:0px 0px 5px 0px;
                 display:inline-block;
                 border:none;
                 background-color: #F2F5F8 !important;
@@ -399,12 +395,4 @@ $text:#434651;
         hr {
             border-top: 1px solid rgba(0,0,0,.1);
           }
-    
-
-    @media (max-width: 400px) {
-        hr {
-            padding:1vh;
-                  }
-    }
-    
 }

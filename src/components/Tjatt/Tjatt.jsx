@@ -1,5 +1,5 @@
 <Container fluid={true} className="login-area">
-  <Row className="mr-0">
+  <Row className="m-0">
     <Col xs="12" md="3" xl="2" className={this.hideMenu === true ? "hide-menu" : "pr-0 pl-0"}>
       <div className="side-menu">
         <Sidebar toMenu={this.sendToMenu} logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
