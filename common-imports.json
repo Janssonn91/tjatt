@@ -14,8 +14,6 @@
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
   "  Message": "components/Message/Message",
-  "  Tjatt": "components/Tjatt/Tjatt",
-  "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -48,7 +46,6 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
-  "{Redirect}": "react-router-dom",
 
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",

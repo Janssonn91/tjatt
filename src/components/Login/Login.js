@@ -1,6 +1,6 @@
 import './Login.scss';
 
-export const initialUser = {
+const initialUser = {
   id: '',
   username: '',
   password: '',
@@ -12,8 +12,10 @@ export const initialUser = {
   contact: []
 };
 
-@withRouter @observer export default class Login extends Component {
+@observer export default class Login extends Component {
 
+  //Temporary for controlling logged in state
+  @observable userLoggedIn = false;
   @observable loginError = false;
   @observable collapseOpen = false;
   @observable hideMenu = true;
@@ -25,8 +27,7 @@ export const initialUser = {
 
   start() {
     this.createStoreConnectedProperties({
-      user: initialUser,
-      userLoggedIn: false
+      user: initialUser
     });
   }
   
@@ -45,17 +46,14 @@ export const initialUser = {
   login() {
     const { username, password } = this.user;
 
-    User.findOne({ username, password }).then(user => {
+    User.findOne({
+      username: username,
+      password: password
+    }).then(user => {
       if (user) {
-        // update login status
-        user = { ...user, status: true };
-        const currentUser = new User(user);
-        currentUser.save();
-        // save current user data in the store
         this.user = user;
         this.userLoggedIn = true;
         this.loginError = false;
-        this.props.history.push(`/${username}`);
       } else {
         this.loginError = true;
       }
