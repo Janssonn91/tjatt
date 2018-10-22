@@ -5,6 +5,7 @@
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
+
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -15,7 +16,10 @@ const User = require('./classes/User.class');
 
 
 const Channel = require('./classes/Channel.class');
+const Message = require('./classes/Message.class');
+new User(app);
 new Channel(app);
+new Message(app);
 
 app.post('/newusers', (req, res) => {
   User.findOne({ username: req.body.username })
@@ -52,9 +56,17 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 })
 
+// // Set up socket.io (do this before normal middleware and routing!)
+// const io = require('socket.io')(
+//   global.httpServer,
+//   {
+//     path: global.production ? '/api/socket' : '/socket',
+//     serveClient: false
+//   }
+// );
 
-const Message = require('./classes/Message.class');
-new Message(app);
+// // Use socket.io
+// io.on('connection', function(socket){
 
 // Set up socket.io (do this before normal middleware and routing!)
 // const io = require('socket.io')(

@@ -79,16 +79,6 @@ $text:#434651;
             height: 35px;
         }
 
-        .show-edit {
-            position: absolute;
-            top: 10px;
-            left: 5px;
-            display: none;
-            color: lighten($gray, 20%);
-            font-size: 12px;
-            width: 5px;
-            height: 0px;
-        }
 
         .contacts {
             height: 410px;
@@ -131,23 +121,15 @@ $text:#434651;
             text-align: left;
             font-weight: bold;
             color:$gray;
-            display: inline-block;
-            @media (min-width: 768px) {
-              width: 70%;
-            }
         }
 
         .dialog-icon {
-          // display: inline-block;
-          vertical-align: middle;
-          float: right;
-          color: lighten($gray, 8%);
-          font-size: 20px;
-          right: 0px;
-          // padding-right: 0;
-          svg {
-            vertical-align: middle !important;
-          }
+            vertical-align: middle;
+            float: right;
+            color: lighten($gray, 8%);
+            font-size: 20px;
+            //margin-top: 12px;
+            right: 0px;
         }
 
         .dialog-icon:hover {
@@ -160,7 +142,7 @@ $text:#434651;
     .chat-history {
         padding: 0 2vw;
         // padding: 30px 30px 20px;
-        border-bottom: 1px solid rgba(128,128,128,0.1);
+        border-bottom: 2px solid white;
         overflow-y: scroll;
         height: 75vh;
 
@@ -265,9 +247,7 @@ $text:#434651;
         padding-top: 10px;
         height: 10vh;
 
-        .d-none {
-            display: none;
-        }
+        
 
         .btn-dropup {
             height: 8vh;

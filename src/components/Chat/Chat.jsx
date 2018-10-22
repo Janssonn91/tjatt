@@ -1,3 +1,6 @@
+
+
+
 <Fragment>
   {/* <Row className="chat-header mr-0 d-none w-100 d-md-inline-block">
     <ChatHeader/>
@@ -76,12 +79,13 @@
         </div>
       </li> */}
     </ul>
-  </div>
-  {/* End chat history */}
+    
+    </div>
+{/* End chat history */}
 
-  <div className="chat-message clearfix">
-    <Form inline>
-      <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
+    <div className="chat-message clearfix">
+       <Form inline>
+       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>

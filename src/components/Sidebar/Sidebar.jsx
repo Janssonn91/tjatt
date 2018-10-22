@@ -5,7 +5,7 @@
         <CardImg src={this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.name}</h5>
+            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
             <li>
