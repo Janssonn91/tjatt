@@ -15,6 +15,7 @@ import './Server.scss';
   }
   checkForEnter(e){
     if(e.key ==='Enter'){
+    this.submit()
     }
   } 
 
