@@ -15,13 +15,13 @@
                 <Sidebar logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
               </Nav>
             </Collapse>
-          </Navbar>
+          </Navbar>*/}
         </Col>
 
         <Col xs="12" md="9" xl="10" className={this.hideChat === true ? "hide-chat" : "pr-0 pl-0"}>
         <div className="dialog">
         <Chat toChat={this.sendToChat}/>
-        </div>
+  </div> 
           
         </Col>
      
