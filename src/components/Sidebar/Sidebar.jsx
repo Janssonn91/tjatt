@@ -1,7 +1,7 @@
 <Fragment>
   <div className="sidebar">
     <div className="profile">
-      <div className="user-holder">
+      <div className="user-holder px-3 py-3">
         <CardImg src={this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
@@ -15,7 +15,7 @@
             <DropdownItem divider />
             <DropdownItem tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
-        </UncontrolledDropdown>
+        </Dropdown>
         <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}
       </div>
     </div>
