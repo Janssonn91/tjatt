@@ -18,8 +18,18 @@ import './Signup.scss';
     this.passWordToSet = e.currentTarget.value;
   }
 
+  generateUuid() {
+    const chars = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".split("");
+
+    for (let i = 0, len = chars.length; i < len; i++) {
+      if (chars[i] === "x") {
+        chars[i] = Math.floor(Math.random() * 16).toString(16);
+      }
+    }
+    return chars.join("");
+  }
+
   async createUser(e) {
-    console.log(this.usernameToSet);
     let checkUser = await User.findOne({
       username: this.usernameToSet,
     });
@@ -27,10 +37,19 @@ import './Signup.scss';
       this.usernameExits = true;
       return;
     }
-    console.log(checkUser);
-    let person = await User.create({
+
+    await User.create({
+      id: this.generateUuid(),
       username: this.usernameToSet,
       password: this.passWordToSet,
+      nickname: '',
+      image: '',
+      status: true,
+      date: new Date(),
+      group: [],
+      contact: []
+    }).then((person) => {
+      console.log(`${person.username} created`);
     });
   }
 
