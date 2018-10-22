@@ -16,12 +16,13 @@ $text:#434651;
     .chat-header {
 
         @media (min-width: 768px) {
+            .chat-about{
+                padding: 10px !important;
+            }
 
-        .chat-about{
-            padding-top:11px;
-            padding-right:45px;
+            @media (max-width: 768px){
+            }
         }
-    }
     
         .dropdown-menu {
             height: 77vh;
@@ -45,35 +46,28 @@ $text:#434651;
             }
         }
 
-        @media (max-width: 400px) {
-           padding:2vh 2vw;
-           height:6vh;
-         
-           .chat-about{
-               height:6vh;
-           }
-
-
+        @media (max-width: 768px) {
+        //    padding:2vh 2vw;
+        //    height:6vh;
+            padding: 15px 15px 0 15px;
             .mobil-menu{
                 padding:0px 0px 5px 0px;
                 display:inline-block;
                 border:none;
                 background-color: #F2F5F8 !important;
                 color:$gray;
-                width:15vw;
+                // width:15vw;
             }
             .chat-with{
-                width:69vw;
-                text-align: center !important;
-                align-self: center;
+                padding-left: 25px;
                 font-size:16px;
             }
 
             .dialog-icon{
-                width:8vw;
+                // width:8vw;
                 padding:0px;
                 .dropdown{
-                    margin-bottom:5px;
+                    // margin-bottom:5px;
                 }
                 i{
                     font-size:16px;
@@ -91,10 +85,7 @@ $text:#434651;
             
         }
         padding-left: 32px;
-        // border-bottom: 1px solid white;
-        height: 45px;
         margin-left:0px !important;
-
         Form {
             height: 0px;
         }

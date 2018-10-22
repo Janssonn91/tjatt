@@ -3,52 +3,52 @@
     <ChatHeader/>
   </Row> */}
 
-   <AddMemberModal {...this.sendToAddModal}/>
-    <AddMemberModal {...this.sendToDeleteModal}/>
-    <Row className="chat-header m-0">
-    <Col sm="12" className="chat-about">
-    <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
-          <span className="chat-with">Chat with channel name</span>
-          {/* </Col> */}
-          {/* change icon if channel is group or not */}
-          {/* <Col sm="1" className="dialog-icon">
+  <AddMemberModal {...this.sendToAddModal} />
+  <AddMemberModal {...this.sendToDeleteModal} />
+  <Row className="chat-header m-0">
+    <Col sm="12" className="chat-about p-0">
+      <span><Button className="mobil-menu" onClick={this.props.toChat}><i className="fas fa-caret-left"></i>&nbsp;Menu</Button></span>
+      <span className="chat-with">Chat with channel name</span>
+      {/* </Col> */}
+      {/* change icon if channel is group or not */}
+      {/* <Col sm="1" className="dialog-icon">
           <i className="fas fa-user"></i>
           </Col> */}
-          <span sm="1" className="dialog-icon">
-         
-          <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
+      <span className="dialog-icon">
+
+        <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
           <DropdownToggle
             tag="span"
-            
+
             data-toggle="dropdown"
             aria-expanded={this.dropdownOpen}
           ><i className="fas fa-users"></i>
             {/*<i className="fas fa-user"></i> */}
-        </DropdownToggle>
-        <DropdownMenu className="channel-management">
-          <DropdownItem header>Group Name</DropdownItem>
-          <div className="channel-manage">
-          <DropdownItem onClick={this.addMemberModalToggle.bind(this)}>
-            Add members
+          </DropdownToggle>
+          <DropdownMenu className="channel-management">
+            <DropdownItem header>Group Name</DropdownItem>
+            <div className="channel-manage">
+              <DropdownItem onClick={this.addMemberModalToggle.bind(this)}>
+                Add members
           </DropdownItem>
-          <DropdownItem onClick={this.deleteMemberModalToggle.bind(this)}>
-            Delete members
+              <DropdownItem onClick={this.deleteMemberModalToggle.bind(this)}>
+                Delete members
           </DropdownItem>
-          </div>
-          
-         
-          <DropdownItem divider />
-          <DropdownItem className="leave-group">Leave group</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-          
-          </span> 
-          </Col>
-    </Row>
-  <hr/>
+            </div>
+
+
+            <DropdownItem divider />
+            <DropdownItem className="leave-group">Leave group</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+      </span>
+    </Col>
+  </Row>
+  <hr />
   <div className="chat-history">
-    <ul ref="messageList" onScroll={ this.onScroll }>
-      <Message {...this.sendToChatHistory}/>
+    <ul ref="messageList" onScroll={this.onScroll}>
+      <Message {...this.sendToChatHistory} />
       {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
@@ -86,7 +86,7 @@
     <Form inline>
       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle caret>
-        <i className="fas fa-plus"></i>
+          <i className="fas fa-plus"></i>
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem><i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
@@ -97,13 +97,13 @@
       </ButtonDropdown>
       <FormGroup>
         <Label for="messageArea" className="d-none">Message</Label>
-        <Input type="textarea" name="text" id="messageArea" 
-        placeholder="Write your message here" 
-        value={this.inputMessage} 
-        onChange={e => this.inputMessage = e.currentTarget.value} 
-        onKeyPress={e => e.key === 'Enter' && this.sendMessage()}/>
+        <Input type="textarea" name="text" id="messageArea"
+          placeholder="Write your message here"
+          value={this.inputMessage}
+          onChange={e => this.inputMessage = e.currentTarget.value}
+          onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
       </FormGroup>
-      <Button className="send" onClick={ e => this.sendMessage()}>Send</Button>
-    </Form> 
+      <Button className="send" onClick={e => this.sendMessage()}>Send</Button>
+    </Form>
   </div>
 </Fragment>
