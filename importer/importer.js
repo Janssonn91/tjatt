@@ -27,7 +27,7 @@ const saveUser = async () => {
   for (const person of usersJson) {
     const user = new userModel(person);
     await user.save().then(item => {
-      console.log(`${item.name} is saved`);
+      console.log(`${item.username} is saved`);
     });
   }
 }

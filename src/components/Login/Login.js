@@ -17,9 +17,6 @@ export const initialUser = {
   @observable loginError = false;
   @observable collapseOpen = false;
 
-
-  
-
   start() {
     this.createStoreConnectedProperties({
       user: initialUser,
@@ -27,14 +24,12 @@ export const initialUser = {
     });
   }
 
-  usernameChange(e){
-      this.usernameToSet = e.currentTarget.value;
-      console.log(this.usernameToSet);
+  usernameChange(e) {
+    this.user.username = e.currentTarget.value;
   }
 
-  passwordChange(e){
-      this.passWordToSet = e.currentTarget.value;
-      console.log(this.passWordToSet);
+  passwordChange(e) {
+    this.user.password = e.currentTarget.value;
   }
 
   login() {

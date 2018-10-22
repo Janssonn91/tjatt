@@ -1,28 +1,20 @@
 [
   {
-    "id": 0,
-    "name": "Pikachu",
+    "id": "000",
+    "username": "Pikachu",
     "password": "pikapika",
-    "nickname": "Pikachu",
+    "nickname": "Pika",
     "image": "pikachu.png",
     "status": false,
     "date": 10000
   },
   {
-    "id": 1,
-    "name": "Eevee",
+    "id": "001",
+    "username": "Eevee",
     "password": "eeee",
-    "nickname": "Eevee",
+    "nickname": "Eev",
     "image": "eevee.jpg",
     "status": false,
-    "group": [{
-      "admin": "Pikachu",
-      "groupname": "pokemon",
-      "member": ["Pikachu", "Eevee"]
-    }],
-    "contact": [{
-      "id": 0,
-      "favorite": true
-    }]
+    "date": 20000
   }
 ]

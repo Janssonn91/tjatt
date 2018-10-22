@@ -7,32 +7,30 @@ import './Signup.scss';
   @observable usernameExits = false;
 
   async start() {
-    
+
   }
 
-  usernameChange(e){
+  usernameChange(e) {
     this.usernameToSet = e.currentTarget.value;
-    //onsole.log(this.usernameToSet);
   }
 
-  passwordChange(e){
+  passwordChange(e) {
     this.passWordToSet = e.currentTarget.value;
-    //console.log(this.passWordToSet);
   }
 
-  async createUser(e){
+  async createUser(e) {
     console.log(this.usernameToSet);
     let checkUser = await User.findOne({
-      name : this.usernameToSet,
+      username: this.usernameToSet,
     });
-    if(checkUser) {
+    if (checkUser) {
       this.usernameExits = true;
       return;
     }
     console.log(checkUser);
     let person = await User.create({
-        name : this.usernameToSet,
-        password : this.passWordToSet,
+      username: this.usernameToSet,
+      password: this.passWordToSet,
     });
   }
 
