@@ -35,3 +35,34 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ path: req.file.path });
 
 })
+
+
+const Message = require('./classes/Message.class');
+new Message(app);
+
+// Set up socket.io (do this before normal middleware and routing!)
+const io = require('socket.io')(
+  global.httpServer, 
+  {
+    path: global.production ? '/api/socket' : '/socket',
+    serveClient: false
+  }
+); 
+
+// Use socket.io
+io.on('connection', function(socket){
+
+  console.log('user connected');
+  
+  socket.on('chat message', function(message){
+    console.log('message: ' + message);
+    io.emit('chat message', message);
+  });
+  //close web reload 
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+});
+
+
