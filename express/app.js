@@ -38,33 +38,29 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 })
 
+// // Set up socket.io (do this before normal middleware and routing!)
+// const io = require('socket.io')(
+//   global.httpServer,
+//   {
+//     path: global.production ? '/api/socket' : '/socket',
+//     serveClient: false
+//   }
+// );
 
-const Message = require('./classes/Message.class');
-new Message(app);
+// // Use socket.io
+// io.on('connection', function(socket){
 
-// Set up socket.io (do this before normal middleware and routing!)
-const io = require('socket.io')(
-  global.httpServer, 
-  {
-    path: global.production ? '/api/socket' : '/socket',
-    serveClient: false
-  }
-); 
+//   console.log('user connected');
 
-// Use socket.io
-io.on('connection', function(socket){
+//   socket.on('chat message', function(message){
+//     console.log('message: ' + message);
+//     io.emit('chat message', message);
+//   });
+//   //close web reload
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected');
+//   });
 
-  console.log('user connected');
-  
-  socket.on('chat message', function(message){
-    console.log('message: ' + message);
-    io.emit('chat message', message);
-  });
-  //close web reload 
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-
-});
+// });
 
 
