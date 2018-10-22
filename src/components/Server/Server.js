@@ -2,6 +2,8 @@ import './Server.scss';
 @observer export default class Server extends Component{
 
 @observable urlToSet = '';
+@observable projectToSet = '';
+
 
 
   start(){
@@ -13,6 +15,12 @@ import './Server.scss';
   editText(e){
     this.urlToSet = e.currentTarget.value;
   }
+
+  editProjectName(e){
+    this.projectToSet = e.currentTarget.value;
+
+  }
+
   checkForEnter(e){
     if(e.key ==='Enter'){
     this.submit()
@@ -21,14 +29,14 @@ import './Server.scss';
 
   submit = () => {
     console.log(this.urlToSet)
-    fetch('/api/test', {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify({url: this.urlToSet}), // data can be `string` or {object}!
-      headers:{
-        'Content-Type': 'application/json'
-      }
+    fetch('/api/test', { 
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
+      method: 'POST' // or 'PUT'
     })
   }
+
+
 
 
   

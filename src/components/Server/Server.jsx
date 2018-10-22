@@ -2,6 +2,14 @@
   <div>
     <InputGroup className="url-input">
       {/* <Labe{}l for="url">Url</Label> */}
+      <Input 
+          id="project-name"
+          type="text"
+          placeholder="project-name"
+          value={this.projectToSet}
+          onChange={e => this.editProjectName(e)}
+          onKeyPress={e => this.checkForEnter(e)}
+          />
         <Input 
           id="url-text"
           type="text"
