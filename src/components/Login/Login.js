@@ -14,7 +14,7 @@ const initialUser = {
 @observer export default class Login extends Component {
 
   //Temporary for controlling logged in state
-  @observable userLoggedIn = true;
+  @observable userLoggedIn = false;
   @observable loginError = false;
 
   start() {
