@@ -8,7 +8,7 @@
   <Row className="chat-header m-0">
     <Col sm="12" className="chat-about p-0">
       <Button className="mobil-menu" onClick={this.props.toChat}>
-        <i class="fas fa-ellipsis-v"></i>
+        <i className="fas fa-ellipsis-v"></i>
       </Button>
       <span className="chat-with">Chat with channel name</span>
       {/* </Col> */}
