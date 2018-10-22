@@ -13,7 +13,7 @@
               <input type="text"></input>
             </DropdownItem>
             <DropdownItem divider />
-            <DropdownItem tag="li">Logga ut</DropdownItem>
+            <DropdownItem tag="li" onClick={e => this.logout()}>Logga ut</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>

@@ -1,24 +1,25 @@
 import './Sidebar.scss';
+import { initialUser } from '../Login/Login';
 
 @withRouter @observer export default class Sidebar extends Component {
-  async start() {}
+  start() { }
 
   @observable collapseOpen = false;
-  @observable userLoggedIn;
-  @observable test;
- 
-  toggle(){
+
+  toggle() {
     this.collapseOpen = !this.collapseOpen;
     console.log("körs");
   }
 
-  logout(){
-    console.log(this.props);
-    this.props.logout(this.changeLogStatus.bind(this));
-  }
-
-  changeLogStatus(){
-    return false;
+  logout() {
+    // update login status in MongoDB
+    this.stores.Login.user = { ...this.stores.Login.user, status: false };
+    const currentUser = new User(this.stores.Login.user);
+    currentUser.save();
+    // update login status in the store
+    this.stores.Login.userLoggedIn = false;
+    this.stores.Login.user = initialUser;
+    this.props.history.push('/');
   }
 
 }
