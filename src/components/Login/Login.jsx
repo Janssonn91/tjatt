@@ -30,7 +30,7 @@
         </Col>
       </Row>
       <Row className="pb-5">
-        <Col className="msg-area mt-3" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
+        <Col className="msg-area mt-5" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
           <h4 className="left-msg">Join for free and experience the power of tj@!</h4>
         </Col>
         <Col className="msg-area mt-5" sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>

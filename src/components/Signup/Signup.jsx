@@ -23,23 +23,23 @@
       <div className="text-center mb-3">
         <Button className="overlay" onClick= {e => this.checkUserInput(e)}>Sign up</Button>
         {this.usernameExits &&
-          < Alert color="danger" className="my-2">
+          < Alert color="dark" className="my-2">
             Username already in use, please choose another
           </Alert>}
           {this.passwordMissing &&
-          < Alert color="danger" className="my-2">
+          < Alert color="dark" className="my-2">
             Please enter a password
           </Alert>}
           {this.passwordsNotMacthing &&
-          < Alert color="danger" className="my-2">
+          < Alert color="dark" className="my-2">
             Passwords not matching, please check
           </Alert>}
           {this.usernameMissing &&
-          < Alert color="danger" className="my-2">
+          < Alert color="dark" className="my-2">
             Please choose a username
           </Alert>}
           {this.passwordMissing &&
-          < Alert color="danger" className="my-2">
+          < Alert color="dark" className="my-2">
             Please set a password
           </Alert>}
       </div>
