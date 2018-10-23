@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAC;EACJ,SAAS,EAAE,6BAA6B;EACxC,MAAM,EAAE,IAAI;CACb;;AAED,UAAU,CAAV,SAAU;EACR,IAAI;IAAG,SAAS,EAAE,YAAY;;EAC9B,EAAE;IAAG,SAAS,EAAE,cAAc",
+    "sources": [
+        "MainNav.scss"
+    ],
+    "names": [],
+    "file": "MainNav.css"
+}

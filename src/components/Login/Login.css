@@ -1,0 +1,28 @@
+.login-area .side-menu {
+  padding-right: 0px;
+}
+
+.login-area h1 {
+  text-align: center;
+}
+
+.login-area .login-area {
+  text-align: center;
+  background-color: white;
+}
+
+.login-area .msg-area {
+  background-color: #16249e;
+  padding: 10px;
+  color: #cfcfcf;
+  border-radius: 5px;
+}
+
+.login-area .btn-login, .login-area .btn-create-acc, .login-area .btn-logout {
+  background-color: #16249e;
+}
+
+.container-fluid {
+  padding: 0;
+}
+/*# sourceMappingURL=Login.css.map */

@@ -1,0 +1,88 @@
+.sidebar {
+  padding: 15px 0 0 0;
+  background-color: #484951;
+  height: 100vh;
+}
+
+.sidebar .profile .user-holder {
+  padding: 10px;
+}
+
+.sidebar .profile .user-holder .dropdown {
+  display: inline-block;
+}
+
+.sidebar .profile .user-holder .dropdown:hover {
+  cursor: pointer;
+}
+
+.sidebar .profile .user-holder .dropdown .dropdown-menu {
+  padding: 0;
+}
+
+.sidebar .profile .user-holder .fa-angle-down {
+  padding-left: 4px;
+  color: white;
+  vertical-align: middle;
+  font-size: 21px;
+}
+
+.sidebar .profile .user-holder h5 {
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0;
+  padding-left: 5px;
+}
+
+.sidebar .profile .user-holder img {
+  width: 40px;
+}
+
+.sidebar .menu {
+  display: inline-block;
+}
+
+.sidebar .menu .nav-link {
+  color: lightgray;
+  font-weight: bold;
+  display: inline-block;
+  text-align: left;
+  width: 85%;
+}
+
+.sidebar .menu .nav-link.nav-link:first-child {
+  width: 100% !important;
+}
+
+.sidebar .menu .nav-link .nav-item {
+  text-align: left;
+  display: inline-block;
+}
+
+.sidebar .menu .fa-star {
+  color: gold;
+  padding-right: 5px;
+}
+
+.sidebar .menu .fa-plus {
+  color: white;
+  padding-top: 16px;
+  padding-right: 15px;
+  font-size: small;
+}
+
+.sidebar .menu .fas, .sidebar .menu .far {
+  display: inline-block;
+}
+
+hr {
+  border-color: #808080;
+}
+
+.dropdown-toggle::after {
+  color: white;
+  font-size: 20px;
+  vertical-align: middle;
+}
+/*# sourceMappingURL=Sidebar.css.map */
