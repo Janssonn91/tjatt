@@ -19,15 +19,20 @@ export const initialUser = {
   @observable loggedIn = false;
   @observable username = '';
   @observable password = '';
+  @observable user = {};
 
 
 
   start() {
-    this.createStoreConnectedProperties({
-      user: initialUser,
-      //userLoggedIn: false
-    });
-    console.log(this.userLoggedIn)
+    // this.createStoreConnectedProperties({
+    //   user: initialUser,
+    //   //userLoggedIn: false
+    // });
+    // console.log(this.userLoggedIn)
+  }
+
+  componentWillMount() {
+    this.checkIfLoggedIn();
   }
 
   toggle() {
@@ -42,21 +47,33 @@ export const initialUser = {
     this.password = e.currentTarget.value;
   }
 
+  checkIfLoggedIn() {
+    fetch('/api/login', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.loggedIn) {
+          this.user = res.user;
+        }
+      })
+  }
+
   onSubmit = (e) => {
     console.log('dasdasd')
     e.preventDefault();
     fetch('/api/login', {
       credentials: 'include',
       method: 'POST',
-      body: JSON.stringify({ username: this.username, password: this.password}),
+      body: JSON.stringify({ username: this.username, password: this.password }),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => res.json())
       .then(res => {
         if (res.success) {
           this.user = res.user;
-          this.userLoggedIn = true;
-          console.log(this.userLoggedIn + 'logged in as: ' + this.user.username)
+          // this.userLoggedIn = true;
+          // console.log(this.userLoggedIn + 'logged in as: ' + this.user.username)
         }
       })
   }

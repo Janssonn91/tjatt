@@ -9,6 +9,7 @@ import { initialUser } from '../Login/Login';
   @observable test;
   @observable file;
   @observable imgPath = '/images/placeholder.png'
+  @observable useDBPath = !!this.props.user.image || false;
 
   async toggle() {
     await sleep(1);
@@ -17,12 +18,13 @@ import { initialUser } from '../Login/Login';
   }
 
   logout() {
-    // update login status in MongoDB
-    this.stores.Login.user = { ...this.stores.Login.user, status: false };
-    // update login status in the store
-    this.stores.Login.userLoggedIn = false;
-    this.stores.Login.user = initialUser;
-    this.props.history.push('/');
+    // // update login status in MongoDB
+    // this.stores.Login.user = { ...this.stores.Login.user, status: false };
+    // // update login status in the store
+    // this.stores.Login.userLoggedIn = false;
+    // this.stores.Login.user = initialUser;
+    // this.props.history.push('/');
+    fetch('/api/logout').then(() => this.props.history.go('/'))
   }
 
   changeLogStatus() {
@@ -34,7 +36,7 @@ import { initialUser } from '../Login/Login';
     console.log(store.Login)
     console.log(event.target.files[0])
     let formData = new FormData();
-    formData.append('id', store.Login.user.id);
+    formData.append('id', this.props.user._id);
     formData.append('file', event.target.files[0]);
     fetch('/api/upload', {
       method: 'POST',
@@ -43,8 +45,8 @@ import { initialUser } from '../Login/Login';
       .then(res => res.json())
       .then(res => {
         let path = res.path;
-        this.imgPath = path.split('public')[1];
-        console.log('Image uploaded to ' + store.Login.user.username)
+        this.imgPath = path;
+        this.useDBPath = false;
       });
 
   }

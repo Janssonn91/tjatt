@@ -28,7 +28,7 @@
           </DropdownToggle>
           <DropdownMenu className="channel-management">
             <DropdownItem className="py-2 px-3" header>Group Name</DropdownItem>
-            <DropdownItem className="m-0" divider/>
+            <DropdownItem className="m-0" divider />
             <div className="channel-manage">
               <DropdownItem className="py-2 px-3" onClick={this.addMemberModalToggle.bind(this)}>
                 Add members
@@ -48,7 +48,7 @@
   <hr className="mt-0" />
   <div className="chat-history">
     <ul ref="messageList" onScroll={this.onScroll}>
-      <Message {...this.sendToChatHistory} />
+      <Message user={this.props.user}{...this.sendToChatHistory} />
       {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
@@ -79,13 +79,13 @@
         </div>
       </li> */}
     </ul>
-    
-    </div>
-{/* End chat history */}
 
-    <div className="chat-message clearfix">
-       <Form inline>
-       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
+  </div>
+  {/* End chat history */}
+
+  <div className="chat-message clearfix">
+    <Form inline>
+      <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>

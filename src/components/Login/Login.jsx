@@ -1,6 +1,6 @@
 <Fragment>
-  {this.userLoggedIn === true ?
-    <Tjatt />
+  {Object.keys(this.user).length > 0 ?
+    <Tjatt user={this.user} />
     :
     <div className="login-area">
       <Row>
@@ -10,6 +10,7 @@
       </Row>
       <Row className="mb-5">
         <Col className="overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
+          {this.user && this.user.username && <h1>{this.user.username}</h1>}
           <Form onSubmit={this.onSubmit}>
             <FormGroup className="mt-4">
               <Input type="text" id="username" placeholder="Username" value={this.usernameToSet} onChange={e => this.usernameChange(e)} />

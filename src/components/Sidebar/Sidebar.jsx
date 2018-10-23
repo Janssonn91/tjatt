@@ -2,10 +2,10 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder px-3 py-3">
-        <CardImg src={this.imgPath} />
+        <CardImg src={this.useDBPath ? this.props.user.image : this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.username}</h5>
+            <h5>{this.props.user.nickname}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
             <li>
