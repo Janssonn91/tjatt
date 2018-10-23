@@ -54,6 +54,9 @@
       color: white;
       padding-top: 16px;
       font-size: small;
+      &:hover {
+        cursor: pointer;
+      }
     }
     
     .fas, .far {

@@ -2,8 +2,9 @@ import './Sidebar.scss';
 import { initialUser } from '../Login/Login';
 
 @withRouter @observer export default class Sidebar extends Component {
-  async start() { }
+  async start() {}
 
+  @observable addUserModalOpen = false;
   @observable collapseOpen = false;
   @observable userLoggedIn;
   @observable test;
@@ -14,6 +15,10 @@ import { initialUser } from '../Login/Login';
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
     console.log("körs");
+  }
+
+  openModalAddNewUser(){
+    this.addUserModalOpen = true;
   }
 
   logout() {

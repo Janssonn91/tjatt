@@ -21,15 +21,14 @@
     </div>
     <hr />
     <Nav vertical className="menu">
-      <NavLink to="#" className="p-0"><i className="fas fa-star pl-4 pr-2"></i>
+      <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
         <NavItem className="pl-1">Starred</NavItem>
       </NavLink>
 
       <NavLink to="#">
         <NavItem>My Contacts</NavItem>
       </NavLink>
-      <i className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
-
+      <i onClick={e => this.openModalAddNewUser()} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       <NavLink to="#">
         <NavItem>My Groups</NavItem>
       </NavLink>
@@ -37,4 +36,5 @@
     </Nav>
     <hr />
   </div>
+  <AddUserModal isOpen={this.addUserModalOpen} />
 </Fragment >

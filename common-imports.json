@@ -16,6 +16,7 @@
   "  Message": "components/Message/Message",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
+  "  AddUserModal": "components/AddUser/AddUserModal",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
