@@ -17,6 +17,8 @@ export const initialUser = {
   @observable loginError = false;
   @observable collapseOpen = false;
   @observable loggedIn = false;
+  @observable username = '';
+  @observable password = '';
 
 
 
@@ -25,6 +27,7 @@ export const initialUser = {
       user: initialUser,
       userLoggedIn: false
     });
+    console.log(this.userLoggedIn)
   }
 
   toggle() {
@@ -32,11 +35,30 @@ export const initialUser = {
   }
 
   usernameChange(e) {
-    this.user.username = e.currentTarget.value;
+    this.username = e.currentTarget.value;
   }
 
   passwordChange(e) {
-    this.user.password = e.currentTarget.value;
+    this.password = e.currentTarget.value;
+  }
+
+  onSubmit = (e) => {
+    console.log('dasdasd')
+    e.preventDefault();
+    fetch('/api/login', {
+      credentials: 'include',
+      method: 'POST',
+      body: JSON.stringify({ username: this.username, password: this.password }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          this.user = res.user;
+          this.userLoggedIn = true;
+          console.log(this.userLoggedIn + 'logged in as: ' + this.user.username)
+        }
+      })
   }
 
   // login() {

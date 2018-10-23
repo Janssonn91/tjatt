@@ -38,6 +38,10 @@ app.post('/users', (req, res) => {
     }).catch(err => console.log(err));
 });
 
+app.get('/users', (req, res) => {
+  User.find().then(user => res.json(user))
+})
+
 app.post('/login', (req, res) => {
   User.find({ username: req.body.username, password: req.body.password })
     .then(user => {
