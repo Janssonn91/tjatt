@@ -7,18 +7,23 @@
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
-
+global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const session = require('express-session')({
+  secret: 'big fancy secret',
+  resave: true,
+  saveUninitialized: true
+});
+
+app.use(session);
+
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');
-
-
-
 const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
@@ -77,7 +82,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ path: req.file.path });
 
 });
-
 
 
 // // Set up socket.io (do this before normal middleware and routing!)

@@ -25,7 +25,7 @@ export const initialUser = {
   start() {
     this.createStoreConnectedProperties({
       user: initialUser,
-      userLoggedIn: false
+      //userLoggedIn: false
     });
     console.log(this.userLoggedIn)
   }
@@ -48,7 +48,7 @@ export const initialUser = {
     fetch('/api/login', {
       credentials: 'include',
       method: 'POST',
-      body: JSON.stringify({ username: this.username, password: this.password }),
+      body: JSON.stringify({ username: this.username, password: this.password}),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => res.json())

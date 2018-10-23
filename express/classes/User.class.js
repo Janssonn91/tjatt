@@ -23,6 +23,17 @@ const UserSchema = new Schema({
   }],
 });
 
+UserSchema.pre('save', function(next){
+  // hash the password  - but only if it has been modified (or is new)
+  if (this.isModified('password')){
+    this.password = hasha(
+      this.password + global.passwordSalt, 
+      {encoding: 'base64', algorithm: 'sha512'}
+    );
+  }
+  next();
+});
+
 
 
 module.exports = mongoose.model('User', UserSchema);
