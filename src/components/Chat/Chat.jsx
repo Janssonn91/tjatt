@@ -28,7 +28,7 @@
           </DropdownToggle>
           <DropdownMenu className="channel-management">
             <DropdownItem className="py-2 px-3" header>Group Name</DropdownItem>
-            <DropdownItem className="m-0" divider/>
+            <DropdownItem className="m-0" divider />
             <div className="channel-manage">
               <DropdownItem className="py-2 px-3" onClick={this.addMemberModalToggle.bind(this)}>
                 Add members
@@ -46,10 +46,11 @@
     </Col>
   </Row>
   <hr className="mt-0" />
-  <div className="chat-history">
-    <ul ref="messageList" onScroll={this.onScroll}>
-      <Message {...this.sendToChatHistory} />
-      {/* <li className="clearfix ">
+  <Row>
+    <div className="chat-history col-lg-6 border-right">
+      <ul ref="messageList" onScroll={this.onScroll}>
+        <Message {...this.sendToChatHistory} />
+        {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
           <span className="message-data-name " >{this.stores.Login.user.nickname}</span>         
@@ -78,14 +79,35 @@
           Good!
         </div>
       </li> */}
-    </ul>
-    
-    </div>
-{/* End chat history */}
+      </ul>
 
-    <div className="chat-message clearfix">
-       <Form inline>
-       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
+    </div>
+    <div className="col-lg-6">
+      <InputGroup>
+        <InputGroupAddon addonType="prepend"></InputGroupAddon>
+        <Input className="mr-1" placeholder="URL" />
+        <Input className="mr-1" placeholder="Project Name" />
+        <Button color="warning rounded-0">Clone</Button>{' '}
+      </InputGroup>
+      <Row className="justify-content-end pt-1">
+        <ButtonDropdown direction="down" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-Clone">
+          <DropdownToggle className="rounded-0 bg-success" caret>
+            <i className="">Select Branch</i>
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;EXAMPLE Git repository</DropdownItem>
+          </DropdownMenu>
+        </ButtonDropdown>
+        <Button color="danger rounded-0 ml-1">Close</Button>{' '}
+      </Row>
+    </div>
+  </Row>
+
+  {/* End chat history */}
+
+  <div className="chat-message clearfix">
+    <Form inline>
+      <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>
