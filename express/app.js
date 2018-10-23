@@ -41,10 +41,10 @@ app.post('/users', (req, res) => {
 app.post('/login', (req, res) => {
   User.find({ username: req.body.username, password: req.body.password })
     .then(user => {
-      if (!user) {
+      if (!user.length) {
         res.json({ success: false })
       } else {
-        res.json({ success: true, user: user })
+        res.json({ success: true, user: user[0] })
       }
     })
 })
