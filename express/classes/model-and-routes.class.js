@@ -69,7 +69,7 @@ module.exports = class ModelAndRoutes {
       // get params
       params = params || qs.parse(req.params[0]);
 
-      console.log("PPPP", params)
+      // console.log("PPPP", params)
 
       // Get populate instructions
       // and then delete them from the Mongo query params

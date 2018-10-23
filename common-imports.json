@@ -5,6 +5,7 @@
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
   "  Channel": "classes/channel.class.js",
+  "  Repo": "classes/repo.class.js",
   "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
   "  Sidebar": "components/Sidebar/Sidebar",
@@ -23,6 +24,7 @@
   "  ElseIf": "utilities/ElseIf/ElseIf",
   "  Else": "utilities/Else/Else",
   "  Loop": "utilities/Loop/Loop",
+
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
 

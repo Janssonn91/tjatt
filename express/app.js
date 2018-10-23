@@ -20,3 +20,6 @@ new User(app);
 
 const Channel = require('./classes/Channel.class');
 new Channel(app);
+
+const Repo = require('./classes/Repo.class');
+new Repo(app);

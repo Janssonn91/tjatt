@@ -3,6 +3,7 @@ import './Server.scss';
 
 @observable urlToSet = '';
 @observable projectToSet = '';
+@observable repos = [];
 
 
 
@@ -12,6 +13,14 @@ import './Server.scss';
     });
   }
 
+  addRepo(){
+    console.log('adding to mongo');
+    Repo.create({
+      name: "aaaaaaaaaaa",
+      url: "Striarwgrwgng",
+      port: "Strargawrgwing",
+    })
+  }
   editText(e){
     this.urlToSet = e.currentTarget.value;
   }
@@ -29,7 +38,7 @@ import './Server.scss';
 
   submit = () => {
     console.log(this.urlToSet)
-    fetch('/api/test', { 
+    fetch('/api/addRepo', { 
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
       method: 'POST' // or 'PUT'
