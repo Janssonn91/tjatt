@@ -1,6 +1,6 @@
 import './Login.scss';
 
-const initialUser = {
+export const initialUser = {
   id: '',
   username: '',
   password: '',
@@ -12,27 +12,16 @@ const initialUser = {
   contact: []
 };
 
-@observer export default class Login extends Component {
+@withRouter @observer export default class Login extends Component {
 
-  //Temporary for controlling logged in state
-  @observable userLoggedIn = false;
   @observable loginError = false;
   @observable collapseOpen = false;
-  @observable hideMenu = true;
-  @observable hideChat = false;
-  @observable sendToChat = this.showMenu.bind(this);
-  @observable sendToMenu = this.showChat.bind(this);
-
-  
 
   start() {
     this.createStoreConnectedProperties({
-      user: initialUser
+      user: initialUser,
+      userLoggedIn: false
     });
-  }
-  
-  toggle(){
-    this.collapseOpen = !this.collapseOpen;
   }
 
   usernameChange(e) {
@@ -46,27 +35,21 @@ const initialUser = {
   login() {
     const { username, password } = this.user;
 
-    User.findOne({
-      username: username,
-      password: password
-    }).then(user => {
+    User.findOne({ username, password }).then(user => {
       if (user) {
+        // update login status
+        user = { ...user, status: true };
+        const currentUser = new User(user);
+        currentUser.save();
+        // save current user data in the store
         this.user = user;
         this.userLoggedIn = true;
         this.loginError = false;
+        this.props.history.push(`/${username}`);
       } else {
         this.loginError = true;
       }
     });
   }
 
-  showMenu(){
-    this.hideMenu = false;
-    this.hideChat = true;
-  }
-
-  showChat(){
-    this.hideMenu = true;
-    this.hideChat = false;
-  }
 }
