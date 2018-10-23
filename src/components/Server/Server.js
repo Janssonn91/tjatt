@@ -13,11 +13,11 @@ import './Server.scss';
     });
   }
 
-  addRepo(){
+  addRepo(name, url){
     console.log('adding to mongo');
     Repo.create({
-      name: "aaaaaaaaaaa",
-      url: "Striarwgrwgng",
+      name: name,
+      url: url,
       port: "Strargawrgwing",
     })
   }
@@ -43,6 +43,7 @@ import './Server.scss';
       body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
       method: 'POST' // or 'PUT'
     })
+    this.addRepo(this.projectToSet, this.urlToSet)
   }
 
 
