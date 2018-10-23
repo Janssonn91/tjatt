@@ -77,8 +77,11 @@ import './Signup.scss';
         } else {
           this.usernameExits = true;
         }
+      }).catch((err) => {
+        console.log('error', err);
       });
-  }
+  };
+
 
   /**
    * SUCCESS: {success: true, user: THEUSER}

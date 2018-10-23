@@ -2,9 +2,12 @@
   The express app is a global called app
   It can respond on all routes under /api
 */
+
+
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
+
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
@@ -15,11 +18,13 @@ app.use(express.json());
 const User = require('./classes/User.class');
 
 
+
 const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
 // new Channel(app);
 // new Message(app);
+
 
 app.post('/users', (req, res) => {
   User.findOne({ username: req.body.username })
@@ -40,7 +45,8 @@ app.post('/users', (req, res) => {
 
 app.get('/users', (req, res) => {
   User.find().then(user => res.json(user))
-})
+});
+
 
 app.post('/login', (req, res) => {
   User.find({ username: req.body.username, password: req.body.password })
@@ -51,7 +57,7 @@ app.post('/login', (req, res) => {
         res.json({ success: true, user: user[0] })
       }
     })
-})
+});
 
 
 const storage = multer.diskStorage({
@@ -70,7 +76,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
   res.json({ path: req.file.path });
 
-})
+});
+
+
 
 // // Set up socket.io (do this before normal middleware and routing!)
 // const io = require('socket.io')(
