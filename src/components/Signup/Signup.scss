@@ -1,6 +1,6 @@
 .Signup {
 
-  background-image: url("./img/create-account.jpg");
+  background-image: url("./img/pic-of-the-day.jpg");
   background-size: cover;
   height: 100vh;
   position: relative;
@@ -20,12 +20,8 @@
       font-family: 'Chakra Petch', sans-serif;
   }
 
-  .btn-txt {
-    
-  }
-
   .btn-to-login, .btn-create-acc, .btn-logout, .overlay {
-      background: rgba(0, 0, 0, .6);
+      background: rgba(0, 0, 0, .7);
   }
 
 }
