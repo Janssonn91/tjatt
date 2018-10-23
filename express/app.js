@@ -27,7 +27,8 @@ app.post('/users', (req, res) => {
       if (!user) {
         new User({
           username: req.body.username,
-          password: req.body.password
+          password: req.body.password,
+          nickname: req.body.username
         }).save().then(user => {
           res.json({ success: true, user: user })
         })
@@ -38,8 +39,14 @@ app.post('/users', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  User.find({ username: req.body.username })
-    .then(user => res.json(user))
+  User.find({ username: req.body.username, password: req.body.password })
+    .then(user => {
+      if (!user) {
+        res.json({ success: false })
+      } else {
+        res.json({ success: true, user: user })
+      }
+    })
 })
 
 
