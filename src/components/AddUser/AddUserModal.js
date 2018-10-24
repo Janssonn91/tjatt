@@ -22,17 +22,14 @@ import './AddUserModal.scss';
   }
 
   addContact(userId) {
-    console.log(this.me);
+    // add contact in my contact
     this.me.contact.push(userId);
-    // const newContact =
-    console.log(toJS(this.me.contact))
-    this.me = { ...this.me, contact: toJS(this.me.contact) };
     const currentUser = new User(this.me);
     currentUser.save();
+    this.updateFilteredUsers(userId);
 
-    // friend.contact.push(user._id);
-    // const newfriend = new User(friend);
-    // newfriend.save();
+    // TODO: add my id to friend contact
+
   }
 }
 
