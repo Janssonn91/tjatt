@@ -2,32 +2,44 @@
   padding: 15px 0 0 0;
   background-color:  #484951;
   height: 100vh;
-  
+
   .profile {
-    .dropdown {
-      display: inline-block;
-      border-color: black;
-      &:hover {
-        cursor: pointer;
+
+    .user-holder {
+      padding: 10px;
+
+      .dropdown {
+        display: inline-block;
+        &:hover {
+          cursor: pointer;
+        }
+        .dropdown-menu {
+          padding: 0;
+        }
       }
-    }
+      .fa-angle-down {
+        padding-left: 4px;
+        color: white;
+        vertical-align: middle;
+        font-size: 21px;
+      }
 
-    h5 {
-      color: white;
-      font-weight: bold;
-      display: inline-block;
-      margin: 0;
-      padding-left: 5px;
-    }
+      h5 {
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+        margin: 0;
+        padding-left: 5px;
+      }
 
-    img {
-      width: 40px;
+      img {
+        width: 40px;
+      }
     }
   }
   .menu {
     display: inline-block;
     .nav-link {
-      padding: 10px 0 10px 20px !important;
       color: lightgray;
       font-weight: bold;
       display: inline-block;
@@ -36,23 +48,23 @@
 
       &.nav-link:first-child {
         width: 100% !important;
-        padding-left: 0;
       }
 
       .nav-item {
         text-align: left;
         display: inline-block;
-        
+      }
     }
-  }
   
     .fa-star {
       color: gold;
+      padding-right: 5px; 
     }
     
     .fa-plus {
       color: white;
       padding-top: 16px;
+      padding-right: 15px;
       font-size: small;
     }
     
@@ -60,7 +72,6 @@
       display: inline-block;
     }
   }
-  
 }
 
 hr {
@@ -71,10 +82,4 @@ hr {
   color: white;
   font-size: 20px;
   vertical-align: middle;
-}
-
-@media (min-width:768px){
-  .btn-showChat{
-    display:none;
-  }
 }
