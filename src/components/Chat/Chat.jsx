@@ -8,9 +8,9 @@
 
   <AddMemberModal {...this.sendToAddModal} />
   <AddMemberModal {...this.sendToDeleteModal} />
-  <Row className="chat-header m-0">
-    <Col sm="12" className="chat-about p-0">
-      <Button className="mobil-menu" onClick={this.props.toChat}>
+  <Row className="chat-header m-0 p-0">
+    <Col sm="12" className="chat-about p-3">
+      <Button className="mobil-menu d-inline-block d-md-none" onClick={this.props.toChat}>
         <i className="fas fa-ellipsis-v"></i>
       </Button>
       <span className="chat-with">Chat with channel name</span>
@@ -22,7 +22,7 @@
       <span className="dialog-icon p-0">
 
         <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
+          <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
             <i className="fas fa-users"></i>
             {/*<i className="fas fa-user"></i> */}
           </DropdownToggle>
@@ -46,7 +46,7 @@
     </Col>
   </Row>
   <hr className="mt-0" />
-  <div className="chat-history">
+  <div className="chat-history px-3">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message user={this.props.user}{...this.sendToChatHistory} />
       {/* <li className="clearfix ">
@@ -80,13 +80,10 @@
       </li> */}
     </ul>
 
-  </div>
-  {/* End chat history */}
-
-  <div className="chat-message clearfix">
-    <Form inline>
-      <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
-        <DropdownToggle caret>
+    <div className="chat-message clearfix">
+       <Form inline>
+       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
+        <DropdownToggle className="p-0" caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>
         <DropdownMenu>
@@ -96,15 +93,15 @@
           <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
-      <FormGroup>
+      <FormGroup className="m-0">
         <Label for="messageArea" className="d-none">Message</Label>
-        <Input type="textarea" name="text" id="messageArea"
+        <Input className="p-2" type="textarea" name="text" id="messageArea"
           placeholder="Write your message here"
           value={this.inputMessage}
           onChange={e => this.inputMessage = e.currentTarget.value}
           onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
       </FormGroup>
-      <Button className="send" onClick={e => this.sendMessage()}>Send</Button>
+      <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
     </Form>
   </div>
 </Fragment>

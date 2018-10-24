@@ -11,16 +11,11 @@ $text:#434651;
     background: #F2F5F8;
     height: 100vh;
     .chat-header {
-        @media (min-width: 768px) {
-            .chat-about{
-                padding: 10px !important;
-            }
-        }
         .dropdown-menu {
             position: absolute;
             border-radius: 5px;
             top: 10px !important;
-            left: -134px !important;
+            left: -123px !important;
             margin-top: 0;
             transform: translate3d(-5px, 17px, 0px) !important;
             height: auto;
@@ -35,20 +30,13 @@ $text:#434651;
             }
         }
         @media (min-width: 768px) {
-            height: 80px;
-            padding-left: 0px;
-          
-       
-            .mobil-menu{
-                display:none;
-            }
-        }
-
+            height: 72px;
+        }       
         @media (max-width: 767.5px) {
             padding: 5px 10px 0 10px;
+            height: 66px;
             .mobil-menu{
-                display:inline-block;
-                border:none;
+                border: none;
                 background-color: #F2F5F8 !important;
                 color:$gray;
             }
@@ -56,46 +44,28 @@ $text:#434651;
                 padding-left: 25px;
                 font-size:16px;
             }
-
             .dialog-icon{
                 i{
                     font-size:16px;
                 }
             }
-
-            .chat-message{
-                .form-inline{
-                    margin-left:15vw !important;
-                }
-               
-          
-            }
-            
         }
-        padding-left: 32px;
-        margin-left:0px !important;
-
         .bottom-item {
             height: 35px;
         }
-
-
         .contacts {
             height: 410px;
         }
-
         #groupName:hover+.show-edit {
             display: block !important;
             z-index: 999;
         }
-
         #groupName {
             width: 190px;
             padding-left: 20px;
             font-size: 12px;
             border-color: white;
         }
-
         .leave-group{
             color:$orange;
             &:hover {
@@ -105,95 +75,66 @@ $text:#434651;
                 color: black;
             }
         }
-
-
-
-        .divider-1 {
-            margin-top: 0px;
-        }
-
         .editable-gn {
             padding: 4px;
         }
-
-
         .chat-with {
+            vertical-align: middle;
             text-align: left;
             font-weight: bold;
             color:$gray;
         }
-
         .dialog-icon {
-            vertical-align: middle;
             float: right;
             color: lighten($gray, 8%);
             font-size: 20px;
-            //margin-top: 12px;
             right: 0px;
+            &:hover {
+                color: lighten($gray, 20%);
+            }
         }
-
-        .dialog-icon:hover {
-            color: lighten($gray, 20%);
-        }
-
-
     }
-
     .chat-history {
-        padding: 0 2vw;
-        // padding: 30px 30px 20px;
-        border-bottom: 2px solid white;
-        overflow-y: scroll;
-        height: 75vh;
-
-        @media (max-width: 400px) {
-            height:75vh;
-            padding-left:7vw;
+        border-bottom: 1px solid #dee1e4;
+        overflow-y: auto;
+        height: 76vh;
+        @media (max-width: 767.5px) {
+            overflow-y: hidden;
         }
-
         ul {
             list-style: none;
             margin: 0px;
             padding: 0px;
         }
-
         .message-data {
             margin-bottom: 15px;
             text-align: left;
             margin-right: 5px;
-
         }
-
         .online {
             color: $green;
         }
-
         .offline {
             color: $gray;
         }
-
         .circle {
             font-size: 8px;
             vertical-align: middle;
         }
-
         .me {
             text-align: right !important;
             margin-bottom: 15px;
             margin-right: 5px;
         }
-
         .message-data-time {
             color: lighten($gray, 8%);
             padding-left: 6px;
         }
-
         .circle-icon {
             font-size: 8px;
             color: $green;
             vertical-align: middle;
         }
-
         .message {
             text-align:left;
             color: $text;
@@ -204,10 +145,9 @@ $text:#434651;
             margin-bottom: 30px;
             max-width: 90%;
             position: relative;
-
+            min-width: 40px;
             &:after {
                 bottom: 100%;
-                // left: 4vw;
                 border: solid transparent;
                 content: " ";
                 height: 0;
@@ -219,54 +159,34 @@ $text:#434651;
                 margin-left: -10px;
             }
         }
-
         .other-message {
             background: white;
             color: $text;
-
             &:after {
                 border-bottom-color: white;
             }
         }
-
         .my-message {
             background: lighten($green, 8%);
             float: right;
-
             &:after {
                 border-bottom-color: lighten($green, 8%);
                 right:10px;
             }
-
         }
     }
-
     .chat-message {
         width: 100%;
-        padding-bottom: 30px;
         padding-top: 10px;
-        height: 10vh;
-
-        
-
+        display: flex;
+        justify-content: center;
         .btn-dropup {
             height: 8vh;
-            width: 6vw;
-            margin-left:1vw;
-            @media (max-width: 400px) {
-                height: 6vh;
-                margin-left: 9vw;
-                width: 10vw;
-               
-                button{
-                    width:15vw;
-                }
+            width: 4vw;
+            @media (max-width: 767.5px) {
+                width: 6vw;
             }
         }
-
-
-       
-
         .dropdown-toggle {
             width: 6vw;
             border-top-left-radius: 5px;
@@ -275,8 +195,7 @@ $text:#434651;
             border-bottom-right-radius: 0px;
             background-color: lighten($gray, 20%);
             border-color: lighten($gray, 20%);
-            padding:0px;
-
+            // padding:0px;
             svg {
                 font-size: 2vw;
                 display: inline-block;
@@ -284,22 +203,16 @@ $text:#434651;
                 
             }
         }
-
         .dropdown-toggle:hover {
             background-color: lighten($green, 16%);
             border-color: $green;
-
             svg {
                 font-size: 3vw;
             }
         }
-
         .dropdown-toggle::after {
             display: none;
         }
-
-        
-
         .dropdown-item {
             color: $gray;
             height: 35px;
@@ -309,11 +222,18 @@ $text:#434651;
         #messageArea {
             border-radius: 0px;
             height: 8vh;
-            width: 60vw;
-            @media (max-width: 400px) {
-                width:70vw;
-                margin-top:4.2vw;
-                height:6vh;
+            width: 64vw;
+            overflow: hidden;
+            resize: none;
+            line-height: 2;
+            &:focus {
+                border-color: $green;
+            }
+            @media (max-width: 767.5px) {
+                width: 80vw;
+            }
+            @media (min-width: 1200px) {
+                width: 72vw;
             }
         }
 
@@ -328,29 +248,23 @@ $text:#434651;
             border-color: lighten($gray, 20%);
             color: $blue;
             font-size:1.5vw;
-            padding:0px;
-            @media (max-width: 400px) {
+            @media (max-width: 767.5px) {
                 width:10vw;
-                margin-top:4.2vw;
-                height:6vh;
-                margin-top:0px;
                 font-size:3vw;
             }
         }
 
         .send:hover {
-            background-color: lighten($blue, 8%);
-            border-color: $blue;
-            color: white;
-            font-size: 1.8vw;
-            @media (max-width: 400px) {
-                font-size:3.5vw;
+            @media (min-width: 768px) {
+                background-color: lighten($blue, 8%);
+                border-color: $blue;
+                color: white;
+                font-size: 1.8vw;
             }
         }
 
     }
-    
-        hr {
-            border-top: 1px solid rgba(0,0,0,.1);
-          }
+    hr {
+        border-top: 1px solid rgba(0,0,0,.1);
+    }
 }
