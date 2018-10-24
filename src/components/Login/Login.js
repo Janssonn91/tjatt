@@ -56,6 +56,8 @@ export const initialUser = {
         if (res.loggedIn) {
           this.user = res.user;
         }
+      }).catch(err => {
+        console.log("err", err)
       })
   }
 
@@ -75,6 +77,8 @@ export const initialUser = {
           // this.userLoggedIn = true;
           // console.log(this.userLoggedIn + 'logged in as: ' + this.user.username)
         }
+      }).catch(err => {
+        console.log("err", err)
       })
   }
 
