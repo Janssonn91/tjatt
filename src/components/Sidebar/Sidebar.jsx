@@ -28,7 +28,7 @@
       <NavLink to="#">
         <NavItem>My Contacts</NavItem>
       </NavLink>
-      <i onClick={e => this.openModalAddNewUser()} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
+      <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       <NavLink to="#">
         <NavItem>My Groups</NavItem>
       </NavLink>
@@ -36,5 +36,5 @@
     </Nav>
     <hr />
   </div>
-  <AddUserModal isOpen={this.addUserModalOpen} />
+  <AddUserModal {...this.addUserModalOpen} />
 </Fragment >

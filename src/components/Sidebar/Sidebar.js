@@ -4,21 +4,23 @@ import { initialUser } from '../Login/Login';
 @withRouter @observer export default class Sidebar extends Component {
   async start() {}
 
-  @observable addUserModalOpen = false;
+  @observable addUserModalOpen = {
+    isOpen: false,
+    keyboard: true,
+    toggle: this.openModalAddNewUser.bind(this)
+  }
   @observable collapseOpen = false;
   @observable userLoggedIn;
-  @observable test;
   @observable file;
   @observable imgPath = '/images/placeholder.png'
 
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
-    console.log("körs");
   }
 
-  openModalAddNewUser(){
-    this.addUserModalOpen = true;
+  openModalAddNewUser() {
+    this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
   }
 
   logout() {
