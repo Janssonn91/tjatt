@@ -46,7 +46,7 @@
     </Col>
   </Row>
   <hr className="mt-0" />
-  <div className="chat-history">
+  <div className="chat-history px-3">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message {...this.sendToChatHistory} />
       {/* <li className="clearfix ">
@@ -86,7 +86,7 @@
     <div className="chat-message clearfix">
        <Form inline>
        <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
-        <DropdownToggle caret>
+        <DropdownToggle className="p-0" caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>
         <DropdownMenu>
@@ -96,15 +96,15 @@
           <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
-      <FormGroup>
+      <FormGroup className="m-0">
         <Label for="messageArea" className="d-none">Message</Label>
-        <Input type="textarea" name="text" id="messageArea"
+        <Input className="p-2" type="textarea" name="text" id="messageArea"
           placeholder="Write your message here"
           value={this.inputMessage}
           onChange={e => this.inputMessage = e.currentTarget.value}
           onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
       </FormGroup>
-      <Button className="send" onClick={e => this.sendMessage()}>Send</Button>
+      <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
     </Form>
   </div>
 </Fragment>
