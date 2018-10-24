@@ -26,30 +26,30 @@ router.post('/addRepo', async (req, res) => {
    * test writing a file to make sure the location is correct
    * and read app.js (after converting it from Buffer to string)
    */
-  await promisifiedExec(
-    `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
-    {},
-    () => {
-      console.log(
-        'current directory: ' +
-          path.resolve(`./repos/${req.body.projectName}\n`)
-      );
-      const filePath = path.resolve(`./repos/${req.body.projectName}`);
-      fs.readFile(filePath + '/app.js', (err, data) => {
-        if (err) throw err;
-        let appString = data.toString(); // returns Buffer we convert to string
-        if (appString.includes('app.listen')) {
-          let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
-          let portIndex = stringIndex + 11; // index of portnumber ("3000")
-          let portNumber = appString.slice(portIndex, portIndex + 4);
-          let newString = appString.replace(portNumber.toString(), '3500');
-          fs.writeFile(filePath + '/app.js', newString, err => {
-            if (err) throw err;
-          });
-        }
-      });
-    }
-  );
+  // await promisifiedExec(
+  //   `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
+  //   {},
+  //   () => {
+  //     console.log(
+  //       'current directory: ' +
+  //         path.resolve(`./repos/${req.body.projectName}\n`)
+  //     );
+  //     const filePath = path.resolve(`./repos/${req.body.projectName}`);
+  //     fs.readFile(filePath + '/app.js', (err, data) => {
+  //       if (err) throw err;
+  //       let appString = data.toString(); // returns Buffer we convert to string
+  //       if (appString.includes('app.listen')) {
+  //         let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
+  //         let portIndex = stringIndex + 11; // index of portnumber ("3000")
+  //         let portNumber = appString.slice(portIndex, portIndex + 4);
+  //         let newString = appString.replace(portNumber.toString(), '3500');
+  //         fs.writeFile(filePath + '/app.js', newString, err => {
+  //           if (err) throw err;
+  //         });
+  //       }
+  //     });
+  //   }
+  // );
 });
 
 module.exports = router;
