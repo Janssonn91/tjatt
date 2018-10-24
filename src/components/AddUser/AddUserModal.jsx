@@ -11,35 +11,17 @@
           <Input type="text" name="text" id="searchContacts" placeholder="Search" />
         </FormGroup>
         <ListGroup>
-        <ListGroupItem tag="a" href="#">
-            <div className="d-inline-block">
-              <CardImg className="mr-3" src="/images/placeholder.png" />
-            </div>
-            <div className="d-inline-block">
-              <p className="m-0 font-weight-bold">Username Here</p>
-              <p className="text-muted m-0"><small className="font-weight-bold">Nickname</small></p>
-            </div>
-          </ListGroupItem>
-
-          <ListGroupItem tag="a" href="#">
-            <div className="d-inline-block">
-              <CardImg className="mr-3" src="/images/placeholder.png" />
-            </div>
-            <div className="d-inline-block">
-              <p className="m-0 font-weight-bold">Username Here</p>
-              <p className="text-muted m-0"><small className="font-weight-bold">Nickname</small></p>
-            </div>
-          </ListGroupItem>
-          
-          <ListGroupItem tag="a" href="#">
-            <div className="d-inline-block">
-              <CardImg className="mr-3" src="/images/placeholder.png" />
-            </div>
-            <div className="d-inline-block">
-              <p className="m-0 font-weight-bold">Username Here</p>
-              <p className="text-muted m-0"><small className="font-weight-bold">Nickname</small></p>
-            </div>
-          </ListGroupItem>
+          {toJS(this.filteredUsers).map(user =>
+            <ListGroupItem tag="a" href="#" onClick={() => this.addContact(user._id)} key={user._id}>
+              <div className="d-inline-block">
+                <CardImg className="mr-3" src="/images/placeholder.png" />
+              </div>
+              <div className="d-inline-block">
+                <p className="m-0 font-weight-bold">{user.username}</p>
+                <p className="text-muted m-0"><small className="font-weight-bold">{user.nickname}</small></p>
+              </div>
+            </ListGroupItem>
+          )}
         </ListGroup>
       </Form>
     </ModalBody>
