@@ -21,6 +21,13 @@ import './AddUserModal.scss';
     });
   }
 
+  updateFilteredUsers(userId) {
+    // remove added user in filteredUsers
+    const addedUser = this.filteredUsers.find(user => user._id === userId);
+    const index = this.filteredUsers.indexOf(addedUser);
+    this.filteredUsers.splice(index, 1);
+  }
+
   addContact(userId) {
     // add contact in my contact
     this.me.contact.push(userId);
