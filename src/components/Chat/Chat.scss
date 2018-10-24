@@ -5,49 +5,80 @@ $orange: #E38968;
 $text:#434651;
 
 .dialog {
-    padding-left:0px;
+    width:100%;
+    padding: 0;
     float: left;
     background: #F2F5F8;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
     height: 100vh;
-
     .chat-header {
-        padding-left:2vw;
-        padding-top:28px;
-        border-bottom: 2px solid white;
-        height: 93px;
-        margin-left:0px !important;
-
-        Form {
-            height: 0px;
+        @media (min-width: 768px) {
+            .chat-about{
+                padding: 10px !important;
+            }
         }
-
-
         .dropdown-menu {
-            height: 80vh;
             position: absolute;
-            transform: translate3d(-127px, 50px, 0px) !important;
-            border-radius: 0px;
-            width: 200px;
-            border-color: #F2F5F8;
-
+            border-radius: 5px;
+            top: 10px !important;
+            left: -134px !important;
+            margin-top: 0;
+            transform: translate3d(-5px, 17px, 0px) !important;
+            height: auto;
+            padding: 0;
+            .dropdown-header {
+                font-size: unset;
+            }
+            .channel-manage {
+                button:hover {
+                    background-color: $orange;
+                }
+            }
         }
+        @media (min-width: 768px) {
+            height: 80px;
+            padding-left: 0px;
+          
+       
+            .mobil-menu{
+                display:none;
+            }
+        }
+
+        @media (max-width: 767.5px) {
+            padding: 5px 10px 0 10px;
+            .mobil-menu{
+                display:inline-block;
+                border:none;
+                background-color: #F2F5F8 !important;
+                color:$gray;
+            }
+            .chat-with{
+                padding-left: 25px;
+                font-size:16px;
+            }
+
+            .dialog-icon{
+                i{
+                    font-size:16px;
+                }
+            }
+
+            .chat-message{
+                .form-inline{
+                    margin-left:15vw !important;
+                }
+               
+          
+            }
+            
+        }
+        padding-left: 32px;
+        margin-left:0px !important;
 
         .bottom-item {
             height: 35px;
         }
 
-        .show-edit {
-            position: absolute;
-            top: 10px;
-            left: 5px;
-            display: none;
-            color: lighten($gray, 20%);
-            font-size: 12px;
-            width: 5px;
-            height: 0px;
-        }
 
         .contacts {
             height: 410px;
@@ -65,6 +96,16 @@ $text:#434651;
             border-color: white;
         }
 
+        .leave-group{
+            color:$orange;
+            &:hover {
+                -webkit-box-shadow: unset;
+                box-shadow: unset;
+                background-color: #dc3545!important;
+                color: black;
+            }
+        }
+
 
 
         .divider-1 {
@@ -75,16 +116,10 @@ $text:#434651;
             padding: 4px;
         }
 
-        .chat-about {
-            float: left;
-            padding-left: 0px;
-            margin-top: 6px;
-        }
 
         .chat-with {
             text-align: left;
             font-weight: bold;
-            font-size: 20px;
             color:$gray;
         }
 
@@ -105,12 +140,16 @@ $text:#434651;
     }
 
     .chat-history {
-        overflow: scroll;
-        padding: 30px 2vw;
+        padding: 0 2vw;
         // padding: 30px 30px 20px;
         border-bottom: 2px solid white;
         overflow-y: scroll;
-        height: 77vh;
+        height: 75vh;
+
+        @media (max-width: 400px) {
+            height:75vh;
+            padding-left:7vw;
+        }
 
         ul {
             list-style: none;
@@ -168,7 +207,7 @@ $text:#434651;
 
             &:after {
                 bottom: 100%;
-                left: 3vw;
+                // left: 4vw;
                 border: solid transparent;
                 content: " ";
                 height: 0;
@@ -196,7 +235,7 @@ $text:#434651;
 
             &:after {
                 border-bottom-color: lighten($green, 8%);
-                left: 88%;
+                right:10px;
             }
 
         }
@@ -208,31 +247,41 @@ $text:#434651;
         padding-top: 10px;
         height: 10vh;
 
-        .d-none {
-            display: none;
-        }
+        
 
         .btn-dropup {
             height: 8vh;
-            width: 5vw;
-            margin-left:2vw;
+            width: 6vw;
+            margin-left:1vw;
+            @media (max-width: 400px) {
+                height: 6vh;
+                margin-left: 9vw;
+                width: 10vw;
+               
+                button{
+                    width:15vw;
+                }
+            }
         }
 
 
        
 
         .dropdown-toggle {
-            width: 5vw;
+            width: 6vw;
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
             background-color: lighten($gray, 20%);
             border-color: lighten($gray, 20%);
             padding:0px;
 
             svg {
                 font-size: 2vw;
+                display: inline-block;
+                padding: 0px;
                 
-                padding:0px;
             }
         }
 
@@ -249,14 +298,7 @@ $text:#434651;
             display: none;
         }
 
-        .dropdown-menu {
-            width: 300px;
-            border-radius: 5px;
-
-            svg {
-                color: $gray;
-            }
-        }
+        
 
         .dropdown-item {
             color: $gray;
@@ -268,18 +310,32 @@ $text:#434651;
             border-radius: 0px;
             height: 8vh;
             width: 60vw;
+            @media (max-width: 400px) {
+                width:70vw;
+                margin-top:4.2vw;
+                height:6vh;
+            }
         }
 
         .send {
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
-            width: 7vw;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            width: 6vw;
             height: 8vh;
             background-color: lighten($gray, 40%);
             border-color: lighten($gray, 20%);
             color: $blue;
             font-size:1.5vw;
             padding:0px;
+            @media (max-width: 400px) {
+                width:10vw;
+                margin-top:4.2vw;
+                height:6vh;
+                margin-top:0px;
+                font-size:3vw;
+            }
         }
 
         .send:hover {
@@ -287,7 +343,14 @@ $text:#434651;
             border-color: $blue;
             color: white;
             font-size: 1.8vw;
+            @media (max-width: 400px) {
+                font-size:3.5vw;
+            }
         }
 
     }
+    
+        hr {
+            border-top: 1px solid rgba(0,0,0,.1);
+          }
 }

@@ -1,6 +1,6 @@
 const qs = require('qs');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tjatt');
+mongoose.connect('mongodb://localhost/tjatt', { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', e => {
   console.error(e);
@@ -62,7 +62,7 @@ module.exports = class ModelAndRoutes {
         if (typeof obj === 'object') {
           params = obj;
         }
-      } catch (e) {}
+      } catch (e) { }
 
       // get params
       params = params || qs.parse(req.params[0]);
