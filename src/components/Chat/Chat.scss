@@ -15,7 +15,7 @@ $text:#434651;
             position: absolute;
             border-radius: 5px;
             top: 10px !important;
-            left: -134px !important;
+            left: -123px !important;
             margin-top: 0;
             transform: translate3d(-5px, 17px, 0px) !important;
             height: auto;
@@ -79,13 +79,12 @@ $text:#434651;
             padding: 4px;
         }
         .chat-with {
-            vertical-align: -webkit-baseline-middle;
+            vertical-align: middle;
             text-align: left;
             font-weight: bold;
             color:$gray;
         }
         .dialog-icon {
-            vertical-align: -webkit-baseline-middle;
             float: right;
             color: lighten($gray, 8%);
             font-size: 20px;
