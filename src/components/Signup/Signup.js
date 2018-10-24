@@ -1,6 +1,6 @@
 import './Signup.scss';
 
-@observer export default class Signup extends Component {
+@withRouter @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
   @observable passWordToSet = '';
@@ -74,6 +74,8 @@ import './Signup.scss';
           console.log('created user: ' + this.usernameToSet)
           this.user = res.user
           this.usernameExits = false;
+          document.getElementById("signForm").reset();
+          this.props.history.push('/');
         } else {
           this.usernameExits = true;
         }
