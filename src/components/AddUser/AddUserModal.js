@@ -8,10 +8,10 @@ import './AddUserModal.scss';
 
   start() {
     this.users = User.find({}).then((data) => {
-      this.me = data.find(user => user.id === this.stores.Login.user.id);
+      this.me = data.find(user => user._id === this.stores.Login.user._id);
 
       let friends = data.filter(user => {
-        return user.id !== this.stores.Login.user.id;
+        return user._id !== this.stores.Login.user._id;
       });
 
       const isIncluded = (friendId) => {
