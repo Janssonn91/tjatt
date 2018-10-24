@@ -94,7 +94,6 @@ app.post('/login', (req, res) => {
     .then(user => {
       if (!user) {
         res.json({ success: false })
-        res.end('nä det var fel försök igen');
       } else {
         const hash = hasha(
           req.body.password + global.passwordSalt,
