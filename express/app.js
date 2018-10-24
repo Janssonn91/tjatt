@@ -20,6 +20,7 @@ const connectMongo = require('connect-mongo')(session);
 const hasha = require('hasha');
 const fs = require('fs');
 const pathTo = require('path');
+const jo = require('jpeg-autorotate');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 
 // Middleware to get body fro posts
@@ -99,7 +100,7 @@ app.post('/login', (req, res) => {
           req.body.password + global.passwordSalt,
           { encoding: 'base64', algorithm: 'sha512' }
         );
-        console.log(hash, user.password);
+        //console.log(hash, user.password);
         if (user.password === hash) {
           req.session.userId = user._id;
           res.json({ success: true, user: user })
@@ -133,15 +134,36 @@ app.post('/upload', upload.single('file'), (req, res) => {
       // If user already has an image field, then remove file
       if (user.image) {
         const pathToImage = pathTo.join(__dirname, '..', 'public', user.image.slice(1))
-        console.log(pathToImage);
+        console.log('pathToImage: ', pathToImage);
+
+        let joOptions = {};
+        jo.rotate(pathToImage, joOptions, function(error, buffer, orientation) {
+            if (error) {
+                console.log('An error occurred when rotating the file: ' + error.message);
+                return;
+            }
+            console.log('Orientation was: ' + orientation);
+            let testPath = req.file.path;
+            console.log('testpath=', testPath);
+            // upload the buffer to s3, save to disk or more ...
+            fs.writeFile(testPath, buffer, function(err) {
+                if(err) {
+                    return console.log(err, testPath);
+                }
+
+                console.log("The file was saved!", testPath);
+            });
+        });
+
         fs.unlink(pathToImage, (err) => {
           if (err) throw err;
           console.log('Deleted file')
         })
       }
       user.image = req.file.path.split('public')[1];
+      //user.image = "/images/uploads/output.jpg";
       user.save().then(user => {
-        console.log(user)
+        //console.log(user)
         res.json({ path: user.image })
       })
 
