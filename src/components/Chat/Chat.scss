@@ -226,6 +226,7 @@ $text:#434651;
 
             &:after {
                 border-bottom-color: white;
+                left:30px;
             }
         }
 
@@ -255,7 +256,7 @@ $text:#434651;
             margin-left:1vw;
             @media (max-width: 400px) {
                 height: 6vh;
-                margin-left: 9vw;
+                margin-left: 5vw;
                 width: 10vw;
                
                 button{
@@ -309,11 +310,18 @@ $text:#434651;
         #messageArea {
             border-radius: 0px;
             height: 8vh;
-            width: 60vw;
+           
             @media (max-width: 400px) {
                 width:70vw;
                 margin-top:4.2vw;
                 height:6vh;
+                width:65vw;
+            }
+            @media (min-width:401px) and (max-width: 770px){
+                width:60vw;
+            }
+            @media (min-width:771px){
+                width:65vw;
             }
         }
 

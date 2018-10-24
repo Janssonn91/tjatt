@@ -16,11 +16,13 @@ export const initialUser = {
 
   @observable loginError = false;
   @observable collapseOpen = false;
+  @observable users = []; // TODO: need to remove after test
 
   start() {
     this.createStoreConnectedProperties({
       user: initialUser,
-      userLoggedIn: false
+      userLoggedIn: false,
+      contact: [], // TODO: need to remove after test
     });
   }
 
@@ -46,6 +48,24 @@ export const initialUser = {
         this.userLoggedIn = true;
         this.loginError = false;
         this.props.history.push(`/${username}`);
+
+        // // test
+        // this.users = User.find({}).then((data) => {
+        //   console.log('data', data)
+        //   console.log('this.user.id', this.user.id)
+        //   const withoutMe = data.find(user => {
+        //     return user.id !== this.user.id;
+        //   });
+        //   console.log('withoutMe', withoutMe);
+
+        //   this.contact.push(withoutMe);
+        //   console.log('contact', this.contact);
+   
+
+        // });
+
+        
+
       } else {
         this.loginError = true;
       }
