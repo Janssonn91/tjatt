@@ -32,9 +32,10 @@
       <NavLink to="#">
         <NavItem>My Groups</NavItem>
       </NavLink>
-      <i className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
+      <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
     </Nav>
     <hr />
   </div>
   <AddUserModal {...this.addUserModalOpen} />
+  <CreateGroupModal {...this.createGroupModalOpen} />
 </Fragment >

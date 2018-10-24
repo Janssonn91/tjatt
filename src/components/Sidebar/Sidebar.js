@@ -9,6 +9,11 @@ import { initialUser } from '../Login/Login';
     keyboard: true,
     toggle: this.openModalAddNewUser.bind(this)
   }
+  @observable createGroupModalOpen = {
+    isOpen: false,
+    keyboard: true,
+    toggle: this.openModalCreateGroup.bind(this)
+  }
   @observable collapseOpen = false;
   @observable userLoggedIn;
   @observable file;
@@ -21,6 +26,10 @@ import { initialUser } from '../Login/Login';
 
   openModalAddNewUser() {
     this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
+  }
+
+  openModalCreateGroup(){
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
   }
 
   logout() {
