@@ -8,9 +8,9 @@
 
   <AddMemberModal {...this.sendToAddModal} />
   <AddMemberModal {...this.sendToDeleteModal} />
-  <Row className="chat-header m-0">
-    <Col sm="12" className="chat-about p-0">
-      <Button className="mobil-menu" onClick={this.props.toChat}>
+  <Row className="chat-header m-0 p-0">
+    <Col sm="12" className="chat-about p-3">
+      <Button className="mobil-menu d-inline-block d-md-none" onClick={this.props.toChat}>
         <i className="fas fa-ellipsis-v"></i>
       </Button>
       <span className="chat-with">Chat with channel name</span>
@@ -22,7 +22,7 @@
       <span className="dialog-icon p-0">
 
         <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-          <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
+          <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
             <i className="fas fa-users"></i>
             {/*<i className="fas fa-user"></i> */}
           </DropdownToggle>

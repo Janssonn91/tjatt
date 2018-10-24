@@ -1,7 +1,7 @@
 <Fragment>
   <div className="sidebar">
     <div className="profile">
-      <div className="user-holder px-3 py-3">
+      <div className="user-holder p-3">
         <CardImg src={this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
@@ -19,7 +19,7 @@
         <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}
       </div>
     </div>
-    <hr />
+    <hr className="mt-0" />
     <Nav vertical className="menu">
       <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
         <NavItem className="pl-1">Starred</NavItem>
