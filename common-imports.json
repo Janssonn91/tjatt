@@ -12,15 +12,12 @@
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
-<<<<<<< HEAD
   "  Server": "components/Server/Server",
-=======
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
   "  Message": "components/Message/Message",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
->>>>>>> chat-style-server
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
