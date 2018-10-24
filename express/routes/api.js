@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const buf = require('buffer').Buffer;
 
-router.post('/test', async (req, res) => {
+router.post('/addRepo', async (req, res) => {
   console.log(req.body);
   await promisifiedExec(
     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
