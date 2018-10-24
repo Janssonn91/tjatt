@@ -7,18 +7,26 @@ import './AddUserModal.scss';
   @observable filteredUsers = [];
 
   start() {
-    this.users = User.find({}).then((data) => {
-      this.me = data.find(user => user._id === this.stores.Login.user._id);
 
-      let friends = data.filter(user => {
-        return user._id !== this.stores.Login.user._id;
-      });
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        let data = users.find(user => user._id === this.props.user._id)
+        console.log(data)
+      })
 
-      const isIncluded = (friendId) => {
-        return this.stores.Login.user.contact.some(id => friendId.includes(id));
-      }
-      this.filteredUsers = friends.filter(friend => !isIncluded(friend._id));
-    });
+    // this.users = User.find({}).then((data) => {
+    //   this.me = data.find(user => user._id === this.stores.Login.user._id);
+
+    //   let friends = data.filter(user => {
+    //     return user._id !== this.stores.Login.user._id;
+    //   });
+
+    //   const isIncluded = (friendId) => {
+    //     return this.stores.Login.user.contact.some(id => friendId.includes(id));
+    //   }
+    //   this.filteredUsers = friends.filter(friend => !isIncluded(friend._id));
+    // }).catch(err => console.log(err));
   }
 
   updateFilteredUsers(userId) {
