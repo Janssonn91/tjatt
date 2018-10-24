@@ -14,9 +14,14 @@ import './AddUserModal.scss';
         return user._id !== this.stores.Login.user._id;
       });
 
+      const myContacts = this.me.contact;
+      console.log(myContacts);
+
       const isIncluded = (friendId) => {
-        return this.stores.Login.user.contact.some(id => friendId.includes(id));
+       
+       return this.me.contact.some(id => friendId.includes(id));
       }
+
       this.filteredUsers = friends.filter(friend => !isIncluded(friend._id));
     });
   }
