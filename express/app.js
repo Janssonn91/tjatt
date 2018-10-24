@@ -86,6 +86,8 @@ app.get('/login', (req, res) => {
       } else {
         res.json({ loggedIn: false })
       }
+    }).catch(err => {
+      console.log(err);
     })
 });
 
@@ -107,6 +109,8 @@ app.post('/login', (req, res) => {
           res.json({ success: false, message: hash })
         }
       }
+    }).catch(err => {
+      console.log(err);
     })
 });
 

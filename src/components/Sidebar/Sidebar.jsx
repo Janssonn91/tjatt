@@ -36,5 +36,5 @@
     </Nav>
     <hr />
   </div>
-  <AddUserModal {...this.addUserModalOpen} />
+  <AddUserModal user={this.props.user}{...this.addUserModalOpen} />
 </Fragment >

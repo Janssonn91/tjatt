@@ -79,10 +79,10 @@
         </div>
       </li> */}
     </ul>
-
-    <div className="chat-message clearfix">
-       <Form inline>
-       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
+  </div>
+  <div className="chat-message clearfix">
+    <Form inline>
+      <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle className="p-0" caret>
           <i className="fas fa-plus"></i>
         </DropdownToggle>
