@@ -18,6 +18,7 @@ const multer = require('multer');
 const session = require('express-session')
 const connectMongo = require('connect-mongo')(session);
 const hasha = require('hasha');
+const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
@@ -144,7 +145,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
         })
       }
       user.image = req.file.path.split('public')[1];
-
+      let joOptions = {};
+      jo.rotate(req.file.path, joOptions, function(error, buffer, orientation) {
+        if (error) {
+            console.log('An error occurred when rotating the file: ' + error.message);
+            return;
+        }
+        //console.log('Orientation was: ' + orientation);
+        let testPath = req.file.path;
+        // upload the buffer to s3, save to disk or more ...
+        fs.writeFile(req.file.path, buffer, function(err) {
+          if(err) {
+            return console.log(err, testPath);
+          }
+          console.log("The file was saved!", testPath);
+        });
+      });
       user.save().then(user => {
         //console.log(user)
         res.json({ path: user.image })
