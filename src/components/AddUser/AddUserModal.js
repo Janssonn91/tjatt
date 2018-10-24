@@ -40,16 +40,3 @@ import './AddUserModal.scss';
   }
 }
 
-        // this.stores.Login.user.contact.forEach(person => {
-        //   return friends.forEach(friend => {
-        //     if (friend._id === person._id) {
-        //       return;
-        //     } else {
-        //       this.stores.Login.user.contact.push(friend._id);
-        //       user = { ...user, contact: this.stores.Login.user.contact };
-        //       const currentUser = new User(user);
-        //       currentUser.save();
-        //     }
-        //   });
-        // })
-
