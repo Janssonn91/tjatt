@@ -1,5 +1,5 @@
 .sidebar {
-  padding: 15px 0 0 0;
+  // padding: 15px 0 0 0;
   background-color:  #484951;
   height: 100vh;
   
@@ -54,6 +54,9 @@
       color: white;
       padding-top: 16px;
       font-size: small;
+      &:hover {
+        cursor: pointer;
+      }
     }
     
     .fas, .far {
