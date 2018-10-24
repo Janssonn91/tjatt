@@ -5,23 +5,28 @@ module.exports = class User extends ModelAndRoutes {
 
   static get schema() {
     return {
-      id: String,
-      username: String,
+      id: Number,
+      name: String,
       password: String,
       nickname: String,
       image: String,
       status: Boolean,
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      channel: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Channel'
+      group: [{
+        admin: String,
+        groupname: String,
+        member: [String],
+        channel: [{
+          type: Schema.Types.ObjectId,
+          ref: 'Channel'
+        }]
       }],
       contact: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        id: Number,
+        channel: [{
+          type: Schema.Types.ObjectId,
+          ref: 'Channel'
+        }],
+        favorite: Boolean
       }],
     }
   }

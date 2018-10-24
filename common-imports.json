@@ -12,15 +12,7 @@
   "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
-<<<<<<< HEAD
   "  Server": "components/Server/Server",
-=======
-  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
-  "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
-  "  Message": "components/Message/Message",
-  "  Tjatt": "components/Tjatt/Tjatt",
-  "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
->>>>>>> chat-style-server
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -40,7 +32,6 @@
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
-  "!socket": "utilities/socket",
 
   "/*5": "------------ React core + routing ------------",
   "React": "react",
@@ -54,7 +45,6 @@
   "{Link}": "react-router-dom",
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
-  "{Redirect}": "react-router-dom",
 
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
@@ -63,13 +53,11 @@
   "{reaction}": "mobx",
   "{toJS}": "mobx",
   "{observer}": "mobx-react",
-
   "/*7": "------------------- jQuery -------------------",
   "jQuery": "jquery",
   "$": "jquery",
-
   "/*8": "---------- Bootstrap + react strap -----------",
-  "bootstrap/dist/css/bootstrap.min.css" : "",
+  "bootstrap/dist/css/bootstrap.min.css": "",
   "bootstrap": "",
   "{Alert}": "reactstrap",
   "{Container}": "reactstrap",
@@ -159,7 +147,6 @@
   "{UncontrolledNavDropdown}": "reactstrap",
   "{UncontrolledTooltip}": "reactstrap",
   "{Util}": "reactstrap",
-
   "/*9": "------------ Syntax highlighting -------------",
   "SyntaxHighlighter": "react-syntax-highlighter/prism",
   "shstyle": "react-syntax-highlighter/styles/prism/duotone-light"
