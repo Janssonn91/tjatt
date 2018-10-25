@@ -1,13 +1,5 @@
 const qs = require('qs');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tjatt');
-const db = mongoose.connection;
-db.on('error', e => {
-  console.error(e);
-});
-db.once('open', () => {
-  console.info('db connected');
-});
 
 module.exports = class ModelAndRoutes {
   // In subclasses we expect the getter
@@ -62,7 +54,7 @@ module.exports = class ModelAndRoutes {
         if (typeof obj === 'object') {
           params = obj;
         }
-      } catch (e) {}
+      } catch (e) { }
 
       // get params
       params = params || qs.parse(req.params[0]);

@@ -1,38 +1,41 @@
 <Fragment>
   <div className="sidebar">
     <div className="profile">
-      <div className="user-holder">
-        <CardImg src="/images/placeholder.png"/>
-        <UncontrolledDropdown onClick={e => this.toggle()}>
+      <div className="user-holder px-3 py-3">
+        <CardImg src={this.useDBPath ? this.props.user.image : this.imgPath} />
+        <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>Användarnamn</h5>
-            {/* <i className="fas fa-angle-down"></i> */}
+            <h5>{this.props.user.nickname}</h5>
           </DropdownToggle >
-          <DropdownMenu tag="ul">
-            <DropdownItem tag="li">Byta bild</DropdownItem>
+          <DropdownMenu tag="div">
+            <li className="px-3 py-1 btn-li">
+              <label className="btn btn-upload m-0 p-0" htmlFor="files">Välj bild</label>
+              <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
+            </li>
             <DropdownItem divider />
-            <DropdownItem tag="li">Logga ut</DropdownItem>
+            <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
-        </UncontrolledDropdown>
+        </Dropdown>
+        <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}
       </div>
     </div>
-    <hr />
+    <hr className="mt-0" />
     <Nav vertical className="menu">
-      <NavLink to="#"><i className="fas fa-star"></i>
-        <NavItem>Stjärnmärkta</NavItem>
+      <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
+        <NavItem className="pl-1">Starred</NavItem>
       </NavLink>
 
       <NavLink to="#">
-        <NavItem>Mina kontakter</NavItem>
+        <NavItem>My Contacts</NavItem>
       </NavLink>
-      <i className="fas fa-plus"></i>
-
+      <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       <NavLink to="#">
-        <NavItem>Mina grupper</NavItem>
+        <NavItem>My Groups</NavItem>
       </NavLink>
-      <i className="fas fa-plus"></i>
+      <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
     </Nav>
     <hr />
-    <Button className="btn-logout mb-5" onClick={e => this.logout()}>Logout</Button>{' '} 
   </div>
-</Fragment>
+  <AddUserModal user={this.props.user}{...this.addUserModalOpen} />
+  <CreateGroupModal {...this.createGroupModalOpen} />
+</Fragment >
