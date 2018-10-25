@@ -1,19 +1,19 @@
 <Fragment>
   <div className="sidebar">
     <div className="profile">
-      <div className="user-holder p-3">
-        <CardImg src={this.imgPath} />
+      <div className="user-holder px-3 py-3">
+        <CardImg src={this.useDBPath ? this.props.user.image : this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.stores.Login.user.nickname || this.stores.Login.user.username}</h5>
+            <h5>{this.props.user.nickname}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
-            <li>
-              <label className="btn btn-secondary" htmlFor="files">Välj bild</label>
+            <li className="px-3 py-1 btn-li">
+              <label className="btn btn-upload m-0 p-0" htmlFor="files">Välj bild</label>
               <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
             </li>
             <DropdownItem divider />
-            <DropdownItem tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
+            <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}
@@ -36,6 +36,6 @@
     </Nav>
     <hr />
   </div>
-  <AddUserModal {...this.addUserModalOpen} />
+  <AddUserModal user={this.props.user}{...this.addUserModalOpen} />
   <CreateGroupModal {...this.createGroupModalOpen} />
 </Fragment >

@@ -3,9 +3,19 @@
   height: 100vh;
   
   .profile {
+    height: 85px;
     .dropdown {
       display: inline-block;
       border-color: black;
+      .btn-li {
+        &:hover {
+          cursor: pointer;
+          background-color: #f8f9fa;
+        }
+        .btn-upload{
+          background-color: unset;
+        }
+      }
       &:hover {
         cursor: pointer;
       }
@@ -21,6 +31,7 @@
 
     img {
       width: 40px;
+      height: auto;
     }
   }
   .menu {

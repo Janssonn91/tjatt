@@ -2,23 +2,20 @@ import './AddUserModal.scss';
 
 @observer export default class AddUser extends Component {
 
-  @observable me = {};
-  @observable users = [];
   @observable filteredUsers = [];
 
   start() {
-    this.users = User.find({}).then((data) => {
-      this.me = data.find(user => user._id === this.stores.Login.user._id);
 
-      let friends = data.filter(user => {
-        return user._id !== this.stores.Login.user._id;
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        let withoutMe = users.filter(user => user._id !== this.props.user._id)
+
+        const isIncluded = (userId) => {
+          return this.props.user.contact.some(contactId => userId === contactId);
+        }
+        this.filteredUsers = withoutMe.filter(user => !isIncluded(user._id));
       });
-
-      const isIncluded = (friendId) => {
-        return this.stores.Login.user.contact.some(id => friendId.includes(id));
-      }
-      this.filteredUsers = friends.filter(friend => !isIncluded(friend._id));
-    });
   }
 
   updateFilteredUsers(userId) {
@@ -29,10 +26,21 @@ import './AddUserModal.scss';
   }
 
   addContact(userId) {
-    // add contact in my contact
-    this.me.contact.push(userId);
-    const currentUser = new User(this.me);
-    currentUser.save();
+    // TODO:add contact in my contact
+    // this.props.user.contact.push(userId);
+
+    // const { _id, username, contact } = this.props.user;
+    // fetch(`/api/users/${_id}`, {
+    //   method: 'PUT',
+    //   body: JSON.stringify({ _id: _id }),
+    //   headers: { " Content-Type": "application/json" }
+    // }).then(res => res.json())
+    //   .then(data => {
+    //     console.log("data", data)
+    //   }).catch(err => {
+    //     console.log(err);
+    //   });
+
     this.updateFilteredUsers(userId);
 
     // TODO: add my id to friend contact
