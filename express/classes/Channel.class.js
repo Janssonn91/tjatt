@@ -5,7 +5,6 @@ module.exports = class Channel extends ModelAndRoutes {
 
   static get schema() {
     return {
-      id: String,
       channelname: String,
       admin: [{
         type: Schema.Types.ObjectId,
