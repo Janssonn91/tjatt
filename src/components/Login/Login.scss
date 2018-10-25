@@ -1,3 +1,5 @@
+$white: rgb(219, 219, 219);
+
 .row {
     margin: 0 !important;
 }
@@ -27,21 +29,22 @@
 
     h1 {
         text-align: center;
-        color: rgb(238, 238, 238);
+        color: white;
         font-family: 'Chakra Petch', sans-serif;
     }
 
     .msg-area {
         padding: 10px;
-        color: rgb(238, 238, 238);
-        background: rgba(0, 0, 0, .6);
+        background: rgba(0, 0, 0, .9);
         border-radius: 5px;
         text-align: center;
         font-family: 'Chakra Petch', sans-serif;
+        color: white;
     }
 
     .btn-login, .btn-create-acc, .btn-logout, .overlay {
-        background: rgba(0, 0, 0, .6);
+        background: rgba(0, 0, 0, .9);
+        border-color: $white;
     }
 
 }

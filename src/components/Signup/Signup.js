@@ -72,10 +72,13 @@ import './Signup.scss';
       .then(res => {
         if (res.success) {
           console.log('created user: ' + this.usernameToSet)
+
           this.user = res.user
           this.usernameExits = false;
-          document.getElementById("signForm").reset();
-          this.props.history.push('/');
+          setTimeout(()=> {
+            this.props.history.push('/');
+          },5000);
+          
         } else {
           this.usernameExits = true;
         }

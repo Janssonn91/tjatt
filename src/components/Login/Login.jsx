@@ -13,17 +13,17 @@
           {this.user && this.user.username && <h1>{this.user.username}</h1>}
           <Form onSubmit={this.onSubmit}>
             <FormGroup className="mt-4">
-              <Input type="text" id="username" placeholder="Username" value={this.usernameToSet} onChange={e => this.usernameChange(e)} />
+              <Input tabIndex="1" type="text" id="username" placeholder="Username" value={this.usernameToSet} onChange={e => this.usernameChange(e)} />
             </FormGroup>
             <FormGroup>
-              <Input type="password" id="password" placeholder="Password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
+              <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
               <p className="small mt-1 d-none">Can't remember your password?</p>
             </FormGroup>
             <div className="text-center mb-3">
-              <Link to="signup">
-                <Button className="btn-create-acc">Create account</Button>{' '}
+              <Button tabIndex="3" className="btn-login">Login</Button>{' '}
+              <Link tabIndex="-1" to="signup">
+                <Button tabIndex="4" className="btn-create-acc">Create account</Button>{' '}
               </Link>
-              <Button className="btn-login">Login</Button>{' '}
             </div>
           </Form>
           {this.loginError &&

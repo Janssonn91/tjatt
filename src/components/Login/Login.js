@@ -37,7 +37,7 @@ export const initialUser = {
 
   toggle() {
     this.collapseOpen = !this.collapseOpen;
-  }
+  } 
 
   usernameChange(e) {
     this.username = e.currentTarget.value;

@@ -8,12 +8,12 @@
             <h5>{this.props.user.nickname}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
-            <li>
-              <label className="btn btn-secondary" htmlFor="files">Välj bild</label>
+            <li className="px-3 py-1 btn-li">
+              <label className="btn btn-upload m-0 p-0" htmlFor="files">Välj bild</label>
               <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
             </li>
             <DropdownItem divider />
-            <DropdownItem tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
+            <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}

@@ -1,6 +1,6 @@
 <Container fluid={true} className="Signup">
   <Link to="/">
-    <Button className="btn-to-login mt-3 ml-3">&lt;- To login</Button>{' '}
+    <Button className="btn-to-login mt-3 ml-3">Back to login</Button>{' '}
   </Link>
   <Row>
     <Col className="mt-4 overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
