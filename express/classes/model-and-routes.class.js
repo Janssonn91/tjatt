@@ -1,13 +1,5 @@
 const qs = require('qs');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tjatt', { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on('error', (e) => {
-  console.error(e);
-});
-db.once('open', () => {
-  console.info('db connected');
-});
 
 module.exports = class ModelAndRoutes {
 

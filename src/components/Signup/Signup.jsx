@@ -1,6 +1,6 @@
 <Container fluid={true} className="Signup">
   <Link to="/">
-    <Button className="btn-to-login mt-3 ml-3">&lt;- To login</Button>{' '}
+    <Button className="btn-to-login mt-3 ml-3">Back to login</Button>{' '}
   </Link>
   <Row>
     <Col className="mt-4 overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
@@ -9,40 +9,26 @@
   </Row>
   <Row>
     <Col className="overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-    <Form id="crete-account-form">
-      <FormGroup className="mt-4">
-        <Input type="text" name="username" id="username" placeholder="Choose username" value={this.usernameToSet} onChange={e => this.usernameChange(e)}/>
-      </FormGroup>
-      <FormGroup>
-        <Input type="password" name="password" id="examplePassword" placeholder="Choose password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
-      </FormGroup>
-      <FormGroup>
-        <Input type="password" name="password" id="confirmPassword" placeholder="Confirm password" value={this.confirmPasswordToSet} onChange={e => this.confirmPasswordChange(e)} />
-      </FormGroup>
+      <Form className="signupForm" onSubmit={this.onSubmit}>
+        <FormGroup className="mt-4">
+          <Input type="text" name="username" id="username" placeholder="Choose username" onChange={e => this.usernameChange(e)} />
+        </FormGroup>
+        <FormGroup>
+          <Input type="password" name="password" id="examplePassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />
+        </FormGroup>
+        <FormGroup>
+          <Input type="password" name="password" id="confirmPassword" placeholder="Confirm password" onChange={e => this.confirmPasswordChange(e)} />
+        </FormGroup>
+        <div className="text-center mb-3">
+          <Button className="overlay" disabled={this.usernameToSet && this.passWordToSet.length && (this.passWordToSet === this.confirmPassword) ? null : true}>Sign up</Button>
+          {this.usernameExits &&
+            < Alert color="danger" className="my-2">
+              Username already in use, please choose another
+          </Alert>}
+        </div>
       </Form>
-      <div className="text-center mb-3">
-        <Button className="overlay" onClick= {e => this.checkUserInput(e)}>Sign up</Button>
-        {this.usernameExits &&
-          < Alert color="dark" className="my-2">
-            Username already in use, please choose another
-          </Alert>}
-          {this.passwordMissing &&
-          < Alert color="dark" className="my-2">
-            Please enter a password
-          </Alert>}
-          {this.passwordsNotMacthing &&
-          < Alert color="dark" className="my-2">
-            Passwords not matching, please check
-          </Alert>}
-          {this.usernameMissing &&
-          < Alert color="dark" className="my-2">
-            Please choose a username
-          </Alert>}
-          {this.passwordMissing &&
-          < Alert color="dark" className="my-2">
-            Please set a password
-          </Alert>}
-      </div>
+
     </Col>
-  </Row>  
+  </Row>
 </Container >
+
