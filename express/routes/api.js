@@ -12,7 +12,8 @@ router.post('/addRepo', async (req, res) => {
       req.body.projectName
     } && npm install`
   );
-  // Change back params to 'npm and ['start']
+  // Change back params to 'npm' and ['start']
+  // This is to get it to work with express apps
   let process = spawn('node', ['app'], {
     cwd: `./repos/${req.body.projectName}`
   });
@@ -44,7 +45,6 @@ router.post('/addRepo', async (req, res) => {
    * read app.js to find current port number
    * Change port number to one chosen by us then
    * overwrite app.js file
-   * ** SPAGHETTI CODE WARNING **
    */
   await promisifiedExec(
     `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
@@ -56,20 +56,22 @@ router.post('/addRepo', async (req, res) => {
         let appString = data.toString(); // returns Buffer we convert to string
         if (appString.includes('app.listen')) {
           let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
-          let portIndex = stringIndex + 11; // index of portnumber ("3000")
+          let portIndex = stringIndex + 11; // index of portnumber
           let portNumber = appString.slice(portIndex, portIndex + 4);
-          let newString = appString.replace(portNumber.toString(), port);
+          let newString = appString.replace(portNumber, port);
 
-          let stringIndexInConsoleLog = appString.indexOf('listening on port');
-          let portIndexInConsoleLog = stringIndexInConsoleLog + 18;
+          // If console log port differs from actual port
+          let stringIndexInConsoleLog = appString.indexOf('istening on port');
+          let portIndexInConsoleLog = stringIndexInConsoleLog + 17;
           let portNumberInConsoleLog = appString.slice(
             portIndexInConsoleLog,
             portIndexInConsoleLog + 4
           );
-          newString = newString.replace(
-            portNumberInConsoleLog.toString(),
-            port
-          );
+          // Replace all occurances
+          newString = newString.replace(portNumberInConsoleLog, port);
+          newString = newString.replace(portNumberInConsoleLog, port);
+          console.log(newString);
+
           fs.writeFile(filePath + '/app.js', newString, err => {
             if (err) throw err;
           });
