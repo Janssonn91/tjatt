@@ -5,6 +5,7 @@
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
   "  Channel": "classes/channel.class.js",
+  "  Repo": "classes/repo.class.js",
   "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
   "  Sidebar": "components/Sidebar/Sidebar",
@@ -18,6 +19,7 @@
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
   "  AddUserModal": "components/AddUser/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
+  "  Server": "components/Server/Server",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
