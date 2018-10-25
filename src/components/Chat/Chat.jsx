@@ -99,7 +99,7 @@
           placeholder="Write your message here"
           value={this.inputMessage}
           onChange={e => this.inputMessage = e.currentTarget.value}
-          onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
+          onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
       </FormGroup>
       <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
     </Form>
