@@ -115,6 +115,21 @@ app.post('/login', (req, res) => {
     })
 });
 
+// TODO: funkar inte
+app.put('/users/:_id', (req, res) => {
+  User.find({ _id: req.params._id })
+    .then(user => {
+      console.log(user);
+      User.update('/users/:_id', req.body, (err) => {
+        if (err) {
+          res.json(err);
+        } else {
+          res.success = 'contact updated!';
+        }
+        res.json(res);
+      });
+    });
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

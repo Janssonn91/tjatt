@@ -37,10 +37,21 @@ import './AddUserModal.scss';
   }
 
   addContact(userId) {
-    // add contact in my contact
-    this.me.contact.push(userId);
-    const currentUser = new User(this.me);
-    currentUser.save();
+    // TODO:add contact in my contact
+    // this.props.user.contact.push(userId);
+
+    // const { _id, username, contact } = this.props.user;
+    // fetch(`/api/users/${_id}`, {
+    //   method: 'PUT',
+    //   body: JSON.stringify({ _id: _id }),
+    //   headers: { " Content-Type": "application/json" }
+    // }).then(res => res.json())
+    //   .then(data => {
+    //     console.log("data", data)
+    //   }).catch(err => {
+    //     console.log(err);
+    //   });
+
     this.updateFilteredUsers(userId);
 
     // TODO: add my id to friend contact
