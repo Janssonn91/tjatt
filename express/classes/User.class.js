@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const hasha = require('hasha');
 
 const UserSchema = new Schema({
-  id: String,
   username: String,
   password: String,
   nickname: String,
@@ -23,12 +22,12 @@ const UserSchema = new Schema({
   }],
 });
 
-UserSchema.pre('save', function(next){
+UserSchema.pre('save', function (next) {
   // hash the password  - but only if it has been modified (or is new)
-  if (this.isModified('password')){
+  if (this.isModified('password')) {
     this.password = hasha(
-      this.password + global.passwordSalt, 
-      {encoding: 'base64', algorithm: 'sha512'}
+      this.password + global.passwordSalt,
+      { encoding: 'base64', algorithm: 'sha512' }
     );
   }
   next();

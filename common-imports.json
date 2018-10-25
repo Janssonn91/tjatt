@@ -9,7 +9,6 @@
   "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
   "  Sidebar": "components/Sidebar/Sidebar",
-  "  MainNav": "components/MainNav/MainNav",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",

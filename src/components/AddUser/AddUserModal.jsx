@@ -14,7 +14,7 @@
           {toJS(this.filteredUsers).map(user =>
             <ListGroupItem tag="a" href="#" onClick={() => this.addContact(user._id)} key={user._id}>
               <div className="d-inline-block">
-                <CardImg className="mr-3" src="/images/placeholder.png" />
+                <CardImg className="mr-3" src={user.image || "/images/placeholder.png"} />
               </div>
               <div className="d-inline-block">
                 <p className="m-0 font-weight-bold">{user.username}</p>

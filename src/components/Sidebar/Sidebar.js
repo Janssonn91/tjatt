@@ -1,8 +1,6 @@
 import './Sidebar.scss';
-import { initialUser } from '../Login/Login';
 
 @withRouter @observer export default class Sidebar extends Component {
-  async start() {}
 
   @observable addUserModalOpen = {
     isOpen: false,
@@ -29,17 +27,11 @@ import { initialUser } from '../Login/Login';
     this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
   }
 
-  openModalCreateGroup(){
+  openModalCreateGroup() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
   }
 
   logout() {
-    // // update login status in MongoDB
-    // this.stores.Login.user = { ...this.stores.Login.user, status: false };
-    // // update login status in the store
-    // this.stores.Login.userLoggedIn = false;
-    // this.stores.Login.user = initialUser;
-    // this.props.history.push('/');
     fetch('/api/logout').then(() => this.props.history.go('/'))
   }
 
