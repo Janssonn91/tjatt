@@ -46,7 +46,8 @@
     </Col>
   </Row>
   <hr className="mt-0" />
-  <div className="chat-history px-3">
+  <Row>
+  <Col className="chat-history px-3">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message user={this.props.user}{...this.sendToChatHistory} />
       {/* <li className="clearfix ">
@@ -79,7 +80,13 @@
         </div>
       </li> */}
     </ul>
+  </Col>
+  <div>
+    <Server/>
   </div>
+     
+  </Row>
+  
   <div className="chat-message clearfix">
     <Form inline>
       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
