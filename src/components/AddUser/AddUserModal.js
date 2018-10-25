@@ -2,8 +2,6 @@ import './AddUserModal.scss';
 
 @observer export default class AddUser extends Component {
 
-  @observable me = {};
-  @observable users = [];
   @observable filteredUsers = [];
 
   start() {
@@ -11,22 +9,13 @@ import './AddUserModal.scss';
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        let data = users.find(user => user._id === this.props.user._id)
-        console.log(data)
-      })
+        let withoutMe = users.filter(user => user._id !== this.props.user._id)
 
-    // this.users = User.find({}).then((data) => {
-    //   this.me = data.find(user => user._id === this.stores.Login.user._id);
-
-    //   let friends = data.filter(user => {
-    //     return user._id !== this.stores.Login.user._id;
-    //   });
-
-    //   const isIncluded = (friendId) => {
-    //     return this.stores.Login.user.contact.some(id => friendId.includes(id));
-    //   }
-    //   this.filteredUsers = friends.filter(friend => !isIncluded(friend._id));
-    // }).catch(err => console.log(err));
+        const isIncluded = (userId) => {
+          return this.props.user.contact.some(contactId => userId === contactId);
+        }
+        this.filteredUsers = withoutMe.filter(user => !isIncluded(user._id));
+      });
   }
 
   updateFilteredUsers(userId) {
