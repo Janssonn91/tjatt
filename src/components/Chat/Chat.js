@@ -118,11 +118,11 @@ export default class Chat extends Component {
 
   sendMessage() {
 
-    console.log(this.stores.Login.user.nickname)
+    console.log("user", this.props.user)
     this.chatHistories.push({
       id: Date.now(),
       time: this.formattedDate(new Date()),
-      sender: this.stores.Login.user.nickname || this.stores.Login.user.username,
+      sender: this.props.user.nickname,
       channel: "group one",
       text: this.inputMessage,
       star: false
