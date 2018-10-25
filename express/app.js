@@ -22,6 +22,7 @@ const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
+const apiRoutes = require('./routes/api');
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +38,8 @@ app.use(session({
   // Spara session i databasen, lever i 30 dagar
   store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
 }));
+
+app.use("/", apiRoutes)
 
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
@@ -223,3 +226,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 
 
+
+// const Channel = require('./classes/Channel.class');
+new Channel(app);
+
+const Repo = require('./classes/Repo.class');
+new Repo(app);

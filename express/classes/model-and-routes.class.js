@@ -2,7 +2,6 @@ const qs = require('qs');
 const mongoose = require('mongoose');
 
 module.exports = class ModelAndRoutes {
-
   // In subclasses we expect the getter
   // schema to exist - an object corresponding
   // to a mongoose schema
@@ -47,7 +46,6 @@ module.exports = class ModelAndRoutes {
 
   setupGetRoute() {
     this.expressApp.get(`/${this.routeName}/?*`, (req, res) => {
-
       let params;
 
       // check if params is a stringified object
@@ -61,25 +59,27 @@ module.exports = class ModelAndRoutes {
       // get params
       params = params || qs.parse(req.params[0]);
 
-      console.log("PPPP", params)
+      // console.log("PPPP", params)
 
       // Get populate instructions
       // and then delete them from the Mongo query params
       let populate = params.populate || '';
       delete params.populate;
 
-      this.myModel.find(params).populate(populate).exec((err, data) => {
-        res.json({
-          query: params,
-          resultLength: data.length,
-          result: data
+      this.myModel
+        .find(params)
+        .populate(populate)
+        .exec((err, data) => {
+          res.json({
+            query: params,
+            resultLength: data.length,
+            result: data
+          });
         });
-      });
     });
   }
 
   setupDeleteRoute() {
-
     this.expressApp.delete(`/${this.routeName}/?*`, (req, res) => {
       // get params
       let params = qs.parse(req.params[0]);
@@ -98,7 +98,7 @@ module.exports = class ModelAndRoutes {
             response.error = 'Do not remove more than 5 items at once';
             res.json(response);
           } else {
-            this.myModel.remove(params, (err) => {
+            this.myModel.remove(params, err => {
               if (err) {
                 response.error = err;
               } else {
@@ -107,12 +107,9 @@ module.exports = class ModelAndRoutes {
               res.json(response);
             });
           }
-
         }
       });
-
     });
-
   }
 
   setupPutRoute() {
@@ -134,22 +131,24 @@ module.exports = class ModelAndRoutes {
             response.error = 'Do not update more than 5 items at once';
             res.json(response);
           } else {
-            this.myModel.update(params, req.body, {
-              multi: true
-            }, (err) => {
-              if (err) {
-                response.error = err;
-              } else {
-                response.success = `${this.modelName}s updated!`;
+            this.myModel.update(
+              params,
+              req.body,
+              {
+                multi: true
+              },
+              err => {
+                if (err) {
+                  response.error = err;
+                } else {
+                  response.success = `${this.modelName}s updated!`;
+                }
+                res.json(response);
               }
-              res.json(response);
-            });
+            );
           }
-
         }
       });
-
     });
   }
-
-}
+};
