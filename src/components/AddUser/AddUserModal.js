@@ -42,7 +42,19 @@ import './AddUserModal.scss';
         console.log(err);
       });
 
-    // TODO: add my id to friend contact
+    // TODO: Personen behöver godkänna ny kontakt??
+    // add my id to the new friend contact
+    fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ userId, contact: _id }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        res.json();
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
   }
 }
