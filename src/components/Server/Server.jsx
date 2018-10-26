@@ -24,7 +24,7 @@
           onKeyPress={e => this.checkForEnter(e)}
           />
       </FormGroup>
-      <InputGroupAddon>
+      <InputGroupAddon addonType="append">
         <Button className="bg-warning ml-1 float-right"
           onClick={this.submit}>Clone</Button>
       </InputGroupAddon>
