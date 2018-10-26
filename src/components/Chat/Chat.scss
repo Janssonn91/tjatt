@@ -10,6 +10,7 @@ $text:#434651;
     float: left;
     background: #F2F5F8;
     height: 100vh;
+   
     .chat-header {
         .dropdown-menu {
             position: absolute;
@@ -66,6 +67,7 @@ $text:#434651;
             font-size: 12px;
             border-color: white;
         }
+       
         .leave-group{
             color:$orange;
             &:hover {
