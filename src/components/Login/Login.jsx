@@ -5,7 +5,8 @@
     <div className="login-area">
       <Row>
         <Col className="mt-5 overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-          <h1>No boolshit, just tj@!</h1>
+          <h1>No boolshit, just  <img src="/images/tja@Logo.png" alt="" className="logo" /></h1>
+
         </Col>
       </Row>
       <Row className="mb-5">
@@ -36,7 +37,7 @@
         <Col className="msg-area mt-5" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
           <h4 className="left-msg">Join for free and experience the power of tj@!</h4>
         </Col>
-        <Col className="msg-area mt-5" sm={{ size: 10, offset: 1 }} lg={{ size: 4, offset: 4 }}>
+        <Col className="msg-area mt-5" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
           <h4 className="right-msg">Build powerful node.js-apps and share with teams!</h4>
         </Col>
       </Row>

@@ -45,8 +45,8 @@
       </span>
     </Col>
   </Row>
-  <hr className="mt-0" />
-  <div className="chat-history px-3">
+  <hr className="mt-0 mb-2" />
+  <div className="chat-history px-3 mr-1">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message user={this.props.user}{...this.sendToChatHistory} />
       {/* <li className="clearfix ">
@@ -80,7 +80,7 @@
       </li> */}
     </ul>
   </div>
-  <div className="chat-message clearfix">
+  <div className="chat-message pt-2 clearfix">
     <Form inline>
       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle className="p-0" caret>
@@ -90,7 +90,9 @@
           <DropdownItem><i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
           <DropdownItem><i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
           <DropdownItem><i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-          <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
+          <Link to="server" tabIndex="-1">
+            <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
+          </Link>
         </DropdownMenu>
       </ButtonDropdown>
       <FormGroup className="m-0">

@@ -35,9 +35,7 @@ import './Signup.scss';
 
           this.user = res.user
           this.usernameExits = false;
-          setTimeout(() => {
-            this.props.history.push('/');
-          }, 5000);
+          this.props.history.push('/');
 
         } else {
           this.usernameExits = true;
