@@ -81,9 +81,7 @@
       </li> */}
     </ul>
   </Col>
-  <div>
-    <Server/>
-  </div>
+  
      
   </Row>
   
