@@ -1,6 +1,6 @@
 import './Login.scss';
 
-@withRouter @observer export default class Login extends Component {
+@inject('loginStore') @withRouter @observer export default class Login extends Component {
 
   @observable loginError = false;
   @observable collapseOpen = false;
@@ -33,6 +33,7 @@ import './Login.scss';
       .then(res => {
         if (res.loggedIn) {
           this.user = res.user;
+          this.props.loginStore.getuser(res.user);
         }
       }).catch(err => {
         console.log("err", err)
