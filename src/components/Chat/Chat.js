@@ -19,7 +19,7 @@
 
 
 import './Chat.scss';
-
+import ScrollableFeed from 'react-scrollable-feed';
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
 @observer
@@ -94,6 +94,20 @@ export default class Chat extends Component {
 
 
 
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  compontentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  };
+
+
+
   addMemberModalToggle() {
     this.sendToAddModal.isOpen = !this.sendToAddModal.isOpen
   }
@@ -127,6 +141,8 @@ export default class Chat extends Component {
       text: this.inputMessage,
       star: false
     });
+
+    this.scrollToBottom();
 
     console.log(this.chatHistories);
 

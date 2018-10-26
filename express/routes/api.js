@@ -9,9 +9,10 @@ const buf = require('buffer').Buffer;
 router.post('/addRepo', async (req, res) => {
   await promisifiedExec(
     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-      req.body.projectName
+    req.body.projectName
     } && npm install`
   );
+
   // Change back params to 'npm' and ['start']
   // This is to get it to work with express apps
   let process = spawn('node', ['app'], {
@@ -79,6 +80,6 @@ router.post('/addRepo', async (req, res) => {
       });
     }
   );
-});
+  });
 
 module.exports = router;
