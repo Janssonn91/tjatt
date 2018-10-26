@@ -26,24 +26,37 @@ import './AddUserModal.scss';
   }
 
   addContact(userId) {
-    // TODO:add contact in my contact
-    // this.props.user.contact.push(userId);
+    this.props.user.contact.push(userId);
+    // add contact in my contact
+    const { _id } = toJS(this.props.user);
 
-    // const { _id, username, contact } = this.props.user;
-    // fetch(`/api/users/${_id}`, {
-    //   method: 'PUT',
-    //   body: JSON.stringify({ _id: _id }),
-    //   headers: { " Content-Type": "application/json" }
-    // }).then(res => res.json())
-    //   .then(data => {
-    //     console.log("data", data)
-    //   }).catch(err => {
-    //     console.log(err);
-    //   });
+    fetch(`/api/users/${_id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ _id, contact: userId }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        res.json();
+        this.updateFilteredUsers(userId);
+        this.props.update();
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    this.updateFilteredUsers(userId);
-
-    // TODO: add my id to friend contact
+    // TODO: Personen behöver godkänna ny kontakt??
+    // add my id to the new friend contact
+    fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ userId, contact: _id }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        res.json();
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
   }
 }
