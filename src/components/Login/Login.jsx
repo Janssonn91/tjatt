@@ -5,8 +5,8 @@
     <div className="login-area">
       <Row>
         <Col className="mt-5 overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-          <h1>No boolshit, just tj@</h1>
-          {/* <img src="/images/tja@Logo.png" alt="" className="logo" /> */}
+          <h1>No boolshit, just  <img src="/images/tja@Logo.png" alt="" className="logo" /></h1>
+
         </Col>
       </Row>
       <Row className="mb-5">
