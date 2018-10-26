@@ -145,12 +145,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-
-  /**
-   * 1. Hitta användaren som är inloggad
-   * 2. Lägg till imgpath till användaren
-   * 3. Spara användaren
-   */
   User.findById(req.session.userId)
     .then(user => {
       // If user already has an image field, then remove file
@@ -164,16 +158,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
       }
       user.image = req.file.path.split('public')[1];
       let joOptions = {};
-      jo.rotate(req.file.path, joOptions, function(error, buffer, orientation) {
+      jo.rotate(req.file.path, joOptions, function (error, buffer, orientation) {
         if (error) {
-            console.log('An error occurred when rotating the file: ' + error.message);
-            return;
+          console.log('An error occurred when rotating the file: ' + error.message);
+          return;
         }
         //console.log('Orientation was: ' + orientation);
         let testPath = req.file.path;
         // upload the buffer to s3, save to disk or more ...
-        fs.writeFile(req.file.path, buffer, function(err) {
-          if(err) {
+        fs.writeFile(req.file.path, buffer, function (err) {
+          if (err) {
             return console.log(err, testPath);
           }
           console.log("The file was saved!", testPath);
