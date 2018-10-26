@@ -24,6 +24,10 @@ const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
 
+// if we want to move the salt later on
+const salty = require('./tjat.json')
+global.passwordSalt = salty.salt;
+
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
