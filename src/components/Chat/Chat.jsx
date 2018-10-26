@@ -45,8 +45,8 @@
       </span>
     </Col>
   </Row>
-  <hr className="mt-0" />
-  <div className="chat-history px-3">
+  <hr className="mt-0 mb-2" />
+  <div className="chat-history px-3 mr-1">
     <ul ref="messageList" onScroll={this.onScroll}>
       <Message user={this.props.user}{...this.sendToChatHistory} />
       {/* <li className="clearfix ">
@@ -80,7 +80,7 @@
       </li> */}
     </ul>
   </div>
-  <div className="chat-message clearfix">
+  <div className="chat-message pt-2 clearfix">
     <Form inline>
       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle className="p-0" caret>
@@ -99,7 +99,7 @@
           placeholder="Write your message here"
           value={this.inputMessage}
           onChange={e => this.inputMessage = e.currentTarget.value}
-          onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
+          onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
       </FormGroup>
       <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
     </Form>
