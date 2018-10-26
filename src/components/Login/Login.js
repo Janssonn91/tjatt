@@ -52,6 +52,9 @@ import './Login.scss';
         if (res.success) {
           this.user = res.user;
         }
+        else {
+          this.loginError = true;
+        }
       }).catch(err => {
         console.log("err", err)
       })
