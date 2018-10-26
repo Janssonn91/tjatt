@@ -9,7 +9,7 @@
           </DropdownToggle >
           <DropdownMenu tag="div">
             <li className="px-3 py-1 btn-li">
-              <label className="btn btn-upload m-0 p-0" htmlFor="files">Välj bild</label>
+              <label className="btn btn-upload m-0 p-0" htmlFor="files">Choose image</label>
               <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
             </li>
             <DropdownItem divider />

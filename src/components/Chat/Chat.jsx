@@ -90,7 +90,9 @@
           <DropdownItem><i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
           <DropdownItem><i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
           <DropdownItem><i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-          <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
+          <Link to="server" tabIndex="-1">
+            <DropdownItem><i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
+          </Link>
         </DropdownMenu>
       </ButtonDropdown>
       <FormGroup className="m-0">
@@ -99,7 +101,7 @@
           placeholder="Write your message here"
           value={this.inputMessage}
           onChange={e => this.inputMessage = e.currentTarget.value}
-          onKeyPress={e => e.key === 'Enter' && this.sendMessage()} />
+          onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
       </FormGroup>
       <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
     </Form>
