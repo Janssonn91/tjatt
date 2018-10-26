@@ -8,14 +8,15 @@
     }
     .dropdown {
       display: inline-block;
-      border-color: black;
       .btn-li {
+        color: black;
         &:hover {
           cursor: pointer;
           background-color: #f8f9fa;
         }
         .btn-upload{
           background-color: unset;
+          color: black;
         }
       }
       &:hover {
