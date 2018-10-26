@@ -179,6 +179,7 @@ $text:#434651;
             color: $text;
             &:after {
                 border-bottom-color: white;
+                left:30px;
             }
         }
         .my-message {
@@ -247,7 +248,7 @@ $text:#434651;
                 width: 80vw;
             }
             @media (min-width: 1200px) {
-                width: 72vw;
+                width: 60vw;
             }
         }
 
