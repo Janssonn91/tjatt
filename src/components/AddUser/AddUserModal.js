@@ -26,6 +26,7 @@ import './AddUserModal.scss';
   }
 
   addContact(userId) {
+    this.props.user.contact.push(userId);
     // add contact in my contact
     const { _id } = toJS(this.props.user);
 
@@ -37,6 +38,7 @@ import './AddUserModal.scss';
       .then(res => {
         res.json();
         this.updateFilteredUsers(userId);
+        this.props.update();
       })
       .catch(err => {
         console.log(err);

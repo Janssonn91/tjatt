@@ -29,6 +29,9 @@
         <NavItem>My Contacts</NavItem>
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
+      {toJS(this.filteredUsers) && toJS(this.filteredUsers).map((user, i) =>
+        <NavLink key={i} className="nav-link">{user.username}</NavLink>
+      )}
       <NavLink to="#">
         <NavItem>My Groups</NavItem>
       </NavLink>
@@ -36,6 +39,6 @@
     </Nav>
     <hr />
   </div>
-  <AddUserModal user={this.props.user}{...this.addUserModalOpen} />
+  <AddUserModal user={this.props.user}{...this.addUserModalOpen} update={() => this.updateContact()} />
   <CreateGroupModal {...this.createGroupModalOpen} />
 </Fragment >
