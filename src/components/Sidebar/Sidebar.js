@@ -82,6 +82,7 @@ import './Sidebar.scss';
         let path = res.path;
         this.imgPath = path;
         this.useDBPath = false;
+        this.toggle();
       });
 
   }
