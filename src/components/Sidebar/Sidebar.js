@@ -1,8 +1,6 @@
 import './Sidebar.scss';
-import { initialUser } from '../Login/Login';
 
 @withRouter @observer export default class Sidebar extends Component {
-  async start() {}
 
   @observable addUserModalOpen = {
     isOpen: false,
@@ -20,6 +18,33 @@ import { initialUser } from '../Login/Login';
   @observable imgPath = '/images/placeholder.png'
   @observable useDBPath = !!this.props.user.image || false;
 
+  // TODO: this is temporary
+  @observable withoutMe = [];
+  @observable filteredUsers = [];
+
+  async start() {
+    // TODO: this is temporary
+    await fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        this.withoutMe = users.filter(user => user._id !== this.props.user._id);
+        this.updateContact();
+      })
+  }
+
+  updateContact() {
+    const isIncluded = (userId) => {
+      return this.props.user.contact.some(contactId => userId === contactId);
+    }
+    this.filteredUsers = this.withoutMe.filter(user => {
+      if (isIncluded(user._id)) {
+        return user.username;
+      } else {
+        return '';
+      }
+    });
+  }
+
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
@@ -29,17 +54,11 @@ import { initialUser } from '../Login/Login';
     this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
   }
 
-  openModalCreateGroup(){
+  openModalCreateGroup() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
   }
 
   logout() {
-    // // update login status in MongoDB
-    // this.stores.Login.user = { ...this.stores.Login.user, status: false };
-    // // update login status in the store
-    // this.stores.Login.userLoggedIn = false;
-    // this.stores.Login.user = initialUser;
-    // this.props.history.push('/');
     fetch('/api/logout').then(() => this.props.history.go('/'))
   }
 

@@ -24,6 +24,10 @@ const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
 
+// if we want to move the salt later on
+const salty = require('./tjat.json')
+global.passwordSalt = salty.salt;
+
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -118,19 +122,16 @@ app.post('/login', (req, res) => {
     })
 });
 
-// TODO: funkar inte
 app.put('/users/:_id', (req, res) => {
-  User.find({ _id: req.params._id })
-    .then(user => {
-      console.log(user);
-      User.update('/users/:_id', req.body, (err) => {
-        if (err) {
-          res.json(err);
-        } else {
-          res.success = 'contact updated!';
-        }
-        res.json(res);
-      });
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { contact: req.body.contact } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
     });
 });
 
@@ -145,12 +146,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-
-  /**
-   * 1. Hitta användaren som är inloggad
-   * 2. Lägg till imgpath till användaren
-   * 3. Spara användaren
-   */
   User.findById(req.session.userId)
     .then(user => {
       // If user already has an image field, then remove file
@@ -164,16 +159,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
       }
       user.image = req.file.path.split('public')[1];
       let joOptions = {};
-      jo.rotate(req.file.path, joOptions, function(error, buffer, orientation) {
+      jo.rotate(req.file.path, joOptions, function (error, buffer, orientation) {
         if (error) {
-            console.log('An error occurred when rotating the file: ' + error.message);
-            return;
+          console.log('An error occurred when rotating the file: ' + error.message);
+          return;
         }
         //console.log('Orientation was: ' + orientation);
         let testPath = req.file.path;
         // upload the buffer to s3, save to disk or more ...
-        fs.writeFile(req.file.path, buffer, function(err) {
-          if(err) {
+        fs.writeFile(req.file.path, buffer, function (err) {
+          if (err) {
             return console.log(err, testPath);
           }
           console.log("The file was saved!", testPath);
