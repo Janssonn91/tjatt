@@ -1,9 +1,11 @@
 .sidebar {
   background-color:  #484951;
   height: 100vh;
-  
   .profile {
     height: 85px;
+    .user-holder {
+      padding-bottom: 0.5rem;
+    }
     .dropdown {
       display: inline-block;
       border-color: black;
@@ -37,17 +39,18 @@
   .menu {
     display: inline-block;
     .nav-link {
-      padding: 10px 0 10px 20px !important;
+      padding: 0.3rem 0.8rem;
       color: lightgray;
       font-weight: bold;
       display: inline-block;
       text-align: left;
       width: 85%;
 
-      &.nav-link:first-child {
-        width: 100% !important;
-        padding-left: 0;
-      }
+      //TODO: Starred styling
+      /*&.nav-link:first-child {
+         width: 100% !important;
+         padding-left: 0;
+      } */
 
       .nav-item {
         text-align: left;
