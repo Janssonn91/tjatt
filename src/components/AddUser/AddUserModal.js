@@ -1,6 +1,6 @@
 import './AddUserModal.scss';
 
-@observer export default class AddUser extends Component {
+@inject('loginStore') @observer export default class AddUser extends Component {
 
   @observable filteredUsers = [];
 
@@ -9,10 +9,10 @@ import './AddUserModal.scss';
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        let withoutMe = users.filter(user => user._id !== this.props.user._id)
+        let withoutMe = users.filter(user => user._id !== this.props.loginStore.user._id)
 
         const isIncluded = (userId) => {
-          return this.props.user.contact.some(contactId => userId === contactId);
+          return this.props.loginStore.user.contact.some(contactId => userId === contactId);
         }
         this.filteredUsers = withoutMe.filter(user => !isIncluded(user._id));
       });
@@ -25,18 +25,20 @@ import './AddUserModal.scss';
     this.filteredUsers.splice(index, 1);
   }
 
-  addContact(userId) {
-    this.props.user.contact.push(userId);
+  async addContact(userId) {
+    // this.props.loginStore.user.contact.push(userId);
     // add contact in my contact
-    const { _id } = toJS(this.props.user);
+    const { _id } = toJS(this.props.loginStore.user);
 
-    fetch(`/api/users/${_id}`, {
+    await fetch(`/api/users/${_id}`, {
       method: 'PUT',
       body: JSON.stringify({ _id, contact: userId }),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
         res.json();
+      })
+      .then(() => {
         this.updateFilteredUsers(userId);
         this.props.update();
       })

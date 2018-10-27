@@ -2,10 +2,10 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder pl-3 pt-4">
-        <CardImg src={this.useDBPath ? this.props.user.image : this.imgPath} />
+        <CardImg src={this.useDBPath ? this.props.loginStore.user.image : this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5>{this.props.user.nickname}</h5>
+            <h5>{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
             <li className="px-3 py-1 btn-li">
@@ -39,6 +39,6 @@
     </Nav>
     <hr />
   </div>
-  <AddUserModal user={this.props.user}{...this.addUserModalOpen} update={() => this.updateContact()} />
+  <AddUserModal {...this.addUserModalOpen} update={() => this.updateContact()} />
   <CreateGroupModal {...this.createGroupModalOpen} />
 </Fragment >
