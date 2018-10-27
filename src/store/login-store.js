@@ -1,6 +1,9 @@
 class LoginStore {
   @observable user = {};
   @observable loginError = false;
+  @observable usernameExits = false;
+  @observable candidates = [];
+  @observable myContacts = [];
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -56,6 +59,59 @@ class LoginStore {
       });
   }
 
+  @action fetchContact() {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        const withoutMe = users.filter(user => user._id !== this.user._id);
+
+        const isIncluded = (userId) => {
+          return this.user.contact.some(contactId => userId === contactId);
+        }
+        this.candidates = withoutMe.filter(user => !isIncluded(user._id));
+        this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+      });
+  }
+
+  // remove added user in candidates
+  @action updateContact(userId) {
+    const addedUser = this.candidates.find(user => user._id === userId);
+    const index = this.candidates.indexOf(addedUser);
+    this.candidates.splice(index, 1);
+    this.myContacts.push(addedUser);
+  }
+
+  @action addContact(userId) {
+    // add contact in my contact
+    fetch(`/api/users/${this.user._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ _id: this.user._id, contact: userId }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        res.json();
+      })
+      .then(() => {
+        this.updateContact(userId);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // add my id to the new friend contact
+    fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ userId, contact: this.user._id }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => {
+        res.json();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+  }
 }
 
 export const loginStore = new LoginStore();
