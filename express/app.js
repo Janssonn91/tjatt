@@ -25,8 +25,15 @@ global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
 
 // if we want to move the salt later on
-const salty = require('./tjat.json')
-global.passwordSalt = salty.salt;
+ const salty = require('./tjat.json')
+ global.passwordSalt = salty.salt;
+
+const mailer = require('./classes/Sendmail.class');
+app.post('/send-mail', mailer)
+/*app.post('/send-mail', (mailer) => {
+  console.log(mailer);
+  
+});*/
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));

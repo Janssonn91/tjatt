@@ -19,6 +19,7 @@ import './Login.scss';
 
   usernameChange(e) {
     this.username = e.currentTarget.value;
+    console.log(this.username);
   }
 
   passwordChange(e) {
@@ -60,4 +61,42 @@ import './Login.scss';
       })
   }
 
+  retrievePassword = (e) => {
+    e.preventDefault();
+    // Hur kommer rätt username in? går inte med this i arrowfunktion
+    // hänvisa till inputfältet väl?!
+    let body = {
+      username: 'Pelle Plutt',
+      email: 'hejdinget@get.nu'
+    }
+    console.log(body.username, body.email);
+    fetch('/api/send-mail', {
+      method: 'POST',
+      body: JSON.stringify({ body }),
+      dataType: 'json',
+      processData: false,
+      headers: { 'Content-Type': 'application/json; charset=utf-8'}
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        console.log('här din get');
+      }
+    }).catch(err => {
+      console.log("err", err)
+    })
+  }
+
 }
+
+
+
+
+/*
+url: `/send-mail`,
+        method: 'POST',
+        data: JSON.stringify(body),
+        dataType: 'json',
+        processData: false,
+        contentType: "application/json; charset=utf-8"
+        */
