@@ -56,14 +56,18 @@
       .nav-item {
         text-align: left;
         display: inline-block;
-        
+      }
     }
-  }
-  
+
+    img {
+      width: 30px;
+      vertical-align: center;
+    }
+
     .fa-star {
       color: gold;
     }
-    
+
     .fa-plus {
       color: white;
       padding-top: 16px;
@@ -72,12 +76,12 @@
         cursor: pointer;
       }
     }
-    
+
     .fas, .far {
       display: inline-block;
     }
   }
-  
+
 }
 
 hr {

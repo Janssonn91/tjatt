@@ -30,7 +30,10 @@
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       {toJS(this.filteredUsers) && toJS(this.filteredUsers).map((user, i) =>
-        <NavLink key={i} className="nav-link">{user.username}</NavLink>
+        <NavLink key={i} className="nav-link">
+          <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
+          <div className="d-inline-block">{user.username}</div>
+        </NavLink>
       )}
       <NavLink to="#">
         <NavItem>My Groups</NavItem>
