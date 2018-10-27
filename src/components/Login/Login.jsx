@@ -27,8 +27,8 @@
               </Link>
             </div>
           </Form>
-          {this.loginError &&
-            < Alert className="my-2 error-msg">
+          {this.props.loginStore.loginError &&
+            < Alert color="danger" className="my-2">
               Username or password is incorrect
             </Alert>}
         </Col>

@@ -1,5 +1,6 @@
 class LoginStore {
   @observable user = {};
+  @observable loginError = false;
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -27,6 +28,7 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
         }
+        this.loginError = true;
       }).catch(err => {
         console.log("err", err)
       })
