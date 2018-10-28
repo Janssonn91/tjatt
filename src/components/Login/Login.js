@@ -63,19 +63,16 @@ import './Login.scss';
 
   retrievePassword = (e) => {
     e.preventDefault();
-    // Hur kommer rätt username in? går inte med this i arrowfunktion
-    // hänvisa till inputfältet väl?!
-    let body = {
+    let test = {
       username: 'Pelle Plutt',
       email: 'hejdinget@get.nu'
     }
-    console.log(body.username, body.email);
+    console.log(test.username,test.email);
     fetch('/api/send-mail', {
+      credentials: 'include',
       method: 'POST',
-      body: JSON.stringify({ body }),
-      dataType: 'json',
-      processData: false,
-      headers: { 'Content-Type': 'application/json; charset=utf-8'}
+      body: JSON.stringify( {username: test.username, email: test.email} ),
+      headers: { 'Content-Type': 'application/json'}
     })
     .then(res => res.json())
     .then(res => {
