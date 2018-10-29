@@ -1,6 +1,6 @@
 import './Login.scss';
 
-@inject('loginStore') @withRouter @observer export default class Login extends Component {
+@inject('loginStore', 'channelStore') @withRouter @observer export default class Login extends Component {
 
   @observable collapseOpen = false;
   @observable username = '';

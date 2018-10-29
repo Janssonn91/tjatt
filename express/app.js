@@ -51,7 +51,7 @@ const User = require('./classes/User.class');
 const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
-// new Channel(app);
+new Channel(app);
 // new Message(app);
 
 app.get('/hello', (req, res) => {
@@ -123,9 +123,10 @@ app.post('/login', (req, res) => {
 });
 
 app.put('/users/:_id', (req, res) => {
+  console.log(req.body)
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $push: { contact: req.body.contact } }
+    { $push: { contact: req.body.contact, channel: req.body.channel}}
   )
     .then(() => {
       res.json({ success: true })
@@ -223,7 +224,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 
 // const Channel = require('./classes/Channel.class');
-new Channel(app);
+// new Channel(app);
 
 const Repo = require('./classes/Repo.class');
 new Repo(app);

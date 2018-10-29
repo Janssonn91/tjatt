@@ -1,6 +1,6 @@
 import './Sidebar.scss';
 
-@inject('loginStore') @withRouter @observer export default class Sidebar extends Component {
+@inject('loginStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
   @observable addUserModalOpen = {
     isOpen: false,
