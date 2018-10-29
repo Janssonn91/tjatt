@@ -1,6 +1,6 @@
 import './Signup.scss';
 
-@inject('loginStore') @observer export default class Signup extends Component {
+@inject('loginStore', 'channelStore') @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
   @observable passWordToSet = '';

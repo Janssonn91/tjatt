@@ -1,9 +1,13 @@
+import channelStore from './channel-store';
+
 class LoginStore {
   @observable user = {};
   @observable loginError = false;
   @observable usernameExits = false;
   @observable candidates = [];
   @observable myContacts = [];
+  @observable myChannel = [];
+
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -82,36 +86,49 @@ class LoginStore {
   }
 
   @action addContact(userId) {
-    // add contact in my contact
-    fetch(`/api/users/${this.user._id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ _id: this.user._id, contact: userId }),
-      headers: { 'Content-Type': 'application/json' }
+      const channelname= this.user._id + " and " + userId;
+      const admin = [this.user._id, userId];
+      const members = [this.user._id, userId];
+      
+      channelStore.createChannel(channelname, admin, members).then((channel)=>{
+   // add contact in my contact
+   fetch(`/api/users/${this.user._id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ _id: this.user._id, contact: userId, channel: channel._id
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(res => {
+      res.json();
     })
-      .then(res => {
-        res.json();
-      })
-      .then(() => {
-        this.updateContact(userId);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    .then(() => {
+      this.updateContact(userId);
+      
+    })
+    .catch(err => {
+      console.log(err);
+    });
 
-    // add my id to the new friend contact
-    fetch(`/api/users/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ userId, contact: this.user._id }),
-      headers: { 'Content-Type': 'application/json' }
+  // add my id to the new friend contact
+  fetch(`/api/users/${userId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ userId, contact: this.user._id, channel: channel._id }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(res => {
+      res.json();
     })
-      .then(res => {
-        res.json();
-      })
-      .catch(err => {
-        console.log(err);
+    .catch(err => {
+      console.log(err);
+    });
       });
+     
+      
+ 
 
   }
+
+  
 }
 
 export const loginStore = new LoginStore();

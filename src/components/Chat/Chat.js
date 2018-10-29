@@ -19,7 +19,7 @@ import './Chat.scss';
 
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
-@inject('loginStore') @observer export default class Chat extends Component {
+@inject('loginStore', 'channelStore') @observer export default class Chat extends Component {
 
   @observable inputMessage = '';
   @observable chatHistories = [{
