@@ -1,6 +1,6 @@
 <Fragment>
-  {Object.keys(this.user).length > 0 ?
-    <Tjatt user={this.user} />
+  {Object.keys(this.props.loginStore.user).length > 0 ?
+    <Tjatt />
     :
     <div className="login-area">
       <Row>
@@ -11,13 +11,13 @@
       </Row>
       <Row className="mb-5">
         <Col className="overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-          {this.user && this.user.username && <h1>{this.user.username}</h1>}
+          {this.props.loginStore.user && <h1>{this.props.loginStore.user.username}</h1>}
           <Form onSubmit={this.onSubmit}>
             <FormGroup className="mt-4">
-              <Input tabIndex="1" type="text" id="username" placeholder="Username" value={this.usernameToSet} onChange={e => this.usernameChange(e)} />
+              <Input tabIndex="1" type="text" id="username" placeholder="Username" value={this.username} onChange={e => this.usernameChange(e)} />
             </FormGroup>
             <FormGroup>
-              <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.passWordToSet} onChange={e => this.passwordChange(e)} />
+              <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.password} onChange={e => this.passwordChange(e)} />
               <p className="small mt-1 d-none">Can't remember your password?</p>
             </FormGroup>
             <div className="text-center mb-3">
@@ -27,7 +27,7 @@
               </Link>
             </div>
           </Form>
-          {this.loginError &&
+          {this.props.loginStore.loginError &&
             < Alert color="danger" className="my-2">
               Username or password is incorrect
             </Alert>}

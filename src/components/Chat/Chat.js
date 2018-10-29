@@ -15,15 +15,11 @@
 //      faCodeBranch
 //  } from '@fortawesome/free-solid-svg-icons'
 
-
-
-
 import './Chat.scss';
 
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
-@observer
-export default class Chat extends Component {
+@inject('loginStore') @observer export default class Chat extends Component {
 
   @observable inputMessage = '';
   @observable chatHistories = [{
@@ -118,11 +114,11 @@ export default class Chat extends Component {
 
   sendMessage() {
 
-    console.log("user", this.props.user)
+    console.log("user", this.props.loginStore.user)
     this.chatHistories.push({
       id: Date.now(),
       time: this.formattedDate(new Date()),
-      sender: this.props.user.nickname,
+      sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
       channel: "group one",
       text: this.inputMessage,
       star: false

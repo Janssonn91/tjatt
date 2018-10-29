@@ -2,12 +2,12 @@
   <Row className="m-0">
     <Col xs="12" md="3" xl="2" className={this.hideMenu === true ? "hide-menu" : "pr-0 pl-0"}>
       <div className="side-menu">
-        <Sidebar user={this.props.user} toMenu={this.sendToMenu} logout={userLoggedIn => { this.userLoggedIn = userLoggedIn }} />
+        <Sidebar toMenu={this.sendToMenu} />
       </div>
     </Col>
     <Col xs="12" md="9" xl="10" className={this.hideChat === true ? "hide-chat" : "pr-0 pl-0"}>
       <div className="dialog">
-        <Chat user={this.props.user} toChat={this.sendToChat} />
+        <Chat toChat={this.sendToChat} />
       </div>
     </Col>
   </Row>

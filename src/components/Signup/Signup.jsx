@@ -22,9 +22,10 @@
         <div className="text-center mb-3">
           <Button className="overlay" disabled={this.usernameToSet && this.passWordToSet.length && (this.passWordToSet === this.confirmPassword) ? null : true}>Sign up</Button>
           {this.usernameExits &&
-            < Alert color="danger" className="my-2">
+            < Alert className="my-3 error-msg">
               Username already in use, please choose another
-          </Alert>}
+            </Alert>
+          }
         </div>
       </Form>
 

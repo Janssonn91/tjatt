@@ -1,6 +1,6 @@
 import './Sidebar.scss';
 
-@withRouter @observer export default class Sidebar extends Component {
+@inject('loginStore') @withRouter @observer export default class Sidebar extends Component {
 
   @observable addUserModalOpen = {
     isOpen: false,
@@ -13,37 +13,10 @@ import './Sidebar.scss';
     toggle: this.openModalCreateGroup.bind(this)
   }
   @observable collapseOpen = false;
-  @observable userLoggedIn;
   @observable file;
   @observable imgPath = '/images/placeholder.png'
-  @observable useDBPath = !!this.props.user.image || false;
+  @observable useDBPath = !!this.props.loginStore.user.image || false;
 
-  // TODO: this is temporary
-  @observable withoutMe = [];
-  @observable filteredUsers = [];
-
-  async start() {
-    // TODO: this is temporary
-    await fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        this.withoutMe = users.filter(user => user._id !== this.props.user._id);
-        this.updateContact();
-      })
-  }
-
-  updateContact() {
-    const isIncluded = (userId) => {
-      return this.props.user.contact.some(contactId => userId === contactId);
-    }
-    this.filteredUsers = this.withoutMe.filter(user => {
-      if (isIncluded(user._id)) {
-        return user.username;
-      } else {
-        return '';
-      }
-    });
-  }
 
   async toggle() {
     await sleep(1);
@@ -68,10 +41,8 @@ import './Sidebar.scss';
 
   onFileChange = (event) => {
     let store = JSON.parse(localStorage.getItem('store'));
-    console.log(store.Login)
-    console.log(event.target.files[0])
     let formData = new FormData();
-    formData.append('id', this.props.user._id);
+    formData.append('id', this.props.loginStore.user._id);
     formData.append('file', event.target.files[0]);
     fetch('/api/upload', {
       method: 'POST',
@@ -82,6 +53,7 @@ import './Sidebar.scss';
         let path = res.path;
         this.imgPath = path;
         this.useDBPath = false;
+        this.toggle();
       });
 
   }

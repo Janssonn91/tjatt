@@ -1,4 +1,4 @@
-@observer
- export default class Message extends Component {
+@inject('loginStore') @observer
+export default class Message extends Component {
 
- }
+}

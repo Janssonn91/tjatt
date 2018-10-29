@@ -48,11 +48,11 @@
   <hr className="mt-0 mb-2" />
   <div className="chat-history px-3 mr-1">
     <ul ref="messageList" onScroll={this.onScroll}>
-      <Message user={this.props.user}{...this.sendToChatHistory} />
+      <Message {...this.sendToChatHistory} />
       {/* <li className="clearfix ">
         <div className=" me">
-          <span className="message-data-time" >10:10 AM, Today</span> &nbsp; 
-          <span className="message-data-name " >{this.stores.Login.user.nickname}</span>         
+          <span className="message-data-time" >10:10 AM, Today</span> &nbsp;
+          <span className="message-data-name " >{this.stores.Login.user.nickname}</span>
         </div>
         <div className="message my-message">
           How are you?
