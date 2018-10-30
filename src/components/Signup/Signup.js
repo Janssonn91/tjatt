@@ -38,7 +38,7 @@ import './Signup.scss';
       .then(res => {
         if (res.success) {
           console.log('created user: ' + this.usernameToSet)
-
+          this.sendWelcomeMail();
           this.user = res.user
           this.usernameExits = false;
           this.props.history.push('/');
@@ -49,5 +49,27 @@ import './Signup.scss';
         console.log('error', err);
       });
   };
+
+  sendWelcomeMail(){
+      let test = {
+        username: 'Pelle Plutt',
+        email: 'hejdinget@get.nu'
+      }
+      console.log(test.username,test.email);
+      fetch('/api/send-mail', {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify( {username: test.username, email: test.email} ),
+        headers: { 'Content-Type': 'application/json'}
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          console.log('här din get');
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
+  }
 
 }

@@ -18,24 +18,23 @@ module.exports = function(req, res) {
         let mailOptions = {
 
             from: '"Tj@ support"<noreply@tjat.net', // sender address 
-            to: 'tjater@tjattest.com', // list of receivers 
-            subject: 'reset password', // Subject line  
+            to: `${req.body.email}`, // list of receivers 
+            subject: 'Welcome to tj@!', // Subject line  
             html: ''
         
         };
 
         let message = {
             // Comma separated list of recipients
-            //to: `${req.body.email}`,
-            to: 'hejdinget@get.com',
+            to: `${req.body.email}`,
             // Subject of the message
-            subject: `Password reset`,
+            subject: `Welcome to tj@`,
 
             // HTML body
             html:`
-                <p>Testing</p>
-                <P>Användarnamn: ${req.body.username}</p>
-                <p>Mail: ${req.body.email}</p>
+                <h2>Welcome to tj@!</h2>
+                <P>Dear: ${req.body.username}, we are so happy to have you as a member in our tj@-community!</p>
+                <p>Please take a moment and discover the power of tj@. Explore how to chat and share node-applications in groups.</p>
                 `,
 
             // An array of attachments
