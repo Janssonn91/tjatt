@@ -92,7 +92,9 @@ export default class Chat extends Component {
     //  });
   }
 
-
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  };
 
   componentDidMount() {
     this.scrollToBottom();
@@ -102,9 +104,7 @@ export default class Chat extends Component {
     this.scrollToBottom();
   }
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
-  };
+
 
 
 
@@ -131,25 +131,31 @@ export default class Chat extends Component {
 
 
   sendMessage() {
+    if (this.inputMessage.length > 0) {
+      console.log("user", this.props.user)
+      this.chatHistories.push({
+        id: Date.now(),
+        time: this.formattedDate(new Date()),
+        sender: this.props.user.nickname,
+        channel: "group one",
+        text: this.inputMessage,
+        star: false
+      });
 
-    console.log("user", this.props.user)
-    this.chatHistories.push({
-      id: Date.now(),
-      time: this.formattedDate(new Date()),
-      sender: this.props.user.nickname,
-      channel: "group one",
-      text: this.inputMessage,
-      star: false
-    });
 
-    this.scrollToBottom();
 
-    console.log(this.chatHistories);
+      this.scrollToBottom();
+
+      console.log(this.chatHistories);
+    } else {
+      return false;
+    }
 
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
+
 
   //  scrollToBottom = () => {
   //     const { messageList } = this.refs;

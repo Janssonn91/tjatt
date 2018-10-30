@@ -110,7 +110,7 @@
           onChange={e => this.inputMessage = e.currentTarget.value}
           onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
       </FormGroup>
-      <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
+      <Button className="send p-0" disabled={!this.inputMessage} onClick={e => this.sendMessage()}>Send</Button>
     </Form>
   </div>
 </Fragment>
