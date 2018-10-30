@@ -1,17 +1,17 @@
 <Fragment>
   <div className="gitNav p-4">
     <Form>
-    <h5>Git repository</h5>
+      <h5>Git repository</h5>
       <FormGroup>
         <Label for="projectName">Project</Label>
-          <Input
-            id="project-name"
-            type="text"
-            placeholder="Project name"
-            value={this.projectToSet}
-            onChange={e => this.editProjectName(e)}
-            onKeyPress={e => this.checkForEnter(e)}
-            />
+        <Input
+          id="project-name"
+          type="text"
+          placeholder="Project name"
+          value={this.projectToSet}
+          onChange={e => this.editProjectName(e)}
+          onKeyPress={e => this.checkForEnter(e)}
+        />
       </FormGroup>
       <FormGroup>
         <Label for="urlText">URL</Label>
@@ -22,30 +22,25 @@
           value={this.urlToSet}
           onChange={e => this.editText(e)}
           onKeyPress={e => this.checkForEnter(e)}
-          />
+        />
       </FormGroup>
       <InputGroupAddon addonType="append">
-        <Button className="bg-warning ml-1 float-right"
-          onClick={this.submit}>Clone</Button>
+        <Button className="bg-warning float-right mb-2" onClick={this.submit}>
+          Clone
+        </Button>
       </InputGroupAddon>
       {/* <Button className="bg-danger ml-1 float-right"
         onClick={this.submit}>Close</Button> */}
     </Form>
-    {(this.showMessage) && (
-      <FormText color="white">
-        Cloned!
-      </FormText>
-    )}
+    {this.showMessage && <FormText color="white">Cloned! Your app is now live at <a href="localhost:3000">localhost:XXXX</a></FormText>}
   </div>
 </Fragment>
-
-
 
 // {/* <Fragment>
 //   <div>
 //     <InputGroup className="url-input">
 //       {/* <Labe{}l for="url">Url</Label> */}
-//       <Input 
+//       <Input
 //           id="project-name"
 //           type="text"
 //           placeholder="project-name"
@@ -53,7 +48,7 @@
 //           onChange={e => this.editProjectName(e)}
 //           onKeyPress={e => this.checkForEnter(e)}
 //           />
-//         <Input 
+//         <Input
 //           id="url-text"
 //           type="text"
 //           placeholder="url"
@@ -62,7 +57,7 @@
 //           onKeyPress={e => this.checkForEnter(e)}
 //           />
 //         <InputGroupAddon addonType="append">
-//           <Button 
+//           <Button
 //           onClick={this.submit}>Click button!</Button>
 //         </InputGroupAddon>
 //       </InputGroup>
@@ -115,5 +110,3 @@
 //   </div>
 //   </Col>
 // </Fragment> */}
-
-
