@@ -41,21 +41,13 @@ router.post('/addRepo', async (req, res) => {
 
   let port = randomizePortNumber();
 
-  console.log(routing);
-  routing["test-repo.tjatt.net"] = 3015;
-  console.log(routing);
-  let routingJSON = JSON.stringify(routing, null, 2);
-  console.log(routingJSON);
-  fs.writeFile('./express/routes/routing.json', routingJSON, err => {
-    if (err) throw err;
-  });
-
   /**
    * On POST request:
    * use path.resolve to get correct working directory
    * read app.js to find current port number
    * Change port number to one chosen by us then
    * overwrite app.js file
+   * Write to routing.json
    */
   await promisifiedExec(
     `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
@@ -88,8 +80,19 @@ router.post('/addRepo', async (req, res) => {
           });
         }
       });
+
+      /**
+       * Writes the new repo's
+       * subdomain and chosen port number
+       * to routing.json
+       */
+      routing[`${req.body.projectName}.tjatt.net`] = port;
+      let routingJSON = JSON.stringify(routing, null, 2);
+      fs.writeFile('./express/routes/routing.json', routingJSON, err => {
+        if (err) throw err;
+      });
     }
   );
-  });
+});
 
 module.exports = router;
