@@ -5,7 +5,7 @@ const promisifiedExec = util.promisify(exec); //Gör så att exec await kan anv�
 const fs = require('fs');
 const path = require('path');
 const buf = require('buffer').Buffer;
-const routingJSON = require('./routing.json')
+const routing = require('./routing.json');
 
 router.post('/addRepo', async (req, res) => {
   await promisifiedExec(
@@ -40,6 +40,15 @@ router.post('/addRepo', async (req, res) => {
   }
 
   let port = randomizePortNumber();
+
+  console.log(routing);
+  routing["test-repo.tjatt.net"] = 3015;
+  console.log(routing);
+  let routingJSON = JSON.stringify(routing, null, 2);
+  console.log(routingJSON);
+  fs.writeFile('./express/routes/routing.json', routingJSON, err => {
+    if (err) throw err;
+  });
 
   /**
    * On POST request:
