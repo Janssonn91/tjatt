@@ -34,8 +34,8 @@ module.exports = function(req, res) {
             // HTML body
             html:`
                 <p>Testing</p>
-                <P>Användarnamn: {req.body.username}</p>
-                <p>Mail: {req.body.email}</p>
+                <P>Användarnamn: ${req.body.username}</p>
+                <p>Mail: ${req.body.email}</p>
                 `,
 
             // An array of attachments

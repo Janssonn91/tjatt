@@ -3,6 +3,7 @@ import './Signup.scss';
 @withRouter @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
+  @observable useremailToSet = '';
   @observable passWordToSet = '';
   @observable confirmPassword = '';
   @observable usernameExits = false;
@@ -12,12 +13,17 @@ import './Signup.scss';
     this.usernameToSet = e.currentTarget.value;
   }
 
+  useremailChange(e) {
+    this.useremailToSet = e.currentTarget.value;
+  }
+
   passwordChange(e) {
     this.passWordToSet = e.currentTarget.value;
   }
 
   confirmPasswordChange = (e) => {
     this.confirmPassword = e.currentTarget.value;
+    // behöver email-validering här och sök på om den redan finns i backend?
   }
 
   onSubmit = (e) => {
@@ -26,7 +32,7 @@ import './Signup.scss';
       {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify({ username: this.usernameToSet, password: this.passWordToSet }),
+        body: JSON.stringify({ username: this.usernameToSet, useremail: this.useremailToSet, password: this.passWordToSet }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
       .then(res => {
@@ -36,7 +42,6 @@ import './Signup.scss';
           this.user = res.user
           this.usernameExits = false;
           this.props.history.push('/');
-
         } else {
           this.usernameExits = true;
         }
