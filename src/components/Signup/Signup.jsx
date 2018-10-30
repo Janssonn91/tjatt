@@ -17,7 +17,7 @@
           <Input type="text" name="useremail" id="useremail" placeholder="Enter your email" onChange={e => this.useremailChange(e)} />
         </FormGroup>
         <FormGroup>
-          <Input type="password" name="password" id="examplePassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />
+          <Input type="password" name="password" id="userpassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />
         </FormGroup>
         <FormGroup>
           <Input type="password" name="password" id="confirmPassword" placeholder="Confirm password" onChange={e => this.confirmPasswordChange(e)} />

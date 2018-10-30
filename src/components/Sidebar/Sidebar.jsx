@@ -13,6 +13,7 @@
               <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
             </li>
             <DropdownItem divider />
+            <DropdownItem className="px-3 py-1" tag="li">Change password</DropdownItem>
             <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>

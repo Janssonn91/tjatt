@@ -27,21 +27,26 @@ import './Signup.scss';
   }
 
   onSubmit = (e) => {
+    let newUser = {
+      username: document.getElementById('username').value,
+      useremail: document.getElementById('useremail').value,
+      password: document.getElementById('userpassword').value
+    };
+    console.log(newUser);
     e.preventDefault();
-    fetch('/api/users',
-      {
+    fetch('/api/users', {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify({ username: this.usernameToSet, useremail: this.useremailToSet, password: this.passWordToSet }),
+        body: JSON.stringify({ username: newUser.username , useremail: newUser.useremail, password: newUser.password }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
       .then(res => {
         if (res.success) {
           console.log('created user: ' + this.usernameToSet)
-          this.sendWelcomeMail();
           this.user = res.user
           this.usernameExits = false;
           this.props.history.push('/');
+          this.sendWelcomeMail(this.user);
         } else {
           this.usernameExits = true;
         }
@@ -50,16 +55,12 @@ import './Signup.scss';
       });
   };
 
-  sendWelcomeMail(){
-      let test = {
-        username: 'Pelle Plutt',
-        email: 'hejdinget@get.nu'
-      }
-      console.log(test.username,test.email);
+  sendWelcomeMail(user){
+      console.log(toJS(user));
       fetch('/api/send-mail', {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify( {username: test.username, email: test.email} ),
+        body: JSON.stringify( {username: user.username, email: user.email} ),
         headers: { 'Content-Type': 'application/json'}
       })
       .then(res => res.json())

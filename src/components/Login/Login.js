@@ -19,7 +19,6 @@ import './Login.scss';
 
   usernameChange(e) {
     this.username = e.currentTarget.value;
-    console.log(this.username);
   }
 
   passwordChange(e) {
