@@ -61,6 +61,9 @@ import './Login.scss';
       })
   }
 
+  // måste göra ny route för detta, denna är tagen av signup nu!
+  // länk är satt som d-none i login.jsx nu!
+  /*
   retrievePassword = (e) => {
     e.preventDefault();
     let test = {
@@ -83,6 +86,7 @@ import './Login.scss';
       console.log("err", err)
     })
   }
+  */
 
 }
 
