@@ -25,6 +25,7 @@
     }
 
     h5 {
+      font-size: 20px;
       color: white;
       font-weight: bold;
       display: inline-block;
@@ -45,7 +46,12 @@
       font-weight: bold;
       display: inline-block;
       text-align: left;
-      width: 85%;
+      width: 60%;
+      order: 1;
+      @media (min-width: 768px){
+        width: 85%;
+        order: 0;
+      }
 
       //TODO: Starred styling
       /*&.nav-link:first-child {
@@ -68,10 +74,18 @@
       color: gold;
     }
 
+    .flexWrapper {
+      display: flex;
+      align-items: center;
+    }
+
     .fa-plus {
       color: white;
-      padding-top: 16px;
       font-size: small;
+      order: -1;
+      @media (min-width: 768px){
+        order: 1;
+      }
       &:hover {
         cursor: pointer;
       }
@@ -92,6 +106,7 @@ hr {
   color: white;
   font-size: 20px;
   vertical-align: middle;
+  margin-left: 10px;
 }
 
 @media (min-width:768px){
