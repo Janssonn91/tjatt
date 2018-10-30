@@ -5,6 +5,7 @@ const promisifiedExec = util.promisify(exec); //Gör så att exec await kan anv�
 const fs = require('fs');
 const path = require('path');
 const buf = require('buffer').Buffer;
+const routingJSON = require('./routing.json')
 
 router.post('/addRepo', async (req, res) => {
   await promisifiedExec(

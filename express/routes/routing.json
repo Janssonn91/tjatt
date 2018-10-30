@@ -1,0 +1,13 @@
+{
+  "tjatt.net": 3000,
+  "www.tjatt.net": {
+    "redirect": "tjatt.net"
+  },
+  "sub.tjatt.net": 3010,
+  "music.tjatt.net": 8080,
+  "dev.tjatt.net": 4500,
+  "filmvisarna.tjatt.net": 3006,
+  "personlighetstest.tjatt.net": 3005,
+  "fyra-i-rad.tjatt.net": 3007,
+  "bio.tjatt.net": 3009
+}
