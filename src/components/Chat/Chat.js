@@ -128,26 +128,15 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   sendMessage() {
     if (this.inputMessage.length > 0) {
-      console.log("user", this.props.user)
+      console.log("user", this.props.loginStore.user)
       this.chatHistories.push({
         id: Date.now(),
         time: this.formattedDate(new Date()),
-        sender: this.props.user.nickname,
+        sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
         channel: "group one",
         text: this.inputMessage,
         star: false
       });
-
-    console.log("user", this.props.loginStore.user)
-    this.chatHistories.push({
-      id: Date.now(),
-      time: this.formattedDate(new Date()),
-      sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
-      channel: "group one",
-      text: this.inputMessage,
-      star: false
-    });
-
 
       this.scrollToBottom();
 

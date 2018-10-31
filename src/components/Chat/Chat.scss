@@ -193,12 +193,13 @@ $fontSm: 12px;
         }
 
         .my-message {
-          color: #fff;
+            margin-left: 20px;
+            color: #fff;
             background: lighten($blue, 8%);
-            float: right;
+            float: left;
             &:after {
                 border-bottom-color: lighten($blue, 8%);
-                right:10px;
+                left:20px;
             }
         }
     }
@@ -261,7 +262,7 @@ $fontSm: 12px;
                 width: 60vw;
             }
             @media (min-width: 1200px) {
-                width: 70vw;
+                width: 65vw;
             }
         }
 

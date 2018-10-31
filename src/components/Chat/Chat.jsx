@@ -35,9 +35,14 @@
   <Row>
     <Col>
       <div className="chat-history px-3 mr-1">
-        <ul ref="messageList" onScroll={this.onScroll}>
-          <Message {...this.sendToChatHistory} />
-        </ul>
+        <ScrollableFeed forceScroll={true}>
+          <ul ref="messageList" onScroll={this.onScroll}>
+            <Message {...this.sendToChatHistory} />
+          </ul>
+          <div style={{ float: "left", clear: "both" }}
+            ref={(el) => { this.messagesEnd = el; }}>
+          </div>
+        </ScrollableFeed>
       </div>
     </Col>
   </Row>
