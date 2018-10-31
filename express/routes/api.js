@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const { exec, spawn } = require('child_process');
+const {
+  exec,
+  spawn
+} = require('child_process');
 const util = require('util');
 const promisifiedExec = util.promisify(exec); //Gör så att exec await kan användas
 const fs = require('fs');
@@ -9,10 +12,9 @@ const buf = require('buffer').Buffer;
 router.post('/addRepo', async (req, res) => {
   await promisifiedExec(
     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-    req.body.projectName
-    } && npm install`
+req.body.projectName
+} && npm install`
   );
-
   // Change back params to 'npm' and ['start']
   // This is to get it to work with express apps
   let process = spawn('node', ['app'], {
@@ -48,8 +50,7 @@ router.post('/addRepo', async (req, res) => {
    * overwrite app.js file
    */
   await promisifiedExec(
-    `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
-    {},
+    `cd ${path.resolve(`./repos/${req.body.projectName}`)}`, {},
     () => {
       const filePath = path.resolve(`./repos/${req.body.projectName}`);
       fs.readFile(filePath + '/app.js', (err, data) => {
@@ -80,6 +81,52 @@ router.post('/addRepo', async (req, res) => {
       });
     }
   );
-  });
+});
+
+
+const Docker = require('node-docker-api');
+
+const docker = new Docker({
+  socketPath: '/var/run/docker.sock'
+});
+
+const tar = require('tar-fs');
+const promisifyStream = (stream) => new Promise((resolve, reject) => {
+  stream.on('data', (d) => console.log(d.toString()))
+  stream.on('end', resolve)
+  stream.on('error', reject)
+})
+
+function build_image(_image, _cmd, _name) {
+  var tarStream = tar.pack('./docker/musicplayer')
+  console.log(tarStream)
+  docker.image.build(tarStream, {
+      t: 'testimg'
+    })
+    .then((stream) => promisifyStream(stream))
+    .then(() => {
+      create_container();
+    })
+    .catch((error) => console.log(error))
+}
+
+function create_container(_appPort) {
+  docker.container.create({
+      Image: 'testimg',
+      name: 'test',
+      "HostConfig": {
+        "PortBindings": {
+          "3300/tcp": [{
+            "HostPort": "8080"
+          }]
+        },
+      }
+    })
+    .then((container) => container.start())
+    .catch((error) => console.log(error))
+}
+
+build_image();
+
 
 module.exports = router;
