@@ -91,6 +91,7 @@ const docker = new Docker({
 });
 
 const tar = require('tar-fs');
+
 const promisifyStream = (stream) => new Promise((resolve, reject) => {
   stream.on('data', (d) => console.log(d.toString()))
   stream.on('end', resolve)
@@ -98,7 +99,10 @@ const promisifyStream = (stream) => new Promise((resolve, reject) => {
 })
 
 function build_image(_image, _cmd, _name) {
-  var tarStream = tar.pack('./docker/musicplayer')
+  let name = 'musicplayer'
+
+  create_dockerfile( name )
+  var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
       t: 'testimg'
     })
@@ -114,19 +118,41 @@ function create_container(_appPort) {
   
   let config = {
     Image: 'testimg',
-    name: 'test',
+    name: 'musik2',
     "HostConfig": {
       "PortBindings": { },
     }
   }
 
-  //
-
-  config.HostConfig.PortBindings[`${port}/tcp`] = [ { HostPort: '8080' } ]
+  config.HostConfig.PortBindings[`${port}/tcp`] = [ { HostPort: '8081' } ]
 
   docker.container.create(config)
   .then((container) => container.start())
   .catch((error) => console.log(error))
+}
+
+function create_dockerfile( name ){
+  name = "musicplayer"
+
+  let path = `docker/${name}/Dockerfile`;
+
+
+  fs.writeFile( path, ''  , { flag: 'wx' }, function (err) {
+    if (err) {
+      console.log("Dockerfile already exists!")
+    }
+    else{
+      fs.appendFileSync(path, 
+`FROM node:latest
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3300
+CMD [ "npm", "start" ]`);
+    }
+    
+  });
 }
 
 build_image();
