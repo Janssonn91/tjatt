@@ -1,5 +1,7 @@
+$backgroundColor: #484951;
+
 .sidebar {
-  background-color:  #484951;
+  background-color: $backgroundColor;
   height: 100vh;
   .profile {
     height: 85px;
@@ -28,6 +30,7 @@
     }
 
     h5 {
+      font-size: 20px;
       color: white;
       font-weight: bold;
       display: inline-block;
@@ -41,6 +44,7 @@
     }
   }
   .menu {
+    width: 100%;
     display: inline-block;
     .nav-link {
       padding: 0.3rem 0.8rem;
@@ -48,7 +52,12 @@
       font-weight: bold;
       display: inline-block;
       text-align: left;
-      width: 85%;
+      width: 60%;
+      order: 1;
+      @media (min-width: 768px){
+        width: 85%;
+        order: 0;
+      }
 
       //TODO: Starred styling
       /*&.nav-link:first-child {
@@ -59,28 +68,47 @@
       .nav-item {
         text-align: left;
         display: inline-block;
-        
+      }
     }
-  }
-  
+    .nav-link.contacts{
+      width: 100%;
+      &:hover {
+        color: #fff;
+        background-color: darken($backgroundColor, 10%);
+      }
+    }
+
+    img {
+      width: 30px;
+      vertical-align: center;
+    }
+
     .fa-star {
       color: gold;
     }
-    
+
+    .flexWrapper {
+      display: flex;
+      align-items: center;
+    }
+
     .fa-plus {
       color: white;
-      padding-top: 16px;
       font-size: small;
+      order: -1;
+      @media (min-width: 768px){
+        order: 1;
+      }
       &:hover {
         cursor: pointer;
       }
     }
-    
+
     .fas, .far {
       display: inline-block;
     }
   }
-  
+
 }
 
 hr {
@@ -91,6 +119,7 @@ hr {
   color: white;
   font-size: 20px;
   vertical-align: middle;
+  margin-left: 10px;
 }
 
 @media (min-width:768px){

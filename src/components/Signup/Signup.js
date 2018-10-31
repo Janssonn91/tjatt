@@ -1,13 +1,11 @@
 import './Signup.scss';
 
-@withRouter @observer export default class Signup extends Component {
+@inject('loginStore', 'channelStore') @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
   @observable useremailToSet = '';
   @observable passWordToSet = '';
   @observable confirmPassword = '';
-  @observable usernameExits = false;
-  @observable user = {};
 
   usernameChange(e) {
     this.usernameToSet = e.currentTarget.value;
@@ -34,6 +32,7 @@ import './Signup.scss';
     };
     console.log(newUser);
     e.preventDefault();
+    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet);
     fetch('/api/users', {
         credentials: 'include',
         method: 'POST',

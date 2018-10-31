@@ -11,8 +11,8 @@
           <Input type="text" name="text" id="searchContacts" placeholder="Search" />
         </FormGroup>
         <ListGroup>
-          {toJS(this.filteredUsers).map(user =>
-            <ListGroupItem tag="a" href="#" onClick={() => this.addContact(user._id)} key={user._id}>
+          {this.props.loginStore.candidates.map(user =>
+            <ListGroupItem tag="a" href="#" onClick={() => this.props.loginStore.addContact(user._id)} key={user._id}>
               <div className="d-inline-block">
                 <CardImg className="mr-3" src={user.image || "/images/placeholder.png"} />
               </div>

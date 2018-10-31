@@ -15,15 +15,11 @@
 //      faCodeBranch
 //  } from '@fortawesome/free-solid-svg-icons'
 
-
-
-
 import './Chat.scss';
-
+import ScrollableFeed from 'react-scrollable-feed';
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
-@observer
-export default class Chat extends Component {
+@inject('loginStore', 'channelStore') @observer export default class Chat extends Component {
 
   @observable inputMessage = '';
   @observable chatHistories = [{
@@ -92,6 +88,20 @@ export default class Chat extends Component {
     //  });
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  };
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  compontentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+
+
 
 
   addMemberModalToggle() {
@@ -117,23 +127,29 @@ export default class Chat extends Component {
 
 
   sendMessage() {
+    if (this.inputMessage.length > 0) {
+      console.log("user", this.props.loginStore.user)
+      this.chatHistories.push({
+        id: Date.now(),
+        time: this.formattedDate(new Date()),
+        sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
+        channel: "group one",
+        text: this.inputMessage,
+        star: false
+      });
 
-    console.log("user", this.props.user)
-    this.chatHistories.push({
-      id: Date.now(),
-      time: this.formattedDate(new Date()),
-      sender: this.props.user.nickname,
-      channel: "group one",
-      text: this.inputMessage,
-      star: false
-    });
+      this.scrollToBottom();
 
-    console.log(this.chatHistories);
+      console.log(this.chatHistories);
+    } else {
+      return false;
+    }
 
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
+
 
   //  scrollToBottom = () => {
   //     const { messageList } = this.refs;
