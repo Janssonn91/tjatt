@@ -17,6 +17,7 @@ module.exports = class Message extends ModelAndRoutes {
         type: Schema.Types.ObjectId,
         ref: 'Channel'
       },
+      room: String,
       text: String,
       textType: String,
       star: Boolean,

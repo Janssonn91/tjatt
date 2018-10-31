@@ -15,8 +15,19 @@ db.once('open', () => {
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
-const session = require('express-session')
-const connectMongo = require('connect-mongo')(session);
+const ExpressSession = require('express-session')
+const connectMongo = require('connect-mongo')(ExpressSession);
+const session = ExpressSession({
+  secret: 'big fancy secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  },
+  // Spara session i databasen, lever i 30 dagar
+  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
+})
+
 const hasha = require('hasha');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
@@ -28,19 +39,26 @@ const apiRoutes = require('./routes/api');
 const salty = require('./tjat.json')
 global.passwordSalt = salty.salt;
 
+const io = require('socket.io')(
+  global.httpServer,
+  {
+    path: global.production ? '/api/socket' : '/socket',
+    serveClient: false
+  }
+);
+
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(session({
-  secret: 'big fancy secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000
-  },
-  // Spara session i databasen, lever i 30 dagar
-  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
+app.use(session);
+
+
+
+const sharedSession = require('express-socket.io-session');
+
+io.use(sharedSession(session, {
+  autoSave: true
 }));
 
 app.use("/", apiRoutes)
@@ -54,9 +72,6 @@ const Message = require('./classes/Message.class');
 new Channel(app);
 // new Message(app);
 
-app.get('/hello', (req, res) => {
-  res.send('hello')
-})
 
 app.post('/users', (req, res) => {
   console.log(req.session);
@@ -125,7 +140,7 @@ app.post('/login', (req, res) => {
 app.put('/users/:_id', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $push: { contact: req.body.contact, channel: req.body.channel}}
+    { $push: { contact: req.body.contact, channel: req.body.channel } }
   )
     .then(() => {
       res.json({ success: true })
@@ -181,6 +196,53 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     });
 });
+
+// Socket Implementation
+
+
+io.on('connection', (socket) => {
+  // let user = await User.findOne({ id: socket.handshake.session.userId })
+  console.log('userino')
+  socket.on('chat message', async (messageFromClient) => {
+    let user = socket.handshake.session.userId;
+    console.log(messageFromClient);
+    // let room = messageFromClient.room;
+    // if (typeof room !== 'string' || !user.chatRooms.includes(room)) {
+    //   return;
+    // }
+
+    // let message = new Message({
+    //   ...messageFromClient,
+    //   sender: user._id
+    // });
+    // await message.save();
+
+    io.emit('chat message', messageFromClient);
+  });
+
+  socket.on('asking to join room', async (room) => {
+    let user = socket.handshake.session.userId;
+
+    if (typeof room === 'string' && user.chatRooms.includes(room)) {
+      socket.join(room)
+
+      let messages = await (Message.find({ room: room }).populate('sender').exec())
+      messages = messages.map(x => ({
+        username: x.sender.username,
+        text: x.messageTest,
+        room: x.room,
+        date: x.date
+      }));
+      socket.emit('chat message', messages)
+    }
+  });
+
+  socket.on('disconnect', () => {
+
+  });
+});
+
+
 
 
 // // Set up socket.io (do this before normal middleware and routing!)

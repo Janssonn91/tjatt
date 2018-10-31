@@ -94,6 +94,14 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   componentDidMount() {
     this.scrollToBottom();
+    socket.off('chat message');
+    socket.on(
+      'chat message', (message) => {
+        console.log(message)
+        this.chatHistories.push(message)
+        console.log(toJS(this.chatHistories))
+      }
+    )
   }
 
   compontentDidUpdate() {
@@ -129,7 +137,7 @@ import ScrollableFeed from 'react-scrollable-feed';
   sendMessage() {
     if (this.inputMessage.length > 0) {
       console.log("user", this.props.loginStore.user)
-      this.chatHistories.push({
+      socket.emit('chat message', {
         id: Date.now(),
         time: this.formattedDate(new Date()),
         sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
