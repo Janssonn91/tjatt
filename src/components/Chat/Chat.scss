@@ -4,6 +4,10 @@ $blue: #94C2ED;
 $orange: #E38968;
 $text:#434651;
 
+/* font-size */
+$fontLg: 20px;
+$fontMd: 16px;
+$fontSm: 12px;
 .dialog {
     width:100%;
     padding: 0;
@@ -12,6 +16,11 @@ $text:#434651;
     height: 100vh;
    
     .chat-header {
+      .chat-about{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 85px;
         .dropdown-menu {
             position: absolute;
             border-radius: 5px;
@@ -42,12 +51,11 @@ $text:#434651;
                 color:$gray;
             }
             .chat-with{
-                padding-left: 25px;
-                font-size:16px;
+                font-size: $fontMd;
             }
             .dialog-icon{
                 i{
-                    font-size:16px;
+                    font-size: $fontMd;
                 }
             }
         }
@@ -64,7 +72,7 @@ $text:#434651;
         #groupName {
             width: 190px;
             padding-left: 20px;
-            font-size: 12px;
+            font-size: $fontSm;
             border-color: white;
         }
        
@@ -89,12 +97,13 @@ $text:#434651;
         .dialog-icon {
             float: right;
             color: lighten($gray, 8%);
-            font-size: 20px;
+            font-size: $fontLg;
             right: 0px;
             &:hover {
                 color: lighten($gray, 20%);
             }
         }
+    }
     }
     .chat-history {
         height: 76.2vh;

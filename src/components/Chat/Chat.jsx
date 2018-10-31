@@ -1,26 +1,13 @@
-
-
-
 <Fragment>
-  {/* <Row className="chat-header mr-0 d-none w-100 d-md-inline-block">
-    <ChatHeader/>
-  </Row> */}
-
   <AddMemberModal {...this.sendToAddModal} />
   <AddMemberModal {...this.sendToDeleteModal} />
   <Row className="chat-header m-0 p-0">
-    <Col sm="12" className="chat-about p-3">
+    <Col sm="12" className="chat-about pl-3 pl-md-4">
       <Button className="mobil-menu d-inline-block d-md-none" onClick={this.props.toChat}>
         <i className="fas fa-ellipsis-v"></i>
       </Button>
-      <span className="chat-with">Chat with channel name</span>
-      {/* </Col> */}
-      {/* change icon if channel is group or not */}
-      {/* <Col sm="1" className="dialog-icon">
-          <i className="fas fa-user"></i>
-          </Col> */}
-      <span className="dialog-icon p-0">
-
+      <span className="chat-with pl-0">Chat with channel name</span>
+      <span className="dialog-icon p-0 mr-1 mr-sm-3">
         <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
           <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
             <i className="fas fa-users"></i>
@@ -41,7 +28,6 @@
             <DropdownItem className="leave-group py-2 px-3">Leave group</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-
       </span>
     </Col>
   </Row>
