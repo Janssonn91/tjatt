@@ -53,11 +53,6 @@ $fontSm: 12px;
             .chat-with{
                 font-size: $fontMd;
             }
-            .dialog-icon{
-                i{
-                    font-size: $fontMd;
-                }
-            }
         }
         .bottom-item {
             height: 35px;
@@ -99,8 +94,9 @@ $fontSm: 12px;
             color: lighten($gray, 8%);
             font-size: $fontLg;
             right: 0px;
+            cursor: pointer;
             &:hover {
-                color: lighten($gray, 20%);
+                color: darken($gray, 20%);
             }
         }
     }
