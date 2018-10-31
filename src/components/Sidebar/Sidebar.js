@@ -17,6 +17,10 @@ import './Sidebar.scss';
   @observable file;
   @observable imgPath = '/images/placeholder.png'
   @observable useDBPath = !!this.props.user.image || false;
+  @observable togglePWInput = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
 
   // TODO: this is temporary
   @observable withoutMe = [];
@@ -43,6 +47,23 @@ import './Sidebar.scss';
         return '';
       }
     });
+  }
+
+  changePW() {
+    this.togglePWInput = !this.togglePWInput;
+    this.toggle();
+  }
+
+  currentPassword(e) {
+    this.currentPasswordValue = e.currentTarget.value;
+  }
+
+  setNewPassword(e) {
+    this.setNewPasswordValue = e.currentTarget.value;
+  }
+  
+  confirmNewPassword(e) {
+    this.confirmNewPasswordValue = e.currentTarget.value;
   }
 
   async toggle() {
