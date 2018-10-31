@@ -16,7 +16,7 @@
 //  } from '@fortawesome/free-solid-svg-icons'
 
 import './Chat.scss';
-
+import ScrollableFeed from 'react-scrollable-feed';
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
 @inject('loginStore', 'channelStore') @observer export default class Chat extends Component {
@@ -88,6 +88,20 @@ import './Chat.scss';
     //  });
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  };
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  compontentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+
+
 
 
   addMemberModalToggle() {
@@ -113,6 +127,16 @@ import './Chat.scss';
 
 
   sendMessage() {
+    if (this.inputMessage.length > 0) {
+      console.log("user", this.props.user)
+      this.chatHistories.push({
+        id: Date.now(),
+        time: this.formattedDate(new Date()),
+        sender: this.props.user.nickname,
+        channel: "group one",
+        text: this.inputMessage,
+        star: false
+      });
 
     console.log("user", this.props.loginStore.user)
     this.chatHistories.push({
@@ -124,12 +148,19 @@ import './Chat.scss';
       star: false
     });
 
-    console.log(this.chatHistories);
+
+      this.scrollToBottom();
+
+      console.log(this.chatHistories);
+    } else {
+      return false;
+    }
 
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
+
 
   //  scrollToBottom = () => {
   //     const { messageList } = this.refs;

@@ -4,10 +4,12 @@
     message.sender === (this.props.loginStore.user.nickname || this.props.loginStore.user.username)
       ? <li key={message.id} className="clearfix ">
         <div className="me">
-          <span className="message-data-time">{message.time}</span>
-          &nbsp;
-            <span className="message-data-name ">{message.sender}
+          <span className="message-data-name ">{message.sender}
           </span>
+          &nbsp;
+          <span className="message-data-time">{message.time}</span>
+
+
         </div>
         <div className="message my-message">
           {message.text}

@@ -47,9 +47,11 @@
   </Row>
   <hr className="mt-0 mb-2" />
   <div className="chat-history px-3 mr-1">
-    <ul ref="messageList" onScroll={this.onScroll}>
-      <Message {...this.sendToChatHistory} />
-      {/* <li className="clearfix ">
+    <ScrollableFeed forceScroll={true}>
+      <ul ref="messageList" onScroll={this.onScroll}>
+        <Message user={this.props.user}{...this.sendToChatHistory} />
+
+        {/* <li className="clearfix ">
         <div className=" me">
           <span className="message-data-time" >10:10 AM, Today</span> &nbsp;
           <span className="message-data-name " >{this.stores.Login.user.nickname}</span>
@@ -78,10 +80,15 @@
           Good!
         </div>
       </li> */}
-    </ul>
+      </ul>
+      <div style={{ float: "left", clear: "both" }}
+        ref={(el) => { this.messagesEnd = el; }}>
+      </div>
+    </ScrollableFeed>
   </div>
   <div className="chat-message pt-2 clearfix">
     <Form inline>
+
       <ButtonDropdown direction="up" isOpen={this.isOpen} toggle={e => this.toggle()} className="btn-dropup">
         <DropdownToggle className="p-0" caret>
           <i className="fas fa-plus"></i>
@@ -103,7 +110,7 @@
           onChange={e => this.inputMessage = e.currentTarget.value}
           onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
       </FormGroup>
-      <Button className="send p-0" onClick={e => this.sendMessage()}>Send</Button>
+      <Button className="send p-0" disabled={!this.inputMessage} onClick={e => this.sendMessage()}>Send</Button>
     </Form>
   </div>
 </Fragment>
