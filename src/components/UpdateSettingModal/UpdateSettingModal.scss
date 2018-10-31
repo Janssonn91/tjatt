@@ -1,0 +1,32 @@
+
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$orange: #E38968;
+$text:#434651;
+
+.setting-modal {
+  .modal-header {
+    h4 {
+      color: $gray;
+    }
+  }
+  form {
+    h5, Label {
+      color: black;
+    }
+    input {
+      margin-bottom: 3px;
+      &:focus {
+        border-color: $lightblue;
+        box-shadow: 0 0 0 0.2rem lightblue;
+      }
+    }
+    .btn-upload{
+      background-color: unset;
+      color: black;
+    }
+  }
+}

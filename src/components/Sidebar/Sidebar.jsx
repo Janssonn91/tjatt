@@ -8,12 +8,7 @@
             <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
-            <li className="px-3 py-1 btn-li">
-              <label className="btn btn-upload m-0 p-0" htmlFor="files">Choose image</label>
-              <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
-            </li>
-            <DropdownItem className="px-3 py-1 btn-li" tag="li">Change name</DropdownItem>
-            <DropdownItem className="px-3 py-1 btn-li" tag="li">Change password</DropdownItem>
+            <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
             <DropdownItem divider />
             {!this.togglePWInput ?
               <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.changePW()}>Change password <i className="fas fa-edit"></i></DropdownItem>
@@ -74,6 +69,7 @@
     </Nav>
     <hr />
   </div>
+  <UpdateSettingModal {...this.updateSettingModalOpen} />
   <AddUserModal {...this.addUserModalOpen} />
   <CreateGroupModal {...this.createGroupModalOpen} />
 </Fragment >

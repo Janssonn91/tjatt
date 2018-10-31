@@ -2,6 +2,11 @@ import './Sidebar.scss';
 
 @inject('loginStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
+  @observable updateSettingModalOpen = {
+    isOpen: false,
+    keyboard: true,
+    toggle: this.openModalupdateSetting.bind(this)
+  }
   @observable addUserModalOpen = {
     isOpen: false,
     keyboard: true,
@@ -40,7 +45,7 @@ import './Sidebar.scss';
   setNewPassword(e) {
     this.setNewPasswordValue = e.currentTarget.value;
   }
-  
+
   confirmNewPassword(e) {
     this.confirmNewPasswordValue = e.currentTarget.value;
   }
@@ -48,6 +53,10 @@ import './Sidebar.scss';
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
+  }
+
+  openModalupdateSetting() {
+    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
   }
 
   openModalAddNewUser() {
@@ -82,7 +91,6 @@ import './Sidebar.scss';
         this.useDBPath = false;
         this.toggle();
       });
-
   }
 
 }
