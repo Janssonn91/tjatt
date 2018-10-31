@@ -139,6 +139,23 @@ app.put('/users/:_id', (req, res) => {
     });
 });
 
+app.put('/users/:_id/setting', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { nickname: req.body.nickname } }
+  )
+    .then(user => {
+      if (user) {
+        res.json({ success: true, user })
+      } else {
+        res.json({ success: false })
+      }
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/images/uploads')
