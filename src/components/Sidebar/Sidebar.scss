@@ -1,5 +1,7 @@
+$backgroundColor: #484951;
+
 .sidebar {
-  background-color:  #484951;
+  background-color: $backgroundColor;
   height: 100vh;
   .profile {
     height: 85px;
@@ -62,6 +64,13 @@
       .nav-item {
         text-align: left;
         display: inline-block;
+      }
+    }
+    .nav-link.contacts{
+      width: 100%;
+      &:hover {
+        color: #fff;
+        background-color: darken($backgroundColor, 10%);
       }
     }
 
