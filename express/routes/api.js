@@ -84,7 +84,7 @@ req.body.projectName
 });
 
 
-const Docker = require('node-docker-api');
+const { Docker } = require('node-docker-api');
 
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
@@ -99,7 +99,6 @@ const promisifyStream = (stream) => new Promise((resolve, reject) => {
 
 function build_image(_image, _cmd, _name) {
   var tarStream = tar.pack('./docker/musicplayer')
-  console.log(tarStream)
   docker.image.build(tarStream, {
       t: 'testimg'
     })
@@ -111,19 +110,23 @@ function build_image(_image, _cmd, _name) {
 }
 
 function create_container(_appPort) {
-  docker.container.create({
-      Image: 'testimg',
-      name: 'test',
-      "HostConfig": {
-        "PortBindings": {
-          "3300/tcp": [{
-            "HostPort": "8080"
-          }]
-        },
-      }
-    })
-    .then((container) => container.start())
-    .catch((error) => console.log(error))
+  let port = 3300
+  
+  let config = {
+    Image: 'testimg',
+    name: 'test',
+    "HostConfig": {
+      "PortBindings": { },
+    }
+  }
+
+  //
+
+  config.HostConfig.PortBindings[`${port}/tcp`] = [ { HostPort: '8080' } ]
+
+  docker.container.create(config)
+  .then((container) => container.start())
+  .catch((error) => console.log(error))
 }
 
 build_image();
