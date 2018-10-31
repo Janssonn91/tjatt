@@ -5,6 +5,7 @@
         <Sidebar toMenu={this.sendToMenu} />
       </div>
     </Col>
+    {/* {if(this.props.channelStore.currentChannel)} */}
     <Col xs="12" md="9" xl="10" className={this.hideChat === true ? "hide-chat" : "pr-0 pl-0"}>
       <div className="dialog">
         <Chat toChat={this.sendToChat} />

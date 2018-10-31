@@ -8,7 +8,6 @@ class LoginStore {
   @observable myContacts = [];
   @observable myChannel = [];
 
-
   @action checkIfLoggedIn() {
     fetch('/api/login', {
       credentials: 'include'
@@ -34,6 +33,8 @@ class LoginStore {
       .then(res => {
         if (res.success) {
           this.user = res.user;
+          this.myChannel = this.user.channel;
+          //channelStore.getChannelCategories();
         }
         this.loginError = true;
       }).catch(err => {
@@ -53,7 +54,8 @@ class LoginStore {
         if (res.success) {
           console.log('created user: ' + username)
 
-          this.user = res.user
+          this.user = res.user;
+      
           this.usernameExits = false;
         } else {
           this.usernameExits = true;
@@ -74,6 +76,7 @@ class LoginStore {
         }
         this.candidates = withoutMe.filter(user => !isIncluded(user._id));
         this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+        this.myChannel = this.user.channel;
       });
   }
 
@@ -83,6 +86,9 @@ class LoginStore {
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
+    console.log(this.myContacts)
+    channelStore.updateContactChannel();
+  
   }
 
   @action addContact(userId) {
@@ -123,10 +129,12 @@ class LoginStore {
     });
       });
      
-      
+   
  
 
   }
+
+ 
 
   
 }

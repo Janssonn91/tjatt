@@ -13,7 +13,7 @@
       <Button className="mobil-menu d-inline-block d-md-none" onClick={this.props.toChat}>
         <i className="fas fa-ellipsis-v"></i>
       </Button>
-      <span className="chat-with">Chat with channel name</span>
+      <span className="chat-with" >{this.props.channelStore.channelName}</span>
       {/* </Col> */}
       {/* change icon if channel is group or not */}
       {/* <Col sm="1" className="dialog-icon">

@@ -30,9 +30,9 @@
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       {this.props.loginStore.myContacts.map((user, i) =>
-        <NavLink key={i} className="nav-link">
+        <NavLink key={i} className="nav-link"  >
           <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-          <div className="d-inline-block">{user.username}</div>
+          <div className="d-inline-block" onClick={()=>this.props.channelStore.getChannelByUser(user._id)}>{user.username}</div>
         </NavLink>
       )}
       <NavLink to="#">
