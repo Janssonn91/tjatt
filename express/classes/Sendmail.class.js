@@ -33,7 +33,7 @@ module.exports = function(req, res) {
             // HTML body
             html:`
                 <h2>Welcome to tj@!</h2>
-                <P>Dear: ${req.body.username}, we are so happy to have you as a member in our tj@-community!</p>
+                <P>Dear ${req.body.username}, we are so happy to have you as a member in our tj@-community!</p>
                 <p>Please take a moment and discover the power of tj@. Explore how to chat and share node-applications in groups.</p>
                 `,
 
