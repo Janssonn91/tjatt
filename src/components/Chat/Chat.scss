@@ -260,7 +260,8 @@ $fontSm: 12px;
             resize: none;
             line-height: 2;
             &:focus {
-                border-color: $darkblue;
+                border-color: $lightblue;
+                box-shadow: 0 0 0 0.2rem lightblue;
             }
             @media (min-width: 576px) {
               width: 70vw;
