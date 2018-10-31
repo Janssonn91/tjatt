@@ -17,6 +17,9 @@ import './Sidebar.scss';
   @observable imgPath = '/images/placeholder.png'
   @observable useDBPath = !!this.props.loginStore.user.image || false;
 
+  // start(){
+  //   this.props.channelStore.getChannels();
+  // }
 
   async toggle() {
     await sleep(1);
@@ -32,7 +35,7 @@ import './Sidebar.scss';
   }
 
   logout() {
-    fetch('/api/logout').then(() => this.props.history.go('/'))
+    fetch('/api/logout').then(() => this.props.history.go('/'));
   }
 
   changeLogStatus() {

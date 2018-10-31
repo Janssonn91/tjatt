@@ -34,7 +34,7 @@
       {this.props.loginStore.myContacts.map((user, i) =>
         <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
           <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-          <div className="d-inline-block">{user.username}</div>
+          <div className="d-inline-block" onClick={()=>this.props.channelStore.getChannelByUser(user._id)}>{user.username}</div>
         </NavLink>
       )}
       <div className="flexWrapper">

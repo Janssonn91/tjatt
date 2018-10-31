@@ -19,39 +19,40 @@ import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
-@inject('loginStore', 'channelStore') @observer export default class Chat extends Component {
+@inject('loginStore', 'channelStore') @observer
+export default class Chat extends Component {
 
   @observable inputMessage = '';
   @observable chatHistories = [{
-    id: 1,
-    time: "10:20 AM, Today",
-    sender: "Pika",
-    status: "online",
-    channel: "group one",
-    text: "How are you?",
-    textType: "text",
-    star: false
-  },
-  {
-    id: 2,
-    time: "10:21 AM, Today",
-    sender: "other",
-    status: "offline",
-    channel: "group one",
-    text: "I am fine, thank you. And you?",
-    textType: "text",
-    star: false
-  },
-  {
-    id: 3,
-    time: "10:24 AM, Today",
-    sender: "another",
-    status: "online",
-    channel: "group one",
-    text: " Good!",
-    textType: "text",
-    star: false
-  }
+      id: 1,
+      time: "10:20 AM, Today",
+      sender: "Pika",
+      status: "online",
+      channel: "group one",
+      text: "How are you?",
+      textType: "text",
+      star: false
+    },
+    {
+      id: 2,
+      time: "10:21 AM, Today",
+      sender: "other",
+      status: "offline",
+      channel: "group one",
+      text: "I am fine, thank you. And you?",
+      textType: "text",
+      star: false
+    },
+    {
+      id: 3,
+      time: "10:24 AM, Today",
+      sender: "another",
+      status: "online",
+      channel: "group one",
+      text: " Good!",
+      textType: "text",
+      star: false
+    }
   ];
   @observable isOpen = false;
   @observable dropdownOpen = false;
@@ -71,6 +72,7 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable sendToChatHistory = {
     histories: this.chatHistories
   }
+  
 
 
 
@@ -79,13 +81,8 @@ import ScrollableFeed from 'react-scrollable-feed';
 
 
   start() {
-    // socket.on(
-    //     'chat message',
-    //     inputMessage => this.chatHistories.push(inputMessage)
-    // );
-    //  this.createStoreConnectedProperties({
-    //      chatHistories: []
-    //  });
+   
+   
   }
 
   scrollToBottom = () => {

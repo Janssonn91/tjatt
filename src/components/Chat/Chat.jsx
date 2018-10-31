@@ -6,8 +6,14 @@
       <Button className="mobil-menu d-inline-block d-md-none" onClick={this.props.toChat}>
         <i className="fas fa-ellipsis-v"></i>
       </Button>
-      <span className="chat-with pl-0">Chat with channel name</span>
-      <span className="dialog-icon p-0 mr-1 mr-sm-3">
+      <span className="chat-with" >{this.props.channelStore.channelName}</span>
+      {/* </Col> */}
+      {/* change icon if channel is group or not */}
+      {/* <Col sm="1" className="dialog-icon">
+          <i className="fas fa-user"></i>
+          </Col> */}
+      <span className="dialog-icon p-0">
+
         <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
           <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
             <i className="fas fa-users"></i>
