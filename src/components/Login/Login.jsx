@@ -18,7 +18,7 @@
             </FormGroup>
             <FormGroup>
               <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.password} onChange={e => this.passwordChange(e)} />
-              <p className="small mt-1 d-none">Can't remember your password?</p>
+              <p className="small mt-2 text-center retrieve-pw d-none"><a onClick={e => this.retrievePassword(e)}>Can't remember your password?</a></p>
             </FormGroup>
             <div className="text-center mb-3">
               <Button tabIndex="3" className="btn-login">Login</Button>{' '}
