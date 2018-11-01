@@ -6,7 +6,6 @@ import {
 } from 'mobx-react';
 class ChannelStore {
     @observable newChannel = [];
-
     @observable myChannels = [];
     @observable currentChannel = "";
     @observable channelName = "";
@@ -27,17 +26,13 @@ class ChannelStore {
         }).then(
             channels => {
                 console.log(channels)
-                // this.groupChannel=[];
-                // this.contactChannel=[];
                 channels.forEach(
                     channel=>{
-                        //console.log(channel)
                         if (channel.group === false) {
                             this.contactChannel.push(channel);
                         } 
                         if (channel.group === true) {
                             this.groupChannel.push(channel);
-                           //console.log(this.groupChannel)
                         }
                     }
                    
@@ -45,7 +40,6 @@ class ChannelStore {
                 console.log(this.groupChannel)
                 this.renderGroup();
             })
-               // this.renderGroup());
 
 }
 
@@ -58,13 +52,11 @@ class ChannelStore {
     console.log(channels)
     channels.map((channel,i)=>{
         // console.log(channel.channelname)
-        element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" >
+        element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={()=>this.getGroupChannel(channel)}>
         <div className="d-inline-block" >{channel.channelname}</div>
         </div>
         elements.push(element)
-      // console.log(elements)
     })
-    //console.log(elements)
     ReactDOM.render(elements, document.getElementById('groupRender'));
     
 }
@@ -137,7 +129,7 @@ class ChannelStore {
     this.currentChannel = "";
     this.channelName = "";
     this.channelImg = "";
-    this.currentChannelType = "";
+    //this.currentChannelType = "";
     this.contactChannel.map(channel => {
         channel.admin.map(data => {
             if (data === userId) {
@@ -147,6 +139,13 @@ class ChannelStore {
     })
     //console.log(this.currentChannel)
     this.getChannelInfo();
+}
+
+@action getGroupChannel(channel){
+    this.currentChannel= channel;
+    console.log(this.currentChannel);
+    this.channelName = channel.channelname;
+    this.currentChannelGroup = channel.group;
 }
 
 @action getChannelInfo() {
