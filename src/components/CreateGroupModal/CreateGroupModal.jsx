@@ -10,17 +10,41 @@
         </InputGroup>
     </ModalHeader>
     <ModalBody>
+    {this.props.loginStore.selectedGroupMember.length>0 ?
     <div className="selected-members">
-        blablabla
+    <ScrollableFeed forceScroll={true}>
+    {this.props.loginStore.selectedGroupMember.map((user, i)=>
+         <span key={i} className="nav-link pl-0 d-inline-block contacts" onClick={()=>this.props.loginStore.removeFromSelect(user)}>
+                  <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
+               <div className="profile w-50 ">
+                   <p className="text-muted m-0">
+                     <small className="font-weight-bold">{user.nickname}</small>
+                   </p>
+                 </div>
+                 <div style={{
+               float: "left",
+               clear: "both"
+             }}
+               ref={(el) => {
+               this.selectedMemberEnd = el;
+             }}>
+             </div>
+              </span>
+        )}
+            </ScrollableFeed>
         </div>
+        :  
+        <Fragment></Fragment>
+        }
+        
     <Form className="m-0">
         <FormGroup className="m-10">
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
           <Input className="search" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:" />
         </FormGroup>
         
-      <Row>
-        <Col sm="12" lg="6" className="pl-0 right-line">
+      <Row className="select-area">
+        <Col sm="12" lg="6" className="pl-0 ">
         
         <FormGroup className="m-0">
         { this.props.loginStore.groupCandidates.map((user, i) =>
@@ -37,8 +61,8 @@
         </FormGroup>
       
       </Col>
-        <Col sm="12" lg="6" className="pr-0">
-        <FormGroup className="m-0">
+        <Col lg="6" className="pr-0 big-screen">
+        <FormGroup className="m-0 ">
         {this.props.loginStore.selectedGroupMember.map((user, i)=>
          <ListGroupItem key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={()=>this.props.loginStore.removeFromSelect(user)}>
              <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
