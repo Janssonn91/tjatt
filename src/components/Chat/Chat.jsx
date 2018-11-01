@@ -1,7 +1,8 @@
 <Fragment> <AddMemberModal {...this.sendToAddModal}/> < AddMemberModal {
   ...this.sendToDeleteModal
 } /> 
-{this.props.channelStore.currentChannel ?<Fragment>
+{this.props.channelStore.currentChannel ?
+<Fragment>
   <Row className="chat-header m-0 p-0">
     <Col sm="12" className="chat-about pl-3 pl-md-4">
       <Button

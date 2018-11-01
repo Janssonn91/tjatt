@@ -23,33 +23,42 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
+    //console.log(loginStore.user.channel)
     let channels = loginStore.user.channel;
-    this.myChannels = await Channel.find({
+    console.log(channels)
+   
+    let cs = await Channel.find({
       _id: channels
-    }).then(
-      channels => {
-        channels.forEach(
+    })
+
+    this.myChannels = cs;
+    console.log(this.myChannels)
+    
+    this.myChannels.forEach(
           channel => {
             if (channel.group === false) {
+              console.log("false")
               this.contactChannel.push(channel);
             }
-            if (channel.group === true) {
+            if (channel.group === true){
+              console.log("true")
               this.groupChannel.push(channel);
             }
           }
 
         );
+        console.log(this.myChannels)
         this.renderGroup();
-      })
+      }
 
-  }
+  
 
   @action renderGroup() {
 
     let channels = this.groupChannel;
     let elements = [];
     let element = '';
-    console.log(channels)
+    // console.log(channels)
     channels.map((channel, i) => {
       // console.log(channel.channelname)
       element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.getGroupChannel(channel)}>
@@ -136,6 +145,7 @@ class ChannelStore {
     this.channelName = "";
     this.channelImg = "";
     // this.currentChannelType = "";
+    console.log(this.contactChannel)
     this.contactChannel.map(channel => {
       channel.admin.map(data => {
         if (data === userId) {
@@ -145,6 +155,7 @@ class ChannelStore {
       })
     })
     this.showChat();
+    //this.getChannels();
     this.getChannelInfo();
   }
 
@@ -163,6 +174,7 @@ class ChannelStore {
     if (!channel) {
       console.log("hej")
     } else {
+      console.log(channel)
       if (channel.group === false) {
         this.currentChannelGroup = false;
         let nameId = channel.admin.filter(a => a !== loginStore.user._id);

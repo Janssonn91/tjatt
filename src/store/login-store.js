@@ -104,7 +104,7 @@ class LoginStore {
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];
 
-    channelStore.createChannel(channelname, admin, members).then(channel => {
+    channelStore.createChannel(channelname, admin, members, false).then(channel => {
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
         method: 'PUT',

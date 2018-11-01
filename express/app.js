@@ -129,7 +129,7 @@ app.post('/login', (req, res) => {
 app.put('/users/:_id', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $push: { contact: req.body.contact, channel: req.body.channel}}
+    { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group}}
   )
     .then(() => {
       res.json({ success: true })
