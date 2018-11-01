@@ -131,67 +131,6 @@ class LoginStore {
     });
   }
 
-  @action updateSettings(nickname) {
-    fetch(`/api/users/${this.user._id}/setting`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        _id: this.user._id,
-        nickname,
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.user = { ...this.user, nickname };
-        }
-      })
-      .then(res => {
-        res.json();
-      })
-      .then(() => {
-        this.updateContact(userId);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    channelStore.createChannel(channelname, admin, members, false).then((channel) => {
-      // add contact in my contact
-      fetch(`/api/users/${this.user._id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          _id: this.user._id, contact: userId, channel: channel._id
-        }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => {
-          res.json();
-        })
-        .then(() => {
-          this.updateContact(userId);
-
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
-      // add my id to the new friend contact
-      fetch(`/api/users/${userId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ userId, contact: this.user._id, channel: channel._id }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => {
-          res.json();
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  }
-
-
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
