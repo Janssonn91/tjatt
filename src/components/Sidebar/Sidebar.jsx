@@ -43,9 +43,15 @@
         </NavLink>
         <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       </div>
+      {this.props.loginStore.myChannel.map((channel, i) => 
+        <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
+          {/* <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} /> */}
+          <div className="d-inline-block" >{channel}</div>
+        </NavLink>
+      )}
     </Nav>
     <hr />
   </div>
   <AddUserModal {...this.addUserModalOpen} />
-  <CreateGroupModal {...this.createGroupModalOpen} />
+  <CreateGroupModal {...this.createGroupModalOpen}  />
 </Fragment >

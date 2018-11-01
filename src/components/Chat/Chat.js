@@ -25,6 +25,7 @@ export default class Chat extends Component {
   @observable inputMessage = '';
   @observable chatHistories = [{
       id: 1,
+      image: "/images/uploads/pikachu.png-1540468459565.png",
       time: "10:20 AM, Today",
       sender: "Pika",
       status: "online",
@@ -36,6 +37,7 @@ export default class Chat extends Component {
     {
       id: 2,
       time: "10:21 AM, Today",
+      image: "/images/placeholder.png",
       sender: "other",
       status: "offline",
       channel: "group one",
@@ -46,6 +48,7 @@ export default class Chat extends Component {
     {
       id: 3,
       time: "10:24 AM, Today",
+      image: "/images/placeholder.png",
       sender: "another",
       status: "online",
       channel: "group one",

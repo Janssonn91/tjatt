@@ -8,6 +8,7 @@
   start(){
     this.props.channelStore.getChannels();
   }
+
   showMenu(){
     this.hideMenu = false;
     this.hideChat = true;

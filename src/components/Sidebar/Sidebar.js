@@ -16,6 +16,7 @@ import './Sidebar.scss';
   @observable file;
   @observable imgPath = '/images/placeholder.png'
   @observable useDBPath = !!this.props.loginStore.user.image || false;
+  
 
   // start(){
   //   this.props.channelStore.getChannels();
