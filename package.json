@@ -50,6 +50,7 @@
     "ncp": "^2.0.0",
     "node-docker-api": "^1.1.22",
     "node-sass": "^4.9.3",
+    "nodegit": "^0.23.0",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
