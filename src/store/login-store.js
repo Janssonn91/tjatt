@@ -206,11 +206,8 @@ class LoginStore {
     this.selectedGroupMember.splice(index, 1);
   }
 
-
-
-
-
-  @action updateSettings(nickname) {
+  @action updateSettings(settings) {
+    const { imageFormData, nickname, password } = settings;
     fetch(`/api/users/${this.user._id}/setting`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -228,6 +225,18 @@ class LoginStore {
       .catch(err => {
         console.log(err);
       });
+
+    if (imageFormData) {
+      console.log("update image")
+      fetch('/api/upload', {
+        method: 'POST',
+        body: imageFormData
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.user = { ...this.user, image: res.path };
+        });
+    }
   }
 }
 

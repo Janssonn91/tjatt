@@ -17,6 +17,7 @@ import './Sidebar.scss';
     keyboard: true,
     toggle: this.openModalCreateGroup.bind(this)
   }
+
   @observable collapseOpen = false;
   @observable file;
   @observable imgPath = '/images/placeholder.png'
@@ -49,6 +50,7 @@ import './Sidebar.scss';
   confirmNewPassword(e) {
     this.confirmNewPasswordValue = e.currentTarget.value;
   }
+  @observable imgPath = '/images/placeholder.png';
 
   async toggle() {
     await sleep(1);
@@ -73,24 +75,6 @@ import './Sidebar.scss';
 
   changeLogStatus() {
     return false;
-  }
-
-  onFileChange = (event) => {
-    let store = JSON.parse(localStorage.getItem('store'));
-    let formData = new FormData();
-    formData.append('id', this.props.loginStore.user._id);
-    formData.append('file', event.target.files[0]);
-    fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-      .then(res => res.json())
-      .then(res => {
-        let path = res.path;
-        this.imgPath = path;
-        this.useDBPath = false;
-        this.toggle();
-      });
   }
 
 }

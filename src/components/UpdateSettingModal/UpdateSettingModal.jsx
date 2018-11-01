@@ -39,7 +39,14 @@
     </Form>
   </ModalBody>
   <ModalFooter>
-    <Button color="primary" onClick={() => this.props.loginStore.updateSettings(this.nickname)}>Save</Button>{' '}
-    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+    <Button
+      className="btn btn-save"
+      onClick={() =>
+        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image })
+      }
+    >
+      Save changes
+    </Button>{' '}
+    <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
   </ModalFooter>
 </Modal>

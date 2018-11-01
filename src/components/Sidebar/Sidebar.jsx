@@ -2,7 +2,7 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder pl-3 pt-4">
-        <CardImg src={this.useDBPath ? this.props.loginStore.user.image : this.imgPath} />
+        <CardImg src={this.props.loginStore.user.image || this.imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
             <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
