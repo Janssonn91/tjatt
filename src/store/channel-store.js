@@ -114,7 +114,6 @@ class ChannelStore {
 
 @action updateContactChannel() {
     this.contactChannel.push(this.newChannel);
-
 }
 
 @action updateGroupChannel() {

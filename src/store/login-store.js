@@ -92,9 +92,9 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    console.log(this.myContacts)
+    //console.log(this.myContacts)
     channelStore.updateContactChannel();
-  
+    channelStore.getChannelByUser(userId);
   }
 
   @action addContact(userId) {
