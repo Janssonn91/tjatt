@@ -13,21 +13,19 @@ $text:#434651;
       color: $gray;
     }
   }
-  form {
-    h5, Label {
-      color: black;
+  h5, Label {
+    color: $text;
+  }
+  input {
+    margin-bottom: 3px;
+    &:focus {
+      border-color: $lightblue;
+      box-shadow: 0 0 0 0.2rem lightblue;
     }
-    input {
-      margin-bottom: 3px;
-      &:focus {
-        border-color: $lightblue;
-        box-shadow: 0 0 0 0.2rem lightblue;
-      }
-    }
-    .btn-upload{
-      background-color: unset;
-      color: black;
-    }
+  }
+  .btn-upload{
+    background-color: unset;
+    color: black;
   }
   .btn {
     border: none;
@@ -51,6 +49,10 @@ $text:#434651;
     background-color: lighten($red, 40%);
     border: none;
     color: $text;
+  }
+
+  .pw-input {
+    font-size: 0.9em;
   }
 
 }

@@ -25,9 +25,6 @@ $gray: #919192;
       &:hover {
         cursor: pointer;
       }
-      .pw-input {
-        font-size: 0.9em;
-      }
     }
 
     h5 {
@@ -45,6 +42,7 @@ $gray: #919192;
     }
   }
   .menu {
+    width: 100%;
     display: inline-block;
     .nav-link {
       padding: 0.3rem 0.8rem;

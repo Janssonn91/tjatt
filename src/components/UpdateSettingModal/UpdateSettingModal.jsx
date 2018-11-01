@@ -38,40 +38,45 @@
         <tr>
           <td>current password</td>
           <td>
-            <Label className="sr-only" for="changePassword" tag="h5">Password</Label>
+            <Label className="sr-only" for="currentPassword" tag="h5">Password</Label>
             <Input
+              className="pw-input"
               type="password"
               name="password"
-              id="changePassword"
-              value={this.currentPassword}
-              onChange={e => this.currentPassword = e.currentTarget.value}
+              id="currentPassword"
+              value={this.currentPasswordValue}
+              onClick={e => e.stopPropagation()}
+              onChange={e => this.currentPassword(e)}
             />
           </td>
         </tr>
         <tr>
           <td>new password</td>
           <td>
-            <Label className="sr-only" for="newPassword1" tag="h5">New password</Label>
+            <Label className="sr-only" for="setNewPassword" tag="h5">New password</Label>
             <Input
+              className="pw-input"
               type="password"
-              name="newPassword1"
-              id="newPassword1"
-              value={this.newPassword1}
-              onChange={e => this.newPassword1 = e.currentTarget.value}
+              name="password"
+              id="setNewPassword"
+              value={this.setNewPasswordValue}
+              onClick={e => e.stopPropagation()}
+              onChange={e => this.setNewPassword(e)}
             />
           </td>
         </tr>
         <tr>
           <td>new password</td>
           <td>
-            <Label className="sr-only" for="newPassword2" tag="h5">New password</Label>
+            <Label className="sr-only" for="confirmNewPassword" tag="h5">New password</Label>
             <Input
+              className="pw-input"
               type="password"
-              name="newPassword2"
-              id="newPassword2"
-              value={this.newPassword2}
-              onChange={e => this.checkPassword(e)}
-            />
+              name="password"
+              id="confirmNewPassword"
+              value={this.confirmNewPasswordValue}
+              onClick={e => e.stopPropagation()}
+              onChange={e => this.confirmNewPassword(e)} />
           </td>
         </tr>
       </tbody>

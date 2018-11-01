@@ -2,33 +2,13 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder pl-3 pt-4">
-        <CardImg src={this.props.loginStore.user.image || this.imgPath} />
+        <CardImg src={this.props.loginStore.user.image || imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
             <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu tag="div">
             <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
-            <DropdownItem divider />
-            {!this.togglePWInput ?
-              <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.changePW()}>Change password <i className="fas fa-edit"></i></DropdownItem>
-              :
-              <Fragment>
-                <DropdownItem className="px-2 py-1" tag="li">
-                  <Input className="pw-input" type="password" name="password" id="currentPassword" placeholder="Current password" onClick={e => e.stopPropagation()} onChange={e => this.currentPassword(e)} />
-                </DropdownItem>
-                <DropdownItem className="px-2 py-1" tag="li">
-                  <Input className="pw-input" type="password" name="password" id="setNewPassword" placeholder="New password" onClick={e => e.stopPropagation()} onChange={e => this.setNewPassword(e)} />
-                </DropdownItem>
-                <DropdownItem className="px-2 py-1" tag="li">
-                  <Input className="pw-input" type="password" name="password" id="confirmNewPassword" placeholder="Confirm password" onClick={e => e.stopPropagation()} onChange={e => this.confirmNewPassword(e)} />
-                </DropdownItem>
-                <DropdownItem className="px-2 py-1 text-right" tag="li">
-                  <Button color="success">Save</Button>{' '}
-                </DropdownItem>
-              </Fragment>
-            }
-
             <DropdownItem divider />
             <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>

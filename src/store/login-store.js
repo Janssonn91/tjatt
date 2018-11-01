@@ -1,7 +1,8 @@
 import channelStore from './channel-store';
 
 class LoginStore {
-  @observable user = {};
+  @observable user = { channel: [], contact: [] };
+  @observable isLoggedIn = false;
   @observable loginError = false;
   @observable usernameExits = false;
   @observable candidates = [];
@@ -166,7 +167,6 @@ class LoginStore {
       });
 
     if (imageFormData) {
-      console.log("update image")
       fetch('/api/upload', {
         method: 'POST',
         body: imageFormData
