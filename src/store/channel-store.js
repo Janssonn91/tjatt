@@ -125,10 +125,12 @@ class ChannelStore {
   }
 
   @action async getChannelByUser(userId) {
+    console.log(this.contactChannel)
+    console.log(userId)
     this.currentChannel = "";
     this.channelName = "";
     this.channelImg = "";
-    // this.currentChannelType = "";
+    this.currentChannelType = "";
     this.contactChannel.map(channel => {
       return channel.admin.map(data => {
         if (data === userId) {
