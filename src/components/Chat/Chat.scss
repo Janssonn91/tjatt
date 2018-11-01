@@ -4,6 +4,7 @@ $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
+$red: #FF3C00;
 $orange: #E38968;
 $text:#434651;
 
@@ -47,7 +48,7 @@ $fontSm: 12px;
             }
             .channel-manage {
                 button:hover {
-                    background-color: $orange;
+                    background-color: lighten($lightblue, 23%);
                 }
             }
         }
@@ -84,12 +85,12 @@ $fontSm: 12px;
         }
 
         .leave-group{
-            color:$orange;
+            color: $red;
             &:hover {
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
-                background-color: #dc3545!important;
-                color: black;
+                background-color: $red;
+                color: white;
             }
         }
         .editable-gn {
@@ -280,17 +281,13 @@ $fontSm: 12px;
             border-radius: 50%;
             width: 50px;
             height: 50px;
+            &:hover {
+              background-color: $darkblue;
+              border-color: $darkblue;
+              color: white;
+              font-size: 1.8vw;
+          }
         }
-
-        .send:hover {
-            @media (min-width: 768px) {
-                background-color: $darkblue;
-                border-color: $darkblue;
-                color: white;
-                font-size: 1.8vw;
-            }
-        }
-
     }
     hr {
         border-top: 1px solid rgba(0,0,0,.1);
