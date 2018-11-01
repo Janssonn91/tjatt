@@ -108,10 +108,14 @@ class ChannelStore {
     }).then(() => {
         //this.getChannels();
         this.updateGroupChannel();
-        loginStore.selectedGroupMember = [];
-        loginStore.fetchContact();
+        this.cleanUpGroupModal();
         //loginStore.groupCandidates = loginStore.myContacts;
     })
+}
+
+@action cleanUpGroupModal(){
+    loginStore.selectedGroupMember = [];
+    loginStore.fetchContact();
 }
 
 
@@ -192,9 +196,7 @@ class ChannelStore {
     this.hideChat = false; 
 }
 
-@action changeChatMobil(){
 
-}
 
 
 }

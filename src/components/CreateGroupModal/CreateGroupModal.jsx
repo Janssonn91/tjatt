@@ -1,7 +1,7 @@
 <Fragment>
   <Modal className="createGroupModal" isOpen={this.props.isOpen} toggle={this.props.toggle} keyboard={this.props.keyboard} >
     {this.props.children}
-    <ModalHeader tag="h4" toggle={e => this.props.toggle()}>
+    <ModalHeader tag="h4" toggle={e => this.props.toggle("group")}>
       Create New Group
       <InputGroup  size="sm" className="m-0">
           <Label for="setGroupName" className="mb-1 d-none" >Group Name</Label>
@@ -82,7 +82,7 @@
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
     <ModalFooter>
-      <Button color="secondary" onClick={this.props.cancel}>Cancel</Button>&nbsp;
+      <Button color="secondary" onClick={e => this.props.toggle("group")}>Cancel</Button>&nbsp;
       <Button color="primary" onClick={e=>this.createGroup() }>Create Group</Button>
     </ModalFooter>
   </Modal>

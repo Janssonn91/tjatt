@@ -45,7 +45,7 @@ import './Sidebar.scss';
     this.confirmNewPasswordValue = e.currentTarget.value;
   }
 
-  async toggle() {
+  async toggle(modal) {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
   }
@@ -55,7 +55,9 @@ import './Sidebar.scss';
   }
 
   openModalCreateGroup() {
-    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+      this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+      this.props.channelStore.cleanUpGroupModal();
+    
   }
 
   logout() {
