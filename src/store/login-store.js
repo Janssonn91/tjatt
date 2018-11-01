@@ -41,22 +41,21 @@ class LoginStore {
       })
   }
 
-  @action signUp(username, password, email) {
-    console.log(username, password, email);
+  @action signUp(username, password, useremail) {
+    console.log(username, password, useremail);
     fetch('/api/users',
       {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify({ username, password, email }),
+        body: JSON.stringify({ username, password, useremail }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
       .then(res => {
         if (res.success) {
-          console.log('created user: ' + username + ' med mail ' + email)
-
+          console.log('created user: ' + username + ' med mail ' + useremail)
           this.user = res.user
           this.usernameExits = false;
-          this.sendWelcomeMail(username, email);
+          this.sendWelcomeMail(username, useremail);
         } else {
           this.usernameExits = true;
         }

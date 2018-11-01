@@ -13,7 +13,6 @@ import './Signup.scss';
 
   useremailChange(e) {
     this.useremailToSet = e.currentTarget.value;
-    console.log(this.useremailToSet);
   }
 
   passwordChange(e) {
@@ -33,8 +32,8 @@ import './Signup.scss';
     };
     console.log(newUser);*/
     e.preventDefault();
-    console.log(this.usernameToSet, this.passWordToSet, this.useremailToset);
-    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, 'test@nu.se');
+    console.log(this.usernameToSet, this.passWordToSet, this.useremailToSet);
+    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
     /*fetch('/api/users', {
         credentials: 'include',
         method: 'POST',
