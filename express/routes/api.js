@@ -8,21 +8,41 @@ const promisifiedExec = util.promisify(exec); //Gör så att exec await kan anv�
 const fs = require('fs');
 const path = require('path');
 const buf = require('buffer').Buffer;
+const nodegit = require('nodegit');
+
 
 router.post('/addRepo', async (req, res) => {
-  await promisifiedExec(
-    `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-req.body.projectName
-} && npm install`
-  );
+//   await promisifiedExec(
+//     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
+// req.body.projectName
+// } && npm install`
+//   );
+
+
+  let url = req.body.url;
+  let projectName = req.body.projectName;
+  let localPath = path.join(__dirname, "/docker/" + projectName);
+  let cloneOptions = {};
+
+  cloneOptions.fetchOpts = {
+    callbacks: {
+      certificateCheck: function() { return 1; }
+    }
+  };
+
+  var cloneRepository = nodegit.Clone(url, localPath, cloneOptions)
+
+
+
+
   // Change back params to 'npm' and ['start']
   // This is to get it to work with express apps
-  let process = spawn('node', ['app'], {
-    cwd: `./repos/${req.body.projectName}`
-  });
-  process.on('error', error => console.log('error: ' + error));
-  process.stdout.on('data', data => console.log('data: ' + data));
-  res.json(req.body);
+  // let process = spawn('node', ['app'], {
+  //   cwd: `./repos/${req.body.projectName}`
+  // });
+  // process.on('error', error => console.log('error: ' + error));
+  // process.stdout.on('data', data => console.log('data: ' + data));
+  // res.json(req.body);
 
   /**
    * Randomize a number between 1025-65535
@@ -155,7 +175,7 @@ CMD [ "npm", "start" ]`);
   });
 }
 
-build_image();
+// build_image();
 
 
 module.exports = router;
