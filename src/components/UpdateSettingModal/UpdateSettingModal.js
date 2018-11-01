@@ -4,7 +4,7 @@ import imgPath from '../Sidebar/Sidebar';
 @inject('loginStore') @observer export default class UpdateSettingModal extends Component {
 
   @observable image = '';
-  @observable nickname = this.props.loginStore.user.nickname;
+  @observable nickname = '';
   @observable currentPasswordValue = '';
   @observable setNewPasswordValue = '';
   @observable confirmNewPasswordValue = '';

@@ -57,7 +57,7 @@ class ChannelStore {
       </div>
       elements.push(element)
     })
-    ReactDOM.render(elements, document.getElementById('groupRender'));
+    // ReactDOM.render(elements, document.getElementById('groupRender'));
 
   }
 

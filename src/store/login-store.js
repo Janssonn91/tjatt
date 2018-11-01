@@ -148,23 +148,25 @@ class LoginStore {
 
   @action updateSettings(settings) {
     const { imageFormData, nickname, password } = settings;
-    fetch(`/api/users/${this.user._id}/setting`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        _id: this.user._id,
-        nickname,
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.user = { ...this.user, nickname };
-        }
+    if (nickname !== "") {
+      fetch(`/api/users/${this.user._id}/setting`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          _id: this.user._id,
+          nickname,
+        }),
+        headers: { 'Content-Type': 'application/json' }
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.user = { ...this.user, nickname };
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
 
     if (imageFormData) {
       fetch('/api/upload', {
