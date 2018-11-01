@@ -1,9 +1,9 @@
-
 $gray: #919192;
 $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
+$red: #DD2B01;
 $orange: #E38968;
 $text:#434651;
 
@@ -29,4 +29,28 @@ $text:#434651;
       color: black;
     }
   }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    &.btn-save {
+      background-color: $blue;
+      &:hover {
+        background-color: $darkblue;
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 20%);
+      }
+    }
+  }
+
+  .alert-color {
+    background-color: lighten($red, 45%);
+    border: none;
+    color: $text;
+  }
+
 }
