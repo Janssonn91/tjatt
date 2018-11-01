@@ -41,26 +41,45 @@ class LoginStore {
       })
   }
 
-  @action signUp(username, password) {
+  @action signUp(username, password, email) {
+    console.log(username, password, email);
     fetch('/api/users',
       {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, email }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
       .then(res => {
         if (res.success) {
-          console.log('created user: ' + username)
+          console.log('created user: ' + username + ' med mail ' + email)
 
           this.user = res.user
           this.usernameExits = false;
+          this.sendWelcomeMail(username, email);
         } else {
           this.usernameExits = true;
         }
       }).catch((err) => {
         console.log('error', err);
       });
+  }
+
+  sendWelcomeMail(username, email){
+    fetch('/api/send-mail', {
+      credentials: 'include',
+      method: 'POST',
+      body: JSON.stringify( {username, email} ),
+      headers: { 'Content-Type': 'application/json'}
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        console.log('mail skickat')
+      }
+    }).catch(err => {
+      console.log("err", err)
+    })
   }
 
   @action fetchContact() {
