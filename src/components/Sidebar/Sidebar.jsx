@@ -31,7 +31,7 @@
       {this.props.loginStore.myContacts.map((user, i) =>
         <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.props.channelStore.getChannelByUser(user._id)}>
           <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-          <div className="d-inline-block" onClick={() => this.props.channelStore.getChannelByUser(user._id)}>{user.username}</div>
+          <div className="d-inline-block">{user.username}</div>
         </div>
       )}
       <div className="flexWrapper">
@@ -40,12 +40,13 @@
         </NavLink>
         <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       </div>
-      {this.props.loginStore.myChannel.map((channel, i) =>
-        <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
-          {/* <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} /> */}
-          <div className="d-inline-block" >{channel}</div>
-        </NavLink>
-      )}
+      <div id="groupRender"></div>
+      {/* {this.props.channelStore.myChannels.map((channel, i) => 
+      <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
+      
+       <div className="d-inline-block" >{channel}</div>
+       </NavLink>
+      )} */}
     </Nav>
     <hr />
   </div>

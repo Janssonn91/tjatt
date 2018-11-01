@@ -28,7 +28,6 @@ class ChannelStore {
       _id: channels
     }).then(
       channels => {
-        console.log(channels)
         channels.forEach(
           channel => {
             if (channel.group === false) {
@@ -40,14 +39,12 @@ class ChannelStore {
           }
 
         );
-        console.log(this.groupChannel)
         this.renderGroup();
       })
 
   }
 
   @action renderGroup() {
-    console.log(this.groupChannel)
 
     let channels = this.groupChannel;
     let elements = [];
@@ -60,7 +57,7 @@ class ChannelStore {
       </div>
       elements.push(element)
     })
-    // ReactDOM.render(elements, document.getElementById('groupRender'));
+     ReactDOM.render(elements, document.getElementById('groupRender'));
 
   }
 
@@ -108,11 +105,16 @@ class ChannelStore {
     }).then(() => {
       //this.getChannels();
       this.updateGroupChannel();
-      loginStore.selectedGroupMember = [];
-      loginStore.fetchContact();
+      this.cleanUpGroupModal();
       //loginStore.groupCandidates = loginStore.myContacts;
     })
   }
+
+  @action cleanUpGroupModal(){
+    loginStore.selectedGroupMember = [];
+    loginStore.fetchContact();
+}
+
 
   @action updateContactChannel() {
     this.contactChannel.push(this.newChannel);
@@ -128,28 +130,24 @@ class ChannelStore {
   }
 
   @action async getChannelByUser(userId) {
-    console.log(this.contactChannel)
-    console.log(userId)
     this.currentChannel = "";
     this.channelName = "";
     this.channelImg = "";
-    this.currentChannelType = "";
+    // this.currentChannelType = "";
     this.contactChannel.map(channel => {
-      return channel.admin.map(data => {
+      channel.admin.map(data => {
         if (data === userId) {
+          console.log(channel)
           return this.currentChannel = channel;
         }
-        return console.log("need return something here");
       })
     })
     this.showChat();
-    //console.log(this.currentChannel)
     this.getChannelInfo();
   }
 
   @action getGroupChannel(channel) {
     this.currentChannel = channel;
-    console.log(this.currentChannel);
     this.channelName = channel.channelname;
     this.currentChannelGroup = channel.group;
     this.showChat();
@@ -157,7 +155,7 @@ class ChannelStore {
 
   @action getChannelInfo() {
 
-    //console.log(this.currentChannel)
+    console.log(this.currentChannel)
     let channel = this.currentChannel;
     this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
     if (!channel) {
@@ -192,10 +190,6 @@ class ChannelStore {
 @action showChat(){
     this.hideMenu = true;
     this.hideChat = false; 
-}
-
-@action changeChatMobil(){
-
 }
 
 

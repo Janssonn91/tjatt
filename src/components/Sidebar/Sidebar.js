@@ -36,6 +36,7 @@ export const imgPath = '/images/placeholder.png';
 
   openModalCreateGroup() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+    this.props.channelStore.cleanUpGroupModal();
   }
 
   logout() {

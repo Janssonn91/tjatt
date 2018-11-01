@@ -89,7 +89,9 @@ export default class Chat extends Component {
   }
 
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+    if(this.messagesEnd){
+      this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+    }
   };
 
   componentDidMount() {

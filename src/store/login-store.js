@@ -10,7 +10,7 @@ class LoginStore {
   @observable myChannel = [];
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
-  @observable myGroups = [];
+  // @observable myGroups = [];
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -20,6 +20,7 @@ class LoginStore {
       .then(res => {
         if (res.loggedIn) {
           this.user = res.user;
+          channelStore.getChannels();
         }
       }).catch(err => {
         console.log("err", err)
@@ -95,6 +96,7 @@ class LoginStore {
     this.groupCandidates.push(addedUser);
     //console.log(this.myContacts)
     channelStore.updateContactChannel();
+    channelStore.getChannelByUser(userId);
   }
 
   @action addContact(userId) {
