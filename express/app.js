@@ -129,10 +129,27 @@ app.post('/login', (req, res) => {
 app.put('/users/:_id', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $push: { contact: req.body.contact, channel: req.body.channel}}
+    { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group}}
   )
     .then(() => {
       res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/setting', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { nickname: req.body.nickname } }
+  )
+    .then(user => {
+      if (user) {
+        res.json({ success: true, user })
+      } else {
+        res.json({ success: false })
+      }
     })
     .catch(err => {
       throw err;

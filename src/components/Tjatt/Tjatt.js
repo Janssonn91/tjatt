@@ -1,15 +1,15 @@
-@inject('loginStore', 'channelStore') @withRouter @observer  export default class Tjatt extends Component {
-
+@inject('loginStore', 'channelStore') @withRouter @observer
+export default class Tjatt extends Component {
   @observable hideMenu = true;
   @observable hideChat = false;
-  @observable sendToChat = this.showMenu.bind(this);
   @observable sendToMenu = this.showChat.bind(this);
 
-  start(){
+
+  start() {
     this.props.channelStore.getChannels();
   }
 
-  showMenu(){
+  showMenu() {
     this.hideMenu = false;
     this.hideChat = true;
   }
@@ -21,5 +21,13 @@
 
 
 
-}
+  // @observable sendToChat = this.showMenu.bind(this);
 
+
+
+
+
+
+
+
+}
