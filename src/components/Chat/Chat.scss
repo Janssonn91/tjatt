@@ -20,12 +20,19 @@ $fontSm: 12px;
     background: lighten($gray, 30%);
     height: 100vh;
 
+    img {
+        border-radius:8px;
+        width: 40px;
+        height: auto;
+      }
+
     .chat-header {
       .chat-about{
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 85px;
+       
         .dropdown-menu {
             position: absolute;
             border-radius: 5px;
@@ -149,7 +156,7 @@ $fontSm: 12px;
         .me {
             text-align: left !important;
             margin-bottom: 15px;
-            margin-left: 25px;
+            margin-left: 15px;
         }
         .message-data-time {
             color: lighten($gray, 8%);
@@ -188,7 +195,7 @@ $fontSm: 12px;
             color: $text;
             &:after {
                 border-bottom-color: white;
-                left:30px;
+                left:40px;
             }
         }
 

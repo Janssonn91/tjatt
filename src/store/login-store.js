@@ -7,6 +7,9 @@ class LoginStore {
   @observable candidates = [];
   @observable myContacts = [];
   @observable myChannel = [];
+  @observable groupCandidates=[];
+  @observable selectedGroupMember = [];
+  @observable myGroups = [];
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -76,9 +79,28 @@ class LoginStore {
         }
         this.candidates = withoutMe.filter(user => !isIncluded(user._id));
         this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+        this.groupCandidates =withoutMe.filter(user => isIncluded(user._id));
         this.myChannel = this.user.channel;
+        //this.getChannelById();
+        // console.log(this.myGroup)
       });
   }
+
+  // @action getChannelById(){
+  //   Channel.find().then(channels=> {
+  //            console.log(channelStore.groupChannel)
+  //     channelStore.groupChannel.forEach(c=>{
+  //         console.log(c)
+  //          let a=channels.filter(channel=>channel._id === c)
+  //          this.myGroups.push(a);
+  //          console.log(a)
+  //    })
+  //    console.log("myGroup",this.myGroups)
+  //    //this.renderGroup();
+  //  })
+  // }
+
+
 
   // remove added user in candidates
   @action updateContact(userId) {
@@ -86,6 +108,7 @@ class LoginStore {
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
+    this.groupCandidates.push(addedUser);
     console.log(this.myContacts)
     channelStore.updateContactChannel();
   
@@ -96,7 +119,7 @@ class LoginStore {
       const admin = [this.user._id, userId];
       const members = [this.user._id, userId];
       
-      channelStore.createChannel(channelname, admin, members).then((channel)=>{
+      channelStore.createChannel(channelname, admin, members, false).then((channel)=>{
    // add contact in my contact
    fetch(`/api/users/${this.user._id}`, {
     method: 'PUT',
@@ -128,10 +151,20 @@ class LoginStore {
       console.log(err);
     });
       });
-     
-   
- 
+  }
 
+  @action selectOneForGroup(user){
+    this.selectedGroupMember.push(user);
+    const addedUser = this.groupCandidates.find(u => u._id === user._id);
+    const index = this.groupCandidates.indexOf(addedUser);
+    this.groupCandidates.splice(index, 1);
+  }
+
+  @action removeFromSelect(user){
+    this.groupCandidates.push(user);
+    const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
+    const index = this.selectedGroupMember.indexOf(addedUser);
+    this.selectedGroupMember.splice(index, 1);
   }
 
  
