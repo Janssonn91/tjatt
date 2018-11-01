@@ -1,23 +1,6 @@
-//  import {
-//      library
-//  } from '@fortawesome/fontawesome-svg-core'
-//  import {
-//      FontAwesomeIcon
-//  } from '@fortawesome/react-fontawesome'
-//  import {
-//      faUser,
-//      faUsers,
-//      faCircle,
-//      faFile,
-//      faFileImage,
-//      faPlus,
-//      faCode,
-//      faCodeBranch
-//  } from '@fortawesome/free-solid-svg-icons'
 
 import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
-//  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
 @inject('loginStore', 'channelStore') @observer
 export default class Chat extends Component {
