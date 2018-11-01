@@ -13,6 +13,26 @@
               <input className="d-none" id="files" type="file" name="files" onChange={this.onFileChange} />
             </li>
             <DropdownItem divider />
+            {!this.togglePWInput ?
+            <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.changePW()}>Change password <i className="fas fa-edit"></i></DropdownItem>
+            :
+            <Fragment>
+              <DropdownItem className="px-2 py-1" tag="li">
+                <Input className="pw-input" type="password" name="password" id="currentPassword" placeholder="Current password" onClick={e => e.stopPropagation()} onChange={e => this.currentPassword(e)} />
+              </DropdownItem>
+              <DropdownItem className="px-2 py-1" tag="li">
+                <Input className="pw-input" type="password" name="password" id="setNewPassword" placeholder="New password" onClick={e => e.stopPropagation()} onChange={e => this.setNewPassword(e)} />
+              </DropdownItem>
+              <DropdownItem className="px-2 py-1" tag="li">
+                <Input className="pw-input" type="password" name="password" id="confirmNewPassword" placeholder="Confirm password" onClick={e => e.stopPropagation()} onChange={e => this.confirmNewPassword(e)} />
+              </DropdownItem>
+              <DropdownItem className="px-2 py-1 text-right" tag="li">
+                <Button color="success">Save</Button>{' '}
+              </DropdownItem>
+            </Fragment>
+            }
+
+            <DropdownItem divider />
             <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>

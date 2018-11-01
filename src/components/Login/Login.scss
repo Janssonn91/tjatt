@@ -58,6 +58,13 @@ $white: rgb(219, 219, 219);
         text-align: center;
     }
 
+    .retrieve-pw {
+        color: $white;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
 }
 
 .container-fluid {
