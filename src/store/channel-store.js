@@ -113,6 +113,9 @@ class ChannelStore {
     }).then(() => {
         //this.getChannels();
         this.updateGroupChannel();
+        loginStore.selectedGroupMember = [];
+        loginStore.fetchContact();
+        //loginStore.groupCandidates = loginStore.myContacts;
     })
 }
 
