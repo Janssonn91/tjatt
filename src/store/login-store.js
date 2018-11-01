@@ -101,7 +101,7 @@ class LoginStore {
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];
 
-    channelStore.createChannel(channelname, admin, members, false).then((channel) => {
+    channelStore.createChannel(channelname, admin, members).then(channel => {
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
         method: 'PUT',
@@ -115,64 +115,84 @@ class LoginStore {
         })
         .then(() => {
           this.updateContact(userId);
-
         })
         .catch(err => {
           console.log(err);
         });
 
-      // add my id to the new friend contact
-      fetch(`/api/users/${userId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ userId, contact: this.user._id, channel: channel._id }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => {
-          res.json();
+      channelStore.createChannel(channelname, admin, members, false).then((channel) => {
+        // add contact in my contact
+        fetch(`/api/users/${this.user._id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            _id: this.user._id, contact: userId, channel: channel._id
+          }),
+          headers: { 'Content-Type': 'application/json' }
         })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  }
+          .then(res => {
+            res.json();
+          })
+          .then(() => {
+            this.updateContact(userId);
+
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+        // add my id to the new friend contact
+        fetch(`/api/users/${userId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ userId, contact: this.user._id, channel: channel._id }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then(res => {
+            res.json();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+    }
+
 
   @action selectOneForGroup(user) {
-    this.selectedGroupMember.push(user);
-    const addedUser = this.groupCandidates.find(u => u._id === user._id);
-    const index = this.groupCandidates.indexOf(addedUser);
-    this.groupCandidates.splice(index, 1);
-  }
+      this.selectedGroupMember.push(user);
+      const addedUser = this.groupCandidates.find(u => u._id === user._id);
+      const index = this.groupCandidates.indexOf(addedUser);
+      this.groupCandidates.splice(index, 1);
+    }
 
-  @action removeFromSelect(user) {
-    this.groupCandidates.push(user);
-    const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
-    const index = this.selectedGroupMember.indexOf(addedUser);
-    this.selectedGroupMember.splice(index, 1);
-  }
-
-
+    @action removeFromSelect(user) {
+      this.groupCandidates.push(user);
+      const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
+      const index = this.selectedGroupMember.indexOf(addedUser);
+      this.selectedGroupMember.splice(index, 1);
+    }
 
 
 
-  @action updateSettings(nickname) {
-    fetch(`/api/users/${this.user._id}/setting`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        _id: this.user._id,
-        nickname,
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.user = { ...this.user, nickname };
-        }
+
+
+    @action updateSettings(nickname) {
+      fetch(`/api/users/${this.user._id}/setting`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          _id: this.user._id,
+          nickname,
+        }),
+        headers: { 'Content-Type': 'application/json' }
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.user = { ...this.user, nickname };
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
-}
 
-export const loginStore = new LoginStore();
+  export const loginStore = new LoginStore();
