@@ -11,6 +11,7 @@
   "  Sidebar": "components/Sidebar/Sidebar",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
+  "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
   "  Message": "components/Message/Message",
