@@ -59,7 +59,7 @@ $fontSm: 12px;
             height: 66px;
             .mobil-menu{
                 border: none;
-                background-color: #F2F5F8 !important;
+                background-color: lighten($gray, 30%) !important;
                 color:$gray;
             }
             .chat-with{
