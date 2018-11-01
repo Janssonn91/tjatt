@@ -50,7 +50,7 @@ class ChannelStore {
 }
 
 @action renderGroup(){
-    //console.log(this.groupChannel)
+    console.log(this.groupChannel)
     
     let channels = this.groupChannel;
     let elements = [];
@@ -62,7 +62,7 @@ class ChannelStore {
         <div className="d-inline-block" >{channel.channelname}</div>
         </div>
         elements.push(element)
-       
+      // console.log(elements)
     })
     //console.log(elements)
     ReactDOM.render(elements, document.getElementById('groupRender'));
@@ -106,13 +106,13 @@ class ChannelStore {
                 })
                 .then(res => {
                     res.json();
-                }).then(() => {
-                    //this.getChannels();
-                    this.updateGroupChannel();
                 }).catch(err => {
                     console.log(err);
                 })
         })
+    }).then(() => {
+        //this.getChannels();
+        this.updateGroupChannel();
     })
 }
 
@@ -123,10 +123,10 @@ class ChannelStore {
 }
 
 @action updateGroupChannel() {
-    console.log(myChannels, newChannel)
+    //console.log(this.myChannels, this.newChannel)
     this.groupChannel.push(this.newChannel);
-    this.myChannels.push(this.newChannel);
-    console.log(groupChannel)
+    //this.myChannels.push(this.newChannel);
+    console.log(this.groupChannel)
     this.renderGroup();
 }
 
