@@ -36,7 +36,7 @@
             <DropdownItem className="px-3 py-1" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '}
+        {/* <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '} */}
       </div>
     </div>
     <hr className="mt-0" />

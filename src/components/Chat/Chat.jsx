@@ -4,7 +4,7 @@
   <Col sm="12" className="chat-about pl-3 pl-md-4">
     <Button
       className="mobil-menu d-inline-block d-md-none"
-      onClick={this.props.toChat}>
+      onClick={e=>this.props.channelStore.showMenu()}>
       <i className="fas fa-ellipsis-v"></i>
     </Button>
     <span className="chat-with">{this.props.channelStore.channelName}</span>

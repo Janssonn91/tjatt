@@ -14,6 +14,9 @@ class ChannelStore {
     @observable amIAdmin = "";
     @observable contactChannel = [];
     @observable groupChannel = [];
+    @observable hideMenu = true;
+    @observable hideChat = false;
+ 
 
 
 
@@ -137,6 +140,7 @@ class ChannelStore {
             }
         })
     })
+    this.showChat();
     //console.log(this.currentChannel)
     this.getChannelInfo();
 }
@@ -146,6 +150,7 @@ class ChannelStore {
     console.log(this.currentChannel);
     this.channelName = channel.channelname;
     this.currentChannelGroup = channel.group;
+    this.showChat();
 }
 
 @action getChannelInfo() {
@@ -174,6 +179,20 @@ class ChannelStore {
     }
     console.log(this.channelName)
 
+
+}
+
+@action showMenu() {
+    this.hideMenu = false;
+    this.hideChat = true;
+  }
+
+@action showChat(){
+    this.hideMenu = true;
+    this.hideChat = false; 
+}
+
+@action changeChatMobil(){
 
 }
 

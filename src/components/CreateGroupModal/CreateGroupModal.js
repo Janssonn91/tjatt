@@ -1,4 +1,5 @@
  import "./CreateGroupModal.scss";
+ import ScrollableFeed from 'react-scrollable-feed';
 
  @inject('loginStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
 
@@ -8,17 +9,17 @@
   @observable check = 'false';
 
 
-  @action groupNameChange(e) {
+  groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
 
-  @action checkBeforeSubmit(){
+  checkBeforeSubmit(){
     //check if groupName is available
 
 
   }
 
-  @action createGroup(){
+  createGroup(){
     //check Before Submit;
 
     if(!this.groupName){
@@ -40,6 +41,10 @@
     
    
   }
+
+  scrollToBottom = () => {
+    this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
+  };
 
  
 
