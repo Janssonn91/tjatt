@@ -121,8 +121,9 @@ class ChannelStore {
     //console.log(this.myChannels, this.newChannel)
     this.groupChannel.push(this.newChannel);
     //this.myChannels.push(this.newChannel);
-    console.log(this.groupChannel)
+    console.log(this.groupChannel);
     this.renderGroup();
+    this.getGroupChannel(this.newChannel);
 }
 
 @action async getChannelByUser(userId) {
