@@ -25,8 +25,8 @@ global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
 
 // if we want to move the salt later on
-const salty = require('./tjat.json')
-global.passwordSalt = salty.salt;
+ const salty = require('./tjat.json')
+ global.passwordSalt = salty.salt;
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
@@ -58,6 +58,9 @@ app.get('/hello', (req, res) => {
   res.send('hello')
 })
 
+const mailer = require('./classes/Sendmail.class');
+app.post('/send-mail', mailer)
+
 app.post('/users', (req, res) => {
   console.log(req.session);
   User.findOne({ username: req.body.username })
@@ -65,6 +68,7 @@ app.post('/users', (req, res) => {
       if (!user) {
         new User({
           username: req.body.username,
+          email: req.body.useremail,
           password: req.body.password,
           nickname: req.body.username
         }).save().then(user => {

@@ -16,11 +16,34 @@ import './Sidebar.scss';
   @observable file;
   @observable imgPath = '/images/placeholder.png'
   @observable useDBPath = !!this.props.loginStore.user.image || false;
-  
+  @observable togglePWInput = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
 
   // start(){
   //   this.props.channelStore.getChannels();
   // }
+
+  async start() {
+  }
+
+  changePW() {
+    this.togglePWInput = !this.togglePWInput;
+    this.toggle();
+  }
+
+  currentPassword(e) {
+    this.currentPasswordValue = e.currentTarget.value;
+  }
+
+  setNewPassword(e) {
+    this.setNewPasswordValue = e.currentTarget.value;
+  }
+  
+  confirmNewPassword(e) {
+    this.confirmNewPasswordValue = e.currentTarget.value;
+  }
 
   async toggle() {
     await sleep(1);
