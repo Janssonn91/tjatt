@@ -5,6 +5,7 @@
   @observable groupName = ''; 
   @observable myAttr = 'd-none';
   @observable showAttr = 'd-none';
+  @observable check = 'false';
 
 
   @action groupNameChange(e) {
@@ -25,18 +26,18 @@
     }else{
       this.showAttr = 'd-none';
     }
+    if(this.groupName && this.props.loginStore.selectedGroupMember.length>=2){
+      this.check= true;
+    }
 
   }
 
   @action createGroup(){
     this.checkBeforeSubmit();
-    const admin = this.props.loginStore.user._id;
-    const members = this.props.loginStore.selectedGroupMember.map(user => user._id);
-    members.push(admin);
-    console.log("admin", admin);
-    console.log("members", members);
-    this.props.channelStore.createChannel(this.groupName, admin, members, true);
-    this.props.channelStore.updateGroupChannel();
+    if(this.check){
+      this.props.channelStore.addChannel(this.groupName);
+    }
+   
   }
 
  

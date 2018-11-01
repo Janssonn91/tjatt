@@ -37,7 +37,6 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.myChannel = this.user.channel;
-          //channelStore.getChannelCategories();
         }
         this.loginError = true;
       }).catch(err => {
@@ -81,24 +80,8 @@ class LoginStore {
         this.myContacts = withoutMe.filter(user => isIncluded(user._id));
         this.groupCandidates =withoutMe.filter(user => isIncluded(user._id));
         this.myChannel = this.user.channel;
-        //this.getChannelById();
-        // console.log(this.myGroup)
       });
-  }
-
-  // @action getChannelById(){
-  //   Channel.find().then(channels=> {
-  //            console.log(channelStore.groupChannel)
-  //     channelStore.groupChannel.forEach(c=>{
-  //         console.log(c)
-  //          let a=channels.filter(channel=>channel._id === c)
-  //          this.myGroups.push(a);
-  //          console.log(a)
-  //    })
-  //    console.log("myGroup",this.myGroups)
-  //    //this.renderGroup();
-  //  })
-  // }
+    }
 
 
 
