@@ -5,6 +5,7 @@
   @observable groupName = ''; 
   @observable myAttr = 'd-none';
   @observable showAttr = 'd-none';
+  @observable check = 'false';
 
 
   @action groupNameChange(e) {
@@ -13,8 +14,16 @@
 
   @action checkBeforeSubmit(){
     //check if groupName is available
+
+
+  }
+
+  @action createGroup(){
+    //check Before Submit;
+
     if(!this.groupName){
       this.myAttr='show';
+      return;
     }else{
       this.myAttr= 'd-none';
     }
@@ -22,21 +31,14 @@
 
     if(this.props.loginStore.selectedGroupMember.length<2){
       this.showAttr = 'show';
+      return;
     }else{
       this.showAttr = 'd-none';
     }
-
-  }
-
-  @action createGroup(){
-    this.checkBeforeSubmit();
-    const admin = this.props.loginStore.user._id;
-    const members = this.props.loginStore.selectedGroupMember.map(user => user._id);
-    members.push(admin);
-    console.log("admin", admin);
-    console.log("members", members);
-    this.props.channelStore.createChannel(this.groupName, admin, members, true);
-    this.props.channelStore.updateGroupChannel();
+    
+    this.props.channelStore.addChannel(this.groupName);
+    
+   
   }
 
  
