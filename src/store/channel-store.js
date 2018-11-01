@@ -111,6 +111,8 @@ class ChannelStore {
   }
 
   @action cleanUpGroupModal(){
+    // TODO: cleanup has bug, remove new added contact need to be fixed
+    // need new method to renew groupCandidates
     loginStore.selectedGroupMember = [];
     loginStore.fetchContact();
 }
