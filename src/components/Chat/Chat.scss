@@ -4,6 +4,7 @@ $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
+$red: #FF3C00;
 $orange: #E38968;
 $text:#434651;
 
@@ -20,12 +21,19 @@ $fontSm: 12px;
     background: lighten($gray, 30%);
     height: 100vh;
 
+    img {
+        border-radius:8px;
+        width: 40px;
+        height: auto;
+      }
+
     .chat-header {
       .chat-about{
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 85px;
+       
         .dropdown-menu {
             position: absolute;
             border-radius: 5px;
@@ -40,7 +48,7 @@ $fontSm: 12px;
             }
             .channel-manage {
                 button:hover {
-                    background-color: $orange;
+                    background-color: lighten($lightblue, 23%);
                 }
             }
         }
@@ -52,7 +60,7 @@ $fontSm: 12px;
             height: 66px;
             .mobil-menu{
                 border: none;
-                background-color: #F2F5F8 !important;
+                background-color: lighten($gray, 30%) !important;
                 color:$gray;
             }
             .chat-with{
@@ -77,12 +85,12 @@ $fontSm: 12px;
         }
 
         .leave-group{
-            color:$orange;
+            color: $red;
             &:hover {
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
-                background-color: #dc3545!important;
-                color: black;
+                background-color: $red;
+                color: white;
             }
         }
         .editable-gn {
@@ -149,7 +157,7 @@ $fontSm: 12px;
         .me {
             text-align: left !important;
             margin-bottom: 15px;
-            margin-left: 25px;
+            margin-left: 15px;
         }
         .message-data-time {
             color: lighten($gray, 8%);
@@ -188,7 +196,7 @@ $fontSm: 12px;
             color: $text;
             &:after {
                 border-bottom-color: white;
-                left:30px;
+                left:40px;
             }
         }
 
@@ -253,7 +261,8 @@ $fontSm: 12px;
             resize: none;
             line-height: 2;
             &:focus {
-                border-color: $darkblue;
+                border-color: $lightblue;
+                box-shadow: 0 0 0 0.2rem lightblue;
             }
             @media (min-width: 576px) {
               width: 70vw;
@@ -272,17 +281,13 @@ $fontSm: 12px;
             border-radius: 50%;
             width: 50px;
             height: 50px;
+            &:hover {
+              background-color: $darkblue;
+              border-color: $darkblue;
+              color: white;
+              font-size: 1.8vw;
+          }
         }
-
-        .send:hover {
-            @media (min-width: 768px) {
-                background-color: $darkblue;
-                border-color: $darkblue;
-                color: white;
-                font-size: 1.8vw;
-            }
-        }
-
     }
     hr {
         border-top: 1px solid rgba(0,0,0,.1);
