@@ -28,9 +28,9 @@
         <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       </div>
       {this.props.loginStore.myContacts.map((user, i) =>
-        <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.props.channelStore.changeChannel("contact", user._id)}>
+        <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
           <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-          <div className="d-inline-block">{user.username}</div>
+          <div className="d-inline-block">{user.nickname}</div>
         </div>
       )}
       <div className="flexWrapper">

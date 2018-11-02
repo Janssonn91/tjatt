@@ -41,11 +41,17 @@ export const imgPath = '/images/placeholder.png';
   logout() {
     fetch('/api/logout').then(() => {
       this.props.loginStore.isLoggedIn = false;
+      this.props.history.push('/');
     });
   }
 
   changeLogStatus() {
     return false;
+  }
+
+  changeChannel(userId, nickname) {
+    this.props.channelStore.changeChannel("contact", userId);
+    this.props.history.push(`/${this.props.loginStore.user.username}/${nickname}`);
   }
 
 }
