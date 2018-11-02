@@ -10,6 +10,8 @@ class LoginStore {
   @observable myChannel = [];
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
+  @observable message = '';
+  @observable receivedMessages = [];
   // @observable myGroups = [];
 
   @action checkIfLoggedIn() {
@@ -22,6 +24,21 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           channelStore.getChannels();
+      
+          socket.off('chat message');
+          socket.on(
+            'chat message', 
+            (messages) => {
+              for(let message of messages){
+                let date = new Date(message.date);
+                this.receivedMessages.push(
+                  message.sender + ': ' +
+                  message.time + ': ' +
+                  message.text + ': ' + 
+                  message.channel + ': ' +
+                  message.textType 
+                );
+              }})
         }
       }).catch(err => {
         console.log("err", err)
@@ -117,7 +134,7 @@ class LoginStore {
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
     //console.log(this.myContacts)
-    channelStore.updateContactChannel();
+    channelStore.updateContactChannels();
     channelStore.getChannelByUser(userId);
   }
 
