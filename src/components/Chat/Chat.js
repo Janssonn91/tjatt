@@ -6,6 +6,7 @@ import ScrollableFeed from 'react-scrollable-feed';
 export default class Chat extends Component {
 
   @observable inputMessage = '';
+  // @observable messagesEnd = '';
   @observable chatHistories = [{
       id: 1,
       image: "/images/uploads/pikachu.png-1540468459565.png",

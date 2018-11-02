@@ -126,8 +126,12 @@ class ChannelStore {
     loginStore.fetchContact();
 }
 
+@action cleanUpGroupModal(){
+    loginStore.selectedGroupMember = [];
+    loginStore.fetchContact();
+}
 
-  @action updateContactChannel() {
+@action updateContactChannel() {
     this.contactChannel.push(this.newChannel);
   }
 
@@ -207,7 +211,6 @@ class ChannelStore {
 }
 
 
-}
 
 
 const channelStore = new ChannelStore();
