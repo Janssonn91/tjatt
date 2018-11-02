@@ -19,6 +19,9 @@
   "  AddUserModal": "components/AddUser/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
   "  Server": "components/Server/Server",
+  "  GitApps": "components/GitApps/GitApps",
+  "  Spinner": "components/Spinner/Spinner",
+
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

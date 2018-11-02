@@ -6,6 +6,7 @@
         <Route exact path="/" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/server" component={Server} />
+        <Route path="/git" component={GitApps} />
         {this.stores.Login && this.stores.Login.user && this.stores.Login.user.username ?
         <PrivateRoute path={`/${this.stores.Login.user.username}`} component={Tjatt} />
       : null}
