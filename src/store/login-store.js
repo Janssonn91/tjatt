@@ -22,6 +22,7 @@ class LoginStore {
       .then(res => {
         if (res.loggedIn) {
           this.user = res.user;
+          this.isLoggedIn = true;
           channelStore.getChannels();
           socket.on(
             'login', this.user
@@ -57,6 +58,7 @@ class LoginStore {
       .then(res => {
         if (res.success) {
           this.user = res.user;
+          this.isLoggedIn = true;
           this.myChannel = this.user.channel;
         }
         this.loginError = true;
@@ -65,27 +67,45 @@ class LoginStore {
       })
   }
 
-  @action signUp(username, password) {
+  @action signUp(username, password, useremail) {
+    console.log(username, password, useremail);
     fetch('/api/users',
       {
         credentials: 'include',
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, useremail }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
       .then(res => {
         if (res.success) {
-          console.log('created user: ' + username)
-
-          this.user = res.user;
-
+          console.log('created user: ' + username + ' med mail ' + useremail)
+          this.user = res.user
           this.usernameExits = false;
+          this.isLoggedIn = true;
+          this.sendWelcomeMail(username, useremail);
         } else {
           this.usernameExits = true;
         }
       }).catch((err) => {
         console.log('error', err);
       });
+  }
+
+  sendWelcomeMail(username, email){
+    fetch('/api/send-mail', {
+      credentials: 'include',
+      method: 'POST',
+      body: JSON.stringify( {username, email} ),
+      headers: { 'Content-Type': 'application/json'}
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        console.log('mail skickat')
+      }
+    }).catch(err => {
+      console.log("err", err)
+    })
   }
 
   @action fetchContact() {
