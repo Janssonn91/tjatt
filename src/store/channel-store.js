@@ -12,10 +12,11 @@ class ChannelStore {
     @observable channelImg = "";
     @observable currentChannelGroup = false;
     @observable amIAdmin = "";
-    @observable contactChannel = [];
+    @observable contactChannels = [];
     @observable groupChannel = [];
     @observable hideMenu = true;
     @observable hideChat = false;
+    @observable channelChatHistory = [];
  
 
 
@@ -38,7 +39,7 @@ class ChannelStore {
           channel => {
             if (channel.group === false) {
               console.log("false")
-              this.contactChannel.push(channel);
+              this.contactChannels.push(channel);
             }
             if (channel.group === true){
               console.log("true")
@@ -51,6 +52,14 @@ class ChannelStore {
         this.renderGroup();
       }
 
+    @action async getChannelChatHistory(){
+      let channelMessage= await Message.find({
+        channel: this.currentChannel
+      })
+
+      this.channelChatHistory= channelMessage;
+    }
+
   
 
   @action renderGroup() {
@@ -61,7 +70,7 @@ class ChannelStore {
     // console.log(channels)
     channels.map((channel, i) => {
       // console.log(channel.channelname)
-      element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.getGroupChannel(channel)}>
+      element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel("group", channel)}>
         <div className="d-inline-block" >{channel.channelname}</div>
       </div>
       elements.push(element)
@@ -119,20 +128,27 @@ class ChannelStore {
     })
   }
 
+  @action changeChannel(type, id){
+    if(type==="contact"){
+      this.getChannelByUser(id);
+    }
+    if(type === "group"){
+      this.getGroupChannel(id);
+    }
+
+  }
+//this.props.channelStore.getChannelByUser(user._id)}
+
+
   @action cleanUpGroupModal(){
     // TODO: cleanup has bug, remove new added contact need to be fixed
     // need new method to renew groupCandidates
     loginStore.selectedGroupMember = [];
-    loginStore.fetchContact();
+    //loginStore.fetchContact();
 }
 
-@action cleanUpGroupModal(){
-    loginStore.selectedGroupMember = [];
-    loginStore.fetchContact();
-}
-
-@action updateContactChannel() {
-    this.contactChannel.push(this.newChannel);
+@action updateContactChannels() {
+    this.contactChannels.push(this.newChannel);
   }
 
   @action updateGroupChannel() {
@@ -149,8 +165,8 @@ class ChannelStore {
     this.channelName = "";
     this.channelImg = "";
     // this.currentChannelType = "";
-    console.log(this.contactChannel)
-    this.contactChannel.map(channel => {
+    console.log(this.contactChannels)
+    this.contactChannels.map(channel => {
       channel.admin.map(data => {
         if (data === userId) {
           console.log(channel)
@@ -158,8 +174,8 @@ class ChannelStore {
         }
       })
     })
+    //mobil version
     this.showChat();
-    //this.getChannels();
     this.getChannelInfo();
   }
 
@@ -208,6 +224,7 @@ class ChannelStore {
 @action showChat(){
     this.hideMenu = true;
     this.hideChat = false; 
+}
 }
 
 
