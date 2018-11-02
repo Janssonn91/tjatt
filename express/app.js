@@ -69,7 +69,7 @@ const User = require('./classes/User.class');
 const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
-new Channel(app);
+let channel = new Channel(app).myModel;
 // new Message(app);
 
 
@@ -233,10 +233,10 @@ io.on('connection', (socket) => {
       text: messageFromClient.text
     });
     await message.save();
-    // let channel = await Channel.find({ channelname: room })[0];
-    // // console.log(channel)
-    // channel.content.push(message._id);
-    // await channel.save();
+    // let foundChannel = await channel.find({ channelname: room })[0];
+    // console.log(channel)
+    // foundChannel.content.push(message._id);
+    // await foundChannel.save();
 
     io.emit('chat message', messageFromClient);
   });
@@ -262,6 +262,7 @@ io.on('connection', (socket) => {
 
   });
 });
+
 
 
 
