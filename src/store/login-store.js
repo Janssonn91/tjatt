@@ -203,12 +203,9 @@ class LoginStore {
         }),
         headers: { 'Content-Type': 'application/json'}
       })
-      .then(res => res.json())
+        .then(res => res.json())
         .then(data => {
           if (data.success) {
-            console.log('de stämmer');
-            console.log(data.hash);
-            // gå vidare och spara lösenordet
             fetch('/api/pwhash', {
               method: 'POST',
               body: JSON.stringify({
@@ -216,33 +213,29 @@ class LoginStore {
               }),
               headers: { 'Content-Type': 'application/json'}
             })
-            .then(res => res.json())
-        .then(data => {
-          // detta hashet vill jag har sparat till usern!
-          const password = data.hash;
-          console.log('hashat lösenord: ', password);
-            //
-            fetch(`/api/users/${this.user._id}/setting/password`, {
-              method: 'PUT',
-              body: JSON.stringify({
-                _id: this.user._id,
-                password,
-              }),
-              headers: { 'Content-Type': 'application/json' }
-            })
-          })
               .then(res => res.json())
               .then(data => {
-                console.log('speciel data', data);
-                if (data.success) {
-                  this.user = { ...this.user, password };
-                  console.log('jepp det funkade!')
-                }
+                const password = data.hash;
+                fetch(`/api/users/${this.user._id}/setting/password`, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    _id: this.user._id,
+                    password,
+                  }),
+                  headers: { 'Content-Type': 'application/json' }
+                })
               })
-              .catch(err => {
-                console.log(err);
-              });
-            // slut test av uppdatering lösenord
+                .then(res => res.json())
+                .then(data => {
+                  console.log('speciel data', data);
+                  if (data.success) {
+                    this.user = { ...this.user, password };
+                    console.log('jepp det funkade!')
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                });
           }
           else {
             this.isNotCorrectPass = true;
