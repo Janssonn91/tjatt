@@ -33,7 +33,6 @@ $fontSm: 12px;
         align-items: center;
         justify-content: space-between;
         height: 85px;
-       
         .dropdown-menu {
             position: absolute;
             border-radius: 5px;
@@ -62,9 +61,6 @@ $fontSm: 12px;
                 border: none;
                 background-color: lighten($gray, 30%) !important;
                 color:$gray;
-            }
-            .chat-with{
-                font-size: $fontMd;
             }
         }
         .bottom-item {
@@ -97,10 +93,11 @@ $fontSm: 12px;
             padding: 4px;
         }
         .chat-with {
+            font-size: $fontLg;
             vertical-align: middle;
             text-align: left;
             font-weight: bold;
-            color: $gray;
+            color:  darken($gray, 20%);
         }
         .dialog-icon {
             float: right;
@@ -266,7 +263,7 @@ $fontSm: 12px;
             }
             @media (min-width: 576px) {
               width: 70vw;
-          }
+            }
             @media (min-width: 768px) {
                 width: 60vw;
             }
