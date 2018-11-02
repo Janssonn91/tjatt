@@ -49,4 +49,9 @@ export const imgPath = '/images/placeholder.png';
     return false;
   }
 
+  changeChannel(userId, nickname) {
+    this.props.channelStore.changeChannel("contact", userId);
+    this.props.history.push(`/${this.props.loginStore.user.username}/${nickname}`);
+  }
+
 }
