@@ -1,6 +1,6 @@
 import './Signup.scss';
 
-@inject('loginStore', 'channelStore') @observer export default class Signup extends Component {
+@inject('loginStore', 'channelStore') @withRouter @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
   @observable useremailToSet = '';
@@ -24,53 +24,17 @@ import './Signup.scss';
     // behöver email-validering här och sök på om den redan finns i backend?
   }
 
-  onSubmit = (e) => {
-    /*let newUser = {
-      username: document.getElementById('username').value,
-      useremail: document.getElementById('useremail').value,
-      password: document.getElementById('userpassword').value
-    };
-    console.log(newUser);*/
-    e.preventDefault();
-    console.log(this.usernameToSet, this.passWordToSet, this.useremailToSet);
-    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
-    /*fetch('/api/users', {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify({ username: newUser.username , useremail: newUser.useremail, password: newUser.password }),
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('created user: ' + this.usernameToSet)
-          this.user = res.user
-          this.usernameExits = false;
-          this.props.history.push('/');
-          this.sendWelcomeMail(this.user);
-        } else {
-          this.usernameExits = true;
-        }
-      }).catch((err) => {
-        console.log('error', err);
-      });*/
-  };
+  goToChat = async () => {
+    await sleep(30);
+    if (this.props.loginStore.isLoggedIn) {
+      this.props.history.push(`/${this.props.loginStore.user.username}`);
+    }
+  }
 
- /* sendWelcomeMail(user){
-      console.log(toJS(user));
-      fetch('/api/send-mail', {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify( {username: user.username, email: user.email} ),
-        headers: { 'Content-Type': 'application/json'}
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('här din get');
-        }
-      }).catch(err => {
-        console.log("err", err)
-      })
-  }*/
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
+    this.goToChat();
+  };
 
 }
