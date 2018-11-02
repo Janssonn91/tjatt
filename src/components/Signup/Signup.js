@@ -25,15 +25,16 @@ import './Signup.scss';
   }
 
   onSubmit = (e) => {
-    let newUser = {
+    /*let newUser = {
       username: document.getElementById('username').value,
       useremail: document.getElementById('useremail').value,
       password: document.getElementById('userpassword').value
     };
-    console.log(newUser);
+    console.log(newUser);*/
     e.preventDefault();
-    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet);
-    fetch('/api/users', {
+    console.log(this.usernameToSet, this.passWordToSet, this.useremailToSet);
+    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
+    /*fetch('/api/users', {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify({ username: newUser.username , useremail: newUser.useremail, password: newUser.password }),
@@ -51,10 +52,10 @@ import './Signup.scss';
         }
       }).catch((err) => {
         console.log('error', err);
-      });
+      });*/
   };
 
-  sendWelcomeMail(user){
+ /* sendWelcomeMail(user){
       console.log(toJS(user));
       fetch('/api/send-mail', {
         credentials: 'include',
@@ -70,6 +71,6 @@ import './Signup.scss';
       }).catch(err => {
         console.log("err", err)
       })
-  }
+  }*/
 
 }

@@ -78,6 +78,10 @@
         </FormGroup>
         </Col>
       </Row>
+              <div className="round d-inline-block">
+                <Input type="checkbox" id="checkbox1" />
+                <Label check className="m-0" for="checkbox1"/>
+              </div>
       </Form>
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
