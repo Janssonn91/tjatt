@@ -24,9 +24,7 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           channelStore.getChannels();
-          socket.on(
-            'login', this.user
-          )
+      
           socket.off('chat message');
           socket.on(
             'chat message', 

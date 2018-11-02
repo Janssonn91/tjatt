@@ -118,7 +118,6 @@ export default class Chat extends Component {
       sender: this.props.loginStore.user._id,
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
-      time: this.formattedDate(new Date()),
       textType: "text",
       star: false
     }

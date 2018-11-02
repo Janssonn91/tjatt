@@ -15,8 +15,8 @@ db.once('open', () => {
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
-const session = require('express-session')
-const connectMongo = require('connect-mongo')(session);
+const expressSession = require('express-session')
+const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
@@ -24,6 +24,16 @@ const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
 const sharedsession = require("express-socket.io-session");
+const session = expressSession({
+  secret: 'big fancy secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  },
+  // Spara session i databasen, lever i 30 dagar
+  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
+})
 
 // if we want to move the salt later on
  const salty = require('./tjat.json')
@@ -33,29 +43,7 @@ const sharedsession = require("express-socket.io-session");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(session({
-  secret: 'big fancy secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000
-  },
-  // Spara session i databasen, lever i 30 dagar
-  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
-}));
-
-
-
-app.use("/", apiRoutes)
-
-// Setting upp REST routes
-// (a Mongoose model + setting up routes)
-const User = require('./classes/User.class');
-const Channel = require('./classes/Channel.class');
-const Message = require('./classes/Message.class');
-// new User(app);
-new Channel(app);
-new Message(app);
+app.use(session);
 
 // Set up socket.io (do this before normal middleware and routing!)
 const io = require('socket.io')(
@@ -71,14 +59,30 @@ io.use(sharedsession(session, {
   autoSave:true
 })); 
 
+
+
+app.use("/", apiRoutes)
+
+// Setting upp REST routes
+// (a Mongoose model + setting up routes)
+const User = require('./classes/User.class');
+const Channel = require('./classes/Channel.class');
+const Message = require('./classes/Message.class');
+// new User(app);
+new Channel(app);
+const ChatMessage = new Message(app).myModel;
+ //new Message(app).myModel;
+
+
+
 io.on('connection', (socket) => {
   console.log("user is connected")
 
-  socket.on("login", function(userdata) {
-    console.log(userdata)
-    socket.handshake.session.loggedInUser = userdata;
-    socket.handshake.session.save();
-});
+//   socket.on("login", function(userdata) {
+//     console.log(userdata)
+//     socket.handshake.session.loggedInUser = userdata;
+//     socket.handshake.session.save();
+// });
 
 
   socket.on('chat message', async (messageFromClient) => {
@@ -93,18 +97,17 @@ io.on('connection', (socket) => {
     ){ return; } 
     
     // Create a mongoose ChatMessage and write to the db
-    let message = new Message( {
-      ...messageFromClient,
-      sender: user._id
+    let message = new ChatMessage({
+       ...messageFromClient
     });
+    console.log(message)
     await message.save();
     
     // Send the message to all the sockets in the room
     io.to(c).emit('chat message',[{
-      sender: user.sender, 
+      sender: message.sender, 
       text: message.text,
       channel: message.channel,
-      time: message.time,
       textType: message.textType,
       star: message.star,
     }]);
