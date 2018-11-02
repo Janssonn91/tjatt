@@ -123,14 +123,7 @@
 
           <FormGroup className="m-0 messageAreaForm">
             <Label for="messageArea" className="d-none">Message</Label>
-            <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
-              <DropdownToggle className="emoji-container bg-light">
-                <i className="far emojiOpener">😃</i>
-              </DropdownToggle>
-              <DropdownMenu>
-                <EmojiPicker onEmojiClick={this.getEmoji} />
-              </DropdownMenu>
-            </Dropdown>
+
             <Input
               type="textarea"
               name="text"
@@ -139,6 +132,14 @@
               value={this.inputMessage}
               onChange={e => this.inputMessage = e.currentTarget.value}
               onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
+            <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
+              <DropdownToggle className="emoji-container bg-light">
+                <i className="far emojiOpener">😃</i>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-left">
+                <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+              </DropdownMenu>
+            </Dropdown>
           </FormGroup>
           <Button className="send p-0" onClick={e => this.sendMessage()}>
             <img

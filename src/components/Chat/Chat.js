@@ -1,9 +1,10 @@
 
 import './Chat.scss';
+
 import ScrollableFeed from 'react-scrollable-feed';
 import channelStore from '../../store/channel-store';
 import EmojiPicker from 'emoji-picker-react';
-
+import 'emoji-picker-react/dist/universal/style.scss';
 import JSEMOJI from 'emoji-js';
 // you can import it with a script tag instead
 
@@ -13,7 +14,7 @@ let jsemoji = new JSEMOJI();
 // set the style to emojione (default - apple)
 jsemoji.img_set = 'emojione';
 // set the storage location for all emojis
-jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+// jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
 
 // some more settings...
 jsemoji.supports_css = false;
