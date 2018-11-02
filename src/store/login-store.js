@@ -11,6 +11,7 @@ class LoginStore {
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
   @observable isNotCorrectPass = false;
+  @observable savedInfo = false;
   // @observable myGroups = [];
 
 
@@ -213,6 +214,9 @@ class LoginStore {
               }),
               headers: { 'Content-Type': 'application/json'}
             })
+              .catch(err => {
+                console.log(err);
+              })
               .then(res => res.json())
               .then(data => {
                 const password = data.hash;
@@ -224,6 +228,13 @@ class LoginStore {
                   }),
                   headers: { 'Content-Type': 'application/json' }
                 })
+                  document.getElementById('currentPassword').value = '';
+                  document.getElementById('setNewPassword').value = '';
+                  document.getElementById('confirmNewPassword').value = '';
+                  this.savedInfo = true;
+              })
+              .catch(err => {
+                console.log(err);
               })
                 .then(res => res.json())
                 .then(data => {

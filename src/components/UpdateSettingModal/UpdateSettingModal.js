@@ -32,6 +32,10 @@ import imgPath from '../Sidebar/Sidebar';
     this.checkNewPassword();
   }
 
+  passwordFocus() {
+    this.props.loginStore.isNotCorrectPass = false;
+  }
+
   checkNewPassword = () => {
     if (this.setNewPasswordValue === this.confirmNewPasswordValue) {
       this.isNotSamePass = false;
