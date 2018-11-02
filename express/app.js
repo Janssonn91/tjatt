@@ -15,14 +15,25 @@ db.once('open', () => {
 let app = global.expressApp;
 let express = require('express');
 const multer = require('multer');
-const session = require('express-session')
-const connectMongo = require('connect-mongo')(session);
+const expressSession = require('express-session')
+const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
+const sharedsession = require("express-socket.io-session");
+const session = expressSession({
+  secret: 'big fancy secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  },
+  // Spara session i databasen, lever i 30 dagar
+  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
+})
 
 // if we want to move the salt later on
  const salty = require('./tjat.json')
@@ -32,16 +43,23 @@ const apiRoutes = require('./routes/api');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(session({
-  secret: 'big fancy secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000
-  },
-  // Spara session i databasen, lever i 30 dagar
-  store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
-}));
+app.use(session);
+
+// Set up socket.io (do this before normal middleware and routing!)
+const io = require('socket.io')(
+  global.httpServer, 
+  {
+    path: global.production ? '/api/socket' : '/socket',
+    serveClient: false
+  }
+);
+
+// Use shared session middleware for socket.io
+io.use(sharedsession(session, {
+  autoSave:true
+})); 
+
+
 
 app.use("/", apiRoutes)
 
@@ -52,7 +70,54 @@ const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
 new Channel(app);
-// new Message(app);
+const ChatMessage = new Message(app).myModel;
+ //new Message(app).myModel;
+
+
+
+io.on('connection', (socket) => {
+  console.log("user is connected")
+
+//   socket.on("login", function(userdata) {
+//     console.log(userdata)
+//     socket.handshake.session.loggedInUser = userdata;
+//     socket.handshake.session.save();
+// });
+
+
+  socket.on('chat message', async (messageFromClient) => {
+    console.log(messageFromClient)
+    // Get the user from session
+    let user = socket.handshake.session.loggedInUser;
+    // If the room isn't allowed for the user then do nothing
+    let c = messageFromClient.channel;
+    if(
+      typeof c !== 'string' ||
+      !user.channel.includes(c)
+    ){ return; } 
+    
+    // Create a mongoose ChatMessage and write to the db
+    let message = new ChatMessage({
+       ...messageFromClient
+    });
+    console.log(message)
+    await message.save();
+    
+    // Send the message to all the sockets in the room
+    io.to(c).emit('chat message',[{
+      sender: message.sender, 
+      text: message.text,
+      channel: message.channel,
+      textType: message.textType,
+      star: message.star,
+    }]);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
 
 app.get('/hello', (req, res) => {
   res.send('hello')
@@ -116,6 +181,7 @@ app.post('/login', (req, res) => {
         //console.log(hash, user.password);
         if (user.password === hash) {
           req.session.userId = user._id;
+          req.session.loggedInUser = user;
           res.json({ success: true, user: user })
         } else {
           res.json({ success: false, message: hash })

@@ -1,6 +1,7 @@
 
 import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
+import channelStore from '../../store/channel-store';
 
 @inject('loginStore', 'channelStore') @observer
 export default class Chat extends Component {
@@ -113,16 +114,17 @@ export default class Chat extends Component {
 
 
   sendMessage() {
+
+    let newMessage = {
+      sender: this.props.loginStore.user._id,
+      text: this.inputMessage,
+      channel: this.props.channelStore.currentChannel._id,
+      textType: "text",
+      star: false
+    }
     if (this.inputMessage.length > 0) {
-      console.log("user", this.props.loginStore.user)
-      this.chatHistories.push({
-        id: Date.now(),
-        time: this.formattedDate(new Date()),
-        sender: this.props.loginStore.user.nickname || this.props.loginStore.user.username,
-        channel: "group one",
-        text: this.inputMessage,
-        star: false
-      });
+      socket.emit('chat message', newMessage);
+      this.chatHistories.push(newMessage);
 
       this.scrollToBottom();
 
