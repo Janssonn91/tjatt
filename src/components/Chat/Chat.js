@@ -17,6 +17,7 @@
 
 import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
+
 //  library.add(faUser, faUsers, faCircle, faFile, faFileImage, faPlus, faCode, faCodeBranch);
 
 @inject('loginStore', 'channelStore') @observer export default class Chat extends Component {
@@ -88,12 +89,12 @@ import ScrollableFeed from 'react-scrollable-feed';
     //  });
   }
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
-  };
+  // scrollToBottom = () => {
+  //   this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  // };
 
   componentDidMount() {
-    this.scrollToBottom();
+    
     socket.off('chat message');
     socket.on(
       'chat message', (message) => {
@@ -105,7 +106,7 @@ import ScrollableFeed from 'react-scrollable-feed';
   }
 
   compontentDidUpdate() {
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
 
@@ -146,7 +147,7 @@ import ScrollableFeed from 'react-scrollable-feed';
         star: false
       });
 
-      this.scrollToBottom();
+      // this.scrollToBottom();
 
       console.log(this.chatHistories);
     } else {

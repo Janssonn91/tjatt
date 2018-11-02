@@ -74,7 +74,7 @@ new Channel(app);
 
 
 app.post('/users', (req, res) => {
-  console.log(req.session);
+  // console.log('req.session', req.session);
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
@@ -93,6 +93,7 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
+  // console.log('req.session', req.session)
   User.find().then(user => res.json(user))
 });
 
@@ -102,9 +103,11 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
+
   User.findById(req.session.userId)
     .then(user => {
       if (user) {
+        console.log('req.session.userId', req.session.userId)
         res.json({ loggedIn: true, user: user })
       } else {
         res.json({ loggedIn: false })
@@ -197,25 +200,43 @@ app.post('/upload', upload.single('file'), (req, res) => {
     });
 });
 
+app.post('/message', (req, res) => {
+  new Message({
+    text: req.body.text
+  })
+    .save().then(message => {
+      res.json(message);
+    })
+})
+
 // Socket Implementation
 
-
 io.on('connection', (socket) => {
-  // let user = await User.findOne({ id: socket.handshake.session.userId })
-  console.log('userino')
+  let user = User.findOne({ id: socket.handshake.session.userId })
+  console.log('user connected')
+
+
+
   socket.on('chat message', async (messageFromClient) => {
-    let user = socket.handshake.session.userId;
-    console.log(messageFromClient);
-    // let room = messageFromClient.room;
+    let user = await socket.handshake.session.userId;
+    // let findUser = User.find({ id: user })
+    console.log(user + 'connected!')
+    console.log('user:', messageFromClient.sender, 'message:', messageFromClient.text);
+    console.log('messageFromClient', messageFromClient);
+    let room = messageFromClient.channel;
     // if (typeof room !== 'string' || !user.chatRooms.includes(room)) {
     //   return;
     // }
 
-    // let message = new Message({
-    //   ...messageFromClient,
-    //   sender: user._id
-    // });
-    // await message.save();
+    let message = new Message({
+      sender: user._id,
+      text: messageFromClient.text
+    });
+    await message.save();
+    // let channel = await Channel.find({ channelname: room })[0];
+    // // console.log(channel)
+    // channel.content.push(message._id);
+    // await channel.save();
 
     io.emit('chat message', messageFromClient);
   });

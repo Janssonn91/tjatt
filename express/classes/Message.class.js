@@ -1,26 +1,23 @@
-const Schema = require('mongoose').Schema;
-const ModelAndRoutes = require('./model-and-routes.class');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-module.exports = class Message extends ModelAndRoutes {
+const messageSchema = new Schema({
+  time: {
+    type: Date,
+    default: Date.now
+  },
+  sender: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  channel: {
+    type: Schema.Types.ObjectId,
+    ref: 'Channel'
+  },
+  room: String,
+  text: String,
+  textType: String,
+  star: Boolean,
+})
 
-  static get schema() {
-    return {
-      time: {
-        type: Date,
-        default: Date.now
-      },
-      sender: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      },
-      channel: {
-        type: Schema.Types.ObjectId,
-        ref: 'Channel'
-      },
-      room: String,
-      text: String,
-      textType: String,
-      star: Boolean,
-    }
-  }
-}
+module.exports = mongoose.model('Message', messageSchema);
