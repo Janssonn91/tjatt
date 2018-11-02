@@ -290,4 +290,22 @@ $fontSm: 12px;
     hr {
         border-top: 1px solid rgba(0,0,0,.1);
     }
+
+    
+}
+.emoji-container{
+    width: 30px;
+    height:30px;
+    text-align:center;
+    position: relative;
+    border: 0;
+}
+
+.emojiOpener {
+    color: black;
+    font-size: 30px;
+    text-align:center;
+    position: absolute;
+    left: 0;
+    top: 0;
 }

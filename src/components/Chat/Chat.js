@@ -2,50 +2,69 @@
 import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 import channelStore from '../../store/channel-store';
+import EmojiPicker from 'emoji-picker-react';
+
+import JSEMOJI from 'emoji-js';
+// you can import it with a script tag instead
+
+
+// new instance
+let jsemoji = new JSEMOJI();
+// set the style to emojione (default - apple)
+jsemoji.img_set = 'emojione';
+// set the storage location for all emojis
+jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+
+// some more settings...
+jsemoji.supports_css = false;
+jsemoji.allow_native = false;
+jsemoji.replace_mode = 'unified';
 
 @inject('loginStore', 'channelStore') @observer
 export default class Chat extends Component {
 
+  @observable emoji = '';
   @observable inputMessage = '';
   // @observable messagesEnd = '';
   @observable chatHistories = [{
-      id: 1,
-      image: "/images/uploads/pikachu.png-1540468459565.png",
-      time: "10:20 AM, Today",
-      sender: "Pika",
-      status: "online",
-      channel: "group one",
-      text: "How are you?",
-      textType: "text",
-      star: false
-    },
-    {
-      id: 2,
-      time: "10:21 AM, Today",
-      image: "/images/placeholder.png",
-      sender: "other",
-      status: "offline",
-      channel: "group one",
-      text: "I am fine, thank you. And you?",
-      textType: "text",
-      star: false
-    },
-    {
-      id: 3,
-      time: "10:24 AM, Today",
-      image: "/images/placeholder.png",
-      sender: "another",
-      status: "online",
-      channel: "group one",
-      text: " Good!",
-      textType: "text",
-      star: false
-    }
+    id: 1,
+    image: "/images/uploads/pikachu.png-1540468459565.png",
+    time: "10:20 AM, Today",
+    sender: "Pika",
+    status: "online",
+    channel: "group one",
+    text: "How are you?",
+    textType: "text",
+    star: false
+  },
+  {
+    id: 2,
+    time: "10:21 AM, Today",
+    image: "/images/placeholder.png",
+    sender: "other",
+    status: "offline",
+    channel: "group one",
+    text: "I am fine, thank you. And you?",
+    textType: "text",
+    star: false
+  },
+  {
+    id: 3,
+    time: "10:24 AM, Today",
+    image: "/images/placeholder.png",
+    sender: "another",
+    status: "online",
+    channel: "group one",
+    text: " Good!",
+    textType: "text",
+    star: false
+  }
   ];
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable addMemberModal = false;
   @observable removeMemberModal = false;
+  @observable emojiDropdownOpen = false;
 
   @observable sendToAddModal = {
     isOpen: false,
@@ -60,7 +79,7 @@ export default class Chat extends Component {
   @observable sendToChatHistory = {
     histories: this.chatHistories
   }
-  
+
 
 
 
@@ -69,12 +88,12 @@ export default class Chat extends Component {
 
 
   start() {
-   
-   
+
+
   }
 
   scrollToBottom = () => {
-    if(this.messagesEnd){
+    if (this.messagesEnd) {
       this.messagesEnd.scrollIntoView({ behavior: "smooth" })
     }
   };
@@ -111,7 +130,16 @@ export default class Chat extends Component {
     this.inputMessage = e.currentTarget.value;
   }
 
+  getEmoji = (emoji) => {
+    let emojiPick = jsemoji.replace_colons(`${emoji}`).split('-');
+    for (let pick of emojiPick) {
+      this.inputMessage += String.fromCodePoint(('0x' + pick) / 1);
+    }
+  }
 
+  emojiDropdownToggle = () => {
+    this.emojiDropdownOpen = !this.emojiDropdownOpen;
+  }
 
   sendMessage() {
 

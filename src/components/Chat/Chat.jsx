@@ -118,8 +118,19 @@
             }
 
           </ButtonDropdown>
+
+
+
           <FormGroup className="m-0 messageAreaForm">
             <Label for="messageArea" className="d-none">Message</Label>
+            <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
+              <DropdownToggle className="emoji-container bg-light">
+                <i className="far fa-grin-alt emojiOpener"></i>
+              </DropdownToggle>
+              <DropdownMenu>
+                <EmojiPicker onEmojiClick={this.getEmoji} />
+              </DropdownMenu>
+            </Dropdown>
             <Input
               type="textarea"
               name="text"
