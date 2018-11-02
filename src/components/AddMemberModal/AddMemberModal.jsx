@@ -1,7 +1,7 @@
 <Fragment >
   {/* <div onClick={this.props.toggleMember}>{this.props.buttonLabel}</div> */}
   <div>{this.props.buttonLabel}</div>
-  <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
+  <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} className="add-member-modal">
     <ModalHeader toggle={this.props.toggle}>
       <Form>
         <FormGroup>
@@ -72,8 +72,8 @@
 
     </ModalBody>
     <ModalFooter>
-      <Button color="primary" onClick={() => console.log("add")}>Add</Button>{' '}
-      <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+      <Button className="btn btn-add" onClick={() => console.log("add")}>Add</Button>{' '}
+      <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
     </ModalFooter>
 
   </Modal>

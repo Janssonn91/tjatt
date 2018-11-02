@@ -13,7 +13,6 @@
             <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        {/* <Button className="btn-showChat float-right" onClick={this.props.toMenu}>Show Chat</Button>{' '} */}
       </div>
     </div>
     <hr className="mt-0" />
@@ -41,9 +40,9 @@
         <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
       </div>
       <div id="groupRender"></div>
-      {/* {this.props.channelStore.myChannels.map((channel, i) => 
+      {/* {this.props.channelStore.myChannels.map((channel, i) =>
       <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
-      
+
        <div className="d-inline-block" >{channel}</div>
        </NavLink>
       )} */}

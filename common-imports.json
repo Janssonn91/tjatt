@@ -17,7 +17,7 @@
   "  Message": "components/Message/Message",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
-  "  AddUserModal": "components/AddUser/AddUserModal",
+  "  AddUserModal": "components/AddUserModal/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
   "  Server": "components/Server/Server",
 

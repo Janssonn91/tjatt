@@ -46,7 +46,8 @@ $fontSm: 12px;
                 font-size: unset;
             }
             .channel-manage {
-                button:hover {
+                button:hover, button:active {
+                    color: $text;
                     background-color: lighten($lightblue, 23%);
                 }
             }
