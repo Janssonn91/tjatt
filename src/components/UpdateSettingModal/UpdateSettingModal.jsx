@@ -33,10 +33,7 @@
           </td>
         </tr>
         <tr>
-          <th colSpan="2">Password</th>
-        </tr>
-        <tr>
-          <td>current password</td>
+          <th>Password</th>
           <td>
             <Label className="sr-only" for="currentPassword" tag="h5">Password</Label>
             <Input
@@ -44,6 +41,7 @@
               type="password"
               name="password"
               id="currentPassword"
+              placeholder="Current password"
               value={this.currentPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.currentPassword(e)}
@@ -51,7 +49,7 @@
           </td>
         </tr>
         <tr>
-          <td>new password</td>
+          <td></td>
           <td>
             <Label className="sr-only" for="setNewPassword" tag="h5">New password</Label>
             <Input
@@ -59,6 +57,7 @@
               type="password"
               name="password"
               id="setNewPassword"
+              placeholder="New password"
               value={this.setNewPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.setNewPassword(e)}
@@ -66,7 +65,7 @@
           </td>
         </tr>
         <tr>
-          <td>new password</td>
+          <td></td>
           <td>
             <Label className="sr-only" for="confirmNewPassword" tag="h5">New password</Label>
             <Input
@@ -74,6 +73,7 @@
               type="password"
               name="password"
               id="confirmNewPassword"
+              placeholder="New password"
               value={this.confirmNewPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.confirmNewPassword(e)} />

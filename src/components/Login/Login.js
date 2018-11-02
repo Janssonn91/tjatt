@@ -29,6 +29,10 @@ import './Login.scss';
   onSubmit = (e) => {
     e.preventDefault();
     this.props.loginStore.login(this.username, this.password);
+    document.getElementById('password').value = '';
+    document.getElementById('username').value = '';
+    this.username = '';
+    this.password = '';
   }
 
   // måste göra ny route för detta, denna är tagen av signup nu!
