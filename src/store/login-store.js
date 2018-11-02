@@ -42,7 +42,9 @@ class LoginStore {
           this.isLoggedIn = true;
           this.myChannel = this.user.channel;
         }
-        this.loginError = true;
+        else {
+          this.loginError = true;
+        }
       }).catch(err => {
         console.log("err", err)
       })

@@ -43,8 +43,6 @@ export const imgPath = '/images/placeholder.png';
   logout() {
     fetch('/api/logout').then(() => {
       this.props.loginStore.isLoggedIn = false;
-      console.log(this.props.loginStore.isLoggedIn);
-      this.props.history.go('/')
     });
   }
 
