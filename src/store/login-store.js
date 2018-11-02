@@ -230,19 +230,18 @@ class LoginStore {
               }),
               headers: { 'Content-Type': 'application/json' }
             })
-          
+          })
               .then(res => res.json())
               .then(data => {
                 console.log('speciel data', data);
                 if (data.success) {
                   this.user = { ...this.user, password };
-                  console.log('jepp det funkade!', this.user)
+                  console.log('jepp det funkade!')
                 }
               })
               .catch(err => {
                 console.log(err);
               });
-            });
             // slut test av uppdatering lösenord
           }
           else {
