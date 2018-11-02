@@ -132,7 +132,7 @@ class LoginStore {
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
     //console.log(this.myContacts)
-    channelStore.updateContactChannel();
+    channelStore.updateContactChannels();
     channelStore.getChannelByUser(userId);
   }
 
