@@ -23,6 +23,7 @@ const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 const apiRoutes = require('./routes/api');
+const sharedsession = require("express-socket.io-session");
 
 // if we want to move the salt later on
  const salty = require('./tjat.json')
@@ -43,6 +44,8 @@ app.use(session({
   store: new connectMongo({ mongooseConnection: mongoose.connection, ttl: 30 * 24 * 60 * 60 })
 }));
 
+
+
 app.use("/", apiRoutes)
 
 // Setting upp REST routes
@@ -52,7 +55,66 @@ const Channel = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
 new Channel(app);
-// new Message(app);
+new Message(app);
+
+// Set up socket.io (do this before normal middleware and routing!)
+const io = require('socket.io')(
+  global.httpServer, 
+  {
+    path: global.production ? '/api/socket' : '/socket',
+    serveClient: false
+  }
+);
+
+// Use shared session middleware for socket.io
+io.use(sharedsession(session, {
+  autoSave:true
+})); 
+
+io.on('connection', (socket) => {
+  console.log("user is connected")
+
+  socket.on("login", function(userdata) {
+    console.log(userdata)
+    socket.handshake.session.loggedInUser = userdata;
+    socket.handshake.session.save();
+});
+
+
+  socket.on('chat message', async (messageFromClient) => {
+    console.log(messageFromClient)
+    // Get the user from session
+    let user = socket.handshake.session.loggedInUser;
+    // If the room isn't allowed for the user then do nothing
+    let c = messageFromClient.channel;
+    if(
+      typeof c !== 'string' ||
+      !user.channel.includes(c)
+    ){ return; } 
+    
+    // Create a mongoose ChatMessage and write to the db
+    let message = new Message( {
+      ...messageFromClient,
+      sender: user._id
+    });
+    await message.save();
+    
+    // Send the message to all the sockets in the room
+    io.to(c).emit('chat message',[{
+      sender: user.sender, 
+      text: message.text,
+      channel: message.channel,
+      time: message.time,
+      textType: message.textType,
+      star: message.star,
+    }]);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
 
 app.get('/hello', (req, res) => {
   res.send('hello')
@@ -116,6 +178,7 @@ app.post('/login', (req, res) => {
         //console.log(hash, user.password);
         if (user.password === hash) {
           req.session.userId = user._id;
+          req.session.loggedInUser = user;
           res.json({ success: true, user: user })
         } else {
           res.json({ success: false, message: hash })
