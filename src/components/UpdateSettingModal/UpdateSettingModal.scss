@@ -1,0 +1,58 @@
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: #FF3C00;
+$orange: #E38968;
+$text:#434651;
+
+.setting-modal {
+  .modal-header {
+    h4 {
+      color: $gray;
+    }
+  }
+  th {
+    color: $blue;
+  }
+  input {
+    margin-bottom: 3px;
+    &:focus {
+      border-color: $lightblue;
+      box-shadow: 0 0 0 0.2rem lightblue;
+    }
+  }
+  .btn-upload{
+    background-color: unset;
+    color: black;
+  }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    &.btn-save {
+      background-color: $blue;
+      &:hover {
+        background-color: $darkblue;
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 20%);
+      }
+    }
+  }
+
+  .alert-color {
+    background-color: lighten($red, 40%);
+    border: none;
+    color: $text;
+  }
+
+  .pw-input {
+    font-size: 0.9em;
+  }
+
+}

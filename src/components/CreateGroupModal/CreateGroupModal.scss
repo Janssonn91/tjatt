@@ -2,23 +2,117 @@ $gray: #92959E;
 $green: #88BD73;
 $blue: #94C2ED;
 $orange: #E38968;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+
 
 .createGroupModal {  
+  .img{
+    border-radius:8px;
+    width: 40px;
+    height: auto;
+  }
+ 
+  .d-none{
+    display:none;
+  }
+  .show{
+    display:block;
+    width:100%;
+    margin:5px;
+    color:$orange;
+    height:10px;
+  }
+
+  
+
+  .feedback{
+    font-size:10px;
+  }
+  
+  @media (min-width: 992px) {
+    margin-left:25vw;
+    margin-top:10vh;
+    .select-area{
+      max-height:50vh;
+      overflow:scroll;
+    }
+    .modal-content{
+      width:50vw;
+      max-height:80vh;
+    }
+  
+    .selected-members{
+      display:none;
+    }
+    .big-screen{
+      display:block;
+    }
+   
+}
+
+@media (max-width: 991px){
+  margin-left:25vw;
+  margin-top:10vh;
+  .select-area{
+    max-height:40vh;
+    overflow:scroll;
+  }
+  .big-screen{
+    display:none;
+  }
+  .modal-content{
+    width:60vw;
+    max-height:80vh;
+  }
+  .selected-members{
+    display:inline-block;
+    height: 80px;
+    overflow:scroll;
+  }
+ 
+  @media (max-width:576px){
+    margin-left:5px;
+    margin-top:5px;
+    .modal-content{
+      width:95vw;
+      max-height:90vh;
+    }
+    .select-area{
+      max-height:50vh;
+      overflow:scroll;
+    }
+  }
+}
+
+
+.group-name{
+  border: 1px solid lighten($lightblue, 16%);
+  &:focus {
+    border-color: $darkblue;
+  }
+}
+
+ 
   .modal-header {
     h4 {
       color: $gray;
     }
   }
+  #setGroupName{
+    border-radius:4px;
+    margin-top:5px;
+  }
   form {
     input.search {
+      border: 1px solid lighten($lightblue, 16%);
       margin-bottom: 3px;
       &:focus {
-        border-color: #a0ca8f;
-        box-shadow: 0 0 0 0.2rem rgba(160,202,143,0.75);
+        border-color: $darkblue;
       }
     }
     .list-group-item {
-      color: $green;
+      color: $lightblue;
       &:hover {
         background-color: #f2f2f2;
       }
@@ -57,14 +151,14 @@ $orange: #E38968;
         transform: rotate(-45deg);
         width: 12px;
       }
-      .round input[type="checkbox"] {
+      .round input {
         visibility: hidden;
       }
-      .round input[type="checkbox"]:checked + label {
+      .round input:checked + label {
         background-color: #66bb6a;
         border-color: #66bb6a;
       }
-      .round input[type="checkbox"]:checked + label:after {
+      .round input:checked + label:after {
         opacity: 1;
       }
     }

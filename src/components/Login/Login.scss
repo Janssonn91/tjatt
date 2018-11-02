@@ -52,6 +52,19 @@ $white: rgb(219, 219, 219);
         border-color: $white;
     }
 
+    .error-msg {
+        background: rgba(0, 0, 0, .1);
+        color: $white;
+        text-align: center;
+    }
+
+    .retrieve-pw {
+        color: $white;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
 }
 
 .container-fluid {
