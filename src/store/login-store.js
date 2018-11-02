@@ -20,6 +20,7 @@ class LoginStore {
       .then(res => {
         if (res.loggedIn) {
           this.user = res.user;
+          this.isLoggedIn = true;
           channelStore.getChannels();
         }
       }).catch(err => {
@@ -38,6 +39,7 @@ class LoginStore {
       .then(res => {
         if (res.success) {
           this.user = res.user;
+          this.isLoggedIn = true;
           this.myChannel = this.user.channel;
         }
         this.loginError = true;
@@ -60,6 +62,7 @@ class LoginStore {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.user = res.user
           this.usernameExits = false;
+          this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
         } else {
           this.usernameExits = true;
