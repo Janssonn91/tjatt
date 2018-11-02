@@ -58,6 +58,30 @@ app.get('/hello', (req, res) => {
   res.send('hello')
 })
 
+app.post('/pwcheck', (req, res) => {
+  const hash = hasha(
+    req.body.pass + global.passwordSalt,
+    { encoding: 'base64', algorithm: 'sha512' }
+  );
+  if(hash === req.body.oldpassword){
+    console.log('de stämmer')
+    res.json( {success: true, hash: hash} );
+    // gå vidare och returnera hashen så den kan uppdateras
+  }
+  else {
+    console.log('nix stämmer icke, försök igen');
+    res.json(false);
+  }
+})
+
+app.post('/pwhash', (req, res) => {
+  const hash = hasha(
+    req.body.pass + global.passwordSalt,
+    { encoding: 'base64', algorithm: 'sha512' }
+  );
+    res.json( {success: true, hash: hash} );
+})
+
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
@@ -127,6 +151,7 @@ app.post('/login', (req, res) => {
 });
 
 app.put('/users/:_id', (req, res) => {
+  console.log(req.body.contact);
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group}}
@@ -143,6 +168,24 @@ app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $set: { nickname: req.body.nickname } }
+  )
+    .then(user => {
+      if (user) {
+        res.json({ success: true, user })
+      } else {
+        res.json({ success: false })
+      }
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/setting/password', (req, res) => {
+  console.log(req.body.password);
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { password: req.body.password} }
   )
     .then(user => {
       if (user) {

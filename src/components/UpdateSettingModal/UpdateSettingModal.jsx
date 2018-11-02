@@ -81,7 +81,7 @@
         </tr>
       </tbody>
     </Table>
-    {this.isNotCorrectPass && <Alert className="alert-color">
+    {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color">
       Incorrect current password</Alert>}
     {this.isNotSamePass && <Alert className="alert-color">
       You filled in different password</Alert>}
@@ -91,7 +91,7 @@
       disabled={this.isNotCorrectPass || this.isNotSamePass}
       className="btn btn-save"
       onClick={() =>
-        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image })
+        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.currentPasswordValue })
       }
     >
       Save changes

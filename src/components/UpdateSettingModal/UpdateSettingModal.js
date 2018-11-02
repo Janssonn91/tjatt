@@ -10,7 +10,6 @@ import imgPath from '../Sidebar/Sidebar';
   @observable confirmNewPasswordValue = '';
   @observable newPassword = '';
   @observable isNotSamePass = false;
-  @observable isNotCorrectPass = false;
 
 
   onFileChange = (e) => {

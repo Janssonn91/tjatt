@@ -10,7 +10,9 @@ class LoginStore {
   @observable myChannel = [];
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
+  @observable isNotCorrectPass = false;
   // @observable myGroups = [];
+
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -171,7 +173,7 @@ class LoginStore {
   }
 
   @action updateSettings(settings) {
-    const { imageFormData, nickname, password } = settings;
+    const { imageFormData, nickname, password, currentPassword } = settings;
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -186,6 +188,68 @@ class LoginStore {
           if (data.success) {
             this.user = { ...this.user, nickname };
           }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if(password !== ''){
+      fetch('/api/pwcheck', {
+        method: 'POST',
+        body: JSON.stringify({
+          pass: currentPassword,
+          oldpassword: this.user.password
+        }),
+        headers: { 'Content-Type': 'application/json'}
+      })
+      .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            console.log('de stämmer');
+            console.log(data.hash);
+            // gå vidare och spara lösenordet
+            fetch('/api/pwhash', {
+              method: 'POST',
+              body: JSON.stringify({
+                pass: password
+              }),
+              headers: { 'Content-Type': 'application/json'}
+            })
+            .then(res => res.json())
+        .then(data => {
+          // detta hashet vill jag har sparat till usern!
+          const password = data.hash;
+          console.log('hashat lösenord: ', password);
+            //
+            fetch(`/api/users/${this.user._id}/setting/password`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                _id: this.user._id,
+                password,
+              }),
+              headers: { 'Content-Type': 'application/json' }
+            })
+          
+              .then(res => res.json())
+              .then(data => {
+                console.log('speciel data', data);
+                if (data.success) {
+                  this.user = { ...this.user, password };
+                  console.log('jepp det funkade!', this.user)
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+            });
+            // slut test av uppdatering lösenord
+          }
+          else {
+            this.isNotCorrectPass = true;
+            return;
+          }
+          console.log(data);
         })
         .catch(err => {
           console.log(err);
