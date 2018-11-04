@@ -6,9 +6,9 @@ import './Login.scss';
   @observable username = '';
   @observable password = '';
 
-  componentWillMount() {
-    this.checkIfLoggedIn();
-  }
+  // componentWillMount() {
+  //   this.checkIfLoggedIn();
+  // }
 
   toggle() {
     this.collapseOpen = !this.collapseOpen;

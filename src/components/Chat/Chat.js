@@ -1,4 +1,3 @@
-
 import './Chat.scss';
 
 import ScrollableFeed from 'react-scrollable-feed';
@@ -94,7 +93,7 @@ export default class Chat extends Component {
   }
 
   scrollToBottom = () => {
-    if (this.messagesEnd) {
+    if(this.messagesEnd){
       this.messagesEnd.scrollIntoView({ behavior: "smooth" })
     }
   };
@@ -142,7 +141,7 @@ export default class Chat extends Component {
     this.emojiDropdownOpen = !this.emojiDropdownOpen;
   }
 
-  sendMessage() {
+  async sendMessage() {
 
     let newMessage = {
       sender: this.props.loginStore.user._id,
@@ -152,7 +151,26 @@ export default class Chat extends Component {
       star: false
     }
     if (this.inputMessage.length > 0) {
-      socket.emit('chat message', newMessage);
+      
+       socket.emit('chat message', newMessage);
+      
+      //  Message.find({sender:newMessage.sender}).then(message=>{
+      //    console.log(message);
+      //  })
+      // Message.findOne({sender: newMessage.sender, 
+      //   channel:newMessage.channel,
+      //   text: newMessage.text}).then(message=>{
+      //     console.log(message)
+      //   })
+        // let channelId = this.currentChannel._id;
+        // let query = '_id' + channelId;
+        // let body = {
+        //   content: message
+        // };
+        // Channel.request(Channel, "POST", query, body).then((data)=>console.log(data))
+      //}
+       
+      
       this.chatHistories.push(newMessage);
 
       this.scrollToBottom();
@@ -161,6 +179,8 @@ export default class Chat extends Component {
     } else {
       return false;
     }
+    await sleep(10);
+    this.props.channelStore.saveMessageToChannel(newMessage);
 
 
     //  socket.emit('chat message', this.inputMessage);
