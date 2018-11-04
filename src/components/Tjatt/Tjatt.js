@@ -6,7 +6,8 @@ export default class Tjatt extends Component {
 
 
   start() {
-    this.props.channelStore.getChannels();
+    this.props.loginStore.checkIfLoggedIn();
+    //this.props.channelStore.getChannels();
   }
 
   showMenu() {

@@ -6,9 +6,9 @@ import './Login.scss';
   @observable username = '';
   @observable password = '';
 
-  componentWillMount() {
-    this.checkIfLoggedIn();
-  }
+  // componentWillMount() {
+  //   this.checkIfLoggedIn();
+  // }
 
   toggle() {
     this.collapseOpen = !this.collapseOpen;
@@ -26,9 +26,17 @@ import './Login.scss';
     this.props.loginStore.checkIfLoggedIn();
   }
 
+  goToChat = async () => {
+    await sleep(30);
+    if (this.props.loginStore.isLoggedIn) {
+      this.props.history.push(`/${this.props.loginStore.user.username}`);
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.loginStore.login(this.username, this.password);
+    this.goToChat();
     document.getElementById('password').value = '';
     document.getElementById('username').value = '';
     this.username = '';

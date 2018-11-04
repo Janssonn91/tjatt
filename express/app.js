@@ -36,8 +36,8 @@ const session = expressSession({
 })
 
 // if we want to move the salt later on
- const salty = require('./tjat.json')
- global.passwordSalt = salty.salt;
+const salty = require('./tjat.json')
+global.passwordSalt = salty.salt;
 
 // Middleware to get body fro posts
 app.use(express.urlencoded({ extended: true }));
@@ -47,7 +47,7 @@ app.use(session);
 
 // Set up socket.io (do this before normal middleware and routing!)
 const io = require('socket.io')(
-  global.httpServer, 
+  global.httpServer,
   {
     path: global.production ? '/api/socket' : '/socket',
     serveClient: false
@@ -56,8 +56,8 @@ const io = require('socket.io')(
 
 // Use shared session middleware for socket.io
 io.use(sharedsession(session, {
-  autoSave:true
-})); 
+  autoSave: true
+}));
 
 
 
@@ -71,7 +71,7 @@ const Message = require('./classes/Message.class');
 // new User(app);
 new Channel(app);
 const ChatMessage = new Message(app).myModel;
- //new Message(app).myModel;
+//new Message(app).myModel;
 
 
 
@@ -95,14 +95,14 @@ io.on('connection', (socket) => {
       typeof c !== 'string' ||
       !user.channel.includes(c)
     ){ return; } 
-    
+
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
        ...messageFromClient
     });
     console.log(message)
     await message.save();
-    
+
     // Send the message to all the sockets in the room
     io.to(c).emit('chat message',[{
       sender: message.sender, 
@@ -195,7 +195,7 @@ app.post('/login', (req, res) => {
 app.put('/users/:_id', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group}}
+    { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
   )
     .then(() => {
       res.json({ success: true })
