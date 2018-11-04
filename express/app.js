@@ -75,8 +75,8 @@ const ChatMessage = new Message(app).myModel;
 
 
 
-// io.on('connection', (socket) => {
-//   console.log("user is connected")
+io.on('connection', (socket) => {
+  console.log("user is connected")
 
 //   socket.on("login", function(userdata) {
 //     console.log(userdata)
@@ -85,38 +85,38 @@ const ChatMessage = new Message(app).myModel;
 // });
 
 
-//   socket.on('chat message', async (messageFromClient) => {
-//     console.log(messageFromClient)
-//     // Get the user from session
-//     let user = socket.handshake.session.loggedInUser;
-//     // If the room isn't allowed for the user then do nothing
-//     let c = messageFromClient.channel;
-//     if(
-//       typeof c !== 'string' ||
-//       !user.channel.includes(c)
-//     ){ return; } 
+  socket.on('chat message', async (messageFromClient) => {
+    console.log(messageFromClient)
+    // Get the user from session
+    let user = socket.handshake.session.loggedInUser;
+    // If the room isn't allowed for the user then do nothing
+    let c = messageFromClient.channel;
+    if(
+      typeof c !== 'string' ||
+      !user.channel.includes(c)
+    ){ return; } 
 
-//     // Create a mongoose ChatMessage and write to the db
-//     let message = new ChatMessage({
-//        ...messageFromClient
-//     });
-//     console.log(message)
-//     await message.save();
+    // Create a mongoose ChatMessage and write to the db
+    let message = new ChatMessage({
+       ...messageFromClient
+    });
+    console.log(message)
+    await message.save();
 
-//     // Send the message to all the sockets in the room
-//     io.to(c).emit('chat message',[{
-//       sender: message.sender, 
-//       text: message.text,
-//       channel: message.channel,
-//       textType: message.textType,
-//       star: message.star,
-//     }]);
-//   });
+    // Send the message to all the sockets in the room
+    io.to(c).emit('chat message',[{
+      sender: message.sender, 
+      text: message.text,
+      channel: message.channel,
+      textType: message.textType,
+      star: message.star,
+    }]);
+  });
 
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
 
 
 app.get('/hello', (req, res) => {
