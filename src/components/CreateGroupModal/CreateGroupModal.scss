@@ -29,117 +29,91 @@ $text:#434651;
 .createGroupModal {
   width: 75%;
   margin: 1.75rem auto;
- 
-  .show{
-    display:block;
-    width:100%;
-    margin:5px;
-    color:$orange;
-    height:10px;
-  }
-
-  .feedback{
-    font-size:10px;
-  }
-  .select-area{
-    .searched-user {
-      max-height: 171px;
-      overflow-y: auto;
-      @include scrollbar;
-      .contacts {
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .selected-members{
-    display:none;
-  }
-  .big-screen{
-    display:block;
-    overflow-y: auto;
-    max-height: 168px;
-    @include scrollbar;
-    .contacts {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-
-  @media (max-width: 767.5px){
-    .select-area{
-      overflow-y: auto;
-      @include scrollbar;
-    }
-    .big-screen{
-      display:none;
-    }
-    .selected-members{
-      display:inline-block;
-      height: 80px;
-      overflow-y: auto;
-      @include scrollbar;
-    }
-  }
-  .group-name{
-    border: 1px solid lighten($lightblue, 16%);
-    &:focus {
-      border-color: $darkblue;
-    }
-  }
   .modal-header {
     h4 {
       color: $gray;
     }
+    button, button:hover, button:focus, button:active {
+      outline: none;
+      border: none;
+    }
+    #setGroupName{
+      border-radius: 4px;
+    }
+    .group-name{
+      border: 1px solid lighten($lightblue, 16%);
+      &:focus {
+        border-color: $darkblue;
+      }
+      .feedback{
+        font-size:10px;
+      }
+    }
+
   }
-  #setGroupName{
-    border-radius:4px;
-    margin-top:5px;
-  }
-  form {
-    input.search {
-      // border: 1px solid lighten($lightblue, 16%);
-      margin-bottom: 3px;
+  .modal-body {
+    @media (max-width: 767.5px){
+      .selected-members{
+        height: 80px;
+        overflow-y: auto;
+        @include scrollbar;
+        span {
+          .img{
+            vertical-align: baseline;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+          }
+          .profile {
+            p:nth-child(2) {
+              line-height: 0.6;
+            }
+          }
+        }
+      }
+    }
+    
+    form {
       &:focus {
         border-color: $lightblue;
         box-shadow: 0 0 0 0.2rem lightblue;
       }
-    }
-    .list-group-item {
-      color: $lightblue;
-      &:hover {
-        background-color: #f2f2f2;
-      }
-      .img{
-        vertical-align: baseline;
-        border-radius: 5px;
-        width: 30px;
-        height: 30px;
-      }
-      .profile {
-        p:nth-child(2) {
-          line-height: 0.6;
+      .select-area{
+        .searched-user {
+          max-height: 171px;
+        }
+        .big-screen{
+          max-height: 168px;
+        }
+        .list-group-item {
+          color: $lightblue;
+          &:hover {
+            cursor: pointer;
+            background-color: #f2f2f2;
+          }
+          .img{
+            vertical-align: baseline;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+          }
+          .profile {
+            p:nth-child(2) {
+              line-height: 0.6;
+            }
+          }
         }
       }
     }
+    .show{
+      height:10px;
+    }
   }
-  .btn {
-    border: none;
-    border-radius: 30px;
-    &.btn-create {
-      background-color: $blue;
-      &:hover {
-        background-color: $darkblue;
-      }
-    }
-
-    &.btn-cancel {
-      background-color: $gray;
-      &:hover {
-        background-color: darken($gray, 20%);
-      }
-    }
+  .overflow-y-auto{
+    overflow-y: auto;
+    @include scrollbar;
+  }
+  ._scrollable-div_1dj6m_1 {
+    height: unset;
   }
 }

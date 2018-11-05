@@ -31,6 +31,10 @@ $text:#434651;
     h4 {
       color: $gray;
     }
+    button, button:hover, button:focus, button:active {
+      outline: none;
+      border: none;
+    }
   }
   form {
     label {
@@ -48,25 +52,24 @@ $text:#434651;
     max-height: 214px;
     overflow-y: auto;
     @include scrollbar;
-    .list-group {
-      .list-group-item {
-        color: $lightblue;
-        &:hover {
-          background-color: #f2f2f2;
-        }
-        .img{
-          vertical-align: baseline;
-          border-radius: 5px;
-          width: 30px;
-          height: 30px;
-        }
-        .profile {
-          p:nth-child(2) {
-            line-height: 0.6;
-          }
+    .list-group-item {
+      color: $lightblue;
+      &:hover {
+        background-color: #f2f2f2;
+      }
+      .img{
+        vertical-align: baseline;
+        border-radius: 5px;
+        width: 30px;
+        height: 30px;
+      }
+      .profile {
+        p:nth-child(2) {
+          line-height: 0.6;
         }
       }
     }
+    
   }
   
   .btn {
