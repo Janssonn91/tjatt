@@ -5,11 +5,11 @@ import './Login.scss';
   @observable collapseOpen = false;
   @observable username = '';
   @observable password = '';
-  
 
-  componentWillMount() {
-  //   this.checkIfLoggedIn();
+
+  componentDidMount() {
     this.props.loginStore.loginError = false;
+    this.checkIfLoggedIn();
   }
 
   toggle() {
@@ -26,6 +26,7 @@ import './Login.scss';
 
   checkIfLoggedIn() {
     this.props.loginStore.checkIfLoggedIn();
+    this.goToChat();
   }
 
   goToChat = async () => {

@@ -20,6 +20,9 @@ class LoginStore {
   @observable isNotSamePass = false;
   // @observable myGroups = [];
 
+  constructor() {
+    this.checkIfLoggedIn();
+  }
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -33,7 +36,7 @@ class LoginStore {
           channelStore.getChannels();
           socket.off('chat message');
           socket.on(
-            'chat message', 
+            'chat message',
             (messages) => {
               console.log(messages)
               // for(let message of messages){
@@ -41,13 +44,13 @@ class LoginStore {
               //   this.receivedMessages.push(
               //     message.sender + ': ' +
               //     message.time + ': ' +
-              //     message.text + ': ' + 
+              //     message.text + ': ' +
               //     message.channel + ': ' +
-              //     message.textType 
+              //     message.textType
               //   );
               // }
             })
-              console.log(this.receivedMessages)
+          console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
@@ -101,21 +104,21 @@ class LoginStore {
       });
   }
 
-  sendWelcomeMail(username, email){
+  sendWelcomeMail(username, email) {
     fetch('/api/send-mail', {
       credentials: 'include',
       method: 'POST',
-      body: JSON.stringify( {username, email} ),
-      headers: { 'Content-Type': 'application/json'}
+      body: JSON.stringify({ username, email }),
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        console.log('mail skickat')
-      }
-    }).catch(err => {
-      console.log("err", err)
-    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          console.log('mail skickat')
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
   }
 
   @action fetchContact() {
@@ -219,14 +222,14 @@ class LoginStore {
         });
     }
 
-    if(password !== ''){
+    if (password !== '') {
       fetch('/api/pwcheck', {
         method: 'POST',
         body: JSON.stringify({
           pass: currentPassword,
           oldpassword: this.user.password
         }),
-        headers: { 'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' }
       })
         .then(res => res.json())
         .then(data => {
@@ -236,7 +239,7 @@ class LoginStore {
               body: JSON.stringify({
                 pass: password
               }),
-              headers: { 'Content-Type': 'application/json'}
+              headers: { 'Content-Type': 'application/json' }
             })
               .then(res => res.json())
               .then(data => {
@@ -249,10 +252,10 @@ class LoginStore {
                   }),
                   headers: { 'Content-Type': 'application/json' }
                 })
-                  document.getElementById('currentPassword').value = '';
-                  document.getElementById('setNewPassword').value = '';
-                  document.getElementById('confirmNewPassword').value = '';
-                  this.savedInfo = true;
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('setNewPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+                this.savedInfo = true;
               })
               // behöver detta vara med för password också, som i nickname?
               /*
@@ -265,9 +268,9 @@ class LoginStore {
                   }
                 })
                 */
-                .catch(err => {
-                  console.log(err);
-                });
+              .catch(err => {
+                console.log(err);
+              });
           }
           else {
             this.isNotCorrectPass = true;
