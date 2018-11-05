@@ -23,7 +23,7 @@
     //check Before Submit;
 
     if(!this.groupName){
-      this.myAttr='show';
+      this.myAttr='show text-danger w-100 d-block mb-3';
       return;
     }else{
       this.myAttr= 'd-none';

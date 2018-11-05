@@ -31,6 +31,10 @@ import './Signup.scss';
     }
   }
 
+  removeError = (e) => {
+    this.props.loginStore.usernameExits = false;
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
