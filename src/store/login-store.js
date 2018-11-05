@@ -14,6 +14,9 @@ class LoginStore {
   @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
   @observable savedInfo = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
   // @observable myGroups = [];
 
 

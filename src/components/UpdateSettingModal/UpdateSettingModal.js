@@ -5,9 +5,9 @@ import imgPath from '../Sidebar/Sidebar';
 
   @observable image = '';
   @observable nickname = '';
-  @observable currentPasswordValue = '';
-  @observable setNewPasswordValue = '';
-  @observable confirmNewPasswordValue = '';
+  //@observable currentPasswordValue = '';
+  //@observable setNewPasswordValue = '';
+  //@observable confirmNewPasswordValue = '';
   @observable newPassword = '';
   @observable isNotSamePass = false;
 
@@ -20,15 +20,15 @@ import imgPath from '../Sidebar/Sidebar';
   }
 
   currentPassword(e) {
-    this.currentPasswordValue = e.currentTarget.value;
+    this.props.loginStore.currentPasswordValue = e.currentTarget.value;
   }
 
   setNewPassword(e) {
-    this.setNewPasswordValue = e.currentTarget.value;
+    this.props.loginStore.setNewPasswordValue = e.currentTarget.value;
   }
 
   confirmNewPassword(e) {
-    this.confirmNewPasswordValue = e.currentTarget.value;
+    this.props.loginStore.confirmNewPasswordValue = e.currentTarget.value;
     this.checkNewPassword();
   }
 
@@ -37,9 +37,9 @@ import imgPath from '../Sidebar/Sidebar';
   }
 
   checkNewPassword = () => {
-    if (this.setNewPasswordValue === this.confirmNewPasswordValue) {
+    if (this.props.loginStore.setNewPasswordValue === this.props.loginStore.confirmNewPasswordValue) {
       this.isNotSamePass = false;
-      this.newPassword = this.confirmNewPasswordValue;
+      this.newPassword = this.props.loginStore.confirmNewPasswordValue;
     } else {
       this.isNotSamePass = true;
       this.newPassword = '';

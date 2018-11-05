@@ -92,7 +92,7 @@
       disabled={this.isNotCorrectPass || this.isNotSamePass}
       className="btn btn-save"
       onClick={() =>
-        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.currentPasswordValue })
+        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.props.loginStore.currentPasswordValue })
       }
     >
       Save changes
