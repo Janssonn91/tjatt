@@ -10,7 +10,8 @@
             onClick={e => this.props.channelStore.showMenu()}>
             <i className="fas fa-ellipsis-v"></i>
           </Button>
-          <span className="chat-with">{this.props.channelStore.channelName}</span>
+           {/* <span id="channelName"></span>  */}
+         <span className="chat-with">{this.props.channelStore.channelName}</span> 
           {this.props.channelStore.currentChannelGroup
             ? <span className="dialog-icon p-0">
 

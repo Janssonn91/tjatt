@@ -150,6 +150,21 @@ app.get('/users', (req, res) => {
   User.find().then(user => res.json(user))
 });
 
+app.get('/users/:_id', (req, res) => {
+  User.findOne({_id: req.params._id })
+  .then(user=>{
+    if (!user) {
+      res.json({ success: false })
+    } 
+    else { res.json(user)}
+  }).catch(
+    err=>{
+      console.log(err)
+    }
+  )
+
+})
+
 app.get('/logout', (req, res) => {
   delete req.session.userId;
   res.json({ success: 'Successfully logged out' })
