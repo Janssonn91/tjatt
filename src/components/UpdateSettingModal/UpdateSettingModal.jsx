@@ -28,7 +28,6 @@
               placeholder={this.props.loginStore.user.nickname}
               value={this.nickname}
               onChange={(e) => this.nickname = e.currentTarget.value}
-              style={{ width: "70%" }}
             />
           </td>
         </tr>
@@ -73,7 +72,7 @@
               type="password"
               name="password"
               id="confirmNewPassword"
-              placeholder="New password"
+              placeholder="Confirm new password"
               value={this.confirmNewPasswordValue}
               onChange={e => this.confirmNewPassword(e)} />
           </td>
