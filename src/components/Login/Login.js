@@ -5,10 +5,12 @@ import './Login.scss';
   @observable collapseOpen = false;
   @observable username = '';
   @observable password = '';
+  
 
-  // componentWillMount() {
+  componentWillMount() {
   //   this.checkIfLoggedIn();
-  // }
+    this.props.loginStore.loginError = false;
+  }
 
   toggle() {
     this.collapseOpen = !this.collapseOpen;
