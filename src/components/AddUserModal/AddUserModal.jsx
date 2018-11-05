@@ -12,7 +12,7 @@
         </FormGroup>
         <ListGroup>
           {this.userCandidates.map(user =>
-            <ListGroupItem tag="a" href="#" onClick={() => this.props.loginStore.addContact(user._id)} key={user._id}>
+            <ListGroupItem tag="a" href="#" onClick={() => { this.props.loginStore.addContact(user._id); this.userWasClicked(user._id) }} key={user._id}>
               <div className="d-inline-block">
                 <CardImg className="mr-3" src={user.image || "/images/placeholder.png"} />
               </div>

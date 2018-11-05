@@ -21,5 +21,9 @@ import './AddUserModal.scss';
     })
   }
 
+  userWasClicked = (userId) => {
+    this.userCandidates = this.userCandidates.filter(user => user._id !== userId)
+  }
+
 }
 
