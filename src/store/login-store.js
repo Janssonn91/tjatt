@@ -24,21 +24,22 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           channelStore.getChannels();
-      
+
           socket.off('chat message');
           socket.on(
-            'chat message', 
+            'chat message',
             (messages) => {
-              for(let message of messages){
+              for (let message of messages) {
                 let date = new Date(message.date);
                 this.receivedMessages.push(
                   message.sender + ': ' +
                   message.time + ': ' +
-                  message.text + ': ' + 
+                  message.text + ': ' +
                   message.channel + ': ' +
-                  message.textType 
+                  message.textType
                 );
-              }})
+              }
+            })
         }
       }).catch(err => {
         console.log("err", err)
@@ -91,39 +92,42 @@ class LoginStore {
       });
   }
 
-  sendWelcomeMail(username, email){
+  sendWelcomeMail(username, email) {
     fetch('/api/send-mail', {
       credentials: 'include',
       method: 'POST',
-      body: JSON.stringify( {username, email} ),
-      headers: { 'Content-Type': 'application/json'}
+      body: JSON.stringify({ username, email }),
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        console.log('mail skickat')
-      }
-    }).catch(err => {
-      console.log("err", err)
-    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          console.log('mail skickat')
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
   }
 
   @action fetchContact() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.user._id);
+    return new Promise((resolve, reject) => {
+      fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+          const withoutMe = users.filter(user => user._id !== this.user._id);
 
-        const isIncluded = (userId) => {
-          return this.user.contact.some(contactId => userId === contactId);
-        }
-        this.candidates = withoutMe.filter(user => !isIncluded(user._id));
-        this.myContacts = withoutMe.filter(user => isIncluded(user._id));
-        this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-        this.myChannel = this.user.channel;
-      });
+          const isIncluded = (userId) => {
+            return this.user.contact.some(contactId => userId === contactId);
+          }
+          this.candidates = withoutMe.filter(user => !isIncluded(user._id));
+          this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+          this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
+          this.myChannel = this.user.channel;
+          resolve();
+        })
+    })
+
   }
-
 
 
   // remove added user in candidates

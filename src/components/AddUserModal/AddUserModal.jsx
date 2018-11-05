@@ -8,10 +8,10 @@
       <Form>
         <FormGroup className="m-0">
           <Label for="searchNewContacts" className="mb-1" >Find members by searching here:</Label>
-          <Input type="text" name="text" id="searchContacts" placeholder="Search" />
+          <Input type="text" name="text" id="searchContacts" placeholder="Search" onChange={this.searchCandidates} />
         </FormGroup>
         <ListGroup>
-          {this.props.loginStore.candidates.map(user =>
+          {this.userCandidates.map(user =>
             <ListGroupItem tag="a" href="#" onClick={() => this.props.loginStore.addContact(user._id)} key={user._id}>
               <div className="d-inline-block">
                 <CardImg className="mr-3" src={user.image || "/images/placeholder.png"} />

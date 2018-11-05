@@ -24,7 +24,7 @@ $bg_picker: #f1f1f1;
     width:100%;
     padding: 0;
     float: left;
-    background: lighten($gray, 30%);
+    background: lighten($gray, 28%);
     height: 100vh;
 
     img {
@@ -175,7 +175,7 @@ $bg_picker: #f1f1f1;
         .message {
             text-align:left;
             color: $text;
-            padding: 10px 15px;
+            padding: 8px 15px;
             line-height: 26px;
             font-size: $fontMd;
             border-radius: 6px;
@@ -222,7 +222,7 @@ $bg_picker: #f1f1f1;
     }
 
     .chat-message {
-        background-color: white;
+        background-color: lighten($gray, 20%);
         width: 100%;
         display: flex;
         justify-content: space-around;
