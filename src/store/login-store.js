@@ -252,7 +252,6 @@ class LoginStore {
                   document.getElementById('confirmNewPassword').value = '';
                   this.savedInfo = true;
               })
-              // kommer inte in här, funkar inte data??
               // behöver detta vara med för password också, som i nickname?
               /*
                 .then(res => res.json())
