@@ -214,9 +214,6 @@ class LoginStore {
               }),
               headers: { 'Content-Type': 'application/json'}
             })
-              .catch(err => {
-                console.log(err);
-              })
               .then(res => res.json())
               .then(data => {
                 const password = data.hash;
@@ -233,9 +230,9 @@ class LoginStore {
                   document.getElementById('confirmNewPassword').value = '';
                   this.savedInfo = true;
               })
-              .catch(err => {
-                console.log(err);
-              })
+              // kommer inte in här, funkar inte data??
+              // behöver detta vara med för password också, som i nickname?
+              /*
                 .then(res => res.json())
                 .then(data => {
                   console.log('speciel data', data);
@@ -244,6 +241,7 @@ class LoginStore {
                     console.log('jepp det funkade!')
                   }
                 })
+                */
                 .catch(err => {
                   console.log(err);
                 });

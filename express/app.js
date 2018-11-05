@@ -66,7 +66,6 @@ app.post('/pwcheck', (req, res) => {
   if(hash === req.body.oldpassword){
     console.log('de stämmer')
     res.json( {success: true, hash: hash} );
-    // gå vidare och returnera hashen så den kan uppdateras
   }
   else {
     console.log('nix stämmer icke, försök igen');
@@ -182,14 +181,15 @@ app.put('/users/:_id/setting', (req, res) => {
 });
 
 app.put('/users/:_id/setting/password', (req, res) => {
-  console.log(req.body.password);
+  //console.log(req.body.password);
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $set: { password: req.body.password} }
   )
     .then(user => {
+      //console.log(user);
       if (user) {
-        res.json({ success: true, user })
+        res.json({ success: true, user });
       } else {
         res.json({ success: false })
       }
