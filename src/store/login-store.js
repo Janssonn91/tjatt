@@ -12,7 +12,17 @@ class LoginStore {
   @observable selectedGroupMember = [];
   @observable message = '';
   @observable receivedMessages = [];
+  @observable isNotCorrectPass = false;
+  @observable savedInfo = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
+  @observable isNotSamePass = false;
   // @observable myGroups = [];
+
+  constructor() {
+    this.checkIfLoggedIn();
+  }
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -26,7 +36,7 @@ class LoginStore {
           channelStore.getChannels();
           socket.off('chat message');
           socket.on(
-            'chat message', 
+            'chat message',
             (messages) => {
               console.log(messages)
               // for(let message of messages){
@@ -34,13 +44,13 @@ class LoginStore {
               //   this.receivedMessages.push(
               //     message.sender + ': ' +
               //     message.time + ': ' +
-              //     message.text + ': ' + 
+              //     message.text + ': ' +
               //     message.channel + ': ' +
-              //     message.textType 
+              //     message.textType
               //   );
               // }
             })
-              console.log(this.receivedMessages)
+          console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
@@ -86,6 +96,7 @@ class LoginStore {
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
         } else {
+          console.log('träff');
           this.usernameExits = true;
         }
       }).catch((err) => {
@@ -93,21 +104,21 @@ class LoginStore {
       });
   }
 
-  sendWelcomeMail(username, email){
+  sendWelcomeMail(username, email) {
     fetch('/api/send-mail', {
       credentials: 'include',
       method: 'POST',
-      body: JSON.stringify( {username, email} ),
-      headers: { 'Content-Type': 'application/json'}
+      body: JSON.stringify({ username, email }),
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(res => res.json())
-    .then(res => {
-      if (res.success) {
-        console.log('mail skickat')
-      }
-    }).catch(err => {
-      console.log("err", err)
-    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          console.log('mail skickat')
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
   }
 
   @action fetchContact() {
@@ -190,7 +201,7 @@ class LoginStore {
   }
 
   @action updateSettings(settings) {
-    const { imageFormData, nickname, password } = settings;
+    const { imageFormData, nickname, password, currentPassword } = settings;
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -205,6 +216,67 @@ class LoginStore {
           if (data.success) {
             this.user = { ...this.user, nickname };
           }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if (password !== '') {
+      fetch('/api/pwcheck', {
+        method: 'POST',
+        body: JSON.stringify({
+          pass: currentPassword,
+          oldpassword: this.user.password
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            fetch('/api/pwhash', {
+              method: 'POST',
+              body: JSON.stringify({
+                pass: password
+              }),
+              headers: { 'Content-Type': 'application/json' }
+            })
+              .then(res => res.json())
+              .then(data => {
+                const password = data.hash;
+                fetch(`/api/users/${this.user._id}/setting/password`, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    _id: this.user._id,
+                    password,
+                  }),
+                  headers: { 'Content-Type': 'application/json' }
+                })
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('setNewPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+                this.savedInfo = true;
+              })
+              // behöver detta vara med för password också, som i nickname?
+              /*
+                .then(res => res.json())
+                .then(data => {
+                  console.log('speciel data', data);
+                  if (data.success) {
+                    this.user = { ...this.user, password };
+                    console.log('jepp det funkade!')
+                  }
+                })
+                */
+              .catch(err => {
+                console.log(err);
+              });
+          }
+          else {
+            this.isNotCorrectPass = true;
+            return;
+          }
+          console.log(data);
         })
         .catch(err => {
           console.log(err);

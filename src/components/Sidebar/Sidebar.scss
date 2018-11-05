@@ -71,6 +71,7 @@ $gray: #919192;
     .nav-link.contacts{
       width: 100%;
       &:hover {
+        cursor: pointer;
         color: #fff;
         background-color: darken($backgroundColor, 10%);
       }
@@ -78,7 +79,8 @@ $gray: #919192;
 
     img {
       width: 30px;
-      vertical-align: center;
+      height: 30px;
+      border-radius: 5px;
     }
 
     .fa-star {
