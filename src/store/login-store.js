@@ -12,7 +12,13 @@ class LoginStore {
   @observable selectedGroupMember = [];
   @observable message = '';
   @observable receivedMessages = [];
+  @observable isNotCorrectPass = false;
+  @observable savedInfo = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
   // @observable myGroups = [];
+
 
   @action checkIfLoggedIn() {
     fetch('/api/login', {
@@ -190,7 +196,7 @@ class LoginStore {
   }
 
   @action updateSettings(settings) {
-    const { imageFormData, nickname, password } = settings;
+    const { imageFormData, nickname, password, currentPassword } = settings;
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -205,6 +211,67 @@ class LoginStore {
           if (data.success) {
             this.user = { ...this.user, nickname };
           }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if(password !== ''){
+      fetch('/api/pwcheck', {
+        method: 'POST',
+        body: JSON.stringify({
+          pass: currentPassword,
+          oldpassword: this.user.password
+        }),
+        headers: { 'Content-Type': 'application/json'}
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            fetch('/api/pwhash', {
+              method: 'POST',
+              body: JSON.stringify({
+                pass: password
+              }),
+              headers: { 'Content-Type': 'application/json'}
+            })
+              .then(res => res.json())
+              .then(data => {
+                const password = data.hash;
+                fetch(`/api/users/${this.user._id}/setting/password`, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    _id: this.user._id,
+                    password,
+                  }),
+                  headers: { 'Content-Type': 'application/json' }
+                })
+                  document.getElementById('currentPassword').value = '';
+                  document.getElementById('setNewPassword').value = '';
+                  document.getElementById('confirmNewPassword').value = '';
+                  this.savedInfo = true;
+              })
+              // behöver detta vara med för password också, som i nickname?
+              /*
+                .then(res => res.json())
+                .then(data => {
+                  console.log('speciel data', data);
+                  if (data.success) {
+                    this.user = { ...this.user, password };
+                    console.log('jepp det funkade!')
+                  }
+                })
+                */
+                .catch(err => {
+                  console.log(err);
+                });
+          }
+          else {
+            this.isNotCorrectPass = true;
+            return;
+          }
+          console.log(data);
         })
         .catch(err => {
           console.log(err);

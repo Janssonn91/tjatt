@@ -43,7 +43,7 @@
               id="currentPassword"
               placeholder="Current password"
               value={this.currentPasswordValue}
-              onClick={e => e.stopPropagation()}
+              onFocus={e => this.passwordFocus()}
               onChange={e => this.currentPassword(e)}
             />
           </td>
@@ -75,23 +75,24 @@
               id="confirmNewPassword"
               placeholder="New password"
               value={this.confirmNewPasswordValue}
-              onClick={e => e.stopPropagation()}
               onChange={e => this.confirmNewPassword(e)} />
           </td>
         </tr>
       </tbody>
     </Table>
-    {this.isNotCorrectPass && <Alert className="alert-color">
+    {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color text-center">
       Incorrect current password</Alert>}
     {this.isNotSamePass && <Alert className="alert-color">
       You filled in different password</Alert>}
+    {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
+    Information saved!</Alert>}
   </ModalBody>
   <ModalFooter>
     <Button
       disabled={this.isNotCorrectPass || this.isNotSamePass}
       className="btn btn-save"
       onClick={() =>
-        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image })
+        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.props.loginStore.currentPasswordValue })
       }
     >
       Save changes
