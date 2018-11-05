@@ -5,12 +5,8 @@ import imgPath from '../Sidebar/Sidebar';
 
   @observable image = '';
   @observable nickname = '';
-  //@observable currentPasswordValue = '';
-  //@observable setNewPasswordValue = '';
-  //@observable confirmNewPasswordValue = '';
   @observable newPassword = '';
-  @observable isNotSamePass = false;
-
+  //@observable isNotSamePass = false;
 
   onFileChange = (e) => {
     const formData = new FormData();
@@ -29,7 +25,9 @@ import imgPath from '../Sidebar/Sidebar';
 
   confirmNewPassword(e) {
     this.props.loginStore.confirmNewPasswordValue = e.currentTarget.value;
-    this.checkNewPassword();
+    if(this.props.loginStore.setNewPasswordValue.length == this.props.loginStore.confirmNewPasswordValue.length){
+      this.checkNewPassword();
+    }
   }
 
   passwordFocus() {
@@ -38,10 +36,10 @@ import imgPath from '../Sidebar/Sidebar';
 
   checkNewPassword = () => {
     if (this.props.loginStore.setNewPasswordValue === this.props.loginStore.confirmNewPasswordValue) {
-      this.isNotSamePass = false;
+      this.props.loginStore.isNotSamePass = false;
       this.newPassword = this.props.loginStore.confirmNewPasswordValue;
     } else {
-      this.isNotSamePass = true;
+      this.props.loginStore.isNotSamePass = true;
       this.newPassword = '';
     }
   }

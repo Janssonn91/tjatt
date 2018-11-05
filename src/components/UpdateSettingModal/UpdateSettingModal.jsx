@@ -82,14 +82,14 @@
     </Table>
     {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color text-center">
       Incorrect current password</Alert>}
-    {this.isNotSamePass && <Alert className="alert-color">
-      You filled in different password</Alert>}
+    {this.props.loginStore.isNotSamePass && <Alert className="alert-color text-center">
+      New passwords doesn't match</Alert>}
     {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
     Information saved!</Alert>}
   </ModalBody>
   <ModalFooter>
     <Button
-      disabled={this.isNotCorrectPass || this.isNotSamePass}
+      disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass}
       className="btn btn-save"
       onClick={() =>
         this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.props.loginStore.currentPasswordValue })

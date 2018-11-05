@@ -25,7 +25,7 @@
         <div className="text-center mb-3">
           <Button className="overlay" disabled={this.usernameToSet && this.useremailToSet.length && this.passWordToSet.length && (this.passWordToSet === this.confirmPassword) ? null : true}>Sign up</Button>
           {this.props.loginStore.usernameExits &&
-            < Alert className="my-3 error-msg">
+            < Alert className="my-3 alert-color">
               Username already in use, please choose another
             </Alert>
           }

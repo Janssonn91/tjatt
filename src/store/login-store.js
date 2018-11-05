@@ -17,6 +17,7 @@ class LoginStore {
   @observable currentPasswordValue = '';
   @observable setNewPasswordValue = '';
   @observable confirmNewPasswordValue = '';
+  @observable isNotSamePass = false;
   // @observable myGroups = [];
 
 
