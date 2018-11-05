@@ -21,6 +21,7 @@ export const imgPath = '/images/placeholder.png';
 
   @observable collapseOpen = false;
 
+
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
