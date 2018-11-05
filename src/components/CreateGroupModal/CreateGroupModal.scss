@@ -1,18 +1,21 @@
-$gray: #92959E;
-$green: #88BD73;
-$blue: #94C2ED;
-$orange: #E38968;
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
+$red: #FF3C00;
+$orange: #E38968;
+$text:#434651;
 
 
-.createGroupModal {  
+.createGroupModal {
   .img{
     border-radius:8px;
     width: 40px;
     height: auto;
   }
- 
+
   .d-none{
     display:none;
   }
@@ -24,12 +27,12 @@ $darkblue: #004B9F;
     height:10px;
   }
 
-  
+
 
   .feedback{
     font-size:10px;
   }
-  
+
   @media (min-width: 992px) {
     margin-left:25vw;
     margin-top:10vh;
@@ -41,14 +44,14 @@ $darkblue: #004B9F;
       width:50vw;
       max-height:80vh;
     }
-  
+
     .selected-members{
       display:none;
     }
     .big-screen{
       display:block;
     }
-   
+
 }
 
 @media (max-width: 991px){
@@ -70,7 +73,7 @@ $darkblue: #004B9F;
     height: 80px;
     overflow:scroll;
   }
- 
+
   @media (max-width:576px){
     margin-left:5px;
     margin-top:5px;
@@ -87,13 +90,14 @@ $darkblue: #004B9F;
 
 
 .group-name{
-  border: 1px solid lighten($lightblue, 16%);
+  // border: 1px solid lighten($lightblue, 16%);
   &:focus {
-    border-color: $darkblue;
+    border-color: $lightblue;
+    box-shadow: 0 0 0 0.2rem lightblue;
   }
 }
 
- 
+
   .modal-header {
     h4 {
       color: $gray;
@@ -105,10 +109,11 @@ $darkblue: #004B9F;
   }
   form {
     input.search {
-      border: 1px solid lighten($lightblue, 16%);
+      // border: 1px solid lighten($lightblue, 16%);
       margin-bottom: 3px;
       &:focus {
-        border-color: $darkblue;
+        border-color: $lightblue;
+        box-shadow: 0 0 0 0.2rem lightblue;
       }
     }
     .list-group-item {
@@ -160,6 +165,23 @@ $darkblue: #004B9F;
       }
       .round input:checked + label:after {
         opacity: 1;
+      }
+    }
+  }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    &.btn-create {
+      background-color: $blue;
+      &:hover {
+        background-color: $darkblue;
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 20%);
       }
     }
   }

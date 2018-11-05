@@ -12,63 +12,73 @@ class ChannelStore {
     @observable channelImg = "";
     @observable currentChannelGroup = false;
     @observable amIAdmin = "";
-    @observable contactChannel = [];
-    @observable groupChannel = [];
+    @observable contactChannels = [];
+    @observable groupChannels = [];
     @observable hideMenu = true;
     @observable hideChat = false;
- 
-
+    @observable channelChatHistory = [];
 
 
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
-    //console.log(loginStore.user.channel)
-    let channels = loginStore.user.channel;
-    console.log(channels)
-   
-    let cs = await Channel.find({
-      _id: channels
+    this.myChannels= await Channel.find({
+      _id: loginStore.user.channel,
     })
-
-    this.myChannels = cs;
-    console.log(this.myChannels)
-    
+    this.groupChannels=[];
+    this.contactChannels=[];
     this.myChannels.forEach(
           channel => {
             if (channel.group === false) {
-              console.log("false")
-              this.contactChannel.push(channel);
+              this.contactChannels.push(channel);
             }
             if (channel.group === true){
-              console.log("true")
-              this.groupChannel.push(channel);
+              this.groupChannels.push(channel);
             }
           }
 
         );
-        console.log(this.myChannels)
-        this.renderGroup();
+        // this.renderContect();
+        //this.renderGroup();
+        this.renderChannels();
       }
 
-  
+    @action getChannelChatHistory(){
+      // let channelMessage= Message.find({
+      //   channel: this.currentChannel
+      // })
 
-  @action renderGroup() {
+      // this.channelChatHistory= channelMessage;
+      console.log(this.channelChatHistory)
+    }
 
-    let channels = this.groupChannel;
-    let elements = [];
-    let element = '';
-    // console.log(channels)
-    channels.map((channel, i) => {
-      // console.log(channel.channelname)
-      element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.getGroupChannel(channel)}>
-        <div className="d-inline-block" >{channel.channelname}</div>
-      </div>
-      elements.push(element)
-    })
-     ReactDOM.render(elements, document.getElementById('groupRender'));
-
+  @action renderChannels(){
+    this.renderChannelElements(this.groupChannels, 'group',  'groupsRender');
+    this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
+    
   }
+
+  @action renderChannelElements(channels, type, anchor){
+    let elements=[];
+    let element="";
+    //let contactName = this.getContactName(channel);
+    channels.map((channel, i)=>{
+      element = <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel("group", channel)}>
+      <div className="d-inline-block" >{type==='group' ? channel.channelname : "name"}</div>
+    </div>
+    elements.push(element);
+    })
+    ReactDOM.render(elements, document.getElementById(anchor));
+  }
+
+  @action getContactName(names){
+    console.log(names)
+    console.log(loginStore.user.name)
+    let n = names.filter(name=> name!=loginStore.user.name);
+    console.log(n)
+  }
+
+
 
 
 
@@ -119,23 +129,47 @@ class ChannelStore {
     })
   }
 
+  @action changeChannel(type, id){
+    if(type==="contact"){
+      this.getChannelByUser(id);
+    }
+    if(type === "group"){
+      this.getGroupChannel(id);
+    }
+    this.channelChatHistory=[];
+    this.getChannelChatHistory()
+    
+
+  }
+//this.props.channelStore.getChannelByUser(user._id)}
+
+@action async saveMessageToChannel(message){
+  this.channelChatHistory.push(message);
+  // console.log(message)
+  // //await sleep(60)
+  // await Message.findOne({channel: message.channel, text: message.text}).then((data)=>{
+  //   console.log(data)
+  // })
+  
+}
+
+
   @action cleanUpGroupModal(){
     // TODO: cleanup has bug, remove new added contact need to be fixed
     // need new method to renew groupCandidates
     loginStore.selectedGroupMember = [];
-    loginStore.fetchContact();
+    //loginStore.fetchContact();
 }
 
-
-  @action updateContactChannel() {
-    this.contactChannel.push(this.newChannel);
+@action updateContactChannels() {
+    this.contactChannels.push(this.newChannel);
   }
 
   @action updateGroupChannel() {
     //console.log(this.myChannels, this.newChannel)
-    this.groupChannel.push(this.newChannel);
+    this.groupChannels.push(this.newChannel);
     //this.myChannels.push(this.newChannel);
-    console.log(this.groupChannel);
+    console.log(this.groupChannels);
     this.renderGroup();
     this.getGroupChannel(this.newChannel);
   }
@@ -145,8 +179,8 @@ class ChannelStore {
     this.channelName = "";
     this.channelImg = "";
     // this.currentChannelType = "";
-    console.log(this.contactChannel)
-    this.contactChannel.map(channel => {
+    console.log(this.contactChannels)
+    this.contactChannels.map(channel => {
       channel.admin.map(data => {
         if (data === userId) {
           console.log(channel)
@@ -154,8 +188,8 @@ class ChannelStore {
         }
       })
     })
+    //mobil version
     this.showChat();
-    //this.getChannels();
     this.getChannelInfo();
   }
 
@@ -205,9 +239,9 @@ class ChannelStore {
     this.hideMenu = true;
     this.hideChat = false; 
 }
-
-
 }
+
+
 
 
 const channelStore = new ChannelStore();
