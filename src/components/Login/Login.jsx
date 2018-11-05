@@ -26,7 +26,7 @@
             </div>
           </Form>
           {this.props.loginStore.loginError &&
-            < Alert color="danger" className="my-2">
+            < Alert color="danger" className="my-2 text-center">
               Username or password is incorrect
             </Alert>}
         </Col>

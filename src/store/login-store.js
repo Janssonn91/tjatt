@@ -92,6 +92,7 @@ class LoginStore {
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
         } else {
+          console.log('träff');
           this.usernameExits = true;
         }
       }).catch((err) => {
