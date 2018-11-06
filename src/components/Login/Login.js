@@ -78,15 +78,3 @@ import './Login.scss';
   */
 
 }
-
-
-
-
-/*
-url: `/send-mail`,
-        method: 'POST',
-        data: JSON.stringify(body),
-        dataType: 'json',
-        processData: false,
-        contentType: "application/json; charset=utf-8"
-        */

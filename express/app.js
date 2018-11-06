@@ -244,6 +244,22 @@ app.put('/users/:_id', (req, res) => {
     });
 });
 
+app.put('/channels/:_id', (req, res) => {
+  console.log('backend: ', req.params._id);
+  //console.log(req.body.userId)
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    console.log('träff', req.body.userId)
+    //{ $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },

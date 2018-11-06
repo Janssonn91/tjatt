@@ -12,8 +12,8 @@
 
         {/* 404 */}
         <Route>
-          <h1>This site can't be reached</h1>
-          <p>This address could not be found</p>
+          <h1>This is not the chat you are looking for.</h1>
+          <p>Use the force to find one, or type a correct URL.</p>
         </Route>
       </Switch>
     </Container>

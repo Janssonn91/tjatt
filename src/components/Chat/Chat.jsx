@@ -1,6 +1,5 @@
 <Fragment> <AddMemberModal {...this.sendToAddModal} /> <DeleteMemberModal {
-  ...this.sendToDeleteModal
-} />
+  ...this.sendToDeleteModal} /> <LeaveGroupModal {...this.sendToLeaveModal} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -43,7 +42,7 @@
                   </DropdownItem>
                   </div>
                   <DropdownItem className="m-0" divider />
-                  <DropdownItem className="leave-group py-2 px-3">Leave group</DropdownItem>
+                  <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </span>

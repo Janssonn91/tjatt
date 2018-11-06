@@ -14,6 +14,7 @@
   "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
   "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
   "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
+  "  LeaveGroupModal": "components/LeaveGroupModal/LeaveGroupModal",
   "  Message": "components/Message/Message",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
