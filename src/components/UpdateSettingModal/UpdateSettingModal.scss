@@ -12,6 +12,10 @@ $text:#434651;
     h4 {
       color: $gray;
     }
+    button, button:hover, button:focus, button:active {
+      outline: none;
+      border: none;
+    }
   }
   th {
     color: $blue;
@@ -34,6 +38,9 @@ $text:#434651;
       background-color: $blue;
       &:hover {
         background-color: $darkblue;
+      }
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
       }
     }
 
