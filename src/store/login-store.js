@@ -7,7 +7,7 @@ class LoginStore {
   @observable usernameExits = false;
   @observable candidates = [];
   @observable myContacts = [];
-  @observable myChannel = [];
+  //@observable myChannel = [];
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
   @observable message = '';
@@ -34,6 +34,15 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           channelStore.getChannels();
+          socket.on('login', (data) => {
+            connected = true;
+            // Display the welcome message
+            var message = "Welcome to Socket.IO Chat – ";
+            log(message, {
+              prepend: true
+            });
+            addParticipantsMessage(data);
+          });
           socket.off('chat message');
           socket.on(
             'chat message',
@@ -50,7 +59,7 @@ class LoginStore {
               //   );
               // }
             })
-          console.log(this.receivedMessages)
+          //console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
@@ -69,7 +78,7 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          this.myChannel = this.user.channel;
+          //this.myChannel = this.user.channel;
         }
         else {
           this.loginError = true;
@@ -133,7 +142,7 @@ class LoginStore {
         this.candidates = withoutMe.filter(user => !isIncluded(user._id));
         this.myContacts = withoutMe.filter(user => isIncluded(user._id));
         this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-        this.myChannel = this.user.channel;
+        //this.myChannel = this.user.channel;
       });
   }
 
@@ -146,9 +155,15 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
+    
     //console.log(this.myContacts)
-    channelStore.updateContactChannels();
-    channelStore.getChannelByUser(userId);
+    channelStore.renderChannelElements(channelStote.contactChannels, 'contact', 'contactsRender');
+   // channelStore.getChannelByUser(userId);
+  }
+
+  @action async cleanUpGroupModal(){
+    await this.fetchContact();
+    this.selectedGroupMember = [];
   }
 
   @action addContact(userId) {

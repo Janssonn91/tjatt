@@ -12,7 +12,7 @@
         </FormGroup>
         <FormGroup className="search-result-form-group">
           {this.props.loginStore.candidates.map(user =>
-              <ListGroupItem className="p-0 pl-1" tag="a" href="#" onClick={() => this.props.loginStore.addContact(user._id)} key={user._id}>
+              <ListGroupItem className="p-0 pl-1" tag="a" href="#" onClick={() => this.addContact(user._id)} key={user._id}>
                 <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                 <div className="profile d-inline-block">
                   <p className="m-0 font-weight-bold">{user.username}</p>
