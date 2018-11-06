@@ -44,10 +44,6 @@ class ChannelStore {
         this.renderChannels();
       }
 
-    );
-    await sleep(30);
-    this.renderChannels();
-  }
 
   renderChannels(){
     this.renderChannelElements(this.groupChannels, 'group',  'groupsRender');
@@ -160,6 +156,7 @@ class ChannelStore {
 
 
 
+
   // if(type==="contact"){
   //   this.getChannelByUser(id);
   // }
@@ -175,6 +172,7 @@ class ChannelStore {
     this.contactChannels.push(channel);
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   //this.props.channelStore.getChannelByUser(user._id)}
+  }
 
   @action saveMessageToChannel(message) {
     this.channelChatHistory.push(message);
@@ -186,16 +184,16 @@ class ChannelStore {
 
   }
 
-  @action cleanUpGroupModal() {
-    // TODO: cleanup has bug, remove new added contact need to be fixed
-    // need new method to renew groupCandidates
-    loginStore.selectedGroupMember = [];
-    //loginStore.fetchContact();
-  }
+  // @action cleanUpGroupModal() {
+  //   // TODO: cleanup has bug, remove new added contact need to be fixed
+  //   // need new method to renew groupCandidates
+  //   loginStore.selectedGroupMember = [];
+  //   //loginStore.fetchContact();
+  // }
 
-  @action updateContactChannels() {
-    this.contactChannels.push(this.newChannel);
-  }
+  // @action updateContactChannels() {
+  //   this.contactChannels.push(this.newChannel);
+  // }
 
   updateGroupChannel(channel) {
     console.log(this.groupChannels)

@@ -59,7 +59,7 @@
                         <small className="font-weight-bold">{user.nickname}</small>
                       </p>
                     </div>
-                  </ListGroupItem>¨
+                  </ListGroupItem>
                   </ListGroup>
               )}
                 
