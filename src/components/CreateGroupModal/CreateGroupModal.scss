@@ -51,6 +51,9 @@ $text:#434651;
         overflow-y: auto;
         @include scrollbar;
         span {
+          &:hover{
+            cursor: pointer;
+          }
           .img{
             vertical-align: baseline;
             border-radius: 5px;
@@ -72,17 +75,13 @@ $text:#434651;
         box-shadow: 0 0 0 0.2rem lightblue;
       }
       .select-area{
-        .searched-user {
-          max-height: 171px;
-        }
-        .big-screen{
-          max-height: 168px;
+        .searched-user, .big-screen {
+          max-height: 157px;
         }
         .list-group-item {
-          color: $lightblue;
+          color: $blue;
           &:hover {
-            cursor: pointer;
-            background-color: #f2f2f2;
+            color: $darkblue;
           }
           .img{
             vertical-align: baseline;
@@ -91,8 +90,36 @@ $text:#434651;
             height: 30px;
           }
           .profile {
+            width: 42%;
+            p:nth-child(1) {
+              font-size: 0.9rem;
+            }
             p:nth-child(2) {
               line-height: 0.6;
+              small {
+                font-weight: 650;
+                font-size: 70%;
+              }
+            }
+          }
+
+          .searched-user-big-screen-profile {
+            width: 53% !important;
+          }
+          
+          button.btn-add-user, button.btn-remove-user {
+            margin-top: 10px;
+            color: $blue;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            background-color: unset;
+            &:hover {
+              text-decoration: underline;
+            }
+            &:active, &:focus {
+              border: 0;
+              outline: 0;
+              box-shadow: unset;
             }
           }
         }
@@ -114,5 +141,25 @@ $text:#434651;
   }
   ._scrollable-div_1dj6m_1 {
     height: unset;
+  }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    &.btn-create {
+      background-color: $blue;
+      &:hover {
+        background-color: $darkblue;
+      }
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 20%);
+      }
+    }
   }
 }

@@ -27,66 +27,75 @@ $text:#434651;
 }
 
 .addUserModal {
-  .modal-header {
-    h4 {
-      color: $gray;
-    }
-    button, button:hover, button:focus, button:active {
-      outline: none;
-      border: none;
-    }
-  }
-  form {
-    label {
-      color: $gray;
-    }
-    input {
-      margin-bottom: 3px;
-      &:focus {
-        border-color: $lightblue;
-        box-shadow: 0 0 0 0.2rem lightblue;
+  .modal-content {
+    // width: 75%;
+    .modal-header {
+      h4 {
+        color: $gray;
+      }
+      button, button:hover, button:focus, button:active {
+        outline: none;
+        border: none;
       }
     }
-  }
-  .search-result-form-group {
-    max-height: 214px;
-    overflow-y: auto;
-    @include scrollbar;
-    .list-group-item {
-      color: $lightblue;
-      &:hover {
-        background-color: #f2f2f2;
+    form {
+      label {
+        color: $gray;
       }
-      .img{
-        vertical-align: baseline;
-        border-radius: 5px;
-        width: 30px;
-        height: 30px;
-      }
-      .profile {
-        p:nth-child(2) {
-          line-height: 0.6;
+      input {
+        margin-bottom: 3px;
+        &:focus {
+          border-color: $lightblue;
+          box-shadow: 0 0 0 0.2rem lightblue;
         }
       }
     }
-    
-  }
-  
-  .btn {
-    border: none;
-    border-radius: 30px;
-    &.btn-create {
-      background-color: $blue;
-      &:hover {
-        background-color: $darkblue;
+    .search-result-form-group {
+      max-height: 214px;
+      overflow-y: auto;
+      @include scrollbar;
+      .list-group-item {
+        color: $blue;
+        &:hover {
+          color: $darkblue;
+          cursor: unset;
+        }
+        .img{
+          vertical-align: baseline;
+          border-radius: 5px;
+          width: 30px;
+          height: 30px;
+        }
+        .profile {
+          width: 42%;
+          p:nth-child(1) {
+            font-size: 0.9rem;
+          }
+          p:nth-child(2) {
+            line-height: 0.6;
+            small {
+              font-weight: 650;
+              font-size: 70%;
+            }
+          }
+        }
+        button.btn-add-user {
+          margin-top: 10px;
+          color: $blue;
+          font-size: 0.7rem;
+          padding: 0.2rem 0.4rem;
+          background-color: unset;
+          &:hover {
+            text-decoration: underline;
+          }
+          &:active, &:focus {
+            border: 0;
+            outline: 0;
+            box-shadow: unset;
+          }
+        }
       }
-    }
-
-    &.btn-cancel {
-      background-color: $gray;
-      &:hover {
-        background-color: darken($gray, 20%);
-      }
+      
     }
   }
 }
