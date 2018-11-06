@@ -16,9 +16,9 @@
         <div className="selected-members d-md-none d-inline-block">
           <ScrollableFeed forceScroll={true}>
             {this.props.loginStore.selectedGroupMember.map((user, i) =>
-              <span key={i} className="nav-link pl-0 d-inline-block" onClick={() => this.props.loginStore.removeFromSelect(user)}>
+              <span key={i} className="nav-link pl-0 pt-0 d-inline-block" onClick={() => this.props.loginStore.removeFromSelect(user)}>
                 <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
-                <div className="profile w-50 ">
+                <div className="profile">
                   <p className="text-muted m-0">
                     <small className="font-weight-bold">{user.nickname}</small>
                   </p>
@@ -50,17 +50,18 @@
 
             <FormGroup className="m-0">
               {this.props.loginStore.groupCandidates.map((user, i) =>
-                <ListGroup>
-                  <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)}>
-                    <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
-                    <div className="profile d-inline-block">
-                      <p className="m-0 font-weight-bold">{user.username}</p>
-                      <p className="text-muted m-0">
-                        <small className="font-weight-bold">{user.nickname}</small>
-                      </p>
-                    </div>
-                  </ListGroupItem>
-                </ListGroup>
+                <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <div className="profile searched-user-big-screen-profile d-inline-block">
+                    <p className="m-0 font-weight-bold">{user.username}</p>
+                    <p className="text-muted m-0">
+                      <small>{user.nickname}</small>
+                    </p>
+                  </div>
+                  <span className="d-inline-block float-right">
+                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.selectOneForGroup(user)}>Add user</Button>
+                  </span>
+                </ListGroupItem>
               )}
             </FormGroup>
 
@@ -68,14 +69,17 @@
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block overflow-y-auto">
             <FormGroup className="m-0 pl-1">
               {this.props.loginStore.selectedGroupMember.map((user, i) =>
-                <ListGroupItem key={i} className="nav-link p-0 pl-1" onClick={() => this.props.loginStore.removeFromSelect(user)}>
-                  <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
-                  <div className="profile w-50 d-inline-block">
+                <ListGroupItem key={i} className="nav-link p-0 pl-1">
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <div className="profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
                     <p className="text-muted m-0">
-                      <small className="font-weight-bold">{user.nickname}</small>
+                      <small>{user.nickname}</small>
                     </p>
                   </div>
+                  <span className="d-inline-block float-right">
+                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.loginStore.removeFromSelect(user)}>Remove user</Button>
+                  </span>
                 </ListGroupItem>
               )}
             </FormGroup>
@@ -85,8 +89,8 @@
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
     <ModalFooter>
-      <Button color="danger" onClick={e => this.props.toggle("group")}>Cancel</Button>&nbsp;
-      <Button color="success" onClick={e => this.createGroup()}>Create Group</Button>
+      <Button className="btn btn-cancel" onClick={e => this.props.toggle("group")}>Cancel</Button>&nbsp;
+      <Button className="btn btn-create" onClick={e => this.createGroup()}>Create Group</Button>
     </ModalFooter>
   </Modal>
 </Fragment>
