@@ -6,5 +6,10 @@ import './AddUserModal.scss';
     this.props.loginStore.fetchContact();
   }
 
+  addContact(userId){
+    this.props.loginStore.addContact(userId);
+    this.props.toggle();
+  }
+
 }
 

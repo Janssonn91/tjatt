@@ -9,6 +9,8 @@
   @observable check = 'false';
 
 
+
+
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
@@ -36,9 +38,8 @@
     }else{
       this.showAttr = 'd-none';
     }
-    
-    this.props.channelStore.addChannel(this.groupName);
-    
+    this.props.channelStore.createGroup(this.groupName);
+    this.props.toggle();
    
   }
 

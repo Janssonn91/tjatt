@@ -25,7 +25,7 @@ import imgPath from '../Sidebar/Sidebar';
 
   confirmNewPassword(e) {
     this.props.loginStore.confirmNewPasswordValue = e.currentTarget.value;
-    if(this.props.loginStore.setNewPasswordValue.length == this.props.loginStore.confirmNewPasswordValue.length){
+    if (this.props.loginStore.setNewPasswordValue.length === this.props.loginStore.confirmNewPasswordValue.length) {
       this.checkNewPassword();
     }
   }
@@ -42,5 +42,14 @@ import imgPath from '../Sidebar/Sidebar';
       this.props.loginStore.isNotSamePass = true;
       this.newPassword = '';
     }
+  }
+
+  callUpdateSettings() {
+    this.props.loginStore.updateSettings({
+      nickname: this.nickname,
+      password: this.newPassword,
+      imageFormData: this.image,
+      currentPassword: this.props.loginStore.currentPasswordValue
+    });
   }
 }

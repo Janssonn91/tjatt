@@ -66,10 +66,10 @@ app.use("/", apiRoutes)
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');
-const Channel = require('./classes/Channel.class');
+const ChannelREST = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
-new Channel(app);
+const Channel = new ChannelREST(app).myModal;
 const ChatMessage = new Message(app).myModel;
 //new Message(app).myModel;
 
@@ -77,33 +77,24 @@ const ChatMessage = new Message(app).myModel;
 
 io.on('connection', (socket) => {
   console.log("user is connected")
-
-//   socket.on("login", function(userdata) {
-//     console.log(userdata)
-//     socket.handshake.session.loggedInUser = userdata;
-//     socket.handshake.session.save();
-// });
-
-
+  let user = socket.handshake.session.loggedInUser;
   socket.on('chat message', async (messageFromClient) => {
-    console.log(messageFromClient)
     // Get the user from session
-    let user = socket.handshake.session.loggedInUser;
-    // If the room isn't allowed for the user then do nothing
+    console.log(messageFromClient)
     let c = messageFromClient.channel;
-    if(
-      typeof c !== 'string' ||
-      !user.channel.includes(c)
-    ){ return; } 
+    // if(
+    //   typeof c !== 'string' ||
+    //   !user.channel.includes(c)
+    // ){ return; } 
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
        ...messageFromClient
     });
     console.log(message)
-    await message.save();
+    await message.save();    
 
-    // Send the message to all the sockets in the room
+    // Send the message to all the sockets in the channel
     io.to(c).emit('chat message',[{
       sender: message.sender, 
       text: message.text,
@@ -113,10 +104,42 @@ io.on('connection', (socket) => {
     }]);
   });
 
+  //client.on('channel', handleGetChannels);
+
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+   // console.log('user disconnected');
+    console.log('client disconnect...', user);
+    //handleDisconnect()
   });
+
+  
+
+   
 });
+
+// io.on('connection', function (client) {
+//   client.on('register', handleRegister)
+
+//   client.on('join', handleJoin)
+
+//   client.on('leave', handleLeave)
+
+//   client.on('message', handleMessage)
+
+//   client.on('chatrooms', handleGetChatrooms)
+
+//   client.on('availableUsers', handleGetAvailableUsers)
+
+//   client.on('disconnect', function () {
+//     console.log('client disconnect...', client.id)
+//     handleDisconnect()
+//   })
+
+//   client.on('error', function (err) {
+//     console.log('received error from client:', client.id)
+//     console.log(err)
+//   })
+// })
 
 
 app.get('/hello', (req, res) => {
