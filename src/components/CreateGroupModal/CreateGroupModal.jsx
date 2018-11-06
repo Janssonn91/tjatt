@@ -49,7 +49,6 @@
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user overflow-y-auto">
 
             <FormGroup className="m-0">
-            <ListGroup>
               {this.props.loginStore.groupCandidates.map((user, i) =>
                 <ListGroup key={i}>
                   <ListGroupItem className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)}>
@@ -60,9 +59,10 @@
                         <small className="font-weight-bold">{user.nickname}</small>
                       </p>
                     </div>
-                  </ListGroupItem>
+                  </ListGroupItem>¨
+                  </ListGroup>
               )}
-                </ListGroup>
+                
             </FormGroup>
 
           </Col>
