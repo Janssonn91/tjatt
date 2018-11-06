@@ -60,12 +60,12 @@ class ChannelStore {
         contact = await this.getContactName(channel.members);
       }
       return (type === 'group'   ?
-        <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
+        <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
           <div className="d-inline-block" >{channel.channelname} </div>
         </div>
       :
-        <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
-          <CardImg className="mr-3 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
+        <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
+          <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
           <div className="d-inline-block" >{contact.contactChannelname}</div>
        </div>
        );
