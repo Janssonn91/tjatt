@@ -8,29 +8,39 @@ const promisifiedExec = util.promisify(exec); //Gör så att exec await kan anv�
 const fs = require('fs');
 const path = require('path');
 const buf = require('buffer').Buffer;
-const nodegit = require('nodegit');
+const del = require("del");
+const simplegit = require("simple-git/promise");
 
+function git_clone(_url, _localPath) {
+  simplegit()
+    .silent(true)
+    .clone(_url, _localPath)
+    .then(err => {
+      console.log("Downloaded repo from: " + _url);
+      console.log("Proceeding with building Docker image")
+      build_image();
+    })
+    .catch(err => console.log("error", err));
+}
 
 router.post('/addRepo', async (req, res) => {
-//   await promisifiedExec(
-//     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-// req.body.projectName
-// } && npm install`
-//   );
-
+  //   await promisifiedExec(
+  //     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
+  // req.body.projectName
+  // } && npm install`
+  //   );
 
   let url = req.body.url;
   let projectName = req.body.projectName;
-  let localPath = path.join(__dirname, "/docker/" + projectName);
-  let cloneOptions = {};
+  let localPath = path.join(__dirname, "../../docker/" + projectName);
 
-  cloneOptions.fetchOpts = {
-    callbacks: {
-      certificateCheck: function() { return 1; }
-    }
-  };
+  if (fs.existsSync(localPath)) {
+    del(localPath).then(() => git_clone(url, localPath));
+  } else {
+    git_clone(url, localPath);
+  }
+  
 
-  var cloneRepository = nodegit.Clone(url, localPath, cloneOptions)
 
 
 
@@ -69,42 +79,44 @@ router.post('/addRepo', async (req, res) => {
    * Change port number to one chosen by us then
    * overwrite app.js file
    */
-  await promisifiedExec(
-    `cd ${path.resolve(`./repos/${req.body.projectName}`)}`, {},
-    () => {
-      const filePath = path.resolve(`./repos/${req.body.projectName}`);
-      fs.readFile(filePath + '/app.js', (err, data) => {
-        if (err) throw err;
-        let appString = data.toString(); // returns Buffer we convert to string
-        if (appString.includes('app.listen')) {
-          let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
-          let portIndex = stringIndex + 11; // index of portnumber
-          let portNumber = appString.slice(portIndex, portIndex + 4);
-          let newString = appString.replace(portNumber, port);
+  // await promisifiedExec(
+  //   `cd ${path.resolve(`./repos/${req.body.projectName}`)}`, {},
+  //   () => {
+  //     const filePath = path.resolve(`./docker/${req.body.projectName}`);
+  //     fs.readFile(filePath + '/app.js', (err, data) => {
+  //       if (err) throw err;
+  //       let appString = data.toString(); // returns Buffer we convert to string
+  //       if (appString.includes('app.listen')) {
+  //         let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
+  //         let portIndex = stringIndex + 11; // index of portnumber
+  //         let portNumber = appString.slice(portIndex, portIndex + 4);
+  //         let newString = appString.replace(portNumber, port);
 
-          // If console log port differs from actual port
-          let stringIndexInConsoleLog = appString.indexOf('istening on port');
-          let portIndexInConsoleLog = stringIndexInConsoleLog + 17;
-          let portNumberInConsoleLog = appString.slice(
-            portIndexInConsoleLog,
-            portIndexInConsoleLog + 4
-          );
-          // Replace all occurances
-          newString = newString.replace(portNumberInConsoleLog, port);
-          newString = newString.replace(portNumberInConsoleLog, port);
-          console.log(newString);
+  //         // If console log port differs from actual port
+  //         let stringIndexInConsoleLog = appString.indexOf('istening on port');
+  //         let portIndexInConsoleLog = stringIndexInConsoleLog + 17;
+  //         let portNumberInConsoleLog = appString.slice(
+  //           portIndexInConsoleLog,
+  //           portIndexInConsoleLog + 4
+  //         );
+  //         // Replace all occurances
+  //         newString = newString.replace(portNumberInConsoleLog, port);
+  //         newString = newString.replace(portNumberInConsoleLog, port);
+  //         console.log(newString);
 
-          fs.writeFile(filePath + '/app.js', newString, err => {
-            if (err) throw err;
-          });
-        }
-      });
-    }
-  );
+  //         fs.writeFile(filePath + '/app.js', newString, err => {
+  //           if (err) throw err;
+  //         });
+  //       }
+  //     });
+  //   }
+  // );
 });
 
 
-const { Docker } = require('node-docker-api');
+const {
+  Docker
+} = require('node-docker-api');
 
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
@@ -119,9 +131,9 @@ const promisifyStream = (stream) => new Promise((resolve, reject) => {
 })
 
 function build_image(_image, _cmd, _name) {
-  let name = 'musicplayer'
+  let name = 'musik'
 
-  create_dockerfile( name )
+  create_dockerfile(name)
   var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
       t: 'testimg'
@@ -135,35 +147,38 @@ function build_image(_image, _cmd, _name) {
 
 function create_container(_appPort) {
   let port = 3300
-  
+
   let config = {
     Image: 'testimg',
-    name: 'musik2',
+    name: 'musik5',
     "HostConfig": {
-      "PortBindings": { },
+      "PortBindings": {},
     }
   }
 
-  config.HostConfig.PortBindings[`${port}/tcp`] = [ { HostPort: '8081' } ]
+  config.HostConfig.PortBindings[`${port}/tcp`] = [{
+    HostPort: '8081'
+  }]
 
   docker.container.create(config)
-  .then((container) => container.start())
-  .catch((error) => console.log(error))
+    .then((container) => container.start())
+    .catch((error) => console.log(error))
 }
 
-function create_dockerfile( name ){
-  name = "musicplayer"
+function create_dockerfile(name) {
+  name = "musik"
 
-  let path = `docker/${name}/Dockerfile`;
+  let path = `./docker/${name}/Dockerfile`;
+  console.log("path", path)
 
-
-  fs.writeFile( path, ''  , { flag: 'wx' }, function (err) {
+  fs.writeFile(path, '', {
+    flag: 'wx'
+  }, function (err) {
     if (err) {
       console.log("Dockerfile already exists!")
-    }
-    else{
-      fs.appendFileSync(path, 
-`FROM node:latest
+    } else {
+      fs.appendFileSync(path,
+        `FROM node:latest
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
@@ -171,11 +186,10 @@ COPY . .
 EXPOSE 3300
 CMD [ "npm", "start" ]`);
     }
-    
+
   });
 }
 
 // build_image();
-
 
 module.exports = router;
