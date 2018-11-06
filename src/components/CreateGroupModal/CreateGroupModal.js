@@ -10,7 +10,6 @@
 
 
 
-
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
@@ -23,7 +22,7 @@
 
   createGroup(){
     //check Before Submit;
-
+    
     if(!this.groupName){
       this.myAttr='show text-danger w-100 d-block mb-3';
       return;
@@ -39,9 +38,12 @@
       this.showAttr = 'd-none';
     }
     this.props.channelStore.createGroup(this.groupName);
+    this.props.loginStore.cleanUpGroupModal();
     this.props.toggle();
    
   }
+
+
 
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })

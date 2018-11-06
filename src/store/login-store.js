@@ -142,6 +142,8 @@ class LoginStore {
         this.candidates = withoutMe.filter(user => !isIncluded(user._id));
         this.myContacts = withoutMe.filter(user => isIncluded(user._id));
         this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
+        // console.log(toJS(this.groupCandidates))
+        //this.groupCandidates= this.sortByName(this.groupCandidates, nickname);
         //this.myChannel = this.user.channel;
       });
   }
@@ -157,12 +159,17 @@ class LoginStore {
     this.groupCandidates.push(addedUser);
     
     //console.log(this.myContacts)
-    channelStore.renderChannelElements(channelStote.contactChannels, 'contact', 'contactsRender');
+    //channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
    // channelStore.getChannelByUser(userId);
   }
 
-  @action async cleanUpGroupModal(){
-    await this.fetchContact();
+ 
+  
+
+  @action cleanUpGroupModal(){
+    this.selectedGroupMember.map((data)=>{
+      return this.groupCandidates.push(data);
+    });
     this.selectedGroupMember = [];
   }
 

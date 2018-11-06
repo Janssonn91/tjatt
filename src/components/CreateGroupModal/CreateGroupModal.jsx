@@ -48,8 +48,8 @@
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user overflow-y-auto">
 
-            <FormGroup className="m-0">
-              {this.props.loginStore.groupCandidates.map((user, i) =>
+            <FormGroup className="m-0" >         
+               {this.props.loginStore.groupCandidates.map((user, i) =>
                 <ListGroup key={i}>
                   <ListGroupItem className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)}>
                     <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
@@ -61,7 +61,7 @@
                     </div>
                   </ListGroupItem>
                   </ListGroup>
-              )}
+              )} 
                 
             </FormGroup>
 

@@ -75,6 +75,8 @@ class ChannelStore {
     });
   }
 
+
+
   async getContactName(ids){
     let n = ids.filter(id=> {return id!==loginStore.user._id});
       let contact= {};
@@ -115,7 +117,6 @@ class ChannelStore {
       open: true,
       group: group
     }
-    console.log(this.newChannel)
     if(!group){
       this.updateContactChannels(this.newChannel);
     }
@@ -130,7 +131,6 @@ class ChannelStore {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    console.log(groupName, admin, members)
     this.createChannel(groupName, admin, members, true)
     .then((channel) => {
       channel.members.forEach(member => {
@@ -169,7 +169,9 @@ class ChannelStore {
 
 
   updateContactChannels(channel) {
+    console.log(channel)
     this.contactChannels.push(channel);
+    console.log(this.contactChannels)
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   //this.props.channelStore.getChannelByUser(user._id)}
   }
@@ -184,12 +186,8 @@ class ChannelStore {
 
   }
 
-  // @action cleanUpGroupModal() {
-  //   // TODO: cleanup has bug, remove new added contact need to be fixed
-  //   // need new method to renew groupCandidates
-  //   loginStore.selectedGroupMember = [];
-  //   //loginStore.fetchContact();
-  // }
+ 
+ 
 
   // @action updateContactChannels() {
   //   this.contactChannels.push(this.newChannel);
