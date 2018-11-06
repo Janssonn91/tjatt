@@ -8,7 +8,7 @@
       <Form>
         <FormGroup className="m-0">
           <Label for="searchNewContacts" className="mb-1" >Find members by searching here:</Label>
-          <Input type="text" name="text" id="searchContacts" placeholder="Search" onChange={this.searchCandidates} />
+          <Input type="text" name="text" id="searchContacts" placeholder="Search" onChange={this.searchCandidates} autoComplete="off" />
         </FormGroup>
         <ListGroup>
           {this.userCandidates.map(user =>

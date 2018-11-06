@@ -6,13 +6,16 @@ import './AddUserModal.scss';
 
   start() {
     this.props.loginStore.fetchContact()
-      .then(() => {
-        this.userCandidates = this.props.loginStore.candidates;
-      })
+    // .then(() => {
+    //   this.userCandidates = this.props.loginStore.candidates;
+    // })
   }
 
   searchCandidates = (e) => {
     this.userCandidates = [];
+    if (!e.target.value) {
+      return this.userCandidates = [];
+    }
     let regex = new RegExp(e.target.value, 'i');
     let result = this.props.loginStore.candidates.filter(user => {
       if (regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)) {
