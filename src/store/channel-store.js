@@ -264,26 +264,28 @@ class ChannelStore {
     this.hideMenu = true;
     this.hideChat = false;
   }
-  
+
   @action exitChannel(channel) {
     const userId = loginStore.user._id;
     console.log(userId, channel._id);
-      fetch(`/api/channels/${channel._id}`, {
+      fetch(`/api/memberChannels/${channel._id}`, {
         method: 'PUT',
         body: JSON.stringify({
-          userId: userId
+          userid: userId
         }),
         headers: {
           'Content-Type': 'application/json'
         }
       })
         .then(res => {
-          res.json();
-        }).catch(err => {
+          return res.json();
+        }).then(res => {
+          console.log(res.resultChannel, res.resultUser)
+        })
+        .catch(err => {
           console.log(err);
         })
   }
-
 }
 
 const channelStore = new ChannelStore();
