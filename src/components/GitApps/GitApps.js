@@ -19,13 +19,33 @@ import './GitApps.scss';
     await this.fetchRepos();
   }
 
-  addRepo(name, url){
-    console.log('adding to mongo');
-    Repo.create({
+  async importRepo(name, url){
+    await sleep(1000);
+    await Repo.create({
       name: name,
       url: url,
       port: "port",
+      running: false
     })
+    .then(response=>{
+      this.importingRepo = false;
+      this.fetchRepos();
+      // this.importedApps.push(response);
+    })
+    .catch(
+      error=>console.log(error)
+    );
+  }
+
+  async deleteRepo(appId){
+    await this.importedApps.find(app=>app._id === appId).delete()
+    .then(response=>{
+      console.log('removed', response)
+    })
+    .catch(
+      error=>console.log(error)
+    );
+    this.fetchRepos();
   }
 
   async fetchRepos(){
@@ -33,13 +53,8 @@ import './GitApps.scss';
     this.importingApps = false;
   }
 
-  editText(e){
+  onUrlChangeHandler(e){
     this.urlToSet = e.currentTarget.value;
-  }
-
-  editProjectName(e){
-    this.projectToSet = e.currentTarget.value;
-
   }
 
   checkForEnter(e){
@@ -60,39 +75,28 @@ import './GitApps.scss';
       this.showApps = !this.showApps;
   }
 
-  async fakeImport(){
-    let start = 0;
-    const frame = () => {
-    if (start >= 100) {
-        clearInterval(progress);
-    } else {
-        this.loadingStatus = start;
-        start++; 
+  onSubmitEnterHandler(event) {
+    if(event.key === 'Enter'  ){
+      event.preventDefault();
+      this.onSubmit();
     }
-    }
-    let progress = setInterval(frame, 30);
-    await sleep(3000);  
-    this.importingRepo = false;
   }
 
-  submit = () => {
-    // console.log(this.urlToSet);
-    // fetch('/api/addRepo', { 
-    //   headers:{'Content-Type': 'application/json'},
-    //   body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
-    //   method: 'POST' // or 'PUT'
-    // })
-    // this.addRepo(this.projectToSet, this.urlToSet);
+  onSubmitClickHandler(){
+    this.onSubmit();
+  }
+
+  onSubmit(){
+    this.importingRepo = true;
+    this.importRepo(this.urlToSet,this.urlToSet);
     this.urlToSet = '';
     this.projectToSet = '';
-    this.importingRepo = true;
-    this.fetchRepos();
-    this.fakeImport();
   }
 
-
-
-
-
+  async runningAppHandler(appId){
+    this.importedApps.find(app=> app._id === appId).running = !this.importedApps.find(app=> app._id === appId).running;
+    await this.importedApps.find(app=> app._id === appId).save();
+    this.fetchRepos();
+  }
   
 }

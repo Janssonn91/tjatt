@@ -105,16 +105,17 @@
     padding: 0;
 }
 
-.gitApps-sideDrawer-appsList-app-button{
+.gitApps-sideDrawer-appsList-app{
     width: 100%;
     background-color: transparent;
     display: inline-flex;
     align-items: center;
+    justify-content: space-between;
     border: none;
     cursor: pointer;
 }
 
-.gitApps-sideDrawer-appsList-app-button:hover{
+.gitApps-sideDrawer-appsList-app:hover{
     color: #366AC8;
     border: none;
     box-shadow: none;
@@ -123,3 +124,16 @@
 .gitApps-sideDrawer-appsList-app-label{
     margin: 0;
 }
+
+.gitApps-sideDrawer-appsList-app-controls-button{
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button:hover{
+    color: #366AC8;
+    border: none;
+    box-shadow: none;
+}   
+
