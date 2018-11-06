@@ -1,7 +1,6 @@
 < Fragment > {
 
   this.props.histories.map((message, i) => {
-    console.log(message);
     return(
       message.sender === (this.props.loginStore.user._id )
     ? <li key={i} className="clearfix ">

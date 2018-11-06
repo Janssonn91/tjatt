@@ -24,7 +24,6 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
-    console.log("call")
     this.myChannels= await Channel.find({
       _id: loginStore.user.channel,
     })
@@ -41,17 +40,17 @@ class ChannelStore {
           }
 
         );
-        await sleep(30);
+        await sleep(60);
         this.renderChannels();
       }
 
 
-  @action renderChannels(){
+  renderChannels(){
     this.renderChannelElements(this.groupChannels, 'group',  'groupsRender');
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   }
 
-  @action async renderChannelElements(channels, type, anchor){
+  async renderChannelElements(channels, type, anchor){
     let contact = "";
     let elements = await channels.map(async (channel, i)=>{
       let img = "";
@@ -76,7 +75,7 @@ class ChannelStore {
     });
   }
 
-  @action async getContactName(ids){
+  async getContactName(ids){
     let n = ids.filter(id=> {return id!==loginStore.user._id});
       let contact= {};
     if(n[0]){
@@ -92,6 +91,7 @@ class ChannelStore {
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
+    this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
     let element="";
     if(!channel.group){
       const name = await this.getContactName(channel.members);
@@ -115,19 +115,24 @@ class ChannelStore {
       open: true,
       group: group
     }
+    console.log(this.newChannel)
+    if(!group){
+      this.updateContactChannels(this.newChannel);
+    }
+    if(group){
+      this.updateGroupChannel(this.newChannel)
+    }
+   
     return Channel.create(this.newChannel);
-    // .then(() => {
-    //     return Channel.findOne({
-    //         channelname: this.newChannel.channelname
-    //     });
-    // })
   }
 
-  @action addChannel(groupName) {
+  @action createGroup(groupName) {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    this.createChannel(groupName, admin, members, true).then((channel) => {
+    console.log(groupName, admin, members)
+    this.createChannel(groupName, admin, members, true)
+    .then((channel) => {
       channel.members.forEach(member => {
         fetch(`/api/users/${member}`, {
           method: 'PUT',
@@ -145,11 +150,6 @@ class ChannelStore {
             console.log(err);
           })
       })
-    }).then(() => {
-      //this.getChannels();
-      this.updateGroupChannel();
-      this.cleanUpGroupModal();
-      //loginStore.groupCandidates = loginStore.myContacts;
     })
   }
 
@@ -180,24 +180,20 @@ class ChannelStore {
 }
 
 
-  @action cleanUpGroupModal(){
-    // TODO: cleanup has bug, remove new added contact need to be fixed
-    // need new method to renew groupCandidates
-    loginStore.selectedGroupMember = [];
-    //loginStore.fetchContact();
-}
-
-@action updateContactChannels() {
-    this.contactChannels.push(this.newChannel);
+  updateContactChannels(channel) {
+    this.contactChannels.push(channel);
+    this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   }
 
-  @action updateGroupChannel() {
-    //console.log(this.myChannels, this.newChannel)
-    this.groupChannels.push(this.newChannel);
-    //this.myChannels.push(this.newChannel);
-    console.log(this.groupChannels);
-    this.renderGroup();
-    this.getGroupChannel(this.newChannel);
+  updateGroupChannel(channel) {
+    console.log(this.groupChannels)
+    this.groupChannels.push(channel);
+    console.log(this.groupChannels)
+    console.log(channel)
+    this.renderChannelElements(toJS(this.groupChannels), 'group',  'groupsRender');
+    // console.log(this.groupChannels);
+    // this.renderGroup();
+    // this.getGroupChannel(this.newChannel);
   }
 
   // @action async getChannelByUser(userId) {
@@ -266,8 +262,6 @@ class ChannelStore {
     this.hideChat = false; 
 }
 }
-
-
 
 
 const channelStore = new ChannelStore();
