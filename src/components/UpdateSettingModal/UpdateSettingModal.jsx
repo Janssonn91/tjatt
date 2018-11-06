@@ -28,7 +28,7 @@
               id="changeNickname"
               placeholder={this.props.loginStore.user.nickname}
               value={this.nickname}
-              onChange={(e) => this.nickname = e.currentTarget.value}
+              onChange={e => this.nickname = e.currentTarget.value}
               onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
             />
           </td>
