@@ -52,5 +52,6 @@ import imgPath from '../Sidebar/Sidebar';
       imageFormData: this.image,
       currentPassword: this.currentPasswordValue
     });
+    this.isNotSamePass = false;
   }
 }
