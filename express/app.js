@@ -80,13 +80,12 @@ io.on('connection', (socket) => {
   let user = socket.handshake.session.loggedInUser;
   socket.on('chat message', async (messageFromClient) => {
     // Get the user from session
-    
-    // If the room isn't allowed for the user then do nothing
+    console.log(messageFromClient)
     let c = messageFromClient.channel;
-    if(
-      typeof c !== 'string' ||
-      !user.channel.includes(c)
-    ){ return; } 
+    // if(
+    //   typeof c !== 'string' ||
+    //   !user.channel.includes(c)
+    // ){ return; } 
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
