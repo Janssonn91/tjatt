@@ -25,7 +25,7 @@ import imgPath from '../Sidebar/Sidebar';
 
   confirmNewPassword(e) {
     this.props.loginStore.confirmNewPasswordValue = e.currentTarget.value;
-    if(this.props.loginStore.setNewPasswordValue.length == this.props.loginStore.confirmNewPasswordValue.length){
+    if (this.props.loginStore.setNewPasswordValue.length === this.props.loginStore.confirmNewPasswordValue.length) {
       this.checkNewPassword();
     }
   }
