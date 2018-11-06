@@ -14,6 +14,7 @@
               placeholder="image"
               style={{ borderColor: "black" }}
               onChange={e => this.onFileChange(e)}
+              onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
             />
           </td>
         </tr>
@@ -28,6 +29,7 @@
               placeholder={this.props.loginStore.user.nickname}
               value={this.nickname}
               onChange={(e) => this.nickname = e.currentTarget.value}
+              onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
             />
           </td>
         </tr>
@@ -84,15 +86,13 @@
     {this.props.loginStore.isNotSamePass && <Alert className="alert-color text-center">
       New passwords doesn't match</Alert>}
     {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
-    Information saved!</Alert>}
+      Information saved!</Alert>}
   </ModalBody>
   <ModalFooter>
     <Button
       disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass}
       className="btn btn-save"
-      onClick={() =>
-        this.props.loginStore.updateSettings({ nickname: this.nickname, password: this.newPassword, imageFormData: this.image, currentPassword: this.props.loginStore.currentPasswordValue })
-      }
+      onClick={() => this.callUpdateSettings()}
     >
       Save changes
     </Button>{' '}

@@ -5,103 +5,103 @@ import {
   renderReporter
 } from 'mobx-react';
 class ChannelStore {
-    @observable newChannel = [];
-    @observable myChannels = [];
-    @observable currentChannel = "";
-    @observable channelName = "";
-    @observable channelImg = "";
-    @observable currentChannelGroup = false;
-    @observable amIAdmin = "";
-    @observable contactChannels = [];
-    @observable groupChannels = [];
-    @observable hideMenu = true;
-    @observable hideChat = false;
-    @observable channelChatHistory = [];
-    @observable contactImg = "";
-    @observable contactChannelname ="";
+  @observable newChannel = [];
+  @observable myChannels = [];
+  @observable currentChannel = "";
+  @observable channelName = "";
+  @observable channelImg = "";
+  @observable currentChannelGroup = false;
+  @observable amIAdmin = "";
+  @observable contactChannels = [];
+  @observable groupChannels = [];
+  @observable hideMenu = true;
+  @observable hideChat = false;
+  @observable channelChatHistory = [];
+  @observable contactImg = "";
+  @observable contactChannelname = "";
 
 
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
     console.log("call")
-    this.myChannels= await Channel.find({
+    this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })
-    this.groupChannels=[];
-    this.contactChannels=[];
+    this.groupChannels = [];
+    this.contactChannels = [];
     this.myChannels.forEach(
-          channel => {
-            if (channel.group === false) {
-              this.contactChannels.push(channel);
-            }
-            if (channel.group === true){
-              this.groupChannels.push(channel);
-            }
-          }
-
-        );
-        await sleep(30);
-        this.renderChannels();
+      channel => {
+        if (channel.group === false) {
+          this.contactChannels.push(channel);
+        }
+        if (channel.group === true) {
+          this.groupChannels.push(channel);
+        }
       }
 
+    );
+    await sleep(30);
+    this.renderChannels();
+  }
 
-  @action renderChannels(){
-    this.renderChannelElements(this.groupChannels, 'group',  'groupsRender');
+
+  @action renderChannels() {
+    this.renderChannelElements(this.groupChannels, 'group', 'groupsRender');
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   }
 
-  @action async renderChannelElements(channels, type, anchor){
+  @action async renderChannelElements(channels, type, anchor) {
     let contact = "";
-    let elements = await channels.map(async (channel, i)=>{
+    let elements = await channels.map(async (channel, i) => {
       let img = "";
       let channelname = "";
-      if(type==="contact"){
+      if (type === "contact") {
         contact = await this.getContactName(channel.members);
       }
-      return (type === 'group'   ?
+      return (type === 'group' ?
         <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
           <div className="d-inline-block" >{channel.channelname} </div>
         </div>
-      :
+        :
         <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
           <CardImg className="mr-3 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
           <div className="d-inline-block" >{contact.contactChannelname}</div>
-       </div>
-       );
+        </div>
+      );
     });
 
-    Promise.all(elements).then((els)=>{
+    Promise.all(elements).then((els) => {
       ReactDOM.render(els, document.getElementById(anchor));
     });
   }
 
-  @action async getContactName(ids){
-    let n = ids.filter(id=> {return id!==loginStore.user._id});
-      let contact= {};
-    if(n[0]){
+  @action async getContactName(ids) {
+    let n = ids.filter(id => { return id !== loginStore.user._id });
+    let contact = {};
+    if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
       let user = await res.json();
-        contact.contactImg= user.image;
-        contact.contactChannelname = user.nickname;
-        return  contact;
+      contact.contactImg = user.image;
+      contact.contactChannelname = user.nickname;
+      return contact;
     }
   }
 
-  @action async changeChannel(channel){
+  @action async changeChannel(channel) {
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
-    let element="";
-    if(!channel.group){
+    let element = "";
+    if (!channel.group) {
       const name = await this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
-    }else{
+    } else {
       this.channelName = channel.channelname;
     }
   }
 
-  @action getChannelChatHistory(){
+  @action getChannelChatHistory() {
     // TODO: socket channel
     console.log(this.channelChatHistory)
   }
@@ -155,39 +155,38 @@ class ChannelStore {
 
 
 
-    
-    // if(type==="contact"){
-    //   this.getChannelByUser(id);
-    // }
-    // if(type === "group"){
-    //   this.getGroupChannel(id);
-    // }
-    // this.channelChatHistory=[];
-    // this.getChannelChatHistory()
-    
 
-  
-//this.props.channelStore.getChannelByUser(user._id)}
-
-@action async saveMessageToChannel(message){
-  this.channelChatHistory.push(message);
-  // console.log(message)
-  // //await sleep(60)
-  // await Message.findOne({channel: message.channel, text: message.text}).then((data)=>{
-  //   console.log(data)
-  // })
-  
-}
+  // if(type==="contact"){
+  //   this.getChannelByUser(id);
+  // }
+  // if(type === "group"){
+  //   this.getGroupChannel(id);
+  // }
+  // this.channelChatHistory=[];
+  // this.getChannelChatHistory()
 
 
-  @action cleanUpGroupModal(){
+
+  //this.props.channelStore.getChannelByUser(user._id)}
+
+  @action saveMessageToChannel(message) {
+    this.channelChatHistory.push(message);
+    // console.log(message)
+    // //await sleep(60)
+    // await Message.findOne({channel: message.channel, text: message.text}).then((data)=>{
+    //   console.log(data)
+    // })
+
+  }
+
+  @action cleanUpGroupModal() {
     // TODO: cleanup has bug, remove new added contact need to be fixed
     // need new method to renew groupCandidates
     loginStore.selectedGroupMember = [];
     //loginStore.fetchContact();
-}
+  }
 
-@action updateContactChannels() {
+  @action updateContactChannels() {
     this.contactChannels.push(this.newChannel);
   }
 
@@ -219,12 +218,12 @@ class ChannelStore {
   //   this.getChannelInfo();
   // }
 
-//   @action getGroupChannel(channel) {
-//     this.currentChannel = channel;
-//     this.channelName = channel.channelname;
-//     this.currentChannelGroup = channel.group;
-//     this.showChat();
-// }
+  //   @action getGroupChannel(channel) {
+  //     this.currentChannel = channel;
+  //     this.channelName = channel.channelname;
+  //     this.currentChannelGroup = channel.group;
+  //     this.showChat();
+  // }
 
   // @action getChannelInfo() {
 
@@ -256,15 +255,15 @@ class ChannelStore {
 
   // }
 
-@action showMenu() {
+  @action showMenu() {
     this.hideMenu = false;
     this.hideChat = true;
   }
 
-@action showChat(){
+  @action showChat() {
     this.hideMenu = true;
-    this.hideChat = false; 
-}
+    this.hideChat = false;
+  }
 }
 
 
