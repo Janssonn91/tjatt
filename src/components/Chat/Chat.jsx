@@ -1,6 +1,7 @@
-<Fragment> <AddMemberModal {...this.sendToAddModal} /> <DeleteMemberModal {
-  ...this.sendToDeleteModal
-} />
+<Fragment> 
+  <AddMemberModal {...this.sendToAddModal} /> 
+  <DeleteMemberModal {...this.sendToDeleteModal} />
+  <ViewMembersModal {...this.sendToViewMembersModal} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -17,14 +18,14 @@
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                 <DropdownToggle
-                  className=""
                   tag="span"
                   data-toggle="dropdown"
-                  aria-expanded={this.dropdownOpen}>
+                  aria-expanded={this.dropdownOpen}
+                  >
                   <i className="fas fa-users"></i>
                 </DropdownToggle>
                 <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" header>Group Name</DropdownItem>
+                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.channelName}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
                     <DropdownItem
@@ -33,6 +34,13 @@
                         .addMemberModalToggle
                         .bind(this)}>
                       Add members
+                  </DropdownItem>
+                  <DropdownItem
+                      className="py-2 px-3"
+                      onClick={this
+                        .viewMembersModalToggle
+                        .bind(this)}>
+                      View members
                   </DropdownItem>
                     <DropdownItem
                       className="py-2 px-3"
@@ -43,7 +51,7 @@
                   </DropdownItem>
                   </div>
                   <DropdownItem className="m-0" divider />
-                  <DropdownItem className="leave-group py-2 px-3">Leave group</DropdownItem>
+                  <DropdownItem className="leave-group py-2 px-3 ">Leave group</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </span>

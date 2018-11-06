@@ -64,6 +64,7 @@ export default class Chat extends Component {
   @observable dropdownOpen = false;
   @observable addMemberModal = false;
   @observable removeMemberModal = false;
+  @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
 
   @observable sendToAddModal = {
@@ -75,6 +76,12 @@ export default class Chat extends Component {
     isOpen: false,
     toggle: this.deleteMemberModalToggle.bind(this)
   }
+
+  @observable sendToViewMembersModal = {
+    isOpen: false,
+    toggle: this.viewMembersModalToggle.bind(this)
+  }
+
   // chat history hard code
   @observable sendToChatHistory = {
     histories: this.chatHistories
@@ -106,16 +113,16 @@ export default class Chat extends Component {
     this.scrollToBottom();
   }
 
-
-
-
-
   addMemberModalToggle() {
     this.sendToAddModal.isOpen = !this.sendToAddModal.isOpen
   }
 
   deleteMemberModalToggle() {
     this.sendToDeleteModal.isOpen = !this.sendToDeleteModal.isOpen
+  }
+
+  viewMembersModalToggle() {
+    this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen
   }
 
   toggle() {

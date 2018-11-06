@@ -1,5 +1,6 @@
 @import './node_modules/emoji-picker-react/dist/universal/style.scss';
 /* color */
+$backgroundColor: #484951;
 $gray: #919192;
 $green: #70C1B3;
 $blue: #1976D1;
@@ -64,13 +65,22 @@ $fontSm: 12px;
             transform: translate3d(-5px, 17px, 0px) !important;
             height: auto;
             padding: 0;
-            .dropdown-header {
-                font-size: unset;
-            }
-            .channel-manage {
-                button:hover, button:active {
-                    color: $text;
-                    background-color: lighten($lightblue, 23%);
+                .dropdown-header {
+                    color: $gray;
+                    font-weight: bold;
+                    &:hover {
+                        cursor: unset !important;
+                    }
+                }
+                .channel-manage {
+                    .dropdown-item {
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    color: $blue;
+                    &:hover, &:active {
+                        cursor: pointer;
+                        background-color: lighten($gray, 30%);
+                    }
                 }
             }
         }
@@ -104,12 +114,14 @@ $fontSm: 12px;
         }
 
         .leave-group{
-            color: $red;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white !important;
+            background-color: #bb1e2d !important;
             &:hover {
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
-                background-color: $red;
-                color: white;
+                cursor: pointer;
             }
         }
         .editable-gn {
@@ -236,6 +248,12 @@ $fontSm: 12px;
             color: $gray;
             background-color: #fff;
             border: 1px solid $gray;
+            &:focus, &:active {
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            }
+            &:active {
+                color: white;
+            }
             svg {
                 font-size: 2vw;
                 display: inline-block;
@@ -288,12 +306,15 @@ $fontSm: 12px;
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            &:hover {
+            &:hover, {
               background-color: $darkblue;
               border-color: $darkblue;
               color: white;
               font-size: 1.8vw;
-          }
+            }
+            &:focus, &:active {
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
+            }
         }
     }
     hr {
