@@ -39,26 +39,32 @@ function build_docker_image(_name) {
     })
     .then((stream) => promisifyStream(stream))
     .then(() => {
-      create_docker_container(_name);
+      get_used_ports(_name);
     })
     .catch((error) => console.log(error))
 }
 
-function get_docker_public_ports(){
-  docker.container
-  .list()
-  .then(containers => {
-    //console.log("containers", containers[0].data.Ports[0].PublicPort);
+function get_used_ports(_name) {
+  docker.container.list().then(containers => {
     let ports = containers.map(container => {
-      return container.data.Ports[0].PublicPort
-    })
-  })
-
-  .catch(error => console.log(error));
+      return container.data.Ports[0].PublicPort;
+    });
+    select_port(_name, ports);
+  });
 }
 
-function create_docker_container(_name) {
-  let port = 3000
+function select_port(_name, usedPorts) {
+  let probePort = 8081;
+  let found = false;
+
+  while (!found) {
+    usedPorts.includes(probePort) ? probePort++ : (found = true);
+  }
+  create_docker_container(_name, probePort);
+}
+
+function create_docker_container(_name, _port) {
+  let appPort = 3000
 
   let config = {
     Image: _name,
@@ -68,9 +74,8 @@ function create_docker_container(_name) {
     }
   }
 
-
-  config.HostConfig.PortBindings[`${port}/tcp`] = [{
-    HostPort: '8082'
+  config.HostConfig.PortBindings[`${appPort}/tcp`] = [{
+    HostPort: _port.toString()
   }]
 
   docker.container.create(config)
