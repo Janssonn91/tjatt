@@ -85,8 +85,11 @@
       Incorrect current password</Alert>}
     {this.isNotSamePass && <Alert className="alert-color text-center">
       New passwords doesn't match</Alert>}
-    {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
-      Information saved!</Alert>}
+    {this.props.loginStore.savedNickname && <Alert color="success" className="text-center">
+      New nickname saved!</Alert>}
+    {this.props.loginStore.savedPassword && <Alert color="success" className="text-center">
+      New password saved!</Alert>}
+
   </ModalBody>
   <ModalFooter>
     <Button

@@ -13,7 +13,8 @@ class LoginStore {
   @observable message = '';
   @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
-  @observable savedInfo = false;
+  @observable savedNickname = false;
+  @observable savedPassword = false;
   // @observable myGroups = [];
 
   constructor() {
@@ -210,6 +211,7 @@ class LoginStore {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
+            this.savedNickname = true;
             this.user = { ...this.user, nickname };
           }
         })
@@ -251,7 +253,7 @@ class LoginStore {
                 document.getElementById('currentPassword').value = '';
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
-                this.savedInfo = true;
+                this.savedPassword = true;
                 this.user = { ...this.user, password };
               })
               .catch(err => {
@@ -287,7 +289,8 @@ class LoginStore {
 
   @action resetAlert() {
     this.isNotCorrectPass = false;
-    this.savedInfo = false;
+    this.savedNickname = false;
+    this.savedPassword = false;
   }
 
 }
