@@ -2,14 +2,14 @@
     <div
         style={{width:'100%', height: '100vh'}} 
         onClick={this.showSidedrawer ? ()=>this.sideDrawerHandler() : null}>
-        <iframe 
+        {/* <iframe 
             id="running-app"
             title="running-app"
             src="https://developer.mozilla.org/en-US/docs/Glossary"
             width="100%" height="500" frameBorder="0"
             allowfullscreen sandbox={true}   
             >
-        </iframe>
+        </iframe> */}
     </div>
     <Button
         style={{
