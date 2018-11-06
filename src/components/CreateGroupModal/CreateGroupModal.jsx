@@ -49,9 +49,9 @@
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user overflow-y-auto">
 
             <FormGroup className="m-0">
-            <ListGroup>
               {this.props.loginStore.groupCandidates.map((user, i) =>
-                  <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)}>
+                <ListGroup key={i}>
+                  <ListGroupItem className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)}>
                     <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                     <div className="profile d-inline-block">
                       <p className="m-0 font-weight-bold">{user.username}</p>
@@ -59,9 +59,10 @@
                         <small className="font-weight-bold">{user.nickname}</small>
                       </p>
                     </div>
-                  </ListGroupItem>
+                  </ListGroupItem>¨
+                  </ListGroup>
               )}
-                </ListGroup>
+                
             </FormGroup>
 
           </Col>
