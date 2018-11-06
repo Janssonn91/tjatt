@@ -1,119 +1,9 @@
 const router = require('express').Router();
-const {
-  exec,
-  spawn
-} = require('child_process');
-const util = require('util');
-const promisifiedExec = util.promisify(exec); //Gör så att exec await kan användas
 const fs = require('fs');
 const path = require('path');
-const buf = require('buffer').Buffer;
 const del = require("del");
+const tar = require('tar-fs');
 const simplegit = require("simple-git/promise");
-
-function git_clone(_url, _localPath) {
-  simplegit()
-    .silent(true)
-    .clone(_url, _localPath)
-    .then(err => {
-      console.log("Downloaded repo from: " + _url);
-      console.log("Proceeding with building Docker image")
-      build_image();
-    })
-    .catch(err => console.log("error", err));
-}
-
-router.post('/addRepo', async (req, res) => {
-  //   await promisifiedExec(
-  //     `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-  // req.body.projectName
-  // } && npm install`
-  //   );
-
-  let url = req.body.url;
-  let projectName = req.body.projectName;
-  let localPath = path.join(__dirname, "../../docker/" + projectName);
-
-  if (fs.existsSync(localPath)) {
-    del(localPath).then(() => git_clone(url, localPath));
-  } else {
-    git_clone(url, localPath);
-  }
-  
-
-
-
-
-
-  // Change back params to 'npm' and ['start']
-  // This is to get it to work with express apps
-  // let process = spawn('node', ['app'], {
-  //   cwd: `./repos/${req.body.projectName}`
-  // });
-  // process.on('error', error => console.log('error: ' + error));
-  // process.stdout.on('data', data => console.log('data: ' + data));
-  // res.json(req.body);
-
-  /**
-   * Randomize a number between 1025-65535
-   * to use as port number
-   */
-  function randomizePortNumber() {
-    let newPortNumber = 1025 + Math.floor(Math.random() * 65535);
-    // Protect our specific ports for Mongo etc
-    let protectedPorts = [80, 443, 3000, 4500, 8080, 27017, 39812];
-    for (let i = 0; i < protectedPorts.length; i++) {
-      if (newPortNumber === protectedPorts[i]) {
-        randomizePortNumber();
-      }
-    }
-    return newPortNumber;
-  }
-
-  let port = randomizePortNumber();
-
-  /**
-   * On POST request:
-   * use path.resolve to get correct working directory
-   * read app.js to find current port number
-   * Change port number to one chosen by us then
-   * overwrite app.js file
-   */
-  // await promisifiedExec(
-  //   `cd ${path.resolve(`./repos/${req.body.projectName}`)}`, {},
-  //   () => {
-  //     const filePath = path.resolve(`./docker/${req.body.projectName}`);
-  //     fs.readFile(filePath + '/app.js', (err, data) => {
-  //       if (err) throw err;
-  //       let appString = data.toString(); // returns Buffer we convert to string
-  //       if (appString.includes('app.listen')) {
-  //         let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
-  //         let portIndex = stringIndex + 11; // index of portnumber
-  //         let portNumber = appString.slice(portIndex, portIndex + 4);
-  //         let newString = appString.replace(portNumber, port);
-
-  //         // If console log port differs from actual port
-  //         let stringIndexInConsoleLog = appString.indexOf('istening on port');
-  //         let portIndexInConsoleLog = stringIndexInConsoleLog + 17;
-  //         let portNumberInConsoleLog = appString.slice(
-  //           portIndexInConsoleLog,
-  //           portIndexInConsoleLog + 4
-  //         );
-  //         // Replace all occurances
-  //         newString = newString.replace(portNumberInConsoleLog, port);
-  //         newString = newString.replace(portNumberInConsoleLog, port);
-  //         console.log(newString);
-
-  //         fs.writeFile(filePath + '/app.js', newString, err => {
-  //           if (err) throw err;
-  //         });
-  //       }
-  //     });
-  //   }
-  // );
-});
-
-
 const {
   Docker
 } = require('node-docker-api');
@@ -122,42 +12,65 @@ const docker = new Docker({
   socketPath: '/var/run/docker.sock'
 });
 
-const tar = require('tar-fs');
-
 const promisifyStream = (stream) => new Promise((resolve, reject) => {
-  stream.on('data', (d) => console.log(d.toString()))
+  stream.on('data', (d) => console.log('.'))
   stream.on('end', resolve)
   stream.on('error', reject)
 })
 
-function build_image(_image, _cmd, _name) {
-  let name = 'musik'
+router.post('/addRepo', async (req, res) => {
+  let gitUrl = req.body.url.toLowerCase();
+  let processName = req.body.projectName;
+  let uniqueProjectName = gitUrl.replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '');
+  let localPath = path.join(__dirname, "../../docker/" + uniqueProjectName);
 
-  create_dockerfile(name)
+  fs.existsSync(localPath) ?
+    del(localPath).then(() => git_clone(gitUrl, localPath, processName, uniqueProjectName)) : git_clone(gitUrl, localPath, processName, uniqueProjectName);
+});
+
+
+function build_docker_image(_name) {
+  let name = _name
+
+  create_docker_dockerfile(name)
   var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
-      t: 'testimg'
+      t: _name
     })
     .then((stream) => promisifyStream(stream))
     .then(() => {
-      create_container();
+      create_docker_container(_name);
     })
     .catch((error) => console.log(error))
 }
 
-function create_container(_appPort) {
-  let port = 3300
+function get_docker_public_ports(){
+  docker.container
+  .list()
+  .then(containers => {
+    //console.log("containers", containers[0].data.Ports[0].PublicPort);
+    let ports = containers.map(container => {
+      return container.data.Ports[0].PublicPort
+    })
+  })
+
+  .catch(error => console.log(error));
+}
+
+function create_docker_container(_name) {
+  let port = 3000
 
   let config = {
-    Image: 'testimg',
-    name: 'musik5',
+    Image: _name,
+    name: _name,
     "HostConfig": {
       "PortBindings": {},
     }
   }
 
+
   config.HostConfig.PortBindings[`${port}/tcp`] = [{
-    HostPort: '8081'
+    HostPort: '8082'
   }]
 
   docker.container.create(config)
@@ -165,8 +78,8 @@ function create_container(_appPort) {
     .catch((error) => console.log(error))
 }
 
-function create_dockerfile(name) {
-  name = "musik"
+function create_docker_dockerfile(_name) {
+  let name = _name
 
   let path = `./docker/${name}/Dockerfile`;
   console.log("path", path)
@@ -183,13 +96,23 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3300
+EXPOSE 3000
 CMD [ "npm", "start" ]`);
     }
 
   });
 }
 
-// build_image();
+function git_clone(_url, _localPath, _processName, _uniquePathName) {
+  simplegit()
+    .silent(true)
+    .clone(_url, _localPath)
+    .then(err => {
+      console.log("Downloaded repo from: " + _url);
+      console.log("Proceeding with building Docker image")
+      build_docker_image(_uniquePathName);
+    })
+    .catch(err => console.log("error", err));
+}
 
 module.exports = router;

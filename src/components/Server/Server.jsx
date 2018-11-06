@@ -1,6 +1,6 @@
 <Fragment>
   <div className="gitNav p-4">
-    <Form>
+    <Form autoComplete="on">
     <h5>Git repository</h5>
       <FormGroup>
         <Label for="projectName">Project</Label>
