@@ -45,6 +45,14 @@ import imgPath from '../Sidebar/Sidebar';
     }
   }
 
+  async closeModal() {
+    await sleep(1500);
+    if (!this.props.loginStore.isNotCorrectPass && !this.inNotSamePass) {
+      this.props.toggle();
+    }
+    this.isNotSamePass = false;
+  }
+
   callUpdateSettings() {
     this.props.loginStore.updateSettings({
       nickname: this.nickname,
@@ -52,6 +60,6 @@ import imgPath from '../Sidebar/Sidebar';
       imageFormData: this.image,
       currentPassword: this.currentPasswordValue
     });
-    this.isNotSamePass = false;
+    this.closeModal();
   }
 }
