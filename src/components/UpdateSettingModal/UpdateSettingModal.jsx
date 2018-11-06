@@ -43,7 +43,7 @@
               name="password"
               id="currentPassword"
               placeholder="Current password"
-              value={this.currentPasswordValue}
+              value={this.props.loginStore.currentPasswordValue}
               onFocus={e => this.passwordFocus()}
               onChange={e => this.currentPassword(e)}
             />
@@ -59,7 +59,7 @@
               name="password"
               id="setNewPassword"
               placeholder="New password"
-              value={this.setNewPasswordValue}
+              value={this.props.loginStore.setNewPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.setNewPassword(e)}
             />
@@ -75,7 +75,7 @@
               name="password"
               id="confirmNewPassword"
               placeholder="Confirm new password"
-              value={this.confirmNewPasswordValue}
+              value={this.props.loginStore.confirmNewPasswordValue}
               onChange={e => this.confirmNewPassword(e)} />
           </td>
         </tr>
@@ -83,14 +83,14 @@
     </Table>
     {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color text-center">
       Incorrect current password</Alert>}
-    {this.props.loginStore.isNotSamePass && <Alert className="alert-color text-center">
+    {this.isNotSamePass && <Alert className="alert-color text-center">
       New passwords doesn't match</Alert>}
     {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
       Information saved!</Alert>}
   </ModalBody>
   <ModalFooter>
     <Button
-      disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass}
+      disabled={this.props.loginStore.isNotCorrectPass || this.isNotSamePass}
       className="btn btn-save"
       onClick={() => this.callUpdateSettings()}
     >

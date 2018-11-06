@@ -14,10 +14,6 @@ class LoginStore {
   @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
   @observable savedInfo = false;
-  @observable currentPasswordValue = '';
-  @observable setNewPasswordValue = '';
-  @observable confirmNewPasswordValue = '';
-  @observable isNotSamePass = false;
   // @observable myGroups = [];
 
   constructor() {
@@ -256,18 +252,8 @@ class LoginStore {
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
                 this.savedInfo = true;
+                this.user = { ...this.user, password };
               })
-              // behöver detta vara med för password också, som i nickname?
-              /*
-                .then(res => res.json())
-                .then(data => {
-                  console.log('speciel data', data);
-                  if (data.success) {
-                    this.user = { ...this.user, password };
-                    console.log('jepp det funkade!')
-                  }
-                })
-                */
               .catch(err => {
                 console.log(err);
               });
@@ -294,6 +280,16 @@ class LoginStore {
         });
     }
   }
+
+  @action isCorrectPass() {
+    this.isNotCorrectPass = false;
+  }
+
+  @action resetAlert() {
+    this.isNotCorrectPass = false;
+    this.savedInfo = false;
+  }
+
 }
 
 export const loginStore = new LoginStore();
