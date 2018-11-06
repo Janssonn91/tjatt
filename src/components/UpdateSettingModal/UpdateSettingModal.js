@@ -43,4 +43,13 @@ import imgPath from '../Sidebar/Sidebar';
       this.newPassword = '';
     }
   }
+
+  callUpdateSettings() {
+    this.props.loginStore.updateSettings({
+      nickname: this.nickname,
+      password: this.newPassword,
+      imageFormData: this.image,
+      currentPassword: this.props.loginStore.currentPasswordValue
+    });
+  }
 }
