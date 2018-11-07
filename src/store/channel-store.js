@@ -24,33 +24,33 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
-    this.myChannels= await Channel.find({
+    this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels.forEach(
-          channel => {
-            if (channel.group === false) {
-              this.contactChannels.push(channel);
-            }
-            if (channel.group === true){
-              this.groupChannels.push(channel);
-            }
-          }
-
-        );
-        await sleep(60);
-        this.renderChannels();
+      channel => {
+        if (channel.group === false) {
+          this.contactChannels.push(channel);
+        }
+        if (channel.group === true) {
+          this.groupChannels.push(channel);
+        }
       }
 
+    );
+    await sleep(60);
+    this.renderChannels();
+  }
 
-  renderChannels(){
-    this.renderChannelElements(this.groupChannels, 'group',  'groupsRender');
+
+  renderChannels() {
+    this.renderChannelElements(this.groupChannels, 'group', 'groupsRender');
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
   }
 
-  async renderChannelElements(channels, type, anchor){
+  async renderChannelElements(channels, type, anchor) {
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -58,11 +58,11 @@ class ChannelStore {
       if (type === "contact") {
         contact = await this.getContactName(channel.members);
       }
-      return (type === 'group'   ?
+      return (type === 'group' ?
         <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
           <div className="d-inline-block" >{channel.channelname} </div>
         </div>
-      :
+        :
         <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
           <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
           <div className="d-inline-block" >{contact.contactChannelname}</div>
@@ -72,13 +72,13 @@ class ChannelStore {
 
     Promise.all(elements).then((els) => {
       ReactDOM.render(els, document.getElementById(anchor));
-    });
+    }).catch(err => console.log(err));
   }
 
-  async getContactName(ids){
-    let n = ids.filter(id=> {return id!==loginStore.user._id});
-      let contact= {};
-    if(n[0]){
+  async getContactName(ids) {
+    let n = ids.filter(id => { return id !== loginStore.user._id });
+    let contact = {};
+    if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
       let user = await res.json();
       contact.contactImg = user.image;
@@ -92,8 +92,8 @@ class ChannelStore {
     this.currentChannelGroup = channel.group;
     this.showChat();
     this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
-    let element="";
-    if(!channel.group){
+    let element = "";
+    if (!channel.group) {
       const name = await this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
     } else {
@@ -117,13 +117,13 @@ class ChannelStore {
       group: group
     }
     console.log(this.newChannel)
-    if(!group){
+    if (!group) {
       this.updateContactChannels(this.newChannel);
     }
-    if(group){
+    if (group) {
       this.updateGroupChannel(this.newChannel)
     }
-   
+
     return Channel.create(this.newChannel);
   }
 
@@ -133,25 +133,25 @@ class ChannelStore {
     members.push(admin);
     console.log(groupName, admin, members)
     this.createChannel(groupName, admin, members, true)
-    .then((channel) => {
-      channel.members.forEach(member => {
-        fetch(`/api/users/${member}`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            _id: member,
-            channel: channel._id
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => {
-            res.json();
-          }).catch(err => {
-            console.log(err);
+      .then((channel) => {
+        channel.members.forEach(member => {
+          fetch(`/api/users/${member}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+              _id: member,
+              channel: channel._id
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
           })
+            .then(res => {
+              res.json();
+            }).catch(err => {
+              console.log(err);
+            })
+        })
       })
-    })
   }
 
 
@@ -172,7 +172,7 @@ class ChannelStore {
   updateContactChannels(channel) {
     this.contactChannels.push(channel);
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
-  //this.props.channelStore.getChannelByUser(user._id)}
+    //this.props.channelStore.getChannelByUser(user._id)}
   }
 
   @action saveMessageToChannel(message) {
@@ -201,7 +201,7 @@ class ChannelStore {
     this.groupChannels.push(channel);
     console.log(this.groupChannels)
     console.log(channel)
-    this.renderChannelElements(toJS(this.groupChannels), 'group',  'groupsRender');
+    this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
     // console.log(this.groupChannels);
     // this.renderGroup();
     // this.getGroupChannel(this.newChannel);
