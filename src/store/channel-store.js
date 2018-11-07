@@ -14,6 +14,8 @@ class ChannelStore {
   @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
+  @observable groupMembers = [];
+  @observable groupMemberCandidates = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -87,6 +89,18 @@ class ChannelStore {
     }
   }
 
+  getGroupMembersData(ids) {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        const isIncluded = (userId) => {
+          return ids.some(id => userId === id);
+        }
+        this.groupMembers = users.filter(user => isIncluded(user._id));
+        this.groupMemberCandidates = users.filter(user => !isIncluded(user._id));
+      });
+  }
+
   @action async changeChannel(channel) {
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
@@ -97,6 +111,7 @@ class ChannelStore {
       const name = await this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
     } else {
+      this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
     }
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
