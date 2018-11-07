@@ -28,7 +28,7 @@
               id="changeNickname"
               placeholder={this.props.loginStore.user.nickname}
               value={this.nickname}
-              onChange={(e) => this.nickname = e.currentTarget.value}
+              onChange={e => this.nickname = e.currentTarget.value}
               onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
             />
           </td>
@@ -43,7 +43,7 @@
               name="password"
               id="currentPassword"
               placeholder="Current password"
-              value={this.currentPasswordValue}
+              value={this.props.loginStore.currentPasswordValue}
               onFocus={e => this.passwordFocus()}
               onChange={e => this.currentPassword(e)}
             />
@@ -59,7 +59,7 @@
               name="password"
               id="setNewPassword"
               placeholder="New password"
-              value={this.setNewPasswordValue}
+              value={this.props.loginStore.setNewPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.setNewPassword(e)}
             />
@@ -75,7 +75,7 @@
               name="password"
               id="confirmNewPassword"
               placeholder="Confirm new password"
-              value={this.confirmNewPasswordValue}
+              value={this.props.loginStore.confirmNewPasswordValue}
               onChange={e => this.confirmNewPassword(e)} />
           </td>
         </tr>
@@ -83,15 +83,21 @@
     </Table>
     {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color text-center">
       Incorrect current password</Alert>}
-    {this.props.loginStore.isNotSamePass && <Alert className="alert-color text-center">
+    {this.isNotSamePass && <Alert className="alert-color text-center">
       New passwords doesn't match</Alert>}
-    {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
-      Information saved!</Alert>}
+    {this.props.loginStore.savedNickname && <Alert color="success" className="text-center">
+      New nickname saved!</Alert>}
+    {this.props.loginStore.savedPassword && <Alert color="success" className="text-center">
+      New password saved!</Alert>}
   </ModalBody>
   <ModalFooter className="p-2">
-    <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
-    <Button disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass} className="btn btn-save" onClick={() => this.callUpdateSettings()}>
+    <Button
+      disabled={this.props.loginStore.isNotCorrectPass || this.isNotSamePass}
+      className="btn btn-save"
+      onClick={() => this.callUpdateSettings()}
+    >
       Save changes
-    </Button>
+    </Button>{' '}
+    <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
   </ModalFooter>
 </Modal>
