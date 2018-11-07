@@ -104,7 +104,9 @@ function create_docker_container(payload) {
   }]
 
   docker.container.create(config)
-    .then((container) => container.start())
+    .then((container) => {
+      //container.start()
+    })
     .catch((error) => console.log(error))
 }
 
@@ -127,6 +129,37 @@ EXPOSE ${payload.webPort}
 CMD [ "npm", "start" ]`);
     }
 
+  });
+}
+
+function create_docker_compose_file(payload){
+
+let data =
+`version: "2"
+services:
+  web:
+    build: ../${payload.uniqueProjectName}
+    ports:
+    - "hostport:3000"
+    depends_on:
+    - mongo
+    container_name: "unique-name-app"
+  mongo:
+    build: ../${payload.uniqueProjectName}
+    expose:
+    - "27017"
+    container_name: "unique-name-db"`
+    
+}
+
+
+const { exec } = require('child_process');
+
+function start_containers_composer(){
+  exec('docker-compose ', (err, stdout, stderr) => {
+    if (err) { throw (err); }
+    console.log(stdout || stderr);
+    
   });
 }
 
