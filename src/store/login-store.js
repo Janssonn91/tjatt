@@ -143,7 +143,6 @@ class LoginStore {
           this.candidates = withoutMe.filter(user => !isIncluded(user._id));
           this.myContacts = withoutMe.filter(user => isIncluded(user._id));
           this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-          this.myChannel = this.user.channel;
           resolve();
         })
     })
