@@ -99,6 +99,7 @@ class ChannelStore {
     } else {
       this.channelName = channel.channelname;
     }
+    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
   }
 
   @action getChannelChatHistory() {
