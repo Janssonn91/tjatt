@@ -89,7 +89,7 @@
       </Form>
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
-    <ModalFooter>
+    <ModalFooter className="p-2">
       <Button className="btn btn-cancel" onClick={e => this.props.toggle("group")}>Cancel</Button>&nbsp;
       <Button className="btn btn-create" onClick={e => this.createGroup()}>Create Group</Button>
     </ModalFooter>

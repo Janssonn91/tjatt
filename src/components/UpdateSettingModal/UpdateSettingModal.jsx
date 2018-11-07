@@ -88,14 +88,10 @@
     {this.props.loginStore.savedInfo && <Alert color="success" className="text-center">
       Information saved!</Alert>}
   </ModalBody>
-  <ModalFooter>
-    <Button
-      disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass}
-      className="btn btn-save"
-      onClick={() => this.callUpdateSettings()}
-    >
-      Save changes
-    </Button>{' '}
+  <ModalFooter className="p-2">
     <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
+    <Button disabled={this.props.loginStore.isNotCorrectPass || this.props.loginStore.isNotSamePass} className="btn btn-save" onClick={() => this.callUpdateSettings()}>
+      Save changes
+    </Button>
   </ModalFooter>
 </Modal>
