@@ -30,12 +30,13 @@
       <Collapse isOpen={this.contactsOpen}>
         <Card className="contactsCollapse">
           <CardBody>
-            {this.props.loginStore.myContacts.map((user, i) =>
+          <div id="contactsRender"></div>
+            {/* {this.props.loginStore.myContacts.map((user, i) =>
               <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
                 <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
                 <div className="d-inline-block">{user.nickname}</div>
               </div>
-            )}
+            )} */}
           </CardBody>
         </Card>
       </Collapse>
@@ -47,7 +48,7 @@
       <Collapse isOpen={this.groupsOpen}>
         <Card className="contactsCollapse">
           <CardBody>
-            <div id="groupRender"></div>
+            <div id="groupsRender"></div>
           </CardBody>
         </Card>
       </Collapse>
