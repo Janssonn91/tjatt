@@ -131,23 +131,24 @@ class LoginStore {
   }
 
   @action fetchContact() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.user._id);
+    return new Promise((resolve, reject) => {
+      fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+          const withoutMe = users.filter(user => user._id !== this.user._id);
 
-        const isIncluded = (userId) => {
-          return this.user.contact.some(contactId => userId === contactId);
-        }
-        this.candidates = withoutMe.filter(user => !isIncluded(user._id));
-        this.myContacts = withoutMe.filter(user => isIncluded(user._id));
-        this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-        // console.log(toJS(this.groupCandidates))
-        //this.groupCandidates= this.sortByName(this.groupCandidates, nickname);
-        //this.myChannel = this.user.channel;
-      });
+          const isIncluded = (userId) => {
+            return this.user.contact.some(contactId => userId === contactId);
+          }
+          this.candidates = withoutMe.filter(user => !isIncluded(user._id));
+          this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+          this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
+          this.myChannel = this.user.channel;
+          resolve();
+        })
+    })
+
   }
-
 
 
   // remove added user in candidates

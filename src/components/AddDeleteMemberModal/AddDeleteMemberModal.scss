@@ -27,7 +27,7 @@ $text:#434651;
   }
 }
 
-.createGroupModal {
+.add-member-modal {
   width: 75%;
   margin: 1.75rem auto;
   .modal-header {
@@ -40,13 +40,16 @@ $text:#434651;
     }
     #setGroupName{
       border-radius: 4px;
-    }  
+    }
     .feedback{
       font-size:10px;
     }
+    .group-name {
+      color: $blue;
+    }
   }
   .modal-body {
-    height: 275px;
+    height: 350px;
     @media (max-width: 767.5px){
       .selected-members{
         height: 80px;
@@ -70,7 +73,7 @@ $text:#434651;
         }
       }
     }
-    
+
     form {
       &:focus {
         border-color: $lightblue;
@@ -114,7 +117,7 @@ $text:#434651;
           .searched-user-big-screen-profile {
             width: 53% !important;
           }
-          
+
           button.btn-add-user, button.btn-remove-user {
             color: $blue;
             font-size: 0.7rem;
@@ -138,9 +141,6 @@ $text:#434651;
         }
       }
     }
-    .show{
-      height:10px;
-    }
   }
   input {
     border: 1px solid lighten($lightblue, 16%);
@@ -160,7 +160,7 @@ $text:#434651;
     border-radius: 30px;
     padding: 0.275rem 0.65rem;
     font-size: 0.9rem;
-    &.btn-create {
+    &.btn-save {
       background-color: $blue;
       &:hover {
         background-color: $darkblue;
