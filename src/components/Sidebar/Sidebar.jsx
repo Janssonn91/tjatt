@@ -39,8 +39,6 @@
           </CardBody>
         </Card>
       </Collapse>
-
-      <hr />
       <NavLink to="#">
         <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
