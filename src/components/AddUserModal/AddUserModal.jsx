@@ -27,7 +27,7 @@
               </span>
             </ListGroupItem>
           )}
-        </FormGroup>
+        </ListGroup>
       </Form>
     </ModalBody>
   </Modal>
