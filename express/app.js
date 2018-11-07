@@ -68,16 +68,28 @@ app.use("/", apiRoutes)
 const User = require('./classes/User.class');
 const ChannelREST = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
+//socket methods
+const UserManager = require('./classes/UserManager');
+const ChannelManager = require('./classes/ChannelManager');
+
+const userManager = new UserManager(app, User);
+const channelManager = new ChannelManager(app, ChannelREST, Message);
 // new User(app);
 const Channel = new ChannelREST(app).myModal;
 const ChatMessage = new Message(app).myModel;
-//new Message(app).myModel;
 
 
 
 io.on('connection', (socket) => {
+
   console.log("user is connected")
   let user = socket.handshake.session.loggedInUser;
+
+ 
+
+
+
+
   socket.on('chat message', async (messageFromClient) => {
     // Get the user from session
     console.log(messageFromClient)
@@ -104,7 +116,7 @@ io.on('connection', (socket) => {
     }]);
   });
 
-  //client.on('channel', handleGetChannels);
+  //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
    // console.log('user disconnected');
@@ -351,47 +363,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 
-// // Set up socket.io (do this before normal middleware and routing!)
-// const io = require('socket.io')(
-//   global.httpServer,
-//   {
-//     path: global.production ? '/api/socket' : '/socket',
-//     serveClient: false
-//   }
-// );
-
-// // Use socket.io
-// io.on('connection', function(socket){
-
-// Set up socket.io (do this before normal middleware and routing!)
-// const io = require('socket.io')(
-//   global.httpServer,
-//   {
-//     path: global.production ? '/api/socket' : '/socket',
-//     serveClient: false
-//   }
-// );
-
-// Use socket.io
-// io.on('connection', function (socket) {
-
-//   console.log('user connected');
-
-//   socket.on('chat message', function (message) {
-//     console.log('message: ' + message);
-//     io.emit('chat message', message);
-//   });
-//   //close web reload 
-//   socket.on('disconnect', function () {
-//     console.log('user disconnected');
-//   });
-// });
-
-
-
-
-// const Channel = require('./classes/Channel.class');
-// new Channel(app);
 
 const Repo = require('./classes/Repo.class');
 new Repo(app);
