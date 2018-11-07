@@ -1,5 +1,6 @@
-<Fragment> <AddMemberModal {...this.sendToAddModal} /> <DeleteMemberModal {
-  ...this.sendToDeleteModal} /> <LeaveGroupModal {...this.sendToLeaveModal} />
+<Fragment>
+  <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
+  <ViewMembersModal {...this.sendToViewMembersModal} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -9,40 +10,40 @@
             onClick={e => this.props.channelStore.showMenu()}>
             <i className="fas fa-ellipsis-v"></i>
           </Button>
-           {/* <span id="channelName"></span>  */}
-         <span className="chat-with">{this.props.channelStore.channelName}</span> 
+          {/* <span id="channelName"></span>  */}
+          <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannelGroup
             ? <span className="dialog-icon p-0">
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                 <DropdownToggle
-                  className=""
                   tag="span"
                   data-toggle="dropdown"
-                  aria-expanded={this.dropdownOpen}>
+                  aria-expanded={this.dropdownOpen}
+                >
                   <i className="fas fa-users"></i>
                 </DropdownToggle>
                 <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" header>Group Name</DropdownItem>
+                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.channelName}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
                     <DropdownItem
                       className="py-2 px-3"
                       onClick={this
-                        .addMemberModalToggle
+                        .addDeleteMemberModalToggle
                         .bind(this)}>
-                      Add members
+                      Add / Delete members
                   </DropdownItem>
                     <DropdownItem
                       className="py-2 px-3"
                       onClick={this
-                        .deleteMemberModalToggle
+                        .viewMembersModalToggle
                         .bind(this)}>
-                      Delete members
+                      View members
                   </DropdownItem>
                   </div>
                   <DropdownItem className="m-0" divider />
-                  <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
+                  <DropdownItem className="leave-group py-2 px-3 ">Leave group</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </span>
@@ -54,7 +55,7 @@
                   <i className="fas fa-user"></i>
                 </DropdownToggle>
                 <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" onClick={this.addMemberModalToggle.bind(this)}>
+                  <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
                     Add members
                   </DropdownItem>
                 </DropdownMenu>

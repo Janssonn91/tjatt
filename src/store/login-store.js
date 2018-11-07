@@ -7,17 +7,14 @@ class LoginStore {
   @observable usernameExits = false;
   @observable candidates = [];
   @observable myContacts = [];
-  @observable myChannel = [];
+  //@observable myChannel = [];
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
   @observable message = '';
   @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
-  @observable savedInfo = false;
-  @observable currentPasswordValue = '';
-  @observable setNewPasswordValue = '';
-  @observable confirmNewPasswordValue = '';
-  @observable isNotSamePass = false;
+  @observable savedNickname = false;
+  @observable savedPassword = false;
   // @observable myGroups = [];
 
   constructor() {
@@ -34,6 +31,15 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           channelStore.getChannels();
+          socket.on('login', (data) => {
+            connected = true;
+            // Display the welcome message
+            var message = "Welcome to Socket.IO Chat – ";
+            log(message, {
+              prepend: true
+            });
+            addParticipantsMessage(data);
+          });
           socket.off('chat message');
           socket.on(
             'chat message',
@@ -50,7 +56,7 @@ class LoginStore {
               //   );
               // }
             })
-          console.log(this.receivedMessages)
+          //console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
@@ -69,7 +75,7 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          this.myChannel = this.user.channel;
+          //this.myChannel = this.user.channel;
         }
         else {
           this.loginError = true;
@@ -122,21 +128,24 @@ class LoginStore {
   }
 
   @action fetchContact() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.user._id);
+    return new Promise((resolve, reject) => {
+      fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+          const withoutMe = users.filter(user => user._id !== this.user._id);
 
-        const isIncluded = (userId) => {
-          return this.user.contact.some(contactId => userId === contactId);
-        }
-        this.candidates = withoutMe.filter(user => !isIncluded(user._id));
-        this.myContacts = withoutMe.filter(user => isIncluded(user._id));
-        this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-        this.myChannel = this.user.channel;
-      });
+          const isIncluded = (userId) => {
+            return this.user.contact.some(contactId => userId === contactId);
+          }
+          this.candidates = withoutMe.filter(user => !isIncluded(user._id));
+          this.myContacts = withoutMe.filter(user => isIncluded(user._id));
+          this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
+          this.myChannel = this.user.channel;
+          resolve();
+        })
+    })
+
   }
-
 
 
   // remove added user in candidates
@@ -146,9 +155,15 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
+
     //console.log(this.myContacts)
-    channelStore.updateContactChannels();
-    channelStore.getChannelByUser(userId);
+    channelStore.renderChannelElements(channelStote.contactChannels, 'contact', 'contactsRender');
+    // channelStore.getChannelByUser(userId);
+  }
+
+  @action async cleanUpGroupModal() {
+    await this.fetchContact();
+    this.selectedGroupMember = [];
   }
 
   @action addContact(userId) {
@@ -214,6 +229,7 @@ class LoginStore {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
+            this.savedNickname = true;
             this.user = { ...this.user, nickname };
           }
         })
@@ -255,19 +271,9 @@ class LoginStore {
                 document.getElementById('currentPassword').value = '';
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
-                this.savedInfo = true;
+                this.savedPassword = true;
+                this.user = { ...this.user, password };
               })
-              // behöver detta vara med för password också, som i nickname?
-              /*
-                .then(res => res.json())
-                .then(data => {
-                  console.log('speciel data', data);
-                  if (data.success) {
-                    this.user = { ...this.user, password };
-                    console.log('jepp det funkade!')
-                  }
-                })
-                */
               .catch(err => {
                 console.log(err);
               });
@@ -293,6 +299,16 @@ class LoginStore {
           this.user = { ...this.user, image: res.path };
         });
     }
+  }
+
+  @action isCorrectPass() {
+    this.isNotCorrectPass = false;
+  }
+
+  @action resetAlert() {
+    this.isNotCorrectPass = false;
+    this.savedNickname = false;
+    this.savedPassword = false;
   }
 }
 

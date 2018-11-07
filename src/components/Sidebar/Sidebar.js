@@ -20,6 +20,8 @@ export const imgPath = '/images/placeholder.png';
   }
 
   @observable collapseOpen = false;
+  @observable contactsOpen = false;
+  @observable groupsOpen = false;
 
 
   async toggle() {
@@ -27,13 +29,17 @@ export const imgPath = '/images/placeholder.png';
     this.collapseOpen = !this.collapseOpen;
   }
 
+  openContacts = () => {
+    this.contactsOpen = !this.contactsOpen;
+  }
+
+  openGroups = () => {
+    this.groupsOpen = !this.groupsOpen;
+  }
+
   openModalupdateSetting() {
     this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
-    this.props.loginStore.savedInfo = false;
-    this.props.loginStore.isNotSamePass = false;
-    this.props.loginStore.currentPasswordValue = '';
-    this.props.loginStore.setNewPasswordValue = '';
-    this.props.loginStore.confirmNewPasswordValue = '';
+    this.props.loginStore.resetAlert();
   }
 
   openModalAddNewUser() {
@@ -41,7 +47,9 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalCreateGroup() {
-    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+    this.props.loginStore.cleanUpGroupModal();
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+
   }
 
   logout() {
