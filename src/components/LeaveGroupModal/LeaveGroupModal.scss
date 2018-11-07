@@ -1,0 +1,29 @@
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: rgb(255, 0, 0);
+$orange: #E38968;
+$text:#434651;
+
+.leave-group-modal {
+  .btn {
+    border: none;
+    border-radius: 30px;
+    &.alert-color {
+      background-color: $red;
+      &:hover {
+        background-color: darken($red, 20%);
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 20%);
+      }
+    }
+  }
+}
