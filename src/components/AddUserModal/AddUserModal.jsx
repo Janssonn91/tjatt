@@ -10,13 +10,11 @@
           <Label for="searchNewContacts" className="mb-1" >Find members by searching here:</Label>
           <Input type="text" name="text" id="searchContacts" placeholder="Search" onChange={this.searchCandidates} autoComplete="off" />
         </FormGroup>
-        <ListGroup>
+        <FormGroup className="mt-2 search-result-form-group">
           {this.userCandidates.map(user =>
-            <ListGroupItem tag="a" href="#" onClick={() => { this.props.loginStore.addContact(user._id); this.userWasClicked(user._id) }} key={user._id}>
-              <div className="d-inline-block">
-                <CardImg className="mr-3" src={user.image || "/images/placeholder.png"} />
-              </div>
-              <div className="d-inline-block">
+            <ListGroupItem className="p-0 pl-1 " tag="a" href="#" onClick={() => { this.props.loginStore.addContact(user._id); this.userWasClicked(user._id) }} key={user._id}>
+              <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+              <div className="profile d-inline-block">
                 <p className="m-0 font-weight-bold">{user.username}</p>
                 <p className="text-muted m-0">
                   <small className="font-weight-bold">{user.nickname}</small>
@@ -27,7 +25,7 @@
               </span>
             </ListGroupItem>
           )}
-        </ListGroup>
+        </FormGroup>
       </Form>
     </ModalBody>
   </Modal>
