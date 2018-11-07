@@ -90,10 +90,18 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
-    this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
+    let admin = [];
+    if(typeof(channel.admin)==="string"){
+      admin.push(channel.admin);
+      console.log(admin)
+    }else{
+      admin= channel.admin;
+    }
+    this.amIAdmin = admin.some(a => a === loginStore.user._id);
     let element="";
     if(!channel.group){
       const name = await this.getContactName(channel.members);
@@ -146,6 +154,7 @@ class ChannelStore {
         })
           .then(res => {
             res.json();
+
           }).catch(err => {
             console.log(err);
           })
