@@ -66,61 +66,107 @@ app.use("/", apiRoutes)
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)
 const User = require('./classes/User.class');
-const Channel = require('./classes/Channel.class');
+const ChannelREST = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
-new Channel(app);
+const Channel = new ChannelREST(app).myModal;
 const ChatMessage = new Message(app).myModel;
 //new Message(app).myModel;
 
 
 
-// io.on('connection', (socket) => {
-//   console.log("user is connected")
+io.on('connection', (socket) => {
+  console.log("user is connected")
+  let user = socket.handshake.session.loggedInUser;
+  socket.on('chat message', async (messageFromClient) => {
+    // Get the user from session
+    console.log(messageFromClient)
+    let c = messageFromClient.channel;
+    // if(
+    //   typeof c !== 'string' ||
+    //   !user.channel.includes(c)
+    // ){ return; } 
 
-//   socket.on("login", function(userdata) {
-//     console.log(userdata)
-//     socket.handshake.session.loggedInUser = userdata;
-//     socket.handshake.session.save();
-// });
+    // Create a mongoose ChatMessage and write to the db
+    let message = new ChatMessage({
+       ...messageFromClient
+    });
+    console.log(message)
+    await message.save();    
 
+    // Send the message to all the sockets in the channel
+    io.to(c).emit('chat message',[{
+      sender: message.sender, 
+      text: message.text,
+      channel: message.channel,
+      textType: message.textType,
+      star: message.star,
+    }]);
+  });
 
-//   socket.on('chat message', async (messageFromClient) => {
-//     console.log(messageFromClient)
-//     // Get the user from session
-//     let user = socket.handshake.session.loggedInUser;
-//     // If the room isn't allowed for the user then do nothing
-//     let c = messageFromClient.channel;
-//     if(
-//       typeof c !== 'string' ||
-//       !user.channel.includes(c)
-//     ){ return; } 
+  //client.on('channel', handleGetChannels);
 
-//     // Create a mongoose ChatMessage and write to the db
-//     let message = new ChatMessage({
-//        ...messageFromClient
-//     });
-//     console.log(message)
-//     await message.save();
+  socket.on('disconnect', () => {
+   // console.log('user disconnected');
+    console.log('client disconnect...', user);
+    //handleDisconnect()
+  });
 
-//     // Send the message to all the sockets in the room
-//     io.to(c).emit('chat message',[{
-//       sender: message.sender, 
-//       text: message.text,
-//       channel: message.channel,
-//       textType: message.textType,
-//       star: message.star,
-//     }]);
-//   });
+  
 
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
+   
+});
+
+// io.on('connection', function (client) {
+//   client.on('register', handleRegister)
+
+//   client.on('join', handleJoin)
+
+//   client.on('leave', handleLeave)
+
+//   client.on('message', handleMessage)
+
+//   client.on('chatrooms', handleGetChatrooms)
+
+//   client.on('availableUsers', handleGetAvailableUsers)
+
+//   client.on('disconnect', function () {
+//     console.log('client disconnect...', client.id)
+//     handleDisconnect()
+//   })
+
+//   client.on('error', function (err) {
+//     console.log('received error from client:', client.id)
+//     console.log(err)
+//   })
+// })
 
 
 app.get('/hello', (req, res) => {
   res.send('hello')
+})
+
+app.post('/pwcheck', (req, res) => {
+  const hash = hasha(
+    req.body.pass + global.passwordSalt,
+    { encoding: 'base64', algorithm: 'sha512' }
+  );
+  if(hash === req.body.oldpassword){
+    console.log('de stämmer')
+    res.json( {success: true, hash: hash} );
+  }
+  else {
+    console.log('nix stämmer icke, försök igen');
+    res.json(false);
+  }
+})
+
+app.post('/pwhash', (req, res) => {
+  const hash = hasha(
+    req.body.pass + global.passwordSalt,
+    { encoding: 'base64', algorithm: 'sha512' }
+  );
+    res.json( {success: true, hash: hash} );
 })
 
 const mailer = require('./classes/Sendmail.class');
@@ -149,6 +195,21 @@ app.post('/users', (req, res) => {
 app.get('/users', (req, res) => {
   User.find().then(user => res.json(user))
 });
+
+app.get('/users/:_id', (req, res) => {
+  User.findOne({_id: req.params._id })
+  .then(user=>{
+    if (!user) {
+      res.json({ success: false })
+    } 
+    else { res.json(user)}
+  }).catch(
+    err=>{
+      console.log(err)
+    }
+  )
+
+})
 
 app.get('/logout', (req, res) => {
   delete req.session.userId;
@@ -193,6 +254,7 @@ app.post('/login', (req, res) => {
 });
 
 app.put('/users/:_id', (req, res) => {
+  console.log(req.body.contact);
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
@@ -213,6 +275,25 @@ app.put('/users/:_id/setting', (req, res) => {
     .then(user => {
       if (user) {
         res.json({ success: true, user })
+      } else {
+        res.json({ success: false })
+      }
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/setting/password', (req, res) => {
+  //console.log(req.body.password);
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { password: req.body.password} }
+  )
+    .then(user => {
+      //console.log(user);
+      if (user) {
+        res.json({ success: true, user });
       } else {
         res.json({ success: false })
       }

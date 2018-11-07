@@ -20,6 +20,7 @@
   "  AddUserModal": "components/AddUserModal/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
   "  Server": "components/Server/Server",
+  "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

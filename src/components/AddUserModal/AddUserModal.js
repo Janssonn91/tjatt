@@ -28,5 +28,10 @@ import './AddUserModal.scss';
     this.userCandidates = this.userCandidates.filter(user => user._id !== userId)
   }
 
+  addContact(userId){
+    this.props.loginStore.addContact(userId);
+    this.props.toggle();
+  }
+
 }
 

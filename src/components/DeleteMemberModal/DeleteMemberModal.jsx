@@ -33,7 +33,7 @@
 
 
     </ModalBody>
-    <ModalFooter>
+    <ModalFooter className="p-2">
       <Button className="btn btn-delete" onClick={() => console.log("delete")}>Delete</Button>{' '}
       <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
     </ModalFooter>

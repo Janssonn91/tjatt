@@ -1,11 +1,13 @@
 @import './node_modules/emoji-picker-react/dist/universal/style.scss';
 /* color */
+$backgroundColor: #484951;
 $gray: #919192;
 $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
 $red: #FF3C00;
+$darkred: #bb1e2d;
 $orange: #E38968;
 $text:#434651;
 
@@ -14,10 +16,26 @@ $fontLg: 20px;
 $fontMd: 16px;
 $fontSm: 12px;
 
-$size_emoji: 10px;
-$width_picker: 300px;
-$height_picker: 350px;
-$bg_picker: #f1f1f1;
+@mixin scrollbar {
+    &::-webkit-scrollbar-track{
+        display: none!important;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+        border-radius: 10px !important;
+    }
+    &::-webkit-scrollbar {
+        width: 12px !important;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px !important;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+        box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+        background-color: lighten($gray, 15%) !important;
+    }
+    @media (max-width: 767.5px) {
+        overflow-y: hidden !important;
+    }
+}
 
 .dialog {
     position: relative;
@@ -28,9 +46,9 @@ $bg_picker: #f1f1f1;
     height: 100vh;
 
     img {
-        border-radius:8px;
-        width: 40px;
-        height: auto;
+        border-radius: 5px;
+        width: 30px;
+        height: 30px;
       }
 
     .chat-header {
@@ -48,13 +66,22 @@ $bg_picker: #f1f1f1;
             transform: translate3d(-5px, 17px, 0px) !important;
             height: auto;
             padding: 0;
-            .dropdown-header {
-                font-size: unset;
-            }
-            .channel-manage {
-                button:hover, button:active {
-                    color: $text;
-                    background-color: lighten($lightblue, 23%);
+                .dropdown-header {
+                    color: $gray;
+                    font-weight: bold;
+                    &:hover {
+                        cursor: unset !important;
+                    }
+                }
+                .channel-manage {
+                    .dropdown-item {
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    color: $blue;
+                    &:hover, &:active {
+                        cursor: pointer;
+                        background-color: lighten($gray, 30%);
+                    }
                 }
             }
         }
@@ -88,12 +115,14 @@ $bg_picker: #f1f1f1;
         }
 
         .leave-group{
-            color: $red;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white !important;
+            background-color: $darkred !important;
             &:hover {
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
-                background-color: $red;
-                color: white;
+                cursor: pointer;
             }
         }
         .editable-gn {
@@ -119,29 +148,16 @@ $bg_picker: #f1f1f1;
       }
     }
     .chat-history {
-        height: 76.2vh;
+        height: 72vh;
         overflow-y: auto;
         position: relative;
-        &::-webkit-scrollbar-track {
-            display: none;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            border-radius: 10px;
-        }
-        &::-webkit-scrollbar {
-            width: 12px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-color: lighten($gray, 15%);
-        }
-        @media (max-width: 767.5px) {
-            overflow-y: hidden;
-        }
         ul {
             list-style: none;
             margin: 0px;
             padding: 0px;
+            li {
+                width: 98%;
+            }
         }
         .message-data {
             margin-bottom: 15px;
@@ -180,7 +196,6 @@ $bg_picker: #f1f1f1;
             font-size: $fontMd;
             border-radius: 6px;
             margin-bottom: 30px;
-
             position: relative;
             &:after {
                 bottom: 100%;
@@ -209,9 +224,10 @@ $bg_picker: #f1f1f1;
             color: #fff;
             background: lighten($blue, 8%);
             float: left;
+            min-width: 30px;
             &:after {
                 border-bottom-color: lighten($blue, 8%);
-                left:20px;
+                left:15px;
             }
         }
     }
@@ -233,6 +249,12 @@ $bg_picker: #f1f1f1;
             color: $gray;
             background-color: #fff;
             border: 1px solid $gray;
+            &:focus, &:active {
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            }
+            &:active {
+                color: white;
+            }
             svg {
                 font-size: 2vw;
                 display: inline-block;
@@ -285,19 +307,23 @@ $bg_picker: #f1f1f1;
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            &:hover {
+            &:hover, {
               background-color: $darkblue;
               border-color: $darkblue;
               color: white;
               font-size: 1.8vw;
-          }
+            }
+            &:focus, &:active {
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
+            }
         }
     }
     hr {
         border-top: 1px solid rgba(0,0,0,.1);
     }
-
-    
+    ._scrollable-div_1dj6m_1 {
+        @include scrollbar;
+    }
 }
 .emoji-container{  
     text-align:center;

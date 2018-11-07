@@ -9,6 +9,8 @@
   @observable check = 'false';
 
 
+
+
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
@@ -23,7 +25,7 @@
     //check Before Submit;
 
     if(!this.groupName){
-      this.myAttr='show';
+      this.myAttr='show text-danger w-100 d-block mb-3';
       return;
     }else{
       this.myAttr= 'd-none';
@@ -36,9 +38,8 @@
     }else{
       this.showAttr = 'd-none';
     }
-    
-    this.props.channelStore.addChannel(this.groupName);
-    
+    this.props.channelStore.createGroup(this.groupName);
+    this.props.toggle();
    
   }
 

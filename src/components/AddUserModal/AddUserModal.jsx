@@ -18,11 +18,16 @@
               </div>
               <div className="d-inline-block">
                 <p className="m-0 font-weight-bold">{user.username}</p>
-                <p className="text-muted m-0"><small className="font-weight-bold">{user.nickname}</small></p>
+                <p className="text-muted m-0">
+                  <small className="font-weight-bold">{user.nickname}</small>
+                </p>
               </div>
+              <span className="d-inline-block float-right">
+                <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.addContact(user._id)}>Add user</Button>
+              </span>
             </ListGroupItem>
           )}
-        </ListGroup>
+        </FormGroup>
       </Form>
     </ModalBody>
   </Modal>

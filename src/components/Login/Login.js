@@ -6,7 +6,9 @@ import './Login.scss';
   @observable username = '';
   @observable password = '';
 
-  componentWillMount() {
+
+  componentDidMount() {
+    this.props.loginStore.loginError = false;
     this.checkIfLoggedIn();
   }
 
@@ -22,14 +24,19 @@ import './Login.scss';
     this.password = e.currentTarget.value;
   }
 
+  // checkIfLoggedIn() {
+  //   this.props.loginStore.checkIfLoggedIn();
+  // }
   checkIfLoggedIn() {
     this.props.loginStore.checkIfLoggedIn();
+    this.goToChat();
   }
 
   goToChat = async () => {
     await sleep(30);
     if (this.props.loginStore.isLoggedIn) {
       this.props.history.push(`/${this.props.loginStore.user.username}`);
+      this.props.loginStore.checkIfLoggedIn();
     }
   }
 

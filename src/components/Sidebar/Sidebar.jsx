@@ -7,16 +7,16 @@
           <DropdownToggle tag="div" caret>
             <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
-          <DropdownMenu tag="div">
-            <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem className="px-3 py-1 btn-li" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
+          <DropdownMenu className="p-0" tag="div">
+            <DropdownItem className="px-3 py-2 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
+            <DropdownItem className="m-0" divider />
+            <DropdownItem className="px-3 py-2 btn-li" tag="li" onClick={e => this.logout()}>Logout</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
     </div>
     <hr className="mt-0" />
-    <Nav vertical className="menu pl-1">
+    <Nav vertical className="menu">
       {/* <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
         <NavItem className="pl-1">Starred</NavItem>
       </NavLink> */}
