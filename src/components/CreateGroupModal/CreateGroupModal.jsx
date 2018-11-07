@@ -47,7 +47,7 @@
 
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
-            <h5>Searched user</h5>
+            <h5>Searched users</h5>
             <FormGroup className="m-0 overflow-y-auto">
               {this.props.loginStore.groupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
@@ -66,7 +66,7 @@
             </FormGroup>
           </Col>
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
-            <h5>Added user</h5>
+            <h5>Added users</h5>
             <FormGroup className="m-0 pl-1 overflow-y-auto">
               {this.props.loginStore.selectedGroupMember.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">

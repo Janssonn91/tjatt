@@ -1,8 +1,8 @@
 import './AddUserModal.scss';
 
-@inject('loginStore', 'channelStore')  @observer export default class AddUser extends Component {
+@inject('loginStore', 'channelStore') @observer export default class AddUser extends Component {
 
-  start() {
+  async start() {
     this.props.loginStore.fetchContact();
   }
 

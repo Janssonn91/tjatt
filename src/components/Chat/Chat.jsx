@@ -161,7 +161,8 @@
         </Form>
       </Col>
       </Row>
-    </Fragment> : <Fragment>
+    </Fragment> :
+    <Fragment>
       <Row className="chat-header m-0 p-0">
         <Col sm="12" className="chat-about pl-3 pl-md-4">
           <Button
