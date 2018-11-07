@@ -20,10 +20,20 @@ export const imgPath = '/images/placeholder.png';
   }
 
   @observable collapseOpen = false;
+  @observable contactsOpen = false;
+  @observable groupsOpen = false;
 
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
+  }
+
+  openContacts = () => {
+    this.contactsOpen = !this.contactsOpen;
+  }
+
+  openGroups = () => {
+    this.groupsOpen = !this.groupsOpen;
   }
 
   openModalupdateSetting() {

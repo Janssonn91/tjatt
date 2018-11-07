@@ -21,25 +21,40 @@
         <NavItem className="pl-1">Starred</NavItem>
       </NavLink> */}
 
-      <div className="flexWrapper">
-        <NavLink to="#">
-          <NavItem>My Contacts</NavItem>
-        </NavLink>
-        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
-      </div>
-      {this.props.loginStore.myContacts.map((user, i) =>
-        <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
-          <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-          <div className="d-inline-block">{user.nickname}</div>
-        </div>
-      )}
-      <div className="flexWrapper">
-        <NavLink to="#">
-          <NavItem>My Groups</NavItem>
-        </NavLink>
-        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus float-left float-md-none pl-4 pr-1 pl-md-0"></i>
-      </div>
-      <div id="groupRender"></div>
+
+      <NavLink to="#">
+        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
+        <NavItem onClick={this.openContacts}>My Contacts</NavItem>
+      </NavLink>
+
+      <Collapse isOpen={this.contactsOpen}>
+        <Card className="contactsCollapse">
+          <CardBody>
+            {this.props.loginStore.myContacts.map((user, i) =>
+              <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
+                <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
+                <div className="d-inline-block">{user.nickname}</div>
+              </div>
+            )}
+          </CardBody>
+        </Card>
+      </Collapse>
+
+      <hr />
+      <NavLink to="#">
+        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
+        <NavItem onClick={this.openGroups}>My Groups</NavItem>
+      </NavLink>
+
+      <Collapse isOpen={this.groupsOpen}>
+        <Card className="contactsCollapse">
+          <CardBody>
+            <div id="groupRender"></div>
+          </CardBody>
+        </Card>
+      </Collapse>
+
+
       {/* {this.props.channelStore.myChannels.map((channel, i) =>
       <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
 
@@ -47,7 +62,7 @@
        </NavLink>
       )} */}
     </Nav>
-    <hr />
+
   </div>
   <UpdateSettingModal {...this.updateSettingModalOpen} />
   <AddUserModal {...this.addUserModalOpen} />

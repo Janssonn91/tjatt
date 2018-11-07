@@ -44,6 +44,7 @@ $gray: #919192;
   .menu {
     width: 100%;
     display: inline-block;
+    padding-right: 10px;
     .nav-link {
       padding: 0.3rem 0.8rem;
       color: lightgray;
@@ -94,6 +95,7 @@ $gray: #919192;
       color: white;
       font-size: small;
       order: -1;
+      padding-right: 15px;
       @media (min-width: 768px){
         order: 1;
       }
@@ -125,5 +127,23 @@ hr {
 @media (min-width:768px){
   .btn-showChat{
     display:none;
+  }
+}
+
+.contactsCollapse{
+  background: $backgroundColor;
+  border:none;
+  -moz-box-shadow:    inset 0 0 8px #000000;
+  -webkit-box-shadow: inset 0 0 8px #000000;
+  box-shadow:         inset 1px 1px 8px 1px #000000;
+  height: 250px;
+  overflow-y:scroll;
+  margin-bottom:0px;
+ 
+
+  @media (max-width:768px){
+    &{
+      height: 220px;
+    }
   }
 }
