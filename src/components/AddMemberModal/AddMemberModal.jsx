@@ -6,21 +6,49 @@
     </ModalHeader>
     <ModalBody>
       <Form className="m-0">
-      <FormGroup>
+        <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
           <Input className="m-0" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:" />
-      </FormGroup>
+        </FormGroup>
 
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched user</h5>
             <FormGroup className="m-0 overflow-y-auto">
-          </FormGroup>
+              {this.props.channelStore.groupMemberCandidates.map((user, i) =>
+                <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <div className="profile searched-user-big-screen-profile d-inline-block">
+                    <p className="m-0 font-weight-bold">{user.username}</p>
+                    <p className="text-muted m-0">
+                      <small>{user.nickname}</small>
+                    </p>
+                  </div>
+                  <span className="d-inline-block float-right">
+                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.selectOneForGroup(user)}>Add user</Button>
+                  </span>
+                </ListGroupItem>
+              )}
+            </FormGroup>
           </Col>
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
             <h5>Group member</h5>
             <FormGroup className="m-0 pl-1 overflow-y-auto">
-          </FormGroup>
+              {this.props.channelStore.groupMembers.map((user, i) =>
+                <ListGroupItem key={i} className="nav-link p-0 pl-1">
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <div className="profile d-inline-block">
+                    <p className="m-0 font-weight-bold">{user.username}</p>
+                    <p className="text-muted m-0">
+                      <small>{user.nickname}</small>
+                    </p>
+                  </div>
+                  <span className="d-inline-block float-right">
+                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.loginStore.removeFromSelect(user)}>Remove user</Button>
+                  </span>
+                </ListGroupItem>
+              )}
+            </FormGroup>
           </Col>
         </Row>
       </Form>
