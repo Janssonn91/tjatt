@@ -40,15 +40,15 @@
       }
 
       <Form className="m-0">
-        <FormGroup className="m-10">
+        <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
-          <Input className="mb-1" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:" />
+          <Input className="m-0" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:" />
         </FormGroup>
 
         <Row className="select-area">
-          <Col sm="12" md="6" className="pl-0 pr-1 searched-user overflow-y-auto">
-
-            <FormGroup className="m-0">
+          <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
+            <h5>Searched user</h5>
+            <FormGroup className="m-0 overflow-y-auto">
               {this.props.loginStore.groupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
@@ -63,12 +63,11 @@
                   </span>
                 </ListGroupItem>
               )}
-                
             </FormGroup>
-
           </Col>
-          <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block overflow-y-auto">
-            <FormGroup className="m-0 pl-1">
+          <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
+            <h5>Added user</h5>
+            <FormGroup className="m-0 pl-1 overflow-y-auto">
               {this.props.loginStore.selectedGroupMember.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />

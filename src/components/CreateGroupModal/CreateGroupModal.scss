@@ -5,6 +5,7 @@ $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
 $red: #FF3C00;
+$darkred: #bb1e2d;
 $orange: #E38968;
 $text:#434651;
 
@@ -45,6 +46,7 @@ $text:#434651;
     }
   }
   .modal-body {
+    height: 275px;
     @media (max-width: 767.5px){
       .selected-members{
         height: 80px;
@@ -76,9 +78,15 @@ $text:#434651;
       }
       .select-area{
         .searched-user, .big-screen {
-          max-height: 157px;
+          h5 {
+            color: $gray;
+          }
+          .form-group {
+            height: 157px;
+          }
         }
         .list-group-item {
+          margin-right: 3px;
           color: $blue;
           &:hover {
             color: $darkblue;
@@ -108,7 +116,6 @@ $text:#434651;
           }
           
           button.btn-add-user, button.btn-remove-user {
-            margin-top: 10px;
             color: $blue;
             font-size: 0.7rem;
             padding: 0.2rem 0.4rem;
@@ -121,6 +128,12 @@ $text:#434651;
               outline: 0;
               box-shadow: unset;
             }
+          }
+          button.btn-add-user {
+            margin-top: 9px;
+          }
+          button.btn-remove-user {
+            margin-top: 11px;
           }
         }
       }
@@ -145,6 +158,8 @@ $text:#434651;
   .btn {
     border: none;
     border-radius: 30px;
+    padding: 0.275rem 0.65rem;
+    font-size: 0.9rem;
     &.btn-create {
       background-color: $blue;
       &:hover {
@@ -156,9 +171,9 @@ $text:#434651;
     }
 
     &.btn-cancel {
-      background-color: $gray;
+      background-color: $darkred;
       &:hover {
-        background-color: darken($gray, 20%);
+        background-color: darken($darkred, 10%);
       }
     }
   }
