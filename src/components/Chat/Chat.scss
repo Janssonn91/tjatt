@@ -7,6 +7,7 @@ $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
 $red: #FF3C00;
+$darkred: #bb1e2d;
 $orange: #E38968;
 $text:#434651;
 
@@ -117,7 +118,7 @@ $fontSm: 12px;
             font-weight: bold;
             font-size: 0.8rem;
             color: white !important;
-            background-color: #bb1e2d !important;
+            background-color: $darkred !important;
             &:hover {
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
