@@ -1,5 +1,5 @@
 <Fragment>
-  <AddMemberModal {...this.sendToAddModal} />
+  <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
@@ -30,7 +30,7 @@
                     <DropdownItem
                       className="py-2 px-3"
                       onClick={this
-                        .addMemberModalToggle
+                        .addDeleteMemberModalToggle
                         .bind(this)}>
                       Add / Delete members
                   </DropdownItem>
@@ -55,7 +55,7 @@
                   <i className="fas fa-user"></i>
                 </DropdownToggle>
                 <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" onClick={this.addMemberModalToggle.bind(this)}>
+                  <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
                     Add members
                   </DropdownItem>
                 </DropdownMenu>

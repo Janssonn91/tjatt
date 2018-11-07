@@ -12,7 +12,7 @@
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
   "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
-  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
+  "  AddDeleteMemberModal": "components/AddDeleteMemberModal/AddDeleteMemberModal",
   "  Message": "components/Message/Message",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
