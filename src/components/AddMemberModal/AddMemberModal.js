@@ -1,6 +1,4 @@
 import './AddMemberModal.scss';
-@observer
- export default class AddMemberModal extends Component {
 
-
- }
+@inject('loginStore', 'channelStore') @observer
+export default class AddMemberModal extends Component { }
