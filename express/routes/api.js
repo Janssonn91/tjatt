@@ -53,7 +53,6 @@ function build_docker_image(payload) {
   let name = payload.uniqueProjectName;
   create_docker_dockerfile(payload)
 
-
   var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
       t: payload.uniqueProjectName
@@ -119,7 +118,7 @@ function create_docker_dockerfile(payload) {
       console.log("Dockerfile already exists!")
     } else {
       fs.appendFileSync(path,
-        `FROM node:latest
+        `FROM mhart/alpine-node:latest
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
