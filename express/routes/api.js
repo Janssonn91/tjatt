@@ -19,63 +19,89 @@ const promisifyStream = (stream) => new Promise((resolve, reject) => {
 })
 
 router.post('/addRepo', async (req, res) => {
-  let gitUrl = req.body.url.toLowerCase();
-  let processName = req.body.projectName;
-  let uniqueProjectName = gitUrl.replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '');
-  let localPath = path.join(__dirname, "../../docker/" + uniqueProjectName);
+  let dockerPort = await select_docker_port();
+  let uniqueProjectName = req.body.url.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '') + dockerPort;
 
-  fs.existsSync(localPath) ?
-    del(localPath).then(() => git_clone(gitUrl, localPath, processName, uniqueProjectName)) : git_clone(gitUrl, localPath, processName, uniqueProjectName);
+  let payload = {
+    gitUrl: req.body.url.toLowerCase(),
+    projectName: req.body.projectName,
+    uniqueProjectName: uniqueProjectName,
+    dockerPort: dockerPort,
+    webPort: 3300,
+    dbPort: 7000,
+    localPath: path.join(__dirname, "../../docker/" + uniqueProjectName)
+  }
+
+  fs.existsSync(payload.localPath) ?
+    del(payload.localPath).then(() => git_clone(payload)) : git_clone(payload);
 });
 
+function git_clone(payload) {
+  simplegit()
+    .silent(true)
+    .clone(payload.gitUrl, payload.localPath)
+    .then(err => {
+      console.log("Downloaded repo from: " + payload.gitUrl);
+      console.log("Proceeding with building Docker image")
+      build_docker_image(payload, payload.uniqueProjectName);
+    })
+    .catch(err => console.log("error", err));
+}
 
-function build_docker_image(_name) {
-  let name = _name
 
-  create_docker_dockerfile(name)
+function build_docker_image(payload) {
+  let name = payload.uniqueProjectName;
+  create_docker_dockerfile(payload)
+
+
   var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
-      t: _name
+      t: payload.uniqueProjectName
     })
     .then((stream) => promisifyStream(stream))
     .then(() => {
-      get_used_ports(_name);
+      create_docker_container(payload)
     })
     .catch((error) => console.log(error))
 }
 
-function get_used_ports(_name) {
-  docker.container.list().then(containers => {
-    let ports = containers.map(container => {
-      return container.data.Ports[0].PublicPort;
+async function get_used_ports() {
+  return new Promise((resolve, reject) => {
+    docker.container.list().then(containers => {
+      let ports = containers.map(container => {
+        return container.data.Ports[0].PublicPort;
+      });
+      resolve(ports);
     });
-    select_port(_name, ports);
-  });
+  })
 }
 
-function select_port(_name, usedPorts) {
-  let probePort = 8081;
+
+async function select_docker_port() {
+  let probePort = 49152;
   let found = false;
+  let usedPorts = await get_used_ports();
 
   while (!found) {
     usedPorts.includes(probePort) ? probePort++ : (found = true);
   }
-  create_docker_container(_name, probePort);
+
+  return probePort;
+  //create_docker_container(_name, probePort);
 }
 
-function create_docker_container(_name, _port) {
-  let appPort = 3000
+function create_docker_container(payload) {
 
   let config = {
-    Image: _name,
-    name: _name,
+    Image: payload.uniqueProjectName,
+    name: payload.uniqueProjectName,
     "HostConfig": {
       "PortBindings": {},
     }
   }
 
-  config.HostConfig.PortBindings[`${appPort}/tcp`] = [{
-    HostPort: _port.toString()
+  config.HostConfig.PortBindings[`${payload.webPort}/tcp`] = [{
+    HostPort: `${payload.dockerPort}`
   }]
 
   docker.container.create(config)
@@ -83,11 +109,8 @@ function create_docker_container(_name, _port) {
     .catch((error) => console.log(error))
 }
 
-function create_docker_dockerfile(_name) {
-  let name = _name
-
-  let path = `./docker/${name}/Dockerfile`;
-  console.log("path", path)
+function create_docker_dockerfile(payload) {
+  let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
 
   fs.writeFile(path, '', {
     flag: 'wx'
@@ -101,23 +124,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3000
+EXPOSE ${payload.webPort}
 CMD [ "npm", "start" ]`);
     }
 
   });
 }
 
-function git_clone(_url, _localPath, _processName, _uniquePathName) {
-  simplegit()
-    .silent(true)
-    .clone(_url, _localPath)
-    .then(err => {
-      console.log("Downloaded repo from: " + _url);
-      console.log("Proceeding with building Docker image")
-      build_docker_image(_uniquePathName);
-    })
-    .catch(err => console.log("error", err));
-}
+
 
 module.exports = router;
