@@ -25,7 +25,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.selectOneForGroup(user)}>Add user</Button>
+                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.channelStore.selectOneForGroup(user)}>Add user</Button>
                   </span>
                 </ListGroupItem>
               )}
@@ -44,7 +44,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.loginStore.removeFromSelect(user)}>Remove user</Button>
+                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.channelStore.removeFromSelect(user)}>Remove user</Button>
                   </span>
                 </ListGroupItem>
               )}
