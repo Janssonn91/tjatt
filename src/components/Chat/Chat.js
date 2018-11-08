@@ -74,6 +74,7 @@ export default class Chat extends Component {
 
   @observable sendToViewMembersModal = {
     isOpen: false,
+    admin: this.props.channelStore.currentChannel.admin,
     toggle: this.viewMembersModalToggle.bind(this)
   }
 

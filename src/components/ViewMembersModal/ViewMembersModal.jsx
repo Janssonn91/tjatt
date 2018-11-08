@@ -23,16 +23,16 @@
 
       {this.props.channelStore.currentGroupMembers.map((user, i) =>
         <ListGroupItem key={i} className="m-0 py-2 px-1 border-left-0 border-right-0 rounded-0 admin-user">
-          <CardImg className="mr-3 d-inline-block img" src={"/images/placeholder.png"}/>
-          <p className="m-0 p-0 d-inline">{user.nickname}</p>
-           {/*{<p className="m-0 p-0 d-inline">{user._id}</p>}*/}
-          {this.channelAdmins.map((id, ind) =>
-             
-              <p key={ind} className="m-0 ml-2 p-0 d-inline admin-text">{id === user._id ? '(Admin)' : ''}</p>
-              
+          <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"}/>
+          <p className="m-0 p-0">Username: {user.username}</p>
+          <p className="m-0 p-0">Nickname: {user.nickname}</p>
+          {this.props.channelStore.currentChannel.admin.map((id, ind) =>
+            <div key={ind}>
+            <p className="m-0 ml-2 p-0 d-inline admin-text">{id === user._id ? '(Admin)' : ''}</p>
+            {id !== user._id ? <Button className="btn btn-make-admin border-0 float-right">Make admin</Button> : ''}
+            </div>
           )}
-          <p className="text-muted m-0"><small>{user.username} hej</small></p>
-          <Button className="btn btn-make-admin border-0 float-right">Make admin</Button>
+          {/*<Button className="btn btn-make-admin border-0 float-right">Make admin</Button>*/}
         </ListGroupItem>
       )}
       <Button onClick={e => {this.testbtn(e)}}>Test</Button>
@@ -64,4 +64,17 @@
       </ListGroup>
     </ModalBody>
   </Modal>
+  {/*
+  &.admin-user {
+          height: 45.25px;
+          .admin-text {
+            font-size: 0.8rem;
+            color: $gray;
+            &:hover {
+              cursor: unset;
+            }
+          }
+        }
+*/}
 </Fragment>
+
