@@ -1,7 +1,7 @@
 <Fragment>
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
-  <LeaveGroupModal {...this.sendToLeaveGroupModal} />
+  <LeaveGroupModal {...this.sendToLeaveModal} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">

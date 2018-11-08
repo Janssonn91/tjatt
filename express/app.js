@@ -69,8 +69,8 @@ const User = require('./classes/User.class');
 const ChannelREST = require('./classes/Channel.class');
 const Message = require('./classes/Message.class');
 // new User(app);
-const Channel = new ChannelREST(app).myModal;
-//let channel = new Channel(app).myModel;
+//const Channel = new ChannelREST(app).myModal;
+const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 //new Message(app).myModel;
 
@@ -269,7 +269,7 @@ app.put('/users/:_id', (req, res) => {
 });
 
 app.put('/memberChannels/:_id', async (req, res) => {
-   let resultChannel = await Channel.update(
+   let resultChannel = await channel.update(
     { _id: req.params._id },
     { $pull: { members: mongoose.Types.ObjectId(req.body.userid) } },
     { multi: true }
