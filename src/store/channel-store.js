@@ -14,8 +14,8 @@ class ChannelStore {
   @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
-  @observable groupMembers = [];
-  @observable groupMemberCandidates = [];
+  @observable currentGroupMembers = [];
+  @observable currentGroupCandidates = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -94,11 +94,15 @@ class ChannelStore {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        const isIncluded = (userId) => {
+        const isGroupMember = (userId) => {
           return ids.some(id => userId === id);
         }
-        this.groupMembers = users.filter(user => isIncluded(user._id));
-        this.groupMemberCandidates = users.filter(user => !isIncluded(user._id));
+        const existInMyContact = (userId) => {
+          return loginStore.user.contact.some(contactId => userId === contactId);
+        }
+        this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
+        const nonMembers = users.filter(user => !isGroupMember(user._id));
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
       });
   }
 

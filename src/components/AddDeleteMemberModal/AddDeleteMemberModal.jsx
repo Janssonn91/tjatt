@@ -15,7 +15,7 @@
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched user</h5>
             <FormGroup className="m-0 overflow-y-auto">
-              {this.props.channelStore.groupMemberCandidates.map((user, i) =>
+              {this.props.channelStore.currentGroupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
@@ -34,7 +34,7 @@
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
             <h5>Group member</h5>
             <FormGroup className="m-0 pl-1 overflow-y-auto">
-              {this.props.channelStore.groupMembers.map((user, i) =>
+              {this.props.channelStore.currentGroupMembers.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile d-inline-block">
