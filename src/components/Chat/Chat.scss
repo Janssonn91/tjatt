@@ -80,7 +80,7 @@ $fontSm: 12px;
                     color: $blue;
                     &:hover, &:active {
                         cursor: pointer;
-                        background-color: lighten($gray, 30%);
+                        background-color: lighten($gray, 35%);
                     }
                 }
             }
@@ -93,7 +93,7 @@ $fontSm: 12px;
             height: 66px;
             .mobil-menu{
                 border: none;
-                background-color: lighten($gray, 30%) !important;
+                background-color: lighten($gray, 35%) !important;
                 color:$gray;
             }
         }
@@ -117,9 +117,9 @@ $fontSm: 12px;
         .leave-group{
             font-weight: bold;
             font-size: 0.8rem;
-            color: white !important;
-            background-color: $darkred !important;
+            color: $red;
             &:hover {
+                background-color: lighten($gray, 35%);
                 -webkit-box-shadow: unset;
                 box-shadow: unset;
                 cursor: pointer;

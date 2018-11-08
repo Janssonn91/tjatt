@@ -82,7 +82,10 @@ export default class Chat extends Component {
     histories: this.chatHistories
   }
 
-
+  @observable sendToLeaveModal = {
+    isOpen: false,
+    toggle: this.leaveGroupModalToggle.bind(this)
+  }
 
 
 
@@ -114,6 +117,10 @@ export default class Chat extends Component {
 
   viewMembersModalToggle() {
     this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen
+  }
+
+  leaveGroupModalToggle() {
+    this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
   }
 
   toggle() {

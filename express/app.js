@@ -75,7 +75,8 @@ const ChannelManager = require('./classes/ChannelManager');
 const userManager = new UserManager(app, User);
 const channelManager = new ChannelManager(app, ChannelREST, Message);
 // new User(app);
-const Channel = new ChannelREST(app).myModal;
+//const Channel = new ChannelREST(app).myModal;
+const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
 
@@ -277,6 +278,19 @@ app.put('/users/:_id', (req, res) => {
     .catch(err => {
       throw err;
     });
+});
+
+app.put('/memberChannels/:_id', async (req, res) => {
+   let resultChannel = await channel.update(
+    { _id: req.params._id },
+    { $pull: { members: mongoose.Types.ObjectId(req.body.userid) } },
+    { multi: true }
+  ).catch((err) => console.log("err", err));
+  let resultUser = await User.update(
+    { _id: req.body.userid },
+    { $pull: { channel: mongoose.Types.ObjectId(req.params._id) } }
+  ).catch(err => console.log(err))
+  res.json({ resultChannel, resultUser });
 });
 
 app.put('/users/:_id/setting', (req, res) => {

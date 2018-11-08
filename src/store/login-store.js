@@ -13,11 +13,8 @@ class LoginStore {
   @observable message = '';
   @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
-  @observable savedInfo = false;
-  @observable currentPasswordValue = '';
-  @observable setNewPasswordValue = '';
-  @observable confirmNewPasswordValue = '';
-  @observable isNotSamePass = false;
+  @observable savedNickname = false;
+  @observable savedPassword = false;
   // @observable myGroups = [];
 
   constructor() {
@@ -157,7 +154,7 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    
+
     //console.log(this.myContacts)
     //channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
    // channelStore.getChannelByUser(userId);
@@ -236,6 +233,7 @@ class LoginStore {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
+            this.savedNickname = true;
             this.user = { ...this.user, nickname };
           }
         })
@@ -277,19 +275,9 @@ class LoginStore {
                 document.getElementById('currentPassword').value = '';
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
-                this.savedInfo = true;
+                this.savedPassword = true;
+                this.user = { ...this.user, password };
               })
-              // behöver detta vara med för password också, som i nickname?
-              /*
-                .then(res => res.json())
-                .then(data => {
-                  console.log('speciel data', data);
-                  if (data.success) {
-                    this.user = { ...this.user, password };
-                    console.log('jepp det funkade!')
-                  }
-                })
-                */
               .catch(err => {
                 console.log(err);
               });
@@ -315,6 +303,16 @@ class LoginStore {
           this.user = { ...this.user, image: res.path };
         });
     }
+  }
+
+  @action isCorrectPass() {
+    this.isNotCorrectPass = false;
+  }
+
+  @action resetAlert() {
+    this.isNotCorrectPass = false;
+    this.savedNickname = false;
+    this.savedPassword = false;
   }
 }
 
