@@ -82,6 +82,7 @@ const ChatMessage = new Message(app).myModel;
 
 
 io.on('connection', (socket) => {
+  
 
   console.log("user is connected")
   let user = socket.handshake.session.loggedInUser;
@@ -95,6 +96,8 @@ io.on('connection', (socket) => {
     // Get the user from session
     console.log(messageFromClient)
     let c = messageFromClient.channel;
+    console.log("c", c)
+    socket.join(c);
     // if(
     //   typeof c !== 'string' ||
     //   !user.channel.includes(c)

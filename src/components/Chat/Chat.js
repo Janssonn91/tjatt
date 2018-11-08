@@ -159,28 +159,9 @@ export default class Chat extends Component {
 
       socket.emit('chat message', newMessage);
 
-      //  Message.find({sender:newMessage.sender}).then(message=>{
-      //    console.log(message);
-      //  })
-      // Message.findOne({sender: newMessage.sender,
-      //   channel:newMessage.channel,
-      //   text: newMessage.text}).then(message=>{
-      //     console.log(message)
-      //   })
-      // let channelId = this.currentChannel._id;
-      // let query = '_id' + channelId;
-      // let body = {
-      //   content: message
-      // };
-      // Channel.request(Channel, "POST", query, body).then((data)=>console.log(data))
-      //}
-
-
-      this.chatHistories.push(newMessage);
-
       this.scrollToBottom();
 
-      console.log(this.chatHistories);
+  
     } else {
       return false;
     }
