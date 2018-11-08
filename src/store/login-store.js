@@ -30,33 +30,32 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
-          channelStore.getChannels();
-          socket.on('login', (data) => {
-            connected = true;
-            // Display the welcome message
-            var message = "Welcome to Socket.IO Chat – ";
-            log(message, {
-              prepend: true
-            });
-            addParticipantsMessage(data);
-          });
+          channelStore.getChannels().then(()=>{
+            channelStore.myChannels.map((channel)=>{
+               socket.emit('join channel', channel._id)
+            }
+              )
+          }
+            
+          )
+         
           socket.off('chat message');
           socket.on(
             'chat message',
             (messages) => {
-              console.log(messages)
-              // for(let message of messages){
-              //   let date = new Date(message.date);
-              //   this.receivedMessages.push(
-              //     message.sender + ': ' +
-              //     message.time + ': ' +
-              //     message.text + ': ' +
-              //     message.channel + ': ' +
-              //     message.textType
-              //   );
-              // }
+              for(let message of messages){
+                let date = new Date(message.date);
+                this.receivedMessages.push(
+                  message.sender + ': ' +
+                  message.time + ': ' +
+                  message.text + ': ' +
+                  message.channel + ': ' +
+                  message.textType
+                );
+              }
+         
             })
-          //console.log(this.receivedMessages)
+          console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
