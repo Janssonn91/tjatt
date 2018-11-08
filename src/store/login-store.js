@@ -11,7 +11,7 @@ class LoginStore {
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
   @observable message = '';
-  @observable receivedMessages = [];
+  // @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
   @observable savedNickname = false;
   @observable savedPassword = false;
@@ -61,7 +61,6 @@ class LoginStore {
               }
          
             })
-          console.log(this.receivedMessages)
         }
       }).catch(err => {
         console.log("err", err)
