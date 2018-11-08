@@ -44,14 +44,20 @@ class LoginStore {
             'chat message',
             (messages) => {
               for(let message of messages){
-                let date = new Date(message.date);
-                this.receivedMessages.push(
-                  message.sender + ': ' +
-                  message.time + ': ' +
-                  message.text + ': ' +
-                  message.channel + ': ' +
-                  message.textType
-                );
+  
+                let date = new Date();
+                if(message.channel===channelStore.currentChannel._id){
+                 channelStore.channelChatHistory.push(
+                   {channel: message.channel,
+                    sender: message.sender,
+                    star: false,
+                    text: message.text,
+                    textType: message.textType,
+                    time: date
+                   }
+                 )
+                  channelStore.renderChatMessage();
+                }
               }
          
             })
@@ -153,18 +159,13 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    //console.log(this.myContacts)
     channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
-   // channelStore.getChannelByUser(userId);
   }
-
- 
-  
 
   @action cleanUpGroupModal(){
     this.selectedGroupMember.map((data)=>{
       return this.groupCandidates.push(data);
-    });
+      });
     this.selectedGroupMember = [];
   }
 

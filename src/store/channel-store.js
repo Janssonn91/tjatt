@@ -78,6 +78,7 @@ class ChannelStore {
     }).catch(err => console.log(err));
   }
 
+
   async getContactName(ids) {
     let n = ids.filter(id => { return id !== loginStore.user._id });
     let contact = {};
@@ -107,6 +108,7 @@ class ChannelStore {
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
+    this.getChannelChatHistory(channel);
     let admin = [];
     if(typeof(channel.admin)==="string"){
       admin.push(channel.admin);
@@ -126,10 +128,60 @@ class ChannelStore {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
   }
 
-  @action getChannelChatHistory() {
-    // TODO: socket channel
+  async getChannelChatHistory(channel) {
+    this.channelChatHistory=[];
+    this.channelChatHistory = await Message.find({
+      channel: channel._id
+    });
     console.log(this.channelChatHistory)
+   this.renderChatMessage();
   }
+
+  @action renderChatMessage(){
+    let element = this.channelChatHistory.map((message, i) => {
+      return (
+        message.sender === (loginStore.user._id) ?
+          <li key={i} className="clearfix">
+            <div className="me">
+              <span>
+                <img alt="user-img" src={loginStore.user.image || "/images/placeholder.png"} />
+              </span>&nbsp;&nbsp;
+              <span className="message-data-name">
+                {loginStore.user.nickname}
+              </span>&nbsp;
+              {/* <span className="message-data-time">{message.time}</span> */}
+            </div>
+            <div className="message my-message">
+              {message.text}
+            </div>
+          </li> :
+          <li key={i} className="clearfix">
+            <div className="message-data">
+              {
+                message.status === "online" ?
+              <span className="online circle">
+                <i className="fas fa-circle"></i>
+              </span> :
+              <span className="offline circle">
+                <i className="fas fa-circle"></i>
+              </span>
+              }&nbsp; &nbsp;
+              <span>
+                <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
+              </span>&nbsp; &nbsp;
+              <span className="message-data-name">{message.sender}</span>
+              {/* <span className="message-data-time">{message.time}</span> */}
+            </div>
+            <div className="message other-message">
+              {message.text}
+            </div>
+          </li>
+        )
+      })
+      ReactDOM.render(element, document.getElementById("chatHistory"))
+    }
+  
+
 
   @action createChannel(channelname, admin, members, group) {
     this.newChannel = {

@@ -69,7 +69,8 @@
           <div className="chat-history px-3 mr-1">
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
-                <Message {...this.sendToChatHistory} />
+              <div id="chatHistory"></div> 
+                {/* <ChatMessage {...this.sendToChatHistory} /> */}
               </ul>
               <div
                 style={{

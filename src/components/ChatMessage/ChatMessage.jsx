@@ -1,6 +1,5 @@
 <Fragment>
-  {this.props.histories.map((message, i) => {
-    console.log(message);
+  {this.props.channelStore.channelChatHistory.map((message, i) => {
     return (
       message.sender === (this.props.loginStore.user._id) ?
         <li key={i} className="clearfix">
@@ -11,7 +10,7 @@
             <span className="message-data-name">
               {this.props.loginStore.user.nickname}
             </span>&nbsp;
-            <span className="message-data-time">{message.time}</span>
+            {/* <span className="message-data-time">{message.time}</span> */}
           </div>
           <div className="message my-message">
             {message.text}
@@ -32,7 +31,7 @@
               <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
             </span>&nbsp; &nbsp;
             <span className="message-data-name">{message.sender}</span>
-            <span className="message-data-time">{message.time}</span>
+            {/* <span className="message-data-time">{message.time}</span> */}
           </div>
           <div className="message other-message">
             {message.text}
