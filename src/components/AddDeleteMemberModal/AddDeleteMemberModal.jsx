@@ -53,9 +53,10 @@
         </Row>
       </Form>
       {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
+      {this.showConfirmation && < Alert className="text-center alert" color="warning">Really ok to change your group?</Alert>}
     </ModalBody>
     <ModalFooter className="p-2">
-      <Button className="btn btn-save">Save</Button>{' '}
+      <Button className="btn btn-save" onClick={() => this.updateGroup()}>Save</Button>{' '}
       <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
     </ModalFooter>
   </Modal>

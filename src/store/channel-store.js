@@ -352,6 +352,10 @@ class ChannelStore {
     const index = this.currentGroupMembers.indexOf(addedUser);
     this.currentGroupMembers.splice(index, 1);
   }
+
+  // TODO: nana
+  updateGroup() {
+  }
 }
 
 
