@@ -63,19 +63,14 @@ export default class Chat extends Component {
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable addMemberModal = false;
-  @observable removeMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
 
-  @observable sendToAddModal = {
+  @observable sendToAddDeleteModal = {
     isOpen: false,
-    toggle: this.addMemberModalToggle.bind(this)
+    toggle: this.addDeleteMemberModalToggle.bind(this)
   }
 
-  @observable sendToDeleteModal = {
-    isOpen: false,
-    toggle: this.deleteMemberModalToggle.bind(this)
-  }
 
   @observable sendToViewMembersModal = {
     isOpen: false,
@@ -87,7 +82,10 @@ export default class Chat extends Component {
     histories: this.chatHistories
   }
 
-
+  @observable sendToLeaveModal = {
+    isOpen: false,
+    toggle: this.leaveGroupModalToggle.bind(this)
+  }
 
 
 
@@ -100,7 +98,7 @@ export default class Chat extends Component {
   }
 
   scrollToBottom = () => {
-    if(this.messagesEnd){
+    if (this.messagesEnd) {
       this.messagesEnd.scrollIntoView({ behavior: "smooth" })
     }
   };
@@ -113,16 +111,16 @@ export default class Chat extends Component {
     this.scrollToBottom();
   }
 
-  addMemberModalToggle() {
-    this.sendToAddModal.isOpen = !this.sendToAddModal.isOpen
-  }
-
-  deleteMemberModalToggle() {
-    this.sendToDeleteModal.isOpen = !this.sendToDeleteModal.isOpen
+  addDeleteMemberModalToggle() {
+    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
   }
 
   viewMembersModalToggle() {
     this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen
+  }
+
+  leaveGroupModalToggle() {
+    this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
   }
 
   toggle() {
@@ -158,26 +156,26 @@ export default class Chat extends Component {
       star: false
     }
     if (this.inputMessage.length > 0) {
-      
-       socket.emit('chat message', newMessage);
-      
+
+      socket.emit('chat message', newMessage);
+
       //  Message.find({sender:newMessage.sender}).then(message=>{
       //    console.log(message);
       //  })
-      // Message.findOne({sender: newMessage.sender, 
+      // Message.findOne({sender: newMessage.sender,
       //   channel:newMessage.channel,
       //   text: newMessage.text}).then(message=>{
       //     console.log(message)
       //   })
-        // let channelId = this.currentChannel._id;
-        // let query = '_id' + channelId;
-        // let body = {
-        //   content: message
-        // };
-        // Channel.request(Channel, "POST", query, body).then((data)=>console.log(data))
+      // let channelId = this.currentChannel._id;
+      // let query = '_id' + channelId;
+      // let body = {
+      //   content: message
+      // };
+      // Channel.request(Channel, "POST", query, body).then((data)=>console.log(data))
       //}
-       
-      
+
+
       this.chatHistories.push(newMessage);
 
       this.scrollToBottom();

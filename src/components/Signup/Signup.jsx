@@ -3,13 +3,9 @@
     <Button className="btn-to-login mt-3 ml-3">Back to login</Button>{' '}
   </Link>
   <Row>
-    <Col className="mt-4 overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-      <h1 className="mt-5">Create account</h1>
-    </Col>
-  </Row>
-  <Row>
     <Col className="overlay" sm={{ size: 10, offset: 1 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
       <Form className="signupForm" onSubmit={this.onSubmit}>
+        <h1 className="mt-5">Create account</h1>
         <FormGroup className="mt-4">
           <Input type="text" name="username" id="username" placeholder="Choose username" onChange={e => this.usernameChange(e)} onFocus={e => this.removeError(e)}/>
         </FormGroup>

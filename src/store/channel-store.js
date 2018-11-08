@@ -14,6 +14,8 @@ class ChannelStore {
   @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
+  @observable currentGroupMembers = [];
+  @observable currentGroupCandidates = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -24,6 +26,7 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
+    this.myChannels=[];
     this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })
@@ -87,16 +90,41 @@ class ChannelStore {
     }
   }
 
+  getGroupMembersData(ids) {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        const isGroupMember = (userId) => {
+          return ids.some(id => userId === id);
+        }
+        const existInMyContact = (userId) => {
+          return loginStore.user.contact.some(contactId => userId === contactId);
+        }
+        this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
+        const nonMembers = users.filter(user => !isGroupMember(user._id));
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+      });
+  }
+
   @action async changeChannel(channel) {
+    
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
-    this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
-    let element = "";
-    if (!channel.group) {
+    let admin = [];
+    if(typeof(channel.admin)==="string"){
+      admin.push(channel.admin);
+      console.log(admin)
+    }else{
+      admin= channel.admin;
+    }
+    this.amIAdmin = admin.some(a => a === loginStore.user._id);
+    let element="";
+    if(!channel.group){
       const name = await this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
     } else {
+      this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
     }
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
@@ -116,8 +144,7 @@ class ChannelStore {
       open: true,
       group: group
     }
-    console.log(this.newChannel)
-    if (!group) {
+    if(!group){
       this.updateContactChannels(this.newChannel);
     }
     if (group) {
@@ -131,7 +158,6 @@ class ChannelStore {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    console.log(groupName, admin, members)
     this.createChannel(groupName, admin, members, true)
       .then((channel) => {
         channel.members.forEach(member => {
@@ -170,7 +196,9 @@ class ChannelStore {
 
 
   updateContactChannels(channel) {
+    console.log(channel)
     this.contactChannels.push(channel);
+    console.log(this.contactChannels)
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
     //this.props.channelStore.getChannelByUser(user._id)}
   }
@@ -185,12 +213,8 @@ class ChannelStore {
 
   }
 
-  // @action cleanUpGroupModal() {
-  //   // TODO: cleanup has bug, remove new added contact need to be fixed
-  //   // need new method to renew groupCandidates
-  //   loginStore.selectedGroupMember = [];
-  //   //loginStore.fetchContact();
-  // }
+ 
+ 
 
   // @action updateContactChannels() {
   //   this.contactChannels.push(this.newChannel);
@@ -271,6 +295,66 @@ class ChannelStore {
   @action showChat() {
     this.hideMenu = true;
     this.hideChat = false;
+  }
+
+  @action exitChannel(channel) {
+    // remove the user from the channel
+    for(let channelArr of this.myChannels){
+      if(channelArr._id == channel._id){
+        const index = channel.members.indexOf(loginStore.user._id);
+        if(index > 0){
+          channel.members.splice(index, 1);
+        };
+      }
+    }
+
+    // remove the channel from the user and re-render users channels
+    let i = 0;
+    for(let channelArr of this.groupChannels){
+      if(channelArr._id == channel._id){
+        this.groupChannels.splice(i, 1);
+      }
+      i++;
+    }
+    this.renderChannels();
+
+    // remove both channel from user and user from channel in backend
+    const userId = loginStore.user._id;
+      fetch(`/api/memberChannels/${channel._id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          userid: userId
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => {
+          return res.json();
+        }).then(res => {
+          console.log(res.resultChannel, res.resultUser)
+        })
+        .catch(err => {
+          console.log(err);
+        })
+  }
+
+  @action selectOneForGroup(user) {
+    this.currentGroupMembers.push(user);
+    const addedUser = this.currentGroupCandidates.find(u => u._id === user._id);
+    const index = this.currentGroupCandidates.indexOf(addedUser);
+    this.currentGroupCandidates.splice(index, 1);
+  }
+
+  @action removeFromSelect(user) {
+    this.currentGroupCandidates.push(user);
+    const addedUser = this.currentGroupMembers.find(u => u._id === user._id);
+    const index = this.currentGroupMembers.indexOf(addedUser);
+    this.currentGroupMembers.splice(index, 1);
+  }
+
+  // TODO: nana
+  updateGroup() {
   }
 }
 

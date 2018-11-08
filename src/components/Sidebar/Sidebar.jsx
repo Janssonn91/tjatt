@@ -23,13 +23,12 @@
 
 
       <NavLink to="#">
-        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
         <NavItem onClick={this.openContacts}>My Contacts</NavItem>
       </NavLink>
-
+        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
       <Collapse isOpen={this.contactsOpen}>
-        <Card className="contactsCollapse">
-          <CardBody>
+        <Card className="contactsCollapse border-0 m-0">
+          <CardBody className="p-0">
           <div id="contactsRender"></div>
             {/* {this.props.loginStore.myContacts.map((user, i) =>
               <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
@@ -41,13 +40,13 @@
         </Card>
       </Collapse>
       <NavLink to="#">
-        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
+        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
 
       <Collapse isOpen={this.groupsOpen}>
-        <Card className="contactsCollapse">
-          <CardBody>
+        <Card className="contactsCollapse border-0 m-0">
+          <CardBody className="p-0">
             <div id="groupsRender"></div>
           </CardBody>
         </Card>

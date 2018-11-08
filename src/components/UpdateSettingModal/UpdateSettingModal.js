@@ -6,7 +6,10 @@ import imgPath from '../Sidebar/Sidebar';
   @observable image = '';
   @observable nickname = '';
   @observable newPassword = '';
-  //@observable isNotSamePass = false;
+  @observable currentPasswordValue = '';
+  @observable setNewPasswordValue = '';
+  @observable confirmNewPasswordValue = '';
+  @observable isNotSamePass = false;
 
   onFileChange = (e) => {
     const formData = new FormData();
@@ -16,32 +19,44 @@ import imgPath from '../Sidebar/Sidebar';
   }
 
   currentPassword(e) {
-    this.props.loginStore.currentPasswordValue = e.currentTarget.value;
+    this.currentPasswordValue = e.currentTarget.value;
   }
 
   setNewPassword(e) {
-    this.props.loginStore.setNewPasswordValue = e.currentTarget.value;
+    this.setNewPasswordValue = e.currentTarget.value;
   }
 
   confirmNewPassword(e) {
-    this.props.loginStore.confirmNewPasswordValue = e.currentTarget.value;
-    if (this.props.loginStore.setNewPasswordValue.length === this.props.loginStore.confirmNewPasswordValue.length) {
-      this.checkNewPassword();
-    }
+    this.confirmNewPasswordValue = e.currentTarget.value;
+    this.checkNewPassword();
   }
 
   passwordFocus() {
-    this.props.loginStore.isNotCorrectPass = false;
+    this.props.loginStore.isCorrectPass();
   }
 
   checkNewPassword = () => {
-    if (this.props.loginStore.setNewPasswordValue === this.props.loginStore.confirmNewPasswordValue) {
-      this.props.loginStore.isNotSamePass = false;
-      this.newPassword = this.props.loginStore.confirmNewPasswordValue;
+    if (this.setNewPasswordValue === this.confirmNewPasswordValue) {
+      this.isNotSamePass = false;
+      this.newPassword = this.confirmNewPasswordValue;
     } else {
-      this.props.loginStore.isNotSamePass = true;
+      this.isNotSamePass = true;
       this.newPassword = '';
     }
+  }
+
+  resetInput() {
+    this.nickname = '';
+    this.newPassword = '';
+    this.currentPasswordValue = '';
+  }
+
+  async closeModal() {
+    await sleep(1500);
+    if (!this.props.loginStore.isNotCorrectPass && !this.isNotSamePass) {
+      this.props.toggle();
+    }
+    this.isNotSamePass = false;
   }
 
   callUpdateSettings() {
@@ -49,7 +64,9 @@ import imgPath from '../Sidebar/Sidebar';
       nickname: this.nickname,
       password: this.newPassword,
       imageFormData: this.image,
-      currentPassword: this.props.loginStore.currentPasswordValue
+      currentPassword: this.currentPasswordValue
     });
+    this.resetInput();
+    this.closeModal();
   }
 }

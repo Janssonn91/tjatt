@@ -16,7 +16,7 @@ export const imgPath = '/images/placeholder.png';
   @observable createGroupModalOpen = {
     isOpen: false,
     keyboard: true,
-    toggle: this.openModalCreateGroup.bind(this)
+    toggle: this.closeModal.bind(this)
   }
 
   @observable collapseOpen = false;
@@ -39,11 +39,7 @@ export const imgPath = '/images/placeholder.png';
 
   openModalupdateSetting() {
     this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
-    this.props.loginStore.savedInfo = false;
-    this.props.loginStore.isNotSamePass = false;
-    this.props.loginStore.currentPasswordValue = '';
-    this.props.loginStore.setNewPasswordValue = '';
-    this.props.loginStore.confirmNewPasswordValue = '';
+    this.props.loginStore.resetAlert();
   }
 
   openModalAddNewUser() {
@@ -51,9 +47,13 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalCreateGroup() {
-    this.props.loginStore.cleanUpGroupModal();
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
-    
+
+  }
+
+ closeModal(){
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+    this.props.loginStore.cleanUpGroupModal();
   }
 
   logout() {

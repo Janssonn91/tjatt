@@ -11,7 +11,7 @@ $white: rgb(219, 219, 219);
 
 .login-area {
 
-    background-image: url("./img/main-image.jpg");
+    background-image: url("./img/pic-of-the-day.jpg");
     background-size: cover;
     height: 100vh;
     position: relative;
@@ -64,6 +64,10 @@ $white: rgb(219, 219, 219);
             cursor: pointer;
         }
     }
+
+    .loginForm{
+        box-shadow: 2px 2px 2px 100vmax rgba(0,0,0,0.4);
+      }
 
 }
 

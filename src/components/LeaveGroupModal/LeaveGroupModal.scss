@@ -4,18 +4,18 @@ $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
-$red: #FF3C00;
+$red: rgb(255, 0, 0);
 $orange: #E38968;
 $text:#434651;
 
-.delete-member-modal {
+.leave-group-modal {
   .btn {
     border: none;
     border-radius: 30px;
-    &.btn-delete {
-      background-color: $blue;
+    &.alert-color {
+      background-color: $red;
       &:hover {
-        background-color: $darkblue;
+        background-color: darken($red, 20%);
       }
     }
 
