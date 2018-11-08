@@ -108,7 +108,7 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
-    
+    this.ChannelChatHistory=[];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
@@ -182,7 +182,7 @@ class ChannelStore {
           </li>
         )
       })
-      ReactDOM.render(element, document.getElementById("chatHistory"))
+      ReactDOM.render(element, document.getElementById("chatHistory"));
     }
   
 

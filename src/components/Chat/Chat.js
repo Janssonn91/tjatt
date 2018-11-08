@@ -26,40 +26,7 @@ export default class Chat extends Component {
   @observable emoji = '';
   @observable inputMessage = '';
   // @observable messagesEnd = '';
-  @observable chatHistories = [{
-    id: 1,
-    image: "/images/uploads/pikachu.png-1540468459565.png",
-    time: "10:20 AM, Today",
-    sender: "Pika",
-    status: "online",
-    channel: "group one",
-    text: "How are you?",
-    textType: "text",
-    star: false
-  },
-  {
-    id: 2,
-    time: "10:21 AM, Today",
-    image: "/images/placeholder.png",
-    sender: "other",
-    status: "offline",
-    channel: "group one",
-    text: "I am fine, thank you. And you?",
-    textType: "text",
-    star: false
-  },
-  {
-    id: 3,
-    time: "10:24 AM, Today",
-    image: "/images/placeholder.png",
-    sender: "another",
-    status: "online",
-    channel: "group one",
-    text: " Good!",
-    textType: "text",
-    star: false
-  }
-  ];
+  
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable addMemberModal = false;
@@ -78,9 +45,9 @@ export default class Chat extends Component {
   }
 
   // chat history hard code
-  @observable sendToChatHistory = {
-    histories: this.chatHistories
-  }
+  // @observable sendToChatHistory = {
+  //   histories: this.chatHistories
+  // }
 
   @observable sendToLeaveModal = {
     isOpen: false,
