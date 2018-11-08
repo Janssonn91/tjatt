@@ -140,7 +140,6 @@ class LoginStore {
           this.candidates = withoutMe.filter(user => !isIncluded(user._id));
           this.myContacts = withoutMe.filter(user => isIncluded(user._id));
           this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-          this.myChannel = this.user.channel;
           resolve();
         })
     })
@@ -155,14 +154,18 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-
     //console.log(this.myContacts)
-    channelStore.renderChannelElements(channelStote.contactChannels, 'contact', 'contactsRender');
-    // channelStore.getChannelByUser(userId);
+    channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
+   // channelStore.getChannelByUser(userId);
   }
 
-  @action async cleanUpGroupModal() {
-    await this.fetchContact();
+ 
+  
+
+  @action cleanUpGroupModal(){
+    this.selectedGroupMember.map((data)=>{
+      return this.groupCandidates.push(data);
+    });
     this.selectedGroupMember = [];
   }
 
@@ -203,6 +206,7 @@ class LoginStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
+    console.log(this.selectedGroupMember)
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
     const index = this.groupCandidates.indexOf(addedUser);
     this.groupCandidates.splice(index, 1);

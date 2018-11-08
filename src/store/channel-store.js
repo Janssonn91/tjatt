@@ -26,6 +26,7 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
+    this.myChannels=[];
     this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })
@@ -102,12 +103,20 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
     this.showChat();
-    this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
-    let element = "";
-    if (!channel.group) {
+    let admin = [];
+    if(typeof(channel.admin)==="string"){
+      admin.push(channel.admin);
+      console.log(admin)
+    }else{
+      admin= channel.admin;
+    }
+    this.amIAdmin = admin.some(a => a === loginStore.user._id);
+    let element="";
+    if(!channel.group){
       const name = await this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
     } else {
@@ -131,8 +140,7 @@ class ChannelStore {
       open: true,
       group: group
     }
-    console.log(this.newChannel)
-    if (!group) {
+    if(!group){
       this.updateContactChannels(this.newChannel);
     }
     if (group) {
@@ -146,7 +154,6 @@ class ChannelStore {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    console.log(groupName, admin, members)
     this.createChannel(groupName, admin, members, true)
       .then((channel) => {
         channel.members.forEach(member => {
@@ -185,7 +192,9 @@ class ChannelStore {
 
 
   updateContactChannels(channel) {
+    console.log(channel)
     this.contactChannels.push(channel);
+    console.log(this.contactChannels)
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
     //this.props.channelStore.getChannelByUser(user._id)}
   }
@@ -200,12 +209,8 @@ class ChannelStore {
 
   }
 
-  // @action cleanUpGroupModal() {
-  //   // TODO: cleanup has bug, remove new added contact need to be fixed
-  //   // need new method to renew groupCandidates
-  //   loginStore.selectedGroupMember = [];
-  //   //loginStore.fetchContact();
-  // }
+ 
+ 
 
   // @action updateContactChannels() {
   //   this.contactChannels.push(this.newChannel);

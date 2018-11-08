@@ -10,7 +10,6 @@
 
 
 
-
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
@@ -21,9 +20,8 @@
 
   }
 
-  createGroup(){
+  async createGroup(e){
     //check Before Submit;
-
     if(!this.groupName){
       this.myAttr='show text-danger w-100 d-block mb-3';
       return;
@@ -31,17 +29,20 @@
       this.myAttr= 'd-none';
     }
     //check if groupMember.length is large than 2
-
     if(this.props.loginStore.selectedGroupMember.length<2){
       this.showAttr = 'show';
       return;
     }else{
       this.showAttr = 'd-none';
     }
-    this.props.channelStore.createGroup(this.groupName);
+    await this.props.channelStore.createGroup(this.groupName);
+    this.props.loginStore.cleanUpGroupModal();
+    this.groupName="";
     this.props.toggle();
    
   }
+
+
 
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
