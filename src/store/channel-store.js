@@ -26,6 +26,7 @@ class ChannelStore {
   //TODO: as a new user, introduction page shows instead of chat page
 
   @action async getChannels() {
+    this.myChannels=[];
     this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })

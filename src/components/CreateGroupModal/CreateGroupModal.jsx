@@ -1,7 +1,7 @@
 <Fragment>
   <Modal className="createGroupModal" isOpen={this.props.isOpen} toggle={this.props.toggle} keyboard={this.props.keyboard} >
     {this.props.children}
-    <ModalHeader tag="h4" toggle={e => this.props.toggle("group")}>
+    <ModalHeader tag="h4" toggle={e => this.props.toggle()}>
       Create New Group
       <InputGroup size="sm" className="m-0">
         <Label for="setGroupName" className="mb-1 d-none">Group Name</Label>
@@ -50,7 +50,7 @@
             <h5>Searched user</h5>
             <FormGroup className="m-0 overflow-y-auto">
               {this.props.loginStore.groupCandidates.map((user, i) =>
-                <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
+                <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts" onClick={() => this.props.loginStore.selectOneForGroup(user)} >
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
@@ -58,9 +58,9 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  <span className="d-inline-block float-right">
-                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.selectOneForGroup(user)}>Add user</Button>
-                  </span>
+                  {/* <span className="d-inline-block float-right">
+                    <Button className="btn btn-add-user border-0 d-inline-block float-right" >Add user</Button>
+                  </span> */}
                 </ListGroupItem>
               )}
             </FormGroup>
@@ -89,8 +89,8 @@
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
     <ModalFooter className="p-2">
-      <Button className="btn btn-cancel" onClick={e => this.props.toggle("group")}>Cancel</Button>&nbsp;
-      <Button className="btn btn-create" onClick={e => this.createGroup()}>Create Group</Button>
+      <Button className="btn btn-cancel" onClick={e => this.props.toggle()  }>Cancel</Button>&nbsp;
+      <Button className="btn btn-create" onClick={e => this.createGroup(e)}>Create Group</Button>
     </ModalFooter>
   </Modal>
 </Fragment>

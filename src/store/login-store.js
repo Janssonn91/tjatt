@@ -154,9 +154,8 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-
     //console.log(this.myContacts)
-    //channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
+    channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
    // channelStore.getChannelByUser(userId);
   }
 
@@ -207,6 +206,7 @@ class LoginStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
+    console.log(this.selectedGroupMember)
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
     const index = this.groupCandidates.indexOf(addedUser);
     this.groupCandidates.splice(index, 1);
