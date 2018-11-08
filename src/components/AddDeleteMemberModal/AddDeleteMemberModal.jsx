@@ -52,7 +52,7 @@
           </Col>
         </Row>
       </Form>
-      <Alert color="danger" className="text-center">A group needs at least 3 members!</Alert>
+      {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
     </ModalBody>
     <ModalFooter className="p-2">
       <Button className="btn btn-save">Save</Button>{' '}
