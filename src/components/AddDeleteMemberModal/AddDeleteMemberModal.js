@@ -1,4 +1,5 @@
 import './AddDeleteMemberModal.scss';
+import ScrollableFeed from 'react-scrollable-feed';
 
 @inject('loginStore', 'channelStore') @observer
 export default class AddDeleteMemberModal extends Component {
