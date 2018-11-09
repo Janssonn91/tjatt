@@ -15,6 +15,7 @@ class LoginStore {
   @observable isNotCorrectPass = false;
   @observable savedNickname = false;
   @observable savedPassword = false;
+  @observable areAllEmpty = false;
   // @observable myGroups = [];
 
   constructor() {
@@ -220,6 +221,11 @@ class LoginStore {
 
   @action updateSettings(settings) {
     const { imageFormData, nickname, password, currentPassword } = settings;
+
+    if (Object.values(settings).every(value => value === "")) {
+      this.areAllEmpty = true;
+    }
+
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -312,6 +318,7 @@ class LoginStore {
     this.isNotCorrectPass = false;
     this.savedNickname = false;
     this.savedPassword = false;
+    this.areAllEmpty = false;
   }
 }
 
