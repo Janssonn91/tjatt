@@ -10,9 +10,11 @@
           <CardImg className="mr-3 d-inline-block img" src={user.image || "/images/placeholder.png"}/>
           <p className="m-0 p-0">Username: {user.username}</p>
           <p className="m-0 p-0">Nickname: {user.nickname}</p>
-          {this.props.channelStore.currentChannel.admin.includes(user._id) ?
-             <p className="m-0 ml-2 p-0 d-inline admin-text">(Admin)</p> :
-             <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button>
+          {this.props.channelStore.currentChannel.admin.includes(user._id) &&
+            <p className="m-0 ml-2 p-0 d-inline admin-text">(Admin)</p>
+          }
+          {!this.props.channelStore.currentChannel.admin.includes(user._id) || this.props.channelStore.amIAdmin &&
+          <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button>
           }
         </ListGroupItem>
       )}
