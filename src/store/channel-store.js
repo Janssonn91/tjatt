@@ -45,6 +45,11 @@ class ChannelStore {
     );
     await sleep(60);
     this.renderChannels();
+    this.myChannels.map((channel)=>{
+        socket.emit('join channel', channel._id)
+    }
+      )
+          
   }
 
 
@@ -138,52 +143,52 @@ class ChannelStore {
       channel: channel._id
     });
     console.log(this.channelChatHistory)
-   this.renderChatMessage();
+  // this.renderChatMessage();
   }
 
-  @action renderChatMessage(){
-    let element = this.channelChatHistory.map((message, i) => {
-      return (
-        message.sender === (loginStore.user._id) ?
-          <li key={i} className="clearfix">
-            <div className="me">
-              <span>
-                <img alt="user-img" src={loginStore.user.image || "/images/placeholder.png"} />
-              </span>&nbsp;&nbsp;
-              <span className="message-data-name">
-                {loginStore.user.nickname}
-              </span>&nbsp;
-              {/* <span className="message-data-time">{message.time}</span> */}
-            </div>
-            <div className="message my-message">
-              {message.text}
-            </div>
-          </li> :
-          <li key={i} className="clearfix">
-            <div className="message-data">
-              {
-                message.status === "online" ?
-              <span className="online circle">
-                <i className="fas fa-circle"></i>
-              </span> :
-              <span className="offline circle">
-                <i className="fas fa-circle"></i>
-              </span>
-              }&nbsp; &nbsp;
-              <span>
-                <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
-              </span>&nbsp; &nbsp;
-              <span className="message-data-name">{message.sender}</span>
-              {/* <span className="message-data-time">{message.time}</span> */}
-            </div>
-            <div className="message other-message">
-              {message.text}
-            </div>
-          </li>
-        )
-      })
-      ReactDOM.render(element, document.getElementById("chatHistory"));
-    }
+  // @action renderChatMessage(){
+  //   let element = this.channelChatHistory.map((message, i) => {
+  //     return (
+  //       message.sender === (loginStore.user._id) ?
+  //         <li key={i} className="clearfix">
+  //           <div className="me">
+  //             <span>
+  //               <img alt="user-img" src={loginStore.user.image || "/images/placeholder.png"} />
+  //             </span>&nbsp;&nbsp;
+  //             <span className="message-data-name">
+  //               {loginStore.user.nickname}
+  //             </span>&nbsp;
+  //             {/* <span className="message-data-time">{message.time}</span> */}
+  //           </div>
+  //           <div className="message my-message">
+  //             {message.text}
+  //           </div>
+  //         </li> :
+  //         <li key={i} className="clearfix">
+  //           <div className="message-data">
+  //             {
+  //               message.status === "online" ?
+  //             <span className="online circle">
+  //               <i className="fas fa-circle"></i>
+  //             </span> :
+  //             <span className="offline circle">
+  //               <i className="fas fa-circle"></i>
+  //             </span>
+  //             }&nbsp; &nbsp;
+  //             <span>
+  //               <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
+  //             </span>&nbsp; &nbsp;
+  //             <span className="message-data-name">{message.sender}</span>
+  //             {/* <span className="message-data-time">{message.time}</span> */}
+  //           </div>
+  //           <div className="message other-message">
+  //             {message.text}
+  //           </div>
+  //         </li>
+  //       )
+  //     })
+  //     ReactDOM.render(element, document.getElementById("chatHistory"));
+  //   }
   
 
 
@@ -255,15 +260,8 @@ class ChannelStore {
     //this.props.channelStore.getChannelByUser(user._id)}
   }
 
-  @action saveMessageToChannel(message) {
-    this.channelChatHistory.push(message);
-    // console.log(message)
-    // //await sleep(60)
-    // await Message.findOne({channel: message.channel, text: message.text}).then((data)=>{
-    //   console.log(data)
-    // })
-
-  }
+ 
+  
 
  
  

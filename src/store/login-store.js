@@ -30,14 +30,14 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
-          channelStore.getChannels().then(()=>{
-            channelStore.myChannels.map((channel)=>{
-               socket.emit('join channel', channel._id)
-            }
-              )
-          }
+          // channelStore.getChannels().then(()=>{
+          //   channelStore.myChannels.map((channel)=>{
+          //      socket.emit('join channel', channel._id)
+          //   }
+          //     )
+          // }
             
-          )
+          // )
          
           socket.off('chat message');
           socket.on(
@@ -56,7 +56,7 @@ class LoginStore {
                     time: date
                    }
                  )
-                  channelStore.renderChatMessage();
+                 // channelStore.renderChatMessage();
                 }
               }
          
@@ -79,7 +79,6 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          //this.myChannel = this.user.channel;
         }
         else {
           this.loginError = true;
