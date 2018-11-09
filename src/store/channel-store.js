@@ -299,9 +299,7 @@ class ChannelStore {
   }
 
   @action setAdmin(newAdminId){
-    console.log(newAdminId);
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
-    console.log(this.currentChannel._id);
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -314,7 +312,7 @@ class ChannelStore {
       .then(res => {
         return res.json();
       }).then(res => {
-        console.log(res)
+        console.log('admin updated: ', res)
       })
       .catch(err => {
         console.log(err);
