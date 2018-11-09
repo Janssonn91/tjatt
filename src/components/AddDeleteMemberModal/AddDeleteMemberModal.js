@@ -7,10 +7,21 @@ export default class AddDeleteMemberModal extends Component {
   @observable error = false;
   @observable showConfirmation = false;
 
+  async closeModal() {
+    await sleep(1500);
+    if (this.props.channelStore.addedSuccess && this.props.channelStore.removedSuccess) {
+      this.props.toggle();
+      this.props.channelStore.getChannels();
+      this.props.channelStore.closeAlert();
+      this.showConfirmation = false;
+    }
+  }
+
   async reallyUpdateGroup() {
-    this.props.channelStore.updateGroup();
-    await sleep(500)
+    await sleep(300);
     this.showConfirmation = false;
+    this.props.channelStore.updateGroup();
+    this.closeModal();
   }
 
   updateGroup() {

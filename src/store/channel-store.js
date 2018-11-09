@@ -486,7 +486,12 @@ class ChannelStore {
         console.log(err);
       });
   }
+
+  @action closeAlert() {
+    this.addedSuccess = false;
+    this.removedSuccess = false;
   }
+
 }
 
 
