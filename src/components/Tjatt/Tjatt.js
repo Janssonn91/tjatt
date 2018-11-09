@@ -5,17 +5,16 @@ export default class Tjatt extends Component {
   @observable sendToMenu = this.showChat.bind(this);
 
 
-  // start() {
-    
-  //   //this.props.channelStore.getChannels();
-  // }
+  start() {
+    this.props.loginStore.checkIfLoggedIn();
+  }
 
   showMenu() {
     this.hideMenu = false;
     this.hideChat = true;
   }
 
-  showChat(){
+  showChat() {
     this.hideMenu = true;
     this.hideChat = false;
   }

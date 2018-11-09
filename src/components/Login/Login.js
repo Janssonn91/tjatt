@@ -10,6 +10,7 @@ import './Login.scss';
   componentDidMount() {
     this.props.loginStore.loginError = false;
     this.checkIfLoggedIn();
+
   }
 
   toggle() {
@@ -33,10 +34,13 @@ import './Login.scss';
   }
 
   goToChat = async () => {
-    await sleep(30);
+    await sleep(60);
+
+    // console.log(this.props.loginStore.isLoading);
     if (this.props.loginStore.isLoggedIn) {
+      // this.props.loginStore.pageLoad(3000);
       this.props.history.push(`/${this.props.loginStore.user.username}`);
-      this.props.loginStore.checkIfLoggedIn();
+      // this.props.loginStore.checkIfLoggedIn();
     }
   }
 
@@ -44,11 +48,16 @@ import './Login.scss';
     e.preventDefault();
     this.props.loginStore.login(this.username, this.password);
     this.goToChat();
+
     document.getElementById('password').value = '';
     document.getElementById('username').value = '';
     this.username = '';
     this.password = '';
+
   }
+
+
+
 
   // måste göra ny route för detta, denna är tagen av signup nu!
   // länk är satt som d-none i login.jsx nu!

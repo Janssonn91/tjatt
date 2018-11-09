@@ -15,10 +15,18 @@ class LoginStore {
   @observable isNotCorrectPass = false;
   @observable savedNickname = false;
   @observable savedPassword = false;
+  @observable isLoading = false;
   // @observable myGroups = [];
 
   constructor() {
     this.checkIfLoggedIn();
+    console.log('login-store här?????')
+  }
+
+
+  @action pageLoad(time) {
+    this.isLoading = true;
+    setTimeout(() => this.isLoading = false, time)
   }
 
   @action checkIfLoggedIn() {
@@ -30,6 +38,7 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
+          console.log('am i logged in???????', this.isLoggedIn)
           channelStore.getChannels();
           socket.on('login', (data) => {
             connected = true;
@@ -75,6 +84,10 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
+          this.pageLoad(2000);
+          this.checkIfLoggedIn();
+          console.log(this.checkIfLoggedIn());
+
           //this.myChannel = this.user.channel;
         }
         else {
@@ -156,14 +169,14 @@ class LoginStore {
     this.groupCandidates.push(addedUser);
     //console.log(this.myContacts)
     channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
-   // channelStore.getChannelByUser(userId);
+    // channelStore.getChannelByUser(userId);
   }
 
- 
-  
 
-  @action cleanUpGroupModal(){
-    this.selectedGroupMember.map((data)=>{
+
+
+  @action cleanUpGroupModal() {
+    this.selectedGroupMember.map((data) => {
       return this.groupCandidates.push(data);
     });
     this.selectedGroupMember = [];
