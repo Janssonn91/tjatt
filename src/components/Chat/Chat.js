@@ -133,7 +133,6 @@ export default class Chat extends Component {
       return false;
     }
     await sleep(10);
-    this.props.channelStore.saveMessageToChannel(newMessage);
 
 
     //  socket.emit('chat message', this.inputMessage);

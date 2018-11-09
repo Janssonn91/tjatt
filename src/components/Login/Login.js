@@ -36,7 +36,8 @@ import './Login.scss';
     await sleep(30);
     if (this.props.loginStore.isLoggedIn) {
       this.props.history.push(`/${this.props.loginStore.user.username}`);
-      this.props.loginStore.checkIfLoggedIn();
+      this.props.channelStore.getChannels();
+      //this.props.loginStore.checkIfLoggedIn();
     }
   }
 
