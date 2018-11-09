@@ -132,8 +132,11 @@ $text:#434651;
               box-shadow: unset;
             }
           }
-          button.btn-add-user {
-            margin-top: 9px;
+        i.admin {
+          padding-left: 60px;
+          font-size: 8px;
+          vertical-align: middle;
+          color: $red;
           }
           button.btn-remove-user {
             margin-top: 11px;

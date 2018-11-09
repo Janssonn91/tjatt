@@ -45,12 +45,13 @@
                   </div>
                   <span className="d-inline-block float-right">
                     {user._id !== this.props.loginStore.user._id &&
+                    user._id !== this.props.channelStore.groupAdminId &&
                       <Button
                         className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right"
                         onClick={() => this.props.channelStore.removeFromSelect(user)}
                       >Remove user</Button>
                     }
-                  </span>
+                  {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
                 </ListGroupItem>
               )}
             </FormGroup>

@@ -16,6 +16,7 @@ class ChannelStore {
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
+  @observable groupAdminId = "";
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -96,12 +97,12 @@ class ChannelStore {
     }
   }
 
-  getGroupMembersData(ids) {
+  getGroupMembersData(memberIds) {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
         const isGroupMember = (userId) => {
-          return ids.some(id => userId === id);
+          return memberIds.some(id => userId === id);
         }
         const existInMyContact = (userId) => {
           return loginStore.user.contact.some(contactId => userId === contactId);
@@ -133,6 +134,7 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
+      this.groupAdminId = channel.admin[0];
     }
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
   }
