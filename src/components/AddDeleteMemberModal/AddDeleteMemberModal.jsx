@@ -24,15 +24,14 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  <span className="d-inline-block float-right">
-                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.channelStore.selectOneForGroup(user)}>Add user</Button>
-                  </span>
+                  <Button className="btn btn-add-user border-0" onClick={() => this.props.channelStore.selectOneForGroup(user)}>Add user</Button>
                 </ListGroupItem>
               )}
             </FormGroup>
           </Col>
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
-            <h5>Group member</h5>
+            <h5 className="d-inline-block">Group member</h5>
+            <span className="note d-inline-block"><i className="fas fa-circle admin note"></i>Admin</span>
             <FormGroup className="m-0 pl-1 overflow-y-auto">
               {this.props.channelStore.currentGroupMembers.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
@@ -43,14 +42,13 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  <span className="d-inline-block float-right">
-                    {user._id !== this.props.loginStore.user._id &&
+                  {user._id !== this.props.loginStore.user._id &&
                     user._id !== this.props.channelStore.groupAdminId &&
-                      <Button
-                        className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right"
-                        onClick={() => this.props.channelStore.removeFromSelect(user)}
-                      >Remove user</Button>
-                    }
+                    <Button
+                      className="btn btn-remove-user border-0 p-0 mr-2"
+                      onClick={() => this.props.channelStore.removeFromSelect(user)}
+                    >Remove user</Button>
+                  }
                   {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
                 </ListGroupItem>
               )}

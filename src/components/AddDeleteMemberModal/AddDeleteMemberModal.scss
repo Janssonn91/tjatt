@@ -89,6 +89,9 @@ $text:#434651;
           }
         }
         .list-group-item {
+          display: flex;
+          align-items: center;
+          height: 42px;
           margin-right: 3px;
           color: $blue;
           &:hover {
@@ -132,15 +135,22 @@ $text:#434651;
               box-shadow: unset;
             }
           }
+        }
+
         i.admin {
           padding-left: 60px;
           font-size: 8px;
           vertical-align: middle;
           color: $red;
-          }
-          button.btn-remove-user {
-            margin-top: 11px;
-          }
+        }
+        .note {
+          font-size: 8px;
+          color: $red;
+        }
+        i.admin.note {
+          padding: 0 3px 0 15px;
+          font-size: 6px;
+          vertical-align: baseline;
         }
       }
     }
