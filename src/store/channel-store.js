@@ -299,6 +299,7 @@ class ChannelStore {
   }
 
   @action setAdmin(newAdminId){
+    console.log(newAdminId);
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
   }
 

@@ -117,7 +117,6 @@ export default class Chat extends Component {
 
   viewMembersModalToggle() {
     this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen
-    console.log(toJS(this.props.channelStore.currentAdmins));
   }
 
   leaveGroupModalToggle() {
