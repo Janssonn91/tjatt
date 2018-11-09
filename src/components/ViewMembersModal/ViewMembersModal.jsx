@@ -29,13 +29,17 @@
           {this.props.channelStore.currentChannel.admin.map((id, ind) =>
             <div key={ind}>
             <p className="m-0 ml-2 p-0 d-inline admin-text">{id === user._id ? '(Admin)' : ''}</p>
-            {id !== user._id ? <Button className="btn btn-make-admin border-0 float-right">Make admin</Button> : ''}
+            {id !== user._id ? <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button> : ''}
             </div>
           )}
+          {/*
+          Make admin knapp ska bara visas om den som är inloggad är admin
+          Make admin knapp ska inte visas  på användare som också är admin
+          För att veta att man är admin, id === user._id
+          */}
           {/*<Button className="btn btn-make-admin border-0 float-right">Make admin</Button>*/}
         </ListGroupItem>
       )}
-      <Button onClick={e => {this.testbtn(e)}}>Test</Button>
 {/*}     
         <ListGroupItem className="m-0 py-2 px-1 border-left-0 border-right-0 rounded-0">
           <CardImg className="mr-3 d-inline-block img" src={"/images/placeholder.png"}/>

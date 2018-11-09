@@ -21,6 +21,7 @@ class ChannelStore {
   @observable channelChatHistory = [];
   @observable contactImg = "";
   @observable contactChannelname = "";
+  @observable currentAdmins = [];
 
 
   //TODO: as a new user, introduction page shows instead of chat page
@@ -90,6 +91,11 @@ class ChannelStore {
     }
   }
 
+  checkIfUserIsAdmin(user){
+    console.log(this.currentChannel.admin);
+    return this.currentChannel.admin.some(member => user._id === member);
+  }
+
   getGroupMembersData(ids) {
     fetch('/api/users')
       .then(res => res.json())
@@ -102,7 +108,10 @@ class ChannelStore {
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
-        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));  
+        console.log(toJS(this.currentGroupMembers));      
+        this.currentAdmins = this.currentGroupMembers.filter(member => this.checkIfUserIsAdmin(member));
+        console.log(this.currentAdmins);
       });
   }
 
@@ -295,6 +304,14 @@ class ChannelStore {
   @action showChat() {
     this.hideMenu = true;
     this.hideChat = false;
+  }
+
+  @action setAdmin(newAdminId){
+    console.log('admins innan: ', this.currentChannel.admin);
+    console.log('new admin id: ', newAdminId);
+    this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    this.currentAdmins = [...this.currentAdmins, newAdminId];
+    console.log('admins efter: ', toJS(this.currentAdmins));
   }
 
   @action exitChannel(channel) {
