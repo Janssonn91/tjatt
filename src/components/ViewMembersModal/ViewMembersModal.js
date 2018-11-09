@@ -10,6 +10,7 @@ import './ViewMembersModal.scss';
     //console.log(toJS(this.props.channelStore.currentChannel));
     //console.log(this.props.channelStore.currentChannel.admin);
     this.props.channelStore.setAdmin(userId);
+    this.forceUpdate();
   }
 
 }
