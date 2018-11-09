@@ -44,7 +44,12 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.channelStore.removeFromSelect(user)}>Remove user</Button>
+                    {user._id !== this.props.loginStore.user._id &&
+                      <Button
+                        className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right"
+                        onClick={() => this.props.channelStore.removeFromSelect(user)}
+                      >Remove user</Button>
+                    }
                   </span>
                 </ListGroupItem>
               )}
