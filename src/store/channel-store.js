@@ -301,6 +301,24 @@ class ChannelStore {
   @action setAdmin(newAdminId){
     console.log(newAdminId);
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    console.log(this.currentChannel._id);
+    fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        adminId: newAdminId
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      }).then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   @action exitChannel(channel) {
