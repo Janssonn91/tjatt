@@ -1,28 +1,43 @@
 <Fragment>
     <div
-        style={{width:'100%', height: '100vh'}} 
-        onClick={this.showSidedrawer ? ()=>this.sideDrawerHandler() : null}>
-        {/* <iframe 
-            id="running-app"
-            title="running-app"
-            src="https://developer.mozilla.org/en-US/docs/Glossary"
-            width="100%" height="500" frameBorder="0"
-            allowfullscreen sandbox={true}   
-            >
-        </iframe> */}
+        style={{width:'100%', height: '100vh'}} >
+        {Object.keys(this.openApp).length ? 
+            <Iframe url={this.openApp.url}
+                onClick={this.showSidedrawer ? ()=>this.sideDrawerHandler() : null}
+                className="gitApps-app-frame"
+                display="initial"
+                allowFullScreen/> 
+        :null}
     </div>
     <Button
         style={{
             position: 'absolute', 
-            top: '50%', 
-            left: '50%',
-            width: '200px',
-            height: '200px',
-            transform: 'translate(-50%,-50%)'
+            top: '0', 
+            left: '0',
+            width: '100px',
+            height: '100px',
         }}
         onClick={()=> this.sideDrawerHandler()}>
         Git Hell!
-    </Button> 
+    </Button>
+    <div className={`gitApps-app-launcher ${this.runningApps.length ? 'gitApps-app-launcher-show' : null}`}>
+        <Dropdown 
+            isOpen={this.runningAppDropdown} 
+            toggle={() => this.runningAppDropdownHandler()}>
+            <DropdownToggle>
+                <i className="fas fa-rocket fa-2x"></i>
+            </DropdownToggle>
+            <DropdownMenu>
+                {this.runningApps.map((app, index)=>
+                    <DropdownItem
+                        onClick={() => this.openAppHandler(app)} 
+                        key={index}>
+                        {app.name}
+                    </DropdownItem>
+                )}
+            </DropdownMenu>
+        </Dropdown>
+    </div>
     <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.showSidedrawer ? 'open' : null}`}>
         <Button
             onClick={()=> this.sideDrawerHandler()} 
@@ -36,7 +51,7 @@
         
         <div className="gitApps-sideDrawer-import-form-content p-4">
             <div
-                className="gitApps-sideDrawer-import-form-header py-2 mb-4"onClick={()=> this.showImportHandler()}>
+                className="gitApps-sideDrawer-import-form-header py-2 mb-4"onClick={()=> this.sideDrawerShowImportHandler()}>
                     <i className="fab fa-github-alt"></i>
                     <p className="gitApps-sideDrawer-import-form-header-label">Import from GitHub</p>
             </div>
@@ -73,7 +88,7 @@
                 </Form>
             </Collapse>
             <div 
-                className="gitApps-sideDrawer-import-form-header py-2 mt-4"onClick={()=> this.showAppsHandler()}>
+                className="gitApps-sideDrawer-import-form-header py-2 mt-4"onClick={()=> this.sideDrawerShowAppsHandler()}>
                     <i className="fas fa-rocket"></i>
                     <p className="gitApps-sideDrawer-import-form-header-label">Available Apps</p>
             </div>

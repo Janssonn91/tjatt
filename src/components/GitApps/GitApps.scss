@@ -1,3 +1,23 @@
+.gitApps-app-frame{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+}
+
+.gitApps-app-launcher{
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    color: #D35635;
+    transition: all 0.2s;
+}
+
+.gitApps-app-launcher-show{
+    top: 0;
+    transition: all 0.5s;
+}
+
 .gitApps-sideDrawer{
     background-color: #F6F8FA;
     position: absolute;

@@ -21,6 +21,7 @@
   "  Server": "components/Server/Server",
   "  GitApps": "components/GitApps/GitApps",
   "  Spinner": "components/Spinner/Spinner",
+  "  Iframe": "react-iframe",
 
 
   "/*3": "--------  Utilities (Component based) --------",
