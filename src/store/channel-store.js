@@ -54,6 +54,7 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
+
     console.log(document.getElementById(anchor))
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
@@ -72,7 +73,10 @@ class ChannelStore {
           <div className="d-inline-block" >{contact.contactChannelname}</div>
         </div>
       );
-    });
+    })
+
+
+
 
     Promise.all(elements).then((els) => {
       ReactDOM.render(els, document.getElementById(anchor));

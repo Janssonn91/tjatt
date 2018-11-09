@@ -23,10 +23,13 @@ class LoginStore {
     console.log('login-store här?????')
   }
 
-
   @action pageLoad(time) {
     this.isLoading = true;
-    setTimeout(() => this.isLoading = false, time)
+    console.time(time);
+    setTimeout(() => {
+      console.timeEnd(time)
+      return this.isLoading = false, time;
+    }, 1000)
   }
 
   @action checkIfLoggedIn() {
@@ -73,7 +76,7 @@ class LoginStore {
   }
 
   @action login(username, password) {
-    fetch('/api/login', {
+    this.pageLoad(fetch('/api/login', {
       credentials: 'include',
       method: 'POST',
       body: JSON.stringify({ username, password }),
@@ -84,10 +87,9 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          this.pageLoad(2000);
           this.checkIfLoggedIn();
           console.log(this.checkIfLoggedIn());
-
+          console.time();
           //this.myChannel = this.user.channel;
         }
         else {
@@ -96,6 +98,7 @@ class LoginStore {
       }).catch(err => {
         console.log("err", err)
       })
+    )
   }
 
   @action signUp(username, password, useremail) {
