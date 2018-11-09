@@ -26,9 +26,10 @@ import './AddUserModal.scss';
 
   userWasClicked = (userId) => {
     this.userCandidates = this.userCandidates.filter(user => user._id !== userId)
+    console.log(toJS(this.userCandidates));
   }
 
-  addContact(userId){
+  addContact(userId) {
     this.props.loginStore.addContact(userId);
     this.props.toggle();
   }

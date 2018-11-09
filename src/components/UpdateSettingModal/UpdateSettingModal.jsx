@@ -28,7 +28,7 @@
               id="changeNickname"
               placeholder={this.props.loginStore.user.nickname}
               value={this.nickname}
-              onChange={e => this.nickname = e.currentTarget.value}
+              onChange={e => this.handleNicknameChange(e)}
               onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
             />
           </td>
@@ -81,14 +81,16 @@
         </tr>
       </tbody>
     </Table>
-    {this.props.loginStore.isNotCorrectPass && <Alert className="alert-color text-center">
+    {this.props.loginStore.isNotCorrectPass && <Alert color="danger" className="text-center">
       Incorrect current password</Alert>}
-    {this.isNotSamePass && <Alert className="alert-color text-center">
+    {this.isNotSamePass && <Alert color="danger" className="text-center">
       New passwords doesn't match</Alert>}
     {this.props.loginStore.savedNickname && <Alert color="success" className="text-center">
       New nickname saved!</Alert>}
     {this.props.loginStore.savedPassword && <Alert color="success" className="text-center">
       New password saved!</Alert>}
+    {this.props.loginStore.areAllEmpty && <Alert color="warning" className="text-center">
+      You must fill in one of the fields to save your data</Alert>}
   </ModalBody>
   <ModalFooter className="p-2">
     <Button
