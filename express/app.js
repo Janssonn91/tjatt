@@ -283,6 +283,19 @@ app.put('/users/:_id', (req, res) => {
     });
 });
 
+app.put('/channel/:_id', (req, res) => {
+  channel.update(
+    { _id: req.params._id },
+    { $set: { members: req.body.members } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 app.put('/memberChannels/:_id', async (req, res) => {
    let resultChannel = await channel.update(
     { _id: req.params._id },

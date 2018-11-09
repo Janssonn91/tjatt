@@ -405,6 +405,28 @@ class ChannelStore {
 
   // TODO: nana
   updateGroup() {
+    const { _id, members: previousMemberIds } = this.currentChannel;
+    const newMemberIds = this.currentGroupMembers.map(user => user._id);
+
+    fetch(`/api/channel/${_id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        members: newMemberIds
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          this.updateUserChannel(_id, newMemberIds, previousMemberIds);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   }
 }
 
