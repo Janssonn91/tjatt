@@ -17,6 +17,8 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable groupAdminId = "";
+  @observable addedSuccess = false;
+  @observable removedSuccess = false;
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
