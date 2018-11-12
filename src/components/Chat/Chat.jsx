@@ -71,16 +71,20 @@
           <div className="chat-history pl-2 mr-1">
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
-                <Message {...this.sendToChatHistory} />
-              </ul>
-              <div
+              {/* <div id="chatHistory"></div>  */}
+                 <ChatMessage  />
+                 <li ref={(el) => {
+                  this.messagesEnd = el;
+                }}></li>
+              </ul >
+              {/* <div
                 style={{
                   float: "left",
                   clear: "both"
                 }}
                 ref={(el) => {
                   this.messagesEnd = el;
-                }}></div>
+                }}></div> */}
             </ScrollableFeed>
           </div>
         </Col>

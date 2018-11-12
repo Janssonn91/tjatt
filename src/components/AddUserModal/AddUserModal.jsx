@@ -21,7 +21,7 @@
                 </p>
               </div>
               <span className="d-inline-block float-right">
-                <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.props.loginStore.addContact(user._id), this.userWasClicked(user._id) }}>Add user</Button>
+                <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.props.loginStore.addContact(user._id); this.userWasClicked(user._id) }}>Add user</Button>
               </span>
             </ListGroupItem>
           )}

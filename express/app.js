@@ -82,6 +82,7 @@ const ChatMessage = new Message(app).myModel;
 
 
 io.on('connection', (socket) => {
+  
 
   console.log("user is connected")
   let user = socket.handshake.session.loggedInUser;
@@ -95,6 +96,8 @@ io.on('connection', (socket) => {
     // Get the user from session
     console.log(messageFromClient)
     let c = messageFromClient.channel;
+    console.log("c", c)
+    socket.join(c);
     // if(
     //   typeof c !== 'string' ||
     //   !user.channel.includes(c)
@@ -124,36 +127,7 @@ io.on('connection', (socket) => {
     console.log('client disconnect...', user);
     //handleDisconnect()
   });
-
-  
-
-   
 });
-
-// io.on('connection', function (client) {
-//   client.on('register', handleRegister)
-
-//   client.on('join', handleJoin)
-
-//   client.on('leave', handleLeave)
-
-//   client.on('message', handleMessage)
-
-//   client.on('chatrooms', handleGetChatrooms)
-
-//   client.on('availableUsers', handleGetAvailableUsers)
-
-//   client.on('disconnect', function () {
-//     console.log('client disconnect...', client.id)
-//     handleDisconnect()
-//   })
-
-//   client.on('error', function (err) {
-//     console.log('received error from client:', client.id)
-//     console.log(err)
-//   })
-// })
-
 
 app.get('/hello', (req, res) => {
   res.send('hello')
@@ -266,11 +240,64 @@ app.post('/login', (req, res) => {
     })
 });
 
+app.put('/updateAdmin/:_id', async (req, res) => {
+  console.log(req.body.adminId);
+  let resultChannel = channel.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { admin: req.body.adminId } }
+  )
+  .then(() => {
+    res.json({ success: true })
+  })
+  .catch(err => {
+    throw err;
+  });
+})
+
 app.put('/users/:_id', (req, res) => {
   console.log(req.body.contact);
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/channel/:_id', (req, res) => {
+  channel.update(
+    { _id: req.params._id },
+    { $set: { members: req.body.members } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/add', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { channel: req.body.channel } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/remove', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $pull: { channel: req.body.channel } }
   )
     .then(() => {
       res.json({ success: true })
