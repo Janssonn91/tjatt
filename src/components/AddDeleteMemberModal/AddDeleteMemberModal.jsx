@@ -23,10 +23,7 @@
                     <small className="font-weight-bold">{user.nickname}</small>
                   </p>
                 </div>
-                <div style={{
-                  float: "left",
-                  clear: "both"
-                }}
+                <div
                   ref={(el) => {
                     this.selectedMemberEnd = el;
                   }}>
