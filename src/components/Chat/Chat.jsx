@@ -70,7 +70,7 @@
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
               {/* <div id="chatHistory"></div>  */}
-                 <ChatMessage {...this.sendToChatHistory} />
+                 <ChatMessage  />
                  <li ref={(el) => {
                   this.messagesEnd = el;
                 }}></li>

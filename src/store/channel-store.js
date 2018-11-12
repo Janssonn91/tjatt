@@ -16,13 +16,17 @@ class ChannelStore {
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
+  @observable searchedGroupCandidates = [];
   @observable groupAdminId = "";
+  @observable addedSuccess = false;
+  @observable removedSuccess = false;
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
   @observable contactImg = "";
   @observable contactChannelname = "";
-  @observable currentAdmins = [];
+  @observable userDict = {};
+
 
 
   //TODO: as a new user, introduction page shows instead of chat page
@@ -95,6 +99,15 @@ class ChannelStore {
       return contact;
     }
   }
+
+  @action async getUserList(){
+    let res = await fetch('/api/users');
+    let user = await res.json();
+    user.map((u)=>{
+      this.userDict[u._id] = {name: u.nickname, img: u.image}
+    })
+  }
+
 
   getGroupMembersData(memberIds) {
     fetch('/api/users')
@@ -411,11 +424,21 @@ class ChannelStore {
       })
   }
 
+  @action searchCandidates(regex) {
+    this.searchedGroupCandidates = this.currentGroupCandidates.filter(user => {
+      return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)
+    })
+  }
+
   @action selectOneForGroup(user) {
     this.currentGroupMembers.push(user);
     const addedUser = this.currentGroupCandidates.find(u => u._id === user._id);
     const index = this.currentGroupCandidates.indexOf(addedUser);
     this.currentGroupCandidates.splice(index, 1);
+
+    // Remove user also from searchedGroupCandidates
+    const i = this.searchedGroupCandidates.indexOf(addedUser);
+    this.searchedGroupCandidates.splice(i, 1);
   }
 
   @action removeFromSelect(user) {
@@ -423,11 +446,98 @@ class ChannelStore {
     const addedUser = this.currentGroupMembers.find(u => u._id === user._id);
     const index = this.currentGroupMembers.indexOf(addedUser);
     this.currentGroupMembers.splice(index, 1);
+
+    // Add user also to searchedGroupCandidates
+    this.searchedGroupCandidates.push(user);
   }
 
-  // TODO: nana
-  updateGroup() {
+  updateUserChannel(channelId, newMemberIds, previousMemberIds) {
+    const wasMember = user => previousMemberIds.some(id => id === user);
+    const isMember = user => newMemberIds.some(id => id === user);
+    const addedUser = newMemberIds.filter(user => !wasMember(user));
+    const removedUser = previousMemberIds.filter(user => !isMember(user));
+
+    if (addedUser.length > 0) {
+      addedUser.forEach(id => {
+        fetch(`/api/users/${id}/add`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            channel: channelId
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (result.succes) {
+              this.addedSuccess = true;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.addedSuccess = false;
+          })
+      });
+    }
+    this.addedSuccess = true;
+
+    if (removedUser.length > 0) {
+      removedUser.forEach(id => {
+        fetch(`/api/users/${id}/remove`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            channel: channelId
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (result.succes) {
+              this.removedSuccess = true;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.removedSuccess = false;
+          })
+      });
+    }
+    this.removedSuccess = true;
+
   }
+
+  updateGroup() {
+    const { _id, members: previousMemberIds } = this.currentChannel;
+    const newMemberIds = this.currentGroupMembers.map(user => user._id);
+
+    fetch(`/api/channel/${_id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        members: newMemberIds
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          this.updateUserChannel(_id, newMemberIds, previousMemberIds);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  @action closeAlert() {
+    this.addedSuccess = false;
+    this.removedSuccess = false;
+  }
+
 }
 
 
