@@ -13,7 +13,7 @@
           {this.props.channelStore.currentChannel.admin.includes(user._id) &&
             <p className="m-0 ml-2 p-0 d-inline admin-text">(Admin)</p>
           }
-          {!this.props.channelStore.currentChannel.admin.includes(user._id) || this.props.channelStore.amIAdmin &&
+          {!this.props.channelStore.currentChannel.admin.includes(user._id) && this.props.channelStore.amIAdmin &&
           <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button>
           }
         </ListGroupItem>
