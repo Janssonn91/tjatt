@@ -320,6 +320,15 @@ app.put('/memberChannels/:_id', async (req, res) => {
   res.json({ resultChannel, resultUser });
 });
 
+app.put('/removeAdmin/:_id', async (req, res) => {
+   let resultAdmin = await channel.update(
+    { _id: req.params._id },
+    { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
+    { multi: true }
+  ).catch((err) => console.log("err", err));
+  res.json({ resultAdmin });
+});
+
 app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
