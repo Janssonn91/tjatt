@@ -244,7 +244,10 @@ $fontSm: 12px;
         display: flex;
         justify-content: space-around;
         .dropdown-toggle {
+          margin: 5px 0 5px 5px;
+          @media (min-width: 576px) {
           margin: 10px 0 10px 10px;
+          }
           border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -308,7 +311,10 @@ $fontSm: 12px;
         }
 
         .send {
+            margin: 5px 5px 5px 0;
+            @media (min-width: 576px) {
           margin: 10px 10px 10px 0;
+            }
             border-color: $blue;
             background-color: $blue;
             border-radius: 50%;
@@ -332,16 +338,24 @@ $fontSm: 12px;
         @include scrollbar;
     }
 }
+
+.messageAreaForm {
+  position: relative;
+}
 .emoji-container{  
     text-align:center;
     position: absolute;
-    right: 35px;
-    bottom:20px;
+    right: 33px;
+    bottom: 46px;
     border: 0;
     left: auto;
     padding:0;
     &:hover {
         background-color:blue !important;
+    }
+    @media (min-width: 576px) {
+      right: 35px;
+      bottom: 13px;
     }
 }
 
