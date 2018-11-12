@@ -69,9 +69,9 @@
           <div className="chat-history px-3 mr-1">
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
-              {/* <div id="chatHistory"></div>  */}
-                 <ChatMessage {...this.sendToChatHistory} />
-                 <li ref={(el) => {
+                {/* <div id="chatHistory"></div>  */}
+                <ChatMessage {...this.sendToChatHistory} />
+                <li ref={(el) => {
                   this.messagesEnd = el;
                 }}></li>
               </ul >
@@ -87,7 +87,7 @@
           </div>
         </Col>
       </Row> < Row className="formRow" > <Col className="p-0">
-        <Form inline className="chat-message py-2 clearfix">
+        <Form inline className="chat-message clearfix">
           <ButtonDropdown
             direction="up"
             isOpen={this.isOpen}
@@ -129,15 +129,20 @@
 
           <FormGroup className="m-0 messageAreaForm">
             <Label for="messageArea" className="d-none">Message</Label>
-
-            <Input
+            <Textarea
+              minRows={1}
+              maxRows={10}
+              useCacheForDOMMeasurements
+              style={{ boxSizing: 'border-box' }}
               type="textarea"
               name="text"
               id="messageArea"
               placeholder="Write your message here"
               value={this.inputMessage}
               onChange={e => this.inputMessage = e.currentTarget.value}
-              onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())} />
+              onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
+            />
+
             <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
               <DropdownToggle className="emoji-container bg-light">
                 <i className="far emojiOpener">😃</i>

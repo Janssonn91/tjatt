@@ -244,6 +244,7 @@ $fontSm: 12px;
         display: flex;
         justify-content: space-around;
         .dropdown-toggle {
+          margin: 10px 0 10px 10px;
           border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -281,12 +282,16 @@ $fontSm: 12px;
         }
 
         #messageArea {
+            padding: 15px;
+            vertical-align: middle;
+            margin: 10px 0;
             border: 1px solid lighten($lightblue, 16%);
-            height: 8vh;
-            width: 65vw;
+            border-radius: 5px;
+            height: 50px;
+            width: 62vw;
             overflow: hidden;
             resize: none;
-            line-height: 2;
+            line-height: 1;
             &:focus {
                 border-color: $lightblue;
                 box-shadow: 0 0 0 0.2rem lightblue;
@@ -295,7 +300,7 @@ $fontSm: 12px;
               width: 70vw;
             }
             @media (min-width: 768px) {
-                width: 60vw;
+                width: 58vw;
             }
             @media (min-width: 1200px) {
                 width: 65vw;
@@ -303,6 +308,7 @@ $fontSm: 12px;
         }
 
         .send {
+          margin: 10px 10px 10px 0;
             border-color: $blue;
             background-color: $blue;
             border-radius: 50%;
