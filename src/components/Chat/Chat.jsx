@@ -42,6 +42,9 @@
                         .bind(this)}>
                       View members
                   </DropdownItem>
+                  {this.props.channelStore.amIAdmin &&
+                    <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                  }
                   </div>
                   <DropdownItem className="m-0" divider />
                   <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
