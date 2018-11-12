@@ -10,13 +10,18 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable searchContact = [];
 
   start() {
-
+    this.props.loginStore.fetchContact()
+      // Show all contacts from beginning
+      .then(() => {
+        this.searchContact = this.props.loginStore.myContacts.slice(0, 5);
+      })
   }
 
   searchContacts = (e) => {
     this.searchContact = [];
     if (!e.target.value) {
-      return this.searchContact = this.props.loginStore.myContacts;
+      // only show first 5 contacts in the array
+      return this.searchContact = this.props.loginStore.myContacts.slice(0, 5);
     }
     let regex = new RegExp(e.target.value, 'i');
     let result = this.props.loginStore.myContacts.filter(user => {
