@@ -79,13 +79,44 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
-
+let onlineUsers=[];
 
 io.on('connection', (socket) => {
+
+
+  let user = socket.handshake.session.loggedInUser;
+    console.log("user is connected", user.nickname)
+    onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    onlineUsers.push(user._id); 
+    socket.broadcast.emit('online', {
+      loginUser: onlineUsers
+    });
+
+  socket.on('sign up', (user)=>{
+    console.log("sign up", user)
+    socket.username = user;
+    socket.broadcast.emit('sign up', {
+      username: socket.username
+    });
+  })
   
 
-  console.log("user is connected")
-  let user = socket.handshake.session.loggedInUser;
+  socket.on('login', (userId)=>{
+    onlineUsers= onlineUsers.filter(id=>id!==userId);
+      onlineUsers.push(userId)
+        socket.emit('login', {
+      loginUser:onlineUsers
+    })
+  
+  
+  })
+
+  socket.on('logout', (userId)=>{ 
+    onlineUsers= onlineUsers.filter(id=>id!==userId);
+    socket.broadcast.emit('logout', {
+      loginUser: onlineUsers
+    })
+  })
 
  
 
@@ -124,7 +155,9 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
    // console.log('user disconnected');
-    console.log('client disconnect...', user);
+    console.log('client disconnect...', user._id);
+
+    
     //handleDisconnect()
   });
 });
@@ -160,7 +193,7 @@ const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
 app.post('/users', (req, res) => {
-  console.log(req.session);
+  //console.log(req.session);
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
