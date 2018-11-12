@@ -127,36 +127,7 @@ io.on('connection', (socket) => {
     console.log('client disconnect...', user);
     //handleDisconnect()
   });
-
-  
-
-   
 });
-
-// io.on('connection', function (client) {
-//   client.on('register', handleRegister)
-
-//   client.on('join', handleJoin)
-
-//   client.on('leave', handleLeave)
-
-//   client.on('message', handleMessage)
-
-//   client.on('chatrooms', handleGetChatrooms)
-
-//   client.on('availableUsers', handleGetAvailableUsers)
-
-//   client.on('disconnect', function () {
-//     console.log('client disconnect...', client.id)
-//     handleDisconnect()
-//   })
-
-//   client.on('error', function (err) {
-//     console.log('received error from client:', client.id)
-//     console.log(err)
-//   })
-// })
-
 
 app.get('/hello', (req, res) => {
   res.send('hello')
@@ -274,6 +245,45 @@ app.put('/users/:_id', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/channel/:_id', (req, res) => {
+  channel.update(
+    { _id: req.params._id },
+    { $set: { members: req.body.members } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/add', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { channel: req.body.channel } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/remove', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $pull: { channel: req.body.channel } }
   )
     .then(() => {
       res.json({ success: true })

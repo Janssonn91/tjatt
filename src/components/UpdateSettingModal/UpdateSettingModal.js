@@ -1,8 +1,9 @@
 import './UpdateSettingModal.scss';
-import imgPath from '../Sidebar/Sidebar';
+const defaultImg = "/images/placeholder.png";
 
 @inject('loginStore') @observer export default class UpdateSettingModal extends Component {
 
+  @observable imgPath = this.props.loginStore.user.image || defaultImg;
   @observable image = '';
   @observable nickname = '';
   @observable newPassword = '';
@@ -12,11 +13,19 @@ import imgPath from '../Sidebar/Sidebar';
   @observable isNotSamePass = false;
 
   onFileChange = (e) => {
-    const formData = new FormData();
-    formData.append('id', this.props.loginStore.user._id);
-    formData.append('file', e.target.files[0]);
-    this.image = formData;
-    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imgPath = e.target.result;
+      };
+      reader.readAsDataURL(e.target.files[0]);
+
+      const formData = new FormData();
+      formData.append('id', this.props.loginStore.user._id);
+      formData.append('file', e.target.files[0]);
+      this.image = formData;
+      this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+    }
   }
 
   handleNicknameChange = (e) => {

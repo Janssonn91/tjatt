@@ -1,5 +1,7 @@
 <Fragment>
-  {this.props.channelStore.channelChatHistory.map((message, i) => {
+  { 
+    this.props.channelStore.channelChatHistory.map((message, i) => {
+     // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
     return (
       message.sender === (this.props.loginStore.user._id) ?
         <li key={i} className="clearfix">
@@ -16,6 +18,8 @@
             {message.text}
           </div>
         </li> :
+        
+
         <li key={i} className="clearfix">
           <div className="message-data">
             {
@@ -28,9 +32,9 @@
             </span>
             }&nbsp; &nbsp;
             <span>
-              <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
+              <img alt="user-img" src={this.props.channelStore.userDict[message.sender].img || "/images/placeholder.png"}/>
             </span>&nbsp; &nbsp;
-            <span className="message-data-name">{message.sender}</span>
+              <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
             {/* <span className="message-data-time">{message.time}</span> */}
           </div>
           <div className="message other-message">
