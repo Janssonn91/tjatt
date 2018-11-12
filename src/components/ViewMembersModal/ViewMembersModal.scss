@@ -54,16 +54,7 @@ $backgroundColor: #484951;
         &:not(:first-child) {
           border-top: none;
         }
-        &.admin-user {
-          height: 45.25px;
-          .admin-text {
-            font-size: 0.8rem;
-            color: $gray;
-            &:hover {
-              cursor: unset;
-            }
-          }
-        }
+        
         .img {
           border-radius: 5px;
           width: 30px;
