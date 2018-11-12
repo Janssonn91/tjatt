@@ -108,7 +108,7 @@ class ChannelStore {
     return contact;
   }
 
-  getGroupMembersData(ids) {
+  getGroupMembersData(memberIds) {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
