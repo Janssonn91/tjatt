@@ -16,6 +16,7 @@ class LoginStore {
   @observable savedNickname = false;
   @observable savedPassword = false;
   @observable areAllEmpty = false;
+  @observable onLineUsers = [];
   // @observable myGroups = [];
 
   constructor() {
@@ -31,21 +32,15 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
-          // channelStore.getChannels().then(()=>{
-          //   channelStore.myChannels.map((channel)=>{
-          //      socket.emit('join channel', channel._id)
-          //   }
-          //     )
-          // }
-            
-          // )
-         
+          socket.emit('login', this.user._id)
+          socket.on('online', message=>{
+             this.onLineUsers= message.loginUser; 
+          })
           socket.off('chat message');
           socket.on(
             'chat message',
             (messages) => {
               for(let message of messages){
-  
                 let date = new Date();
                 if(message.channel===channelStore.currentChannel._id){
                  channelStore.channelChatHistory.push(
@@ -57,11 +52,21 @@ class LoginStore {
                     time: date
                    }
                  )
-                 // channelStore.renderChatMessage();
+
                 }
               }
          
             })
+          socket.on('sign up', message=>{
+          channelStore.getUserList()
+          })
+          socket.on('login', message=>{
+            this.onLineUsers= message.loginUser;  
+          })
+          socket.on('logout', message=>{
+             this.onLineUsers= message.loginUser;       
+          })
+          console.log(this.onLineUsers)
         }
       }).catch(err => {
         console.log("err", err)
@@ -80,6 +85,7 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
+          socket.emit("login", this.user._id)
         }
         else {
           this.loginError = true;
@@ -105,10 +111,12 @@ class LoginStore {
           this.usernameExits = false;
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
+          socket.emit('sign up', this.user);
         } else {
           console.log('träff');
           this.usernameExits = true;
         }
+        
       }).catch((err) => {
         console.log('error', err);
       });
