@@ -27,7 +27,6 @@
                 <div id="imagePreview" style={{ backgroundImage: `url(${this.imgPath})` }}></div>
               </div>
             </div>
->>>>>>> chat
           </td>
         </tr>
         <tr>
