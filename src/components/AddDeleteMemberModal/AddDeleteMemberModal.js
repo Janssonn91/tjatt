@@ -17,6 +17,11 @@ export default class AddDeleteMemberModal extends Component {
     }
   }
 
+  searchCandidates = (e) => {
+    const regex = new RegExp(e.target.value, 'i');
+    this.props.channelStore.searchCandidates(regex);
+  }
+
   async reallyUpdateGroup() {
     await sleep(300);
     this.showConfirmation = false;

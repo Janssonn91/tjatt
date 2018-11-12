@@ -16,6 +16,7 @@ class ChannelStore {
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
+  @observable searchedGroupCandidates = [];
   @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
@@ -391,11 +392,21 @@ class ChannelStore {
       })
   }
 
+  @action searchCandidates(regex) {
+    this.searchedGroupCandidates = this.currentGroupCandidates.filter(user => {
+      return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)
+    })
+  }
+
   @action selectOneForGroup(user) {
     this.currentGroupMembers.push(user);
     const addedUser = this.currentGroupCandidates.find(u => u._id === user._id);
     const index = this.currentGroupCandidates.indexOf(addedUser);
     this.currentGroupCandidates.splice(index, 1);
+
+    // Remove user also from searchedGroupCandidates
+    const i = this.searchedGroupCandidates.indexOf(addedUser);
+    this.searchedGroupCandidates.splice(i, 1);
   }
 
   @action removeFromSelect(user) {
@@ -403,6 +414,9 @@ class ChannelStore {
     const addedUser = this.currentGroupMembers.find(u => u._id === user._id);
     const index = this.currentGroupMembers.indexOf(addedUser);
     this.currentGroupMembers.splice(index, 1);
+
+    // Add user also to searchedGroupCandidates
+    this.searchedGroupCandidates.push(user);
   }
 
   updateUserChannel(channelId, newMemberIds, previousMemberIds) {
