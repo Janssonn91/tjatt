@@ -16,10 +16,17 @@ import imgPath from '../Sidebar/Sidebar';
     formData.append('id', this.props.loginStore.user._id);
     formData.append('file', e.target.files[0]);
     this.image = formData;
+    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+  }
+
+  handleNicknameChange = (e) => {
+    this.nickname = e.currentTarget.value;
+    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
   }
 
   currentPassword(e) {
     this.currentPasswordValue = e.currentTarget.value;
+    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
   }
 
   setNewPassword(e) {
@@ -53,7 +60,7 @@ import imgPath from '../Sidebar/Sidebar';
 
   async closeModal() {
     await sleep(1500);
-    if (!this.props.loginStore.isNotCorrectPass && !this.isNotSamePass) {
+    if (!this.props.loginStore.isNotCorrectPass && !this.isNotSamePass && !this.props.loginStore.areAllEmpty) {
       this.props.toggle();
     }
     this.isNotSamePass = false;

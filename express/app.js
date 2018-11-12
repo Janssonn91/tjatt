@@ -254,6 +254,45 @@ app.put('/users/:_id', (req, res) => {
     });
 });
 
+app.put('/channel/:_id', (req, res) => {
+  channel.update(
+    { _id: req.params._id },
+    { $set: { members: req.body.members } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/add', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { channel: req.body.channel } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/remove', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $pull: { channel: req.body.channel } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 app.put('/memberChannels/:_id', async (req, res) => {
    let resultChannel = await channel.update(
     { _id: req.params._id },
