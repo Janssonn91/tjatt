@@ -1,2 +1,112 @@
+@import './node_modules/emoji-picker-react/dist/universal/style.scss';
+/* color */
+$backgroundColor: #484951;
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: #FF3C00;
+$darkred: #bb1e2d;
+$orange: #E38968;
+$text:#434651;
 
-      
+/* font-size */
+$fontLg: 20px;
+$fontMd: 16px;
+$fontSm: 12px;
+
+li {
+  width: 98%;
+}
+.message-data {
+margin-bottom: 15px;
+text-align: left;
+margin-right: 5px;
+}
+.online {
+color: $lightblue;
+}
+.offline {
+color: $gray;
+}
+.circle {
+font-size: 8px;
+vertical-align: middle;
+}
+.me {
+text-align: left !important;
+margin-bottom: 15px;
+margin-left: 15px;
+}
+.message-data-time {
+color: lighten($gray, 8%);
+padding-left: 6px;
+}
+.circle-icon {
+font-size: 8px;
+color: $blue;
+vertical-align: middle;
+}
+.message {
+text-align:left;
+color: $text;
+padding: 8px 15px;
+line-height: 26px;
+font-size: $fontMd;
+border-radius: 6px;
+margin-bottom: 30px;
+position: relative;
+&:after {
+  bottom: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: $green;
+  border-width: 10px;
+  margin-left: -10px;
+}
+}
+.other-message {
+background: white;
+color: $text;
+&:after {
+  border-bottom-color: white;
+  left:40px;
+}
+}
+
+.my-message {
+margin-left: 20px;
+color: #fff;
+background: lighten($blue, 8%);
+float: left;
+min-width: 40px;
+max-width: 630px;
+i.fa-times {
+  color: white;
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  font-size: $fontSm;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: red 1px solid;
+  padding: 3px 0 0 5px;
+  &:hover {
+    color: darken(white, 10%);
+    background-color: darken(red, 10%);
+    border-color: darken(red, 10%);
+    cursor: pointer;
+  }
+}
+&:after {
+  border-bottom-color: lighten($blue, 8%);
+  left:15px;
+}
+}

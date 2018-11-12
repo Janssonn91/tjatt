@@ -1,4 +1,5 @@
 <Fragment>
+  <DeleteMessageModal {...this.sendToDeleteMessageModal} />
   {this.props.histories.map((message, i) => {
     console.log(message);
     return (
@@ -15,6 +16,7 @@
           </div>
           <div className="message my-message">
             {message.text}
+            <i className="fas fa-times" onClick={this.deleteMessageModalToggle.bind(this)}></i>
           </div>
         </li> :
         <li key={i} className="clearfix">

@@ -21,6 +21,7 @@
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
   "  Server": "components/Server/Server",
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
+  "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
