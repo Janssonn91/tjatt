@@ -36,4 +36,8 @@ export default class AddDeleteMemberModal extends Component {
     this.error = false;
     this.showConfirmation = true;
   }
+
+  scrollToBottom = () => {
+    this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
+  };
 }
