@@ -113,6 +113,8 @@ class LoginStore {
       });
   }
 
+
+
   sendWelcomeMail(username, email) {
     fetch('/api/send-mail', {
       credentials: 'include',

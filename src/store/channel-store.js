@@ -96,6 +96,16 @@ class ChannelStore {
     }
   }
 
+  @action async getSenderName(id){
+    let contact={};
+    let res = await fetch(`/api/users/${id}`);
+    let user = await res.json();
+   // console.log(user.nickname)
+    contact.img = user.image;
+    contact.name = user.nickname;
+    return contact;
+  }
+
   getGroupMembersData(ids) {
     fetch('/api/users')
       .then(res => res.json())
