@@ -3,3 +3,4 @@ export default class ChatMessage extends Component {
  
  
 
+}
