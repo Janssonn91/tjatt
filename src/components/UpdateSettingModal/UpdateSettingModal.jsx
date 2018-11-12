@@ -3,19 +3,28 @@
   <ModalBody>
     <Table hover borderless>
       <tbody>
+
         <tr>
           <th>Image upload</th>
           <td>
-            <Label className="sr-only" for="changeImage" tag="h5">Image</Label>
-            <Input
-              type="file"
-              name="image"
-              id="changeImage"
-              placeholder="image"
-              style={{ borderColor: "black" }}
-              onChange={e => this.onFileChange(e)}
-              onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
-            />
+            <div className="image-upload">
+              <div className="image-edit">
+                <Input
+                  type="file"
+                  name="image"
+                  id="changeImage"
+                  placeholder="image"
+                  onChange={e => this.onFileChange(e)}
+                  onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
+                />
+                <Label for="changeImage">
+                  <i className="fas fa-pencil-alt edit-icon"></i>
+                </Label>
+              </div>
+              <div className="image-preview">
+                <div id="imagePreview" style={{ backgroundImage: `url(${this.imgPath})` }}></div>
+              </div>
+            </div>
           </td>
         </tr>
         <tr>
