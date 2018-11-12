@@ -25,6 +25,8 @@ class ChannelStore {
   @observable channelChatHistory = [];
   @observable contactImg = "";
   @observable contactChannelname = "";
+  @observable userDict = {};
+
 
 
   //TODO: as a new user, introduction page shows instead of chat page
@@ -98,15 +100,14 @@ class ChannelStore {
     }
   }
 
-  @action async getSenderName(id){
-    let contact={};
-    let res = await fetch(`/api/users/${id}`);
+  @action async getUserList(){
+    let res = await fetch('/api/users');
     let user = await res.json();
-   // console.log(user.nickname)
-    contact.img = user.image;
-    contact.name = user.nickname;
-    return contact;
+    user.map((u)=>{
+      this.userDict[u._id] = {name: u.nickname, img: u.image}
+    })
   }
+
 
   getGroupMembersData(memberIds) {
     fetch('/api/users')
