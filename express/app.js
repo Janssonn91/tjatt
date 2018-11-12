@@ -87,6 +87,14 @@ io.on('connection', (socket) => {
   console.log("user is connected")
   let user = socket.handshake.session.loggedInUser;
 
+  socket.on('sign up', (user)=>{
+    console.log("sign up", user)
+    socket.username = user;
+    socket.broadcast.emit('user sign up', {
+      username: socket.username
+    });
+  })
+
  
 
 
@@ -160,7 +168,7 @@ const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
 app.post('/users', (req, res) => {
-  console.log(req.session);
+  //console.log(req.session);
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {

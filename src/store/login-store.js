@@ -62,6 +62,7 @@ class LoginStore {
               }
          
             })
+          socket.on('sign up', messages=>console.log(messages))
         }
       }).catch(err => {
         console.log("err", err)
@@ -105,10 +106,12 @@ class LoginStore {
           this.usernameExits = false;
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
+          socket.emit('sign up', this.user);
         } else {
           console.log('träff');
           this.usernameExits = true;
         }
+        
       }).catch((err) => {
         console.log('error', err);
       });
