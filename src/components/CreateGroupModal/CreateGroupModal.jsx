@@ -43,7 +43,7 @@
         <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
           <Input className="m-0" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:"
-            onChange={this.searchContacts} />
+            onChange={this.searchContacts} autoComplete="off" />
         </FormGroup>
 
         <Row className="select-area">
