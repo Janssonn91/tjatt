@@ -6,8 +6,8 @@
       <h6>You are about to leave the group "{this.props.channelStore.channelName}", are you really done with those people?</h6>
     </ModalBody>
     <ModalFooter>
-      <Button className="btn alert-color" onClick={e => this.leaveChannel(e)}>Leave</Button>{' '}
       <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
+      <Button className="btn btn-leave-group" onClick={e => this.leaveChannel(e)}>Leave</Button>
     </ModalFooter>
   </Modal>
 </Fragment>
