@@ -62,7 +62,11 @@ class LoginStore {
               }
          
             })
-          socket.on('sign up', messages=>console.log(messages))
+          socket.on('sign up', messages=>{
+            console.log(messages);
+          channelStore.getUserList()
+          }
+          )
         }
       }).catch(err => {
         console.log("err", err)
