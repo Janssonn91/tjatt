@@ -7,9 +7,23 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable myAttr = 'd-none';
   @observable showAttr = 'd-none';
   @observable check = 'false';
+  @observable searchContact = [];
 
   start() {
-    console.log('hej')
+
+  }
+
+  searchContacts = (e) => {
+    this.searchContact = [];
+    if (!e.target.value) {
+      return this.searchContact = this.props.loginStore.myContacts;
+    }
+    let regex = new RegExp(e.target.value, 'i');
+    let result = this.props.loginStore.myContacts.filter(user => {
+      if (regex.test(user.nickname || user.username || user.email)) {
+        this.searchContact.push(user);
+      }
+    })
   }
 
 
