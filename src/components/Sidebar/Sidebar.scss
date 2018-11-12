@@ -33,6 +33,9 @@ $text:#434651;
     height: 85px;
     .user-holder {
       padding-bottom: 0.5rem;
+      .username {
+        letter-spacing: 2px;
+      }
     }
     .dropdown {
       display: inline-block;
