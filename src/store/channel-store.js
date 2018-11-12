@@ -106,7 +106,6 @@ class ChannelStore {
     user.map((u)=>{
       this.userDict[u._id] = {name: u.nickname, img: u.image}
     })
-    console.log(this.userDict)
   }
 
 

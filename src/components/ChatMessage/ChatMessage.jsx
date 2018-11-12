@@ -23,7 +23,7 @@
         <li key={i} className="clearfix">
           <div className="message-data">
             {
-              message.status === "online" ?
+              this.props.loginStore.onLineUsers.some(id=>id===message.sender)?
             <span className="online circle">
               <i className="fas fa-circle"></i>
             </span> :
