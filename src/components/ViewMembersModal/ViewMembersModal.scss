@@ -44,6 +44,7 @@ $backgroundColor: #484951;
   .modal-body {
     .member-list {
       .list-group-item {
+        color: $blue;
         &:hover {
           p {
             &:first-of-type {
@@ -65,15 +66,21 @@ $backgroundColor: #484951;
           }
         }
         .img {
-          border-radius: 5px;
-          width: 30px;
-          height: 30px;
+          vertical-align: baseline;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
         }
-        p {
-          font-weight: bold;
-          vertical-align: middle;
-          &:first-of-type {
-            color: #1976D1;
+        .profile {
+          p:nth-child(1) {
+            font-size: 0.9rem;
+          }
+          p:nth-child(2) {
+            line-height: 0.6;
+            small {
+              font-weight: 650;
+              font-size: 70%;
+            }
           }
         }
         button.btn-make-admin {

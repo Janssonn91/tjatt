@@ -87,6 +87,10 @@ export default class Chat extends Component {
   }
 
   leaveGroupModalToggle() {
+    if(this.props.channelStore.currentChannel.admin.length < 2 && this.props.channelStore.amIAdmin){
+      console.log('träff');
+      // open a modal with a message that you are the only admin in group and therefore must appoint another member as admin first and link to modal viewmembers instead
+    }
     this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
   }
 

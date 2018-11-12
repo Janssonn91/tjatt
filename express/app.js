@@ -273,6 +273,20 @@ app.post('/login', (req, res) => {
     })
 });
 
+app.put('/updateAdmin/:_id', async (req, res) => {
+  console.log(req.body.adminId);
+  let resultChannel = channel.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { admin: req.body.adminId } }
+  )
+  .then(() => {
+    res.json({ success: true })
+  })
+  .catch(err => {
+    throw err;
+  });
+})
+
 app.put('/users/:_id', (req, res) => {
   console.log(req.body.contact);
   User.findOneAndUpdate(

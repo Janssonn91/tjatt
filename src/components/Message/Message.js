@@ -1,8 +1,8 @@
-import './ChatMessage.scss';
+import './Message.scss';
 
 @inject('loginStore', 'channelStore') @observer
-export default class ChatMessage extends Component {
- 
+export default class Message extends Component {
+
   @observable isOpen = false;
   @observable deleteMessageModal = false;
 

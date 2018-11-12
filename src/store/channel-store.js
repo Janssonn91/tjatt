@@ -121,7 +121,7 @@ class ChannelStore {
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
-        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id)); 
       });
   }
 
@@ -359,6 +359,27 @@ class ChannelStore {
   @action showChat() {
     this.hideMenu = true;
     this.hideChat = false;
+  }
+
+  @action setAdmin(newAdminId){
+    this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        adminId: newAdminId
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      }).then(res => {
+        console.log('admin updated: ', res)
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   @action exitChannel(channel) {
