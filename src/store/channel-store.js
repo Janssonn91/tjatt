@@ -64,7 +64,7 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
-
+    console.log("anchor", anchor)
     console.log(document.getElementById(anchor))
     let contact = "";
     let elements = await channels.map(async (channel, i) => {

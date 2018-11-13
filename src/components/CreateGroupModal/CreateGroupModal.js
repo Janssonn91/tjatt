@@ -40,8 +40,6 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   removeFromSelectedUser = (user) => {
     this.searchContact.push(user);
-    // const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
-    // const index = this.selectedGroupMember.indexOf(addedUser);
   }
 
 
