@@ -79,7 +79,7 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
-let onlineUsers=[];
+let onlineUsers = [];
 
 io.on('connection', (socket) => {
 
@@ -92,33 +92,33 @@ io.on('connection', (socket) => {
     //   loginUser: onlineUsers
     // });
 
-  socket.on('sign up', (user)=>{
+  socket.on('sign up', (user) => {
     console.log("sign up", user)
     socket.username = user;
     socket.broadcast.emit('sign up', {
       username: socket.username
     });
   })
-  
 
-  socket.on('login', (userId)=>{
-    onlineUsers= onlineUsers.filter(id=>id!==userId);
-      onlineUsers.push(userId)
-        socket.emit('login', {
-      loginUser:onlineUsers
+
+  socket.on('login', (userId) => {
+    onlineUsers = onlineUsers.filter(id => id !== userId);
+    onlineUsers.push(userId)
+    socket.emit('login', {
+      loginUser: onlineUsers
     })
-  
-  
+
+
   })
 
-  socket.on('logout', (userId)=>{ 
-    onlineUsers= onlineUsers.filter(id=>id!==userId);
+  socket.on('logout', (userId) => {
+    onlineUsers = onlineUsers.filter(id => id !== userId);
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })
   })
 
-  socket.on('message', (data)=> {
+  socket.on('message', (data) => {
     console.log('Incoming data ', data);
   });
 
@@ -138,14 +138,14 @@ io.on('connection', (socket) => {
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
-       ...messageFromClient
+      ...messageFromClient
     });
     console.log(message)
-    await message.save();    
+    await message.save();
 
     // Send the message to all the sockets in the channel
-    io.to(c).emit('chat message',[{
-      sender: message.sender, 
+    io.to(c).emit('chat message', [{
+      sender: message.sender,
       text: message.text,
       channel: message.channel,
       textType: message.textType,
@@ -156,14 +156,15 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-   // console.log('user disconnected');
-    console.log('client disconnect...', user._id);
-      onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    // // console.log('user disconnected');
+    // console.log('client disconnect...', user._id);
+    // EMILS DATOR BUGGAR LOSS PÅ RADEN UNDER
+    // onlineUsers = onlineUsers.filter(id => id !== user._id);
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })
 
-    
+
     //handleDisconnect()
   });
 });
@@ -177,9 +178,9 @@ app.post('/pwcheck', (req, res) => {
     req.body.pass + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
-  if(hash === req.body.oldpassword){
+  if (hash === req.body.oldpassword) {
     console.log('de stämmer')
-    res.json( {success: true, hash: hash} );
+    res.json({ success: true, hash: hash });
   }
   else {
     console.log('nix stämmer icke, försök igen');
@@ -192,7 +193,7 @@ app.post('/pwhash', (req, res) => {
     req.body.pass + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
-    res.json( {success: true, hash: hash} );
+  res.json({ success: true, hash: hash });
 })
 
 const mailer = require('./classes/Sendmail.class');
@@ -223,17 +224,17 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/users/:_id', (req, res) => {
-  User.findOne({_id: req.params._id })
-  .then(user=>{
-    if (!user) {
-      res.json({ success: false })
-    } 
-    else { res.json(user)}
-  }).catch(
-    err=>{
-      console.log(err)
-    }
-  )
+  User.findOne({ _id: req.params._id })
+    .then(user => {
+      if (!user) {
+        res.json({ success: false })
+      }
+      else { res.json(user) }
+    }).catch(
+      err => {
+        console.log(err)
+      }
+    )
 
 })
 
@@ -285,12 +286,12 @@ app.put('/updateAdmin/:_id', async (req, res) => {
     { _id: req.params._id },
     { $push: { admin: req.body.adminId } }
   )
-  .then(() => {
-    res.json({ success: true })
-  })
-  .catch(err => {
-    throw err;
-  });
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
 })
 
 app.put('/users/:_id', (req, res) => {
@@ -347,7 +348,7 @@ app.put('/users/:_id/remove', (req, res) => {
 });
 
 app.put('/memberChannels/:_id', async (req, res) => {
-   let resultChannel = await channel.update(
+  let resultChannel = await channel.update(
     { _id: req.params._id },
     { $pull: { members: mongoose.Types.ObjectId(req.body.userid) } },
     { multi: true }
@@ -360,7 +361,7 @@ app.put('/memberChannels/:_id', async (req, res) => {
 });
 
 app.put('/removeAdmin/:_id', async (req, res) => {
-   let resultAdmin = await channel.update(
+  let resultAdmin = await channel.update(
     { _id: req.params._id },
     { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
     { multi: true }
@@ -389,7 +390,7 @@ app.put('/users/:_id/setting/password', (req, res) => {
   //console.log(req.body.password);
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $set: { password: req.body.password} }
+    { $set: { password: req.body.password } }
   )
     .then(user => {
       //console.log(user);

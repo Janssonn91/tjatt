@@ -33,43 +33,44 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           socket.emit('login', this.user._id)
-          socket.on('online', message=>{
-             this.onLineUsers= message.loginUser; 
+          socket.on('online', message => {
+            this.onLineUsers = message.loginUser;
           })
           socket.off('chat message');
           socket.on(
             'chat message',
             (messages) => {
-              for(let message of messages){
+              for (let message of messages) {
                 let date = new Date();
-                if(message.channel===channelStore.currentChannel._id){
-                 channelStore.channelChatHistory.push(
-                   {channel: message.channel,
-                    sender: message.sender,
-                    star: false,
-                    text: message.text,
-                    textType: message.textType,
-                    time: date
-                   }
-                 )
+                if (message.channel === channelStore.currentChannel._id) {
+                  channelStore.channelChatHistory.push(
+                    {
+                      channel: message.channel,
+                      sender: message.sender,
+                      star: false,
+                      text: message.text,
+                      textType: message.textType,
+                      time: date
+                    }
+                  )
 
                 }
               }
-         
+
             })
-          socket.on('sign up', message=>{
-          channelStore.getUserList()
+          socket.on('sign up', message => {
+            channelStore.getUserList()
           })
-          socket.on('login', message=>{
-            this.onLineUsers= message.loginUser;  
+          socket.on('login', message => {
+            this.onLineUsers = message.loginUser;
           })
-          socket.on('logout', message=>{
-             this.onLineUsers= message.loginUser;       
+          socket.on('logout', message => {
+            this.onLineUsers = message.loginUser;
           })
           console.log(this.onLineUsers)
         }
-        socket.on('message', event=> {
-        console.log('Message from server ', event);
+        socket.on('message', event => {
+          console.log('Message from server ', event);
         });
       }).catch(err => {
         console.log("err", err)
@@ -119,7 +120,7 @@ class LoginStore {
           console.log('träff');
           this.usernameExits = true;
         }
-        
+
       }).catch((err) => {
         console.log('error', err);
       });
@@ -174,10 +175,10 @@ class LoginStore {
     channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
   }
 
-  @action cleanUpGroupModal(){
-    this.selectedGroupMember.map((data)=>{
+  @action cleanUpGroupModal() {
+    this.selectedGroupMember.map((data) => {
       return this.groupCandidates.push(data);
-      });
+    });
     this.selectedGroupMember = [];
   }
 
@@ -242,7 +243,6 @@ class LoginStore {
     if (Object.values(settings).every(value => value === "")) {
       this.areAllEmpty = true;
     }
-
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
