@@ -23,6 +23,10 @@ export const imgPath = '/images/placeholder.png';
   @observable contactsOpen = false;
   @observable groupsOpen = false;
 
+  start() {
+    this.props.channelStore.getChannels();
+  }
+
 
   async toggle() {
     await sleep(1);
@@ -51,7 +55,7 @@ export const imgPath = '/images/placeholder.png';
 
   }
 
- closeModal(){
+  closeModal() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
     this.props.loginStore.cleanUpGroupModal();
   }
