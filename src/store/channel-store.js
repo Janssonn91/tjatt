@@ -64,7 +64,6 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
-    console.log(channels)
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -128,7 +127,6 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
-    console.log("changeChannel", channel)
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
@@ -219,9 +217,7 @@ class ChannelStore {
       open: true,
       group: group
     }
-
-
-    return Channel.create(this.newChannel).then(data=>console.log("!!!!!!",data));
+    Channel.create(this.newChannel);
   }
 
   @action async createGroup(groupName) {
@@ -231,8 +227,8 @@ class ChannelStore {
     this.createChannel(groupName, admin, members, true);
     await sleep(60);
     Channel.find({channelname: groupName}).then(channel => {
-      console.log("lllllllllll",channel)
       this.changeChannel(channel[0]);
+        socket.emit('newChannel', channel[0])
         socket.emit('join channel', channel[0]._id);
          this.updateGroupChannel(channel[0]);
         channel[0].members.forEach(member => {
