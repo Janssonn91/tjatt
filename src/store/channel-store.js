@@ -104,8 +104,8 @@ class ChannelStore {
   @action async getUserList(){
     let res = await fetch('/api/users');
     let user = await res.json();
-    user.map((u)=>{
-      this.userDict[u._id] = {name: u.nickname, img: u.image}
+    user.map((u) => {
+      return this.userDict[u._id] = { name: u.nickname, img: u.image }
     })
   }
 
