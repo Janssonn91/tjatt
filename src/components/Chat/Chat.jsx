@@ -14,7 +14,7 @@
           {/* <span id="channelName"></span>  */}
           <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannelGroup
-            ? <span className="dialog-icon p-0">
+            && <span className="dialog-icon p-0">
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                 <DropdownToggle
@@ -48,20 +48,6 @@
                   </div>
                   <DropdownItem className="m-0" divider />
                   <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </span>
-            :
-            <span className="dialog-icon p-0">
-
-              <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-                <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
-                  <i className="fas fa-user"></i>
-                </DropdownToggle>
-                <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
-                    Add members
-                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </span>
