@@ -62,13 +62,16 @@ class LoginStore {
             channelStore.getUserList()
           })
           socket.on('login', message => {
+            console.log(message)
             this.onLineUsers = message.loginUser;
           })
           socket.on('logout', message => {
             this.onLineUsers = message.loginUser;
           })
-          console.log(this.onLineUsers)
         }
+        socket.on('newChannel', channel=>{
+          channelStore.getChannel();
+        })
         socket.on('message', event => {
           console.log('Message from server ', event);
         });
@@ -89,7 +92,7 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          socket.emit("login", this.user._id)
+          socket.emit('login', this.user._id)
         }
         else {
           this.loginError = true;
@@ -190,6 +193,7 @@ class LoginStore {
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
     Channel.find({channelname: channelname}).then(channel => {
+      socket.emit('newChannel', channel[0])
       socket.emit('join channel', channel[0]._id)
        channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
@@ -224,7 +228,6 @@ class LoginStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
-    console.log(this.selectedGroupMember)
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
     const index = this.groupCandidates.indexOf(addedUser);
     this.groupCandidates.splice(index, 1);

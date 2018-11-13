@@ -14,7 +14,7 @@
           {/* <span id="channelName"></span>  */}
           <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannelGroup
-            ? <span className="dialog-icon p-0">
+            && <span className="dialog-icon p-0">
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                 <DropdownToggle
@@ -42,41 +42,27 @@
                         .bind(this)}>
                       View members
                   </DropdownItem>
-                  {this.props.channelStore.amIAdmin &&
-                    <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
-                  }
+                    {this.props.channelStore.amIAdmin &&
+                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                    }
                   </div>
                   <DropdownItem className="m-0" divider />
                   <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </span>
-            :
-            <span className="dialog-icon p-0">
-
-              <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-                <DropdownToggle className="" tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
-                  <i className="fas fa-user"></i>
-                </DropdownToggle>
-                <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
-                    Add members
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </span>
           }
         </Col>
       </Row>
-      <hr className="mt-0 mb-2"/>
+      <hr className="mt-0 mb-2" />
       <Row>
         <Col className="pr-0">
           <div className="chat-history pl-2 mr-1">
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
-              {/* <div id="chatHistory"></div>  */}
-                 <ChatMessage  />
-                 <li ref={(el) => {
+                {/* <div id="chatHistory"></div>  */}
+                <ChatMessage />
+                <li ref={(el) => {
                   this.messagesEnd = el;
                 }}></li>
               </ul >
@@ -129,12 +115,15 @@
             </ButtonDropdown>
             <FormGroup className="m-0 messageAreaForm">
               <Label for="messageArea" className="d-none">Message</Label>
-              <Input
+              <Textarea
+                minRows={1}
+                maxRows={10}
+                useCacheForDOMMeasurements
+                style={{ boxSizing: 'border-box' }}
                 type="textarea"
                 name="text"
                 id="messageArea"
                 placeholder="Write your message here"
-                autoComplete="off"
                 value={this.inputMessage}
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
@@ -149,11 +138,11 @@
               </Dropdown>
             </FormGroup>
             <Button className="send p-0" onClick={e => this.sendMessage()}>
-            <img
-              src="/images/sent-mail.svg"
-              alt="send mail"
-              style={{width: 23}}/>
-          </Button>
+              <img
+                src="/images/sent-mail.svg"
+                alt="send mail"
+                style={{ width: 23 }} />
+            </Button>
           </Form>
         </Col>
       </Row>
@@ -168,7 +157,7 @@
           </Button>
         </Col>
       </Row>
-      <h1>Place holder</h1>
-    </Fragment>}
-
+      <h1 style={{ color: "black" }}>Place holder</h1>
+    </Fragment>
+  }
 </Fragment>

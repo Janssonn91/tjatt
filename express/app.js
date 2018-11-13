@@ -102,13 +102,19 @@ io.on('connection', (socket) => {
 
 
   socket.on('login', (userId) => {
+    console.log("login",userId)
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
-    socket.emit('login', {
+    socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })
 
 
+  })
+
+  socket.on('newChannel', (channel)=>{
+    console.log("newChannel", channel)
+    socket.emit('newChannel', channel);
   })
 
   socket.on('logout', (userId) => {
@@ -156,16 +162,16 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-    // // console.log('user disconnected');
-    // console.log('client disconnect...', user._id);
+    if(user._id){
+       onlineUsers = onlineUsers.filter(id => id !== user._id);
+        console.log('client disconnect...', user._id);
+        socket.broadcast.emit('logout', {
+          loginUser: onlineUsers
+        })
+    }
     // EMILS DATOR BUGGAR LOSS PÅ RADEN UNDER
-    // onlineUsers = onlineUsers.filter(id => id !== user._id);
-    socket.broadcast.emit('logout', {
-      loginUser: onlineUsers
-    })
-
-
-    //handleDisconnect()
+ 
+  
   });
 });
 

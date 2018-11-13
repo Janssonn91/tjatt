@@ -11,7 +11,6 @@ $darkred: #bb1e2d;
 $orange: #E38968;
 $text:#434651;
 
-/* font-size */
 $fontLg: 20px;
 $fontMd: 16px;
 $fontSm: 12px;
@@ -31,7 +30,6 @@ color: $lightblue;
 color: $gray;
 }
 .circle {
-font-size: 8px;
 vertical-align: middle;
 }
 .me {
@@ -44,7 +42,6 @@ color: lighten($gray, 8%);
 padding-left: 6px;
 }
 .circle-icon {
-font-size: 8px;
 color: $blue;
 vertical-align: middle;
 }
@@ -53,7 +50,6 @@ text-align:left;
 color: $text;
 padding: 8px 15px;
 line-height: 26px;
-font-size: $fontMd;
 border-radius: 6px;
 margin-bottom: 30px;
 position: relative;
@@ -86,25 +82,62 @@ background: lighten($blue, 8%);
 float: left;
 min-width: 40px;
 max-width: 630px;
-i.fa-times {
+&:hover {
+  .btn-group {
+    display: inline-block!important;
+  }
+}
+i.fa-pen {
   color: white;
   position: absolute;
-  right: -6px;
-  top: -6px;
-  font-size: $fontSm;
-  background-color: red;
+  bottom: 10px;
+  left: 2px;
+  background-color: $backgroundColor;
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  border: red 1px solid;
-  padding: 3px 0 0 5px;
+  border: $backgroundColor 1px solid;
+  padding: 5px 0 0 5px;
+  font-size: 9px;
   &:hover {
     color: darken(white, 10%);
-    background-color: darken(red, 10%);
-    border-color: darken(red, 10%);
+    background-color: darken($backgroundColor, 10%);
+    border-color: darken($backgroundColor, 10%);
     cursor: pointer;
   }
 }
+.dropdown-menu {
+  position: absolute;
+  border-radius: 5px;
+  top: -30px!important;
+  margin-top: 0;
+  height: auto;
+  padding: 0;
+    .dropdown-header {
+        color: $gray;
+        font-weight: bold;
+        &:hover {
+          cursor: unset !important;
+      }
+    }
+    .dropdown-item {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: $blue;
+      line-height: normal;
+      &:hover, &:active {
+        cursor: pointer;
+        background-color: lighten($gray, 35%);
+      }
+      &.delete-message {
+        color: $darkred;
+        &:hover {
+          background-color: $darkred;
+          color: white;
+        }
+      }
+    }
+  }
 &:after {
   border-bottom-color: lighten($blue, 8%);
   left:15px;
