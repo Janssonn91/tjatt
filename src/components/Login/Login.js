@@ -40,7 +40,8 @@ import './Login.scss';
     if (this.props.loginStore.isLoggedIn) {
       // this.props.loginStore.pageLoad(3000);
       this.props.history.push(`/${this.props.loginStore.user.username}`);
-      // this.props.loginStore.checkIfLoggedIn();
+      this.props.channelStore.getChannels();
+      //this.props.loginStore.checkIfLoggedIn();
     }
   }
 

@@ -13,7 +13,7 @@ import ScrollableFeed from 'react-scrollable-feed';
     this.props.loginStore.fetchContact()
       // Show all contacts from beginning
       .then(() => {
-        this.searchContact = this.props.loginStore.myContacts.slice(0, 5);
+        this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
       })
   }
 
@@ -21,15 +21,27 @@ import ScrollableFeed from 'react-scrollable-feed';
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
-      return this.searchContact = this.props.loginStore.myContacts.slice(0, 5);
+      return this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
     }
     let regex = new RegExp(e.target.value, 'i');
-    let result = this.props.loginStore.myContacts.filter(user => {
+    let result = this.props.loginStore.groupCandidates.filter(user => {
       if (regex.test(user.nickname || user.username || user.email)) {
         return this.searchContact.push(user);
       }
-      return false;
+      return null;
     })
+  }
+
+  removeFromSearchedUsers = (user) => {
+    const addedUser = this.searchContact.find(u => u._id === user._id);
+    const index = this.searchContact.indexOf(addedUser);
+    this.searchContact.splice(index, 1);
+  }
+
+  removeFromSelectedUser = (user) => {
+    this.searchContact.push(user);
+    // const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
+    // const index = this.selectedGroupMember.indexOf(addedUser);
   }
 
 

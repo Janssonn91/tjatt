@@ -11,10 +11,12 @@ class LoginStore {
   @observable groupCandidates = [];
   @observable selectedGroupMember = [];
   @observable message = '';
-  @observable receivedMessages = [];
+  // @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
   @observable savedNickname = false;
   @observable savedPassword = false;
+  @observable areAllEmpty = false;
+  @observable onLineUsers = [];
   @observable isLoading = true;
   // @observable myGroups = [];
 
@@ -42,35 +44,46 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
-          console.log('am i logged in???????', this.isLoggedIn)
-          channelStore.getChannels();
-          socket.on('login', (data) => {
-            connected = true;
-            // Display the welcome message
-            var message = "Welcome to Socket.IO Chat – ";
-            log(message, {
-              prepend: true
-            });
-            addParticipantsMessage(data);
-          });
+          socket.emit('login', this.user._id)
+          socket.on('online', message => {
+            this.onLineUsers = message.loginUser;
+          })
           socket.off('chat message');
           socket.on(
             'chat message',
             (messages) => {
-              console.log(messages)
-              // for(let message of messages){
-              //   let date = new Date(message.date);
-              //   this.receivedMessages.push(
-              //     message.sender + ': ' +
-              //     message.time + ': ' +
-              //     message.text + ': ' +
-              //     message.channel + ': ' +
-              //     message.textType
-              //   );
-              // }
+              for (let message of messages) {
+                let date = new Date();
+                if (message.channel === channelStore.currentChannel._id) {
+                  channelStore.channelChatHistory.push(
+                    {
+                      channel: message.channel,
+                      sender: message.sender,
+                      star: false,
+                      text: message.text,
+                      textType: message.textType,
+                      time: date
+                    }
+                  )
+
+                }
+              }
+
             })
-          //console.log(this.receivedMessages)
+          socket.on('sign up', message => {
+            channelStore.getUserList()
+          })
+          socket.on('login', message => {
+            this.onLineUsers = message.loginUser;
+          })
+          socket.on('logout', message => {
+            this.onLineUsers = message.loginUser;
+          })
+          console.log(this.onLineUsers)
         }
+        socket.on('message', event => {
+          console.log('Message from server ', event);
+        });
       }).catch(err => {
         console.log("err", err)
       })
@@ -89,10 +102,7 @@ class LoginStore {
           this.user = res.user;
           this.pageLoad();
           this.isLoggedIn = true;
-          this.checkIfLoggedIn();
-          console.log(this.checkIfLoggedIn());
-          console.time();
-          //this.myChannel = this.user.channel;
+          socket.emit("login", this.user._id)
         }
         else {
           this.loginError = true;
@@ -118,14 +128,18 @@ class LoginStore {
           this.usernameExits = false;
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
+          socket.emit('sign up', this.user);
         } else {
           console.log('träff');
           this.usernameExits = true;
         }
+
       }).catch((err) => {
         console.log('error', err);
       });
   }
+
+
 
   sendWelcomeMail(username, email) {
     fetch('/api/send-mail', {
@@ -171,13 +185,8 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    //console.log(this.myContacts)
     channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
-    // channelStore.getChannelByUser(userId);
   }
-
-
-
 
   @action cleanUpGroupModal() {
     this.selectedGroupMember.map((data) => {
@@ -223,10 +232,12 @@ class LoginStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
-    console.log(this.selectedGroupMember)
+    console.log(toJS(this.selectedGroupMember))
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
     const index = this.groupCandidates.indexOf(addedUser);
     this.groupCandidates.splice(index, 1);
+    console.log(toJS(this.groupCandidates))
+    console.log(index);
   }
 
   @action removeFromSelect(user) {
@@ -238,6 +249,10 @@ class LoginStore {
 
   @action updateSettings(settings) {
     const { imageFormData, nickname, password, currentPassword } = settings;
+
+    if (Object.values(settings).every(value => value === "")) {
+      this.areAllEmpty = true;
+    }
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -330,6 +345,7 @@ class LoginStore {
     this.isNotCorrectPass = false;
     this.savedNickname = false;
     this.savedPassword = false;
+    this.areAllEmpty = false;
   }
 }
 
