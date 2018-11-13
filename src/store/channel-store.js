@@ -28,7 +28,54 @@ class ChannelStore {
   @observable userDict = {};
   @observable adminLeavingError = false;
 
+  constructor() {
+    this.listenToPopState();
+  }
 
+  // This is a dirty Thomas hack to fick back/forward buttons
+  // so that the work with channel changes
+  // - would have been better to do with React Router
+  // but can't get the router to work with elements directly
+  // React.rendered from the store...
+  listenToPopState() {
+    // Add a raw JS listener to popstate
+    // if it hasn't been added before
+    if (!this.popStateListenerSet) {
+      console.log('adding listener');
+      this.popStateListenerSet = true;
+      window.onpopstate = async () => {
+
+        // since non-group channels don't have human readable
+        // channel names - just ids - we need to fetch the readble names
+        // we store those in a new properrt ._contact.contactChannelname
+        for (let channel of this.myChannels) {
+          if (!channel.group) {
+            channel._contact = await this.getContactName(channel.members);
+          }
+        }
+
+        // Now let's try to find a match between the url path and a channel name
+        // and change to that channel
+        let channelFound = false;
+        let lastUrlPart = window.location.pathname.split('/').pop();
+        for (let channel of this.myChannels) {
+          let cname = !channel.group && channel._contact ? channel._contact.contactChannelname : channel.channelname;
+          if (lastUrlPart === cname) {
+            this.changeChannel(channel, false);
+            channelFound = true;
+            break;
+          };
+        }
+
+        // I (Thomas) have NO IDEA how to restore the initial view "PLACE HOLDER"
+        // when we hit the back button and do not find a channel (see above)
+        // so this is EXTREMELY DIRTY - I just do a hard reload of the whole page
+        if (!channelFound) {
+          window.location.reload();
+        }
+      }
+    }
+  }
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -127,8 +174,7 @@ class ChannelStore {
       });
   }
 
-  @action async changeChannel(channel) {
-    console.log("changeChannel", channel)
+  @action async changeChannel(channel, addPushState = true) {
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
@@ -151,7 +197,9 @@ class ChannelStore {
       this.channelName = channel.channelname;
       this.groupAdminId = channel.admin[0];
     }
+    if (addPushState) {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+  }
   }
 
   async getChannelChatHistory(channel) {
