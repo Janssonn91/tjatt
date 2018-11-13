@@ -4,7 +4,11 @@
       View members
     </ModalHeader>
     <ModalBody>
-      <ListGroup className="border-0 rounded-0 member-list">
+    {this.props.channelStore.amIAdmin && this.props.channelStore.adminLeavingError && this.props.channelStore.currentChannel.admin.length < 2 &&
+      <Alert color="danger" className="my-2 text-center">
+        You are the only admin in the group, please make another member admin before leaving
+      </Alert>}
+      <ListGroup className="border-0 rounded-0 member-list">    
       {this.props.channelStore.currentGroupMembers.map((user, i) =>
         <ListGroupItem key={i} className="m-0 py-2 px-1 border-left-0 border-right-0 rounded-0 admin-user">
           <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"}/>
