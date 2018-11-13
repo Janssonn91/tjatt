@@ -19,6 +19,8 @@ module.exports = class Channel extends ModelAndRoutes {
         ref: 'Message'
       }],
       favorite: Boolean,
+      open: Boolean,
+      group: Boolean,
     }
   }
 }

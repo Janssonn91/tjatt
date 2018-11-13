@@ -1,15 +1,18 @@
 import './Signup.scss';
 
-@withRouter @observer export default class Signup extends Component {
+@inject('loginStore', 'channelStore') @withRouter @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
+  @observable useremailToSet = '';
   @observable passWordToSet = '';
   @observable confirmPassword = '';
-  @observable usernameExits = false;
-  @observable user = {};
 
   usernameChange(e) {
     this.usernameToSet = e.currentTarget.value;
+  }
+
+  useremailChange(e) {
+    this.useremailToSet = e.currentTarget.value;
   }
 
   passwordChange(e) {
@@ -18,31 +21,24 @@ import './Signup.scss';
 
   confirmPasswordChange = (e) => {
     this.confirmPassword = e.currentTarget.value;
+    // behöver email-validering här och sök på om den redan finns i backend?
+  }
+
+  goToChat = async () => {
+    await sleep(30);
+    if (this.props.loginStore.isLoggedIn) {
+      this.props.history.push(`/${this.props.loginStore.user.username}`);
+    }
+  }
+
+  removeError = (e) => {
+    this.props.loginStore.usernameExits = false;
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    fetch('/api/users',
-      {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify({ username: this.usernameToSet, password: this.passWordToSet }),
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('created user: ' + this.usernameToSet)
-
-          this.user = res.user
-          this.usernameExits = false;
-          this.props.history.push('/');
-
-        } else {
-          this.usernameExits = true;
-        }
-      }).catch((err) => {
-        console.log('error', err);
-      });
+    this.props.loginStore.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
+    this.goToChat();
   };
 
 }

@@ -1,0 +1,102 @@
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: #FF3C00;
+$darkred: #bb1e2d;
+$orange: #E38968;
+$text:#434651;
+
+@mixin scrollbar {
+  &::-webkit-scrollbar-track{
+      display: none!important;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+      border-radius: 10px !important;
+  }
+  &::-webkit-scrollbar {
+      width: 12px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+      border-radius: 10px !important;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+      box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+      background-color: lighten($gray, 15%) !important;
+  }
+}
+
+.addUserModal {
+  .modal-content {
+    // width: 75%;
+    .modal-header {
+      h4 {
+        color: $gray;
+      }
+      button, button:hover, button:focus, button:active {
+        outline: none;
+        border: none;
+      }
+    }
+    form {
+      label {
+        color: $gray;
+      }
+      input {
+        margin-bottom: 3px;
+        &:focus {
+          border-color: $lightblue;
+          box-shadow: 0 0 0 0.2rem lightblue;
+        }
+      }
+    }
+    .search-result-form-group {
+      max-height: 214px;
+      overflow-y: auto;
+      @include scrollbar;
+      .list-group-item {
+        color: $blue;
+        &:hover {
+          color: $darkblue;
+          cursor: unset;
+        }
+        .img{
+          vertical-align: baseline;
+          border-radius: 5px;
+          width: 30px;
+          height: 30px;
+        }
+        .profile {
+          width: 42%;
+          p:nth-child(1) {
+            font-size: 0.9rem;
+          }
+          p:nth-child(2) {
+            line-height: 0.6;
+            small {
+              font-weight: 650;
+              font-size: 70%;
+            }
+          }
+        }
+        button.btn-add-user {
+          margin-top: 10px;
+          color: $blue;
+          font-size: 0.7rem;
+          padding: 0.2rem 0.4rem;
+          background-color: unset;
+          &:hover {
+            text-decoration: underline;
+          }
+          &:active, &:focus {
+            border: 0;
+            outline: 0;
+            box-shadow: unset;
+          }
+        }
+      }
+      
+    }
+  }
+}

@@ -1,7 +1,13 @@
 import './Sidebar.scss';
+export const imgPath = '/images/placeholder.png';
 
-@withRouter @observer export default class Sidebar extends Component {
+@inject('loginStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
+  @observable updateSettingModalOpen = {
+    isOpen: false,
+    keyboard: true,
+    toggle: this.openModalupdateSetting.bind(this)
+  }
   @observable addUserModalOpen = {
     isOpen: false,
     keyboard: true,
@@ -10,44 +16,30 @@ import './Sidebar.scss';
   @observable createGroupModalOpen = {
     isOpen: false,
     keyboard: true,
-    toggle: this.openModalCreateGroup.bind(this)
+    toggle: this.closeModal.bind(this)
   }
+
   @observable collapseOpen = false;
-  @observable userLoggedIn;
-  @observable file;
-  @observable imgPath = '/images/placeholder.png'
-  @observable useDBPath = !!this.props.user.image || false;
+  @observable contactsOpen = false;
+  @observable groupsOpen = false;
 
-  // TODO: this is temporary
-  @observable withoutMe = [];
-  @observable filteredUsers = [];
-
-  async start() {
-    // TODO: this is temporary
-    await fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        this.withoutMe = users.filter(user => user._id !== this.props.user._id);
-        this.updateContact();
-      })
-  }
-
-  updateContact() {
-    const isIncluded = (userId) => {
-      return this.props.user.contact.some(contactId => userId === contactId);
-    }
-    this.filteredUsers = this.withoutMe.filter(user => {
-      if (isIncluded(user._id)) {
-        return user.username;
-      } else {
-        return '';
-      }
-    });
-  }
 
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
+  }
+
+  openContacts = () => {
+    this.contactsOpen = !this.contactsOpen;
+  }
+
+  openGroups = () => {
+    this.groupsOpen = !this.groupsOpen;
+  }
+
+  openModalupdateSetting() {
+    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
+    this.props.loginStore.resetAlert();
   }
 
   openModalAddNewUser() {
@@ -55,35 +47,26 @@ import './Sidebar.scss';
   }
 
   openModalCreateGroup() {
-    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+
+  }
+
+  closeModal() {
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+    this.props.loginStore.cleanUpGroupModal();
   }
 
   logout() {
-    fetch('/api/logout').then(() => this.props.history.go('/'))
+    fetch('/api/logout').then(() => {
+      this.props.loginStore.isLoggedIn = false;
+      this.props.history.push('/');
+      socket.emit("logout", this.props.loginStore.user._id);
+    });
   }
 
   changeLogStatus() {
     return false;
   }
 
-  onFileChange = (event) => {
-    let store = JSON.parse(localStorage.getItem('store'));
-    console.log(store.Login)
-    console.log(event.target.files[0])
-    let formData = new FormData();
-    formData.append('id', this.props.user._id);
-    formData.append('file', event.target.files[0]);
-    fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-      .then(res => res.json())
-      .then(res => {
-        let path = res.path;
-        this.imgPath = path;
-        this.useDBPath = false;
-      });
-
-  }
 
 }

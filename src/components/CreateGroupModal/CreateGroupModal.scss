@@ -1,71 +1,175 @@
-$gray: #92959E;
-$green: #88BD73;
-$blue: #94C2ED;
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: #FF3C00;
+$darkred: #bb1e2d;
 $orange: #E38968;
+$text:#434651;
 
-.createGroupModal {  
+@mixin scrollbar {
+  &::-webkit-scrollbar-track{
+      display: none!important;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.3)!important;
+      border-radius: 10px !important;
+  }
+  &::-webkit-scrollbar {
+      width: 12px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+      border-radius: 10px !important;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+      box-shadow: inset 0 0 6px rgba(0,0,0,.3) !important;
+      background-color: lighten($gray, 15%) !important;
+  }
+}
+
+.createGroupModal {
+  width: 75%;
+  margin: 1.75rem auto;
   .modal-header {
     h4 {
       color: $gray;
     }
+    button, button:hover, button:focus, button:active {
+      outline: none;
+      border: none;
+    }
+    #setGroupName{
+      border-radius: 4px;
+    }
+    .feedback{
+      font-size:10px;
+    }
   }
-  form {
-    input.search {
-      margin-bottom: 3px;
-      &:focus {
-        border-color: #a0ca8f;
-        box-shadow: 0 0 0 0.2rem rgba(160,202,143,0.75);
+  .modal-body {
+    height: 275px;
+    @media (max-width: 767.5px){
+      .selected-members{
+        height: 80px;
+        overflow-y: auto;
+        @include scrollbar;
+        span {
+          &:hover{
+            cursor: pointer;
+          }
+          .img{
+            vertical-align: baseline;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+          }
+          .profile {
+            p:nth-child(2) {
+              line-height: 0.6;
+            }
+          }
+        }
       }
     }
-    .list-group-item {
-      color: $green;
+
+    form {
+      &:focus {
+        border-color: $lightblue;
+        box-shadow: 0 0 0 0.2rem lightblue;
+      }
+      .select-area{
+        .searched-user, .big-screen {
+          h5 {
+            color: $gray;
+          }
+          .form-group {
+            height: 157px;
+          }
+        }
+        .list-group-item {
+          margin-right: 3px;
+          color: $blue;
+          &:hover {
+            color: $darkblue;
+          }
+          .img{
+            vertical-align: baseline;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+          }
+          .profile {
+            width: 42%;
+            p:nth-child(1) {
+              font-size: 0.9rem;
+            }
+            p:nth-child(2) {
+              line-height: 0.6;
+              small {
+                font-weight: 650;
+                font-size: 70%;
+              }
+            }
+          }
+
+          button.btn-add-user, button.btn-remove-user {
+            color: $blue;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            background-color: unset;
+            &:hover {
+              text-decoration: underline;
+            }
+            &:active, &:focus {
+              border: 0;
+              outline: 0;
+              box-shadow: unset;
+            }
+          }
+          button.btn-add-user {
+            margin-top: 9px;
+          }
+          button.btn-remove-user {
+            margin-top: 11px;
+          }
+        }
+      }
+    }
+    .show{
+      height:10px;
+    }
+  }
+  input {
+    border: 1px solid lighten($lightblue, 16%);
+      &:focus {
+        border-color: $darkblue;
+      }
+  }
+  .overflow-y-auto{
+    overflow-y: auto;
+    @include scrollbar;
+  }
+  ._scrollable-div_1dj6m_1 {
+    height: unset;
+  }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    padding: 0.275rem 0.65rem;
+    font-size: 0.9rem;
+    &.btn-create {
+      background-color: $blue;
       &:hover {
-        background-color: #f2f2f2;
+        background-color: $darkblue;
       }
-      .img-holder {
-        img {
-          width: 35px;
-          vertical-align: bottom;
-        }
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
       }
-      .profile {
-        p:nth-child(2) {
-          line-height: 0.6;
-        }
-      }
-      .round label {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 50%;
-        cursor: pointer;
-        height: 28px;
-        left: 0;
-        position: relative;
-        top: 0;
-        width: 28px;
-      }
-      .round label:after {
-        border: 2px solid #fff;
-        border-top: none;
-        border-right: none;
-        content: "";
-        height: 6px;
-        left: 7px;
-        opacity: 0;
-        position: absolute;
-        top: 8px;
-        transform: rotate(-45deg);
-        width: 12px;
-      }
-      .round input[type="checkbox"] {
-        visibility: hidden;
-      }
-      .round input[type="checkbox"]:checked + label {
-        background-color: #66bb6a;
-        border-color: #66bb6a;
-      }
-      .round input[type="checkbox"]:checked + label:after {
-        opacity: 1;
+    }
+
+    &.btn-cancel {
+      background-color: $darkred;
+      &:hover {
+        background-color: darken($darkred, 10%);
       }
     }
   }
