@@ -217,7 +217,7 @@ $fontSm: 12px;
             background-color: lighten($gray, 30%);
             color: $text;
             &:after {
-                border-bottom-color: white;
+                border-bottom-color: lighten($gray, 30%);
                 left:40px;
             }
         }

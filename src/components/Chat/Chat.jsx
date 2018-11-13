@@ -157,7 +157,7 @@
           </Button>
         </Col>
       </Row>
-      <h1>Place holder</h1>
+      <h1 style={{ color: "black" }}>Place holder</h1>
     </Fragment>
   }
 </Fragment>
