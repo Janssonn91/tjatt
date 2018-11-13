@@ -26,6 +26,7 @@ class ChannelStore {
   @observable contactImg = "";
   @observable contactChannelname = "";
   @observable userDict = {};
+  @observable adminLeavingError = false;
 
 
 
@@ -362,6 +363,7 @@ class ChannelStore {
   }
 
   @action setAdmin(newAdminId){
+    this.adminLeavingError = false;
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
       method: 'PUT',
@@ -380,6 +382,10 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
+  }
+
+  @action showAdminLeaveError(){
+    this.adminLeavingError = true;
   }
 
   @action exitChannel(channel) {
@@ -418,6 +424,33 @@ class ChannelStore {
         return res.json();
       }).then(res => {
         console.log(res.resultChannel, res.resultUser)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      if(this.amIAdmin){
+        this.removeAdmin(userId, channel);
+      }
+  }
+
+  removeAdmin(id, channel){
+    // remove admin from frontend
+    let index = this.currentChannel.admin.indexOf(id);
+    this.currentChannel.admin.splice(index, 1);
+    // remove admin from db
+    fetch(`/api/removeAdmin/${channel._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        userid: id
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      }).then(res => {
+        console.log(res)
       })
       .catch(err => {
         console.log(err);
