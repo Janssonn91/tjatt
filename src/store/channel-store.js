@@ -81,7 +81,7 @@ class ChannelStore {
 
   @action async getChannels() {
     this.myChannels = [];
-    this.myChannels = await Channel.find({
+    this.myChannels =await Channel.find({
       _id: loginStore.user.channel,
     })
     this.groupChannels = [];
@@ -277,10 +277,8 @@ class ChannelStore {
     await sleep(60);
     Channel.find({channelname: groupName}).then(channel => {
       this.changeChannel(channel[0]);
-        socket.emit('newChannel', channel[0])
-        socket.emit('join channel', channel[0]._id);
-         this.updateGroupChannel(channel[0]);
         channel[0].members.forEach(member => {
+          console.log("push channel into member", member)
           fetch(`/api/users/${member}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -297,6 +295,8 @@ class ChannelStore {
               console.log(err);
             })
         })
+         socket.emit('newChannel', channel[0]._id)
+         this.updateGroupChannel(channel[0]);
       })
   }
 

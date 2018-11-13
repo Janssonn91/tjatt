@@ -62,7 +62,6 @@ class LoginStore {
             channelStore.getUserList()
           })
           socket.on('login', message => {
-            console.log(message)
             this.onLineUsers = message.loginUser;
           })
           socket.on('logout', message => {
@@ -70,7 +69,8 @@ class LoginStore {
           })
         }
         socket.on('newChannel', channel=>{
-         
+          console.log(channel)
+          channelStore.getChannels();
         })
         socket.on('message', event => {
           console.log('Message from server ', event);
@@ -92,7 +92,6 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          socket.emit('login', this.user._id)
         }
         else {
           this.loginError = true;
@@ -193,7 +192,8 @@ class LoginStore {
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
     Channel.find({channelname: channelname}).then(channel => {
-      socket.emit('newChannel', channel[0])
+      channelStore.changeChannel(channel[0]);
+      socket.emit('newChannel', channel[0]._id)
       socket.emit('join channel', channel[0]._id)
        channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
