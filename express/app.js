@@ -114,7 +114,7 @@ io.on('connection', (socket) => {
 
   socket.on('newChannel', (channel)=>{
     console.log("newChannel", channel)
-    socket.emit('newChannel', channel);
+    socket.broadcast.emit('newChannel', channel);
   })
 
   socket.on('logout', (userId) => {
@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', async (messageFromClient) => {
     // Get the user from session
-    console.log(messageFromClient)
+    //console.log(messageFromClient)
     let c = messageFromClient.channel;
     console.log("c", c)
     socket.join(c);

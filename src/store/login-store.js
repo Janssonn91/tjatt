@@ -70,7 +70,9 @@ class LoginStore {
           })
         }
         socket.on('newChannel', channel=>{
-          channelStore.getChannel();
+          let c = channel[1];
+          console.log("newchannel", c)
+          channelStore.getChannels();
         })
         socket.on('message', event => {
           console.log('Message from server ', event);

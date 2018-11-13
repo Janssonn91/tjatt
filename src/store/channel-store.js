@@ -34,7 +34,7 @@ class ChannelStore {
 
   @action async getChannels() {
     this.myChannels = [];
-    this.myChannels = await Channel.find({
+    this.myChannels =await Channel.find({
       _id: loginStore.user.channel,
     })
     this.groupChannels = [];
