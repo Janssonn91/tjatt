@@ -16,7 +16,16 @@
           </div>
           <div className="message my-message">
             {message.text}
-            <i className="fas fa-times" onClick={this.deleteMessageModalToggle.bind(this)}></i>
+            <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
+              <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
+                <i className="fas fa-pen"></i>
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem header className="py-2 px-3 dropdown-header">Configure message</DropdownItem>
+                <DropdownItem className="m-0"divider/>
+                <DropdownItem className="py-2 px-3 delete-message" onClick={this.deleteMessageModalToggle.bind(this)}>Delete message</DropdownItem>
+              </DropdownMenu>
+            </ButtonDropdown>
           </div>
         </li> :
         
