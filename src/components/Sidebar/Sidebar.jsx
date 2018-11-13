@@ -22,7 +22,7 @@
       </NavLink> */}
 
 
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openContacts}>My Contacts</NavItem>
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
@@ -39,7 +39,7 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
       <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>

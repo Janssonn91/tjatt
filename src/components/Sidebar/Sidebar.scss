@@ -97,6 +97,7 @@ $text:#434651;
         display: inline-block;
         &:hover {
           cursor: pointer;
+          color: lightgray;
           text-decoration: underline;
         }
       }
