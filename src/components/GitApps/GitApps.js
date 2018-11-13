@@ -12,7 +12,7 @@ import './GitApps.scss';
 @observable importingRepo = false;
 @observable importingApps = false;
 @observable loadingStatus = 0;
-@observable runningAppDropdown = false 
+@observable runningAppDropdown = false ;
 
   async start(){
     this.createStoreConnectedProperties({
@@ -20,7 +20,6 @@ import './GitApps.scss';
     });
     this.importingApps = true;
     await this.fetchRepos();
-    console.log(this.importedApps);
   }
 
   async importRepo(name, url){
@@ -96,6 +95,9 @@ import './GitApps.scss';
 
   openAppHandler(app){
     this.openApp = app;
+  }
+  closeAppHandler(){
+    this.openApp = {}
   }
 
   onSubmit(){

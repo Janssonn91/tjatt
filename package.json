@@ -62,6 +62,7 @@
     "react-router-dom": "^4.3.1",
     "react-scrollable-feed": "^1.0.1",
     "react-syntax-highlighter": "^8.0.1",
+    "react-tooltip": "^3.9.0",
     "react-warp-core": "^0.1.72",
     "reactstrap": "^6.4.0",
     "resolve": "1.6.0",

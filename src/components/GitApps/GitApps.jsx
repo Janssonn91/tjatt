@@ -2,25 +2,31 @@
     <div
         style={{width:'100%', height: '100vh'}} >
         {Object.keys(this.openApp).length ? 
-            <Iframe url={this.openApp.url}
-                onClick={this.showSidedrawer ? ()=>this.sideDrawerHandler() : null}
-                className="gitApps-app-frame"
-                display="initial"
-                allowFullScreen/> 
+            <div>
+                <Button
+                    style={{position: 'absolute', top: '20px', left: '20px', zIndex: '1'}} 
+                    onClick={()=>this.closeAppHandler()}>
+                        <i className="fas fa-times"></i>
+                    </Button>
+                <Iframe url={this.openApp.url}
+                    className="gitApps-app-frame"
+                    display="initial"
+                    allowFullScreen/> 
+            </div>
         :null}
     </div>
     <Button
         style={{
             position: 'absolute', 
-            top: '0', 
-            left: '0',
+            top: '50%', 
+            left: '20px',
             width: '100px',
             height: '100px',
         }}
         onClick={()=> this.sideDrawerHandler()}>
         Git Hell!
     </Button>
-    <div className={`gitApps-app-launcher ${this.runningApps.length ? 'gitApps-app-launcher-show' : null}`}>
+    {/* <div className={`gitApps-app-launcher ${this.runningApps.length ? 'gitApps-app-launcher-show' : null}`}>
         <Dropdown 
             isOpen={this.runningAppDropdown} 
             toggle={() => this.runningAppDropdownHandler()}>
@@ -37,7 +43,7 @@
                 )}
             </DropdownMenu>
         </Dropdown>
-    </div>
+    </div> */}
     <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.showSidedrawer ? 'open' : null}`}>
         <Button
             onClick={()=> this.sideDrawerHandler()} 
@@ -102,17 +108,28 @@
                                     className="gitApps-sideDrawer-appsList-app">
                                         <p className="gitApps-sideDrawer-appsList-app-label">{app.name}</p>
                                         <div className="gitApps-sideDrawer-appsList-app-controls">
+                                            {app.running ? 
+                                            <Fragment>
+                                                <button
+                                                    onClick={() => this.openAppHandler(app)}   
+                                                    className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                                    <i className={`fas fa-rocket`}></i> 
+                                                </button> 
+                                            </Fragment>
+                                            : null}
                                             <button
+                                                id={`run-${app._id}`}
                                                 onClick={()=>this.runningAppHandler(app._id)}   
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
                                                 {!app.running ? <i className="fas fa-play"></i> : <i className="fas fa-stop"></i>}
                                                 
                                             </button>
                                             <button
+                                                id={`run-${app._id}`}
                                                 onClick={()=>this.deleteRepo(app._id)}
                                                 type="button"
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
-                                                    <i className="fas fa-times"></i>
+                                                    <i className="fas fa-trash-alt"></i>
                                             </button>   
                                         </div>
                                 </div>
