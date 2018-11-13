@@ -70,7 +70,7 @@ class LoginStore {
         }
         socket.on('newChannel', channel=>{
           console.log(channel)
-          //channelStore.getChannels();
+          channelStore.getChannels();
         })
         socket.on('message', event => {
           console.log('Message from server ', event);
@@ -192,6 +192,7 @@ class LoginStore {
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
     Channel.find({channelname: channelname}).then(channel => {
+      channelStore.changeChannel(channel[0]);
       socket.emit('newChannel', channel[0]._id)
       socket.emit('join channel', channel[0]._id)
        channelStore.updateContactChannels(channel[0]);
