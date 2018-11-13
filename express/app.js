@@ -156,9 +156,10 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-    // console.log('user disconnected');
+    // // console.log('user disconnected');
     // console.log('client disconnect...', user._id);
-    onlineUsers = onlineUsers.filter(id => id !== user._id);
+    // EMILS DATOR BUGGAR LOSS PÅ RADEN UNDER
+    // onlineUsers = onlineUsers.filter(id => id !== user._id);
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })

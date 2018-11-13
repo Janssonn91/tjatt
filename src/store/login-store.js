@@ -233,13 +233,11 @@ class LoginStore {
   }
 
   @action updateSettings(settings) {
-    console.log('nickname?')
     const { imageFormData, nickname, password, currentPassword } = settings;
 
     if (Object.values(settings).every(value => value === "")) {
       this.areAllEmpty = true;
     }
-    console.log('nickname??')
     if (nickname !== "") {
       fetch(`/api/users/${this.user._id}/setting`, {
         method: 'PUT',
@@ -254,12 +252,10 @@ class LoginStore {
           if (data.success) {
             this.savedNickname = true;
             this.user = { ...this.user, nickname };
-            console.log('nickname???')
           }
         })
         .catch(err => {
           console.log(err);
-          console.log('nickname???????????')
         });
     }
 
