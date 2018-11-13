@@ -94,7 +94,7 @@ import './GitApps.scss';
   }
 
   openAppHandler(app){
-    this.openApp = app;
+    this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
   }
   closeAppHandler(){
     this.openApp = {}

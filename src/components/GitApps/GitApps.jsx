@@ -26,24 +26,7 @@
         onClick={()=> this.sideDrawerHandler()}>
         Git Hell!
     </Button>
-    {/* <div className={`gitApps-app-launcher ${this.runningApps.length ? 'gitApps-app-launcher-show' : null}`}>
-        <Dropdown 
-            isOpen={this.runningAppDropdown} 
-            toggle={() => this.runningAppDropdownHandler()}>
-            <DropdownToggle>
-                <i className="fas fa-rocket fa-2x"></i>
-            </DropdownToggle>
-            <DropdownMenu>
-                {this.runningApps.map((app, index)=>
-                    <DropdownItem
-                        onClick={() => this.openAppHandler(app)} 
-                        key={index}>
-                        {app.name}
-                    </DropdownItem>
-                )}
-            </DropdownMenu>
-        </Dropdown>
-    </div> */}
+    
     <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.showSidedrawer ? 'open' : null}`}>
         <Button
             onClick={()=> this.sideDrawerHandler()} 
@@ -111,26 +94,37 @@
                                             {app.running ? 
                                             <Fragment>
                                                 <button
+                                                    data-tip data-for={`launch-${app._id}`}
                                                     onClick={() => this.openAppHandler(app)}   
                                                     className="gitApps-sideDrawer-appsList-app-controls-button ">
-                                                    <i className={`fas fa-rocket`}></i> 
+                                                    <i className={`fas ${this.openApp._id === app._id ? 'fa-times' : 'fa-rocket'}`}></i> 
                                                 </button> 
+                                                <ReactTooltip id={`launch-${app._id}`} effect='solid'>
+                                                  <span>{this.openApp._id === app._id ? 'Close' :'Launch'} App</span>
+                                                </ReactTooltip>
                                             </Fragment>
                                             : null}
                                             <button
+                                                data-tip data-for={`start-${app._id}`}
                                                 id={`run-${app._id}`}
                                                 onClick={()=>this.runningAppHandler(app._id)}   
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
                                                 {!app.running ? <i className="fas fa-play"></i> : <i className="fas fa-stop"></i>}
                                                 
                                             </button>
+                                            <ReactTooltip id={`start-${app._id}`} effect='solid'>
+                                              <span>{`${app.running ? 'Stop' : 'Start'}`} App</span>
+                                            </ReactTooltip>
                                             <button
-                                                id={`run-${app._id}`}
+                                                data-tip data-for={`delete-${app._id}`}
                                                 onClick={()=>this.deleteRepo(app._id)}
                                                 type="button"
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
                                                     <i className="fas fa-trash-alt"></i>
-                                            </button>   
+                                            </button>  
+                                            <ReactTooltip id={`delete-${app._id}`}effect='solid'>
+                                              <span>Delete App</span>
+                                            </ReactTooltip> 
                                         </div>
                                 </div>
                         </li>
