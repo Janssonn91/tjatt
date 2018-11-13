@@ -118,7 +118,9 @@ io.on('connection', (socket) => {
     })
   })
 
- 
+  socket.on('message', (data)=> {
+    console.log('Incoming data ', data);
+  });
 
 
 
@@ -156,6 +158,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
    // console.log('user disconnected');
     console.log('client disconnect...', user._id);
+      onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    socket.broadcast.emit('logout', {
+      loginUser: onlineUsers
+    })
 
     
     //handleDisconnect()

@@ -68,6 +68,9 @@ class LoginStore {
           })
           console.log(this.onLineUsers)
         }
+        socket.on('message', event=> {
+        console.log('Message from server ', event);
+        });
       }).catch(err => {
         console.log("err", err)
       })
