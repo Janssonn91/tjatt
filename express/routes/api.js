@@ -51,7 +51,7 @@ function git_clone(payload) {
 
 function build_docker_image(payload) {
   let name = payload.uniqueProjectName;
-  create_docker_dockerfile(payload)
+  create_docker_dockerfile(payload);
 
   var tarStream = tar.pack('./docker/' + name)
   docker.image.build(tarStream, {
@@ -60,6 +60,9 @@ function build_docker_image(payload) {
     .then((stream) => promisifyStream(stream))
     .then(() => {
       create_docker_container(payload)
+    })
+    .then(() => {
+      create_docker_compose_file(payload)
     })
     .catch((error) => console.log(error))
 }
@@ -132,37 +135,50 @@ CMD [ "npm", "start" ]`);
   });
 }
 
-function create_docker_compose_file(payload){
+async function create_docker_compose_file(payload){
+  let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
 
 let data =
 `version: "2"
 services:
   web:
-    build: ../${payload.uniqueProjectName}
+    build: "../${payload.uniqueProjectName}"
+    # entrypoint: "/docker/${payload.uniqueProjectName}"
     ports:
-    - "hostport:3000"
+    - "${payload.webPort}:3000"
     depends_on:
     - mongo
-    container_name: "unique-name-app"
+    container_name: "${payload.uniqueProjectName}_app"
   mongo:
-    build: ../${payload.uniqueProjectName}
+    build: "../${payload.uniqueProjectName}"
+    # entrypoint: "/docker/${payload.uniqueProjectName}"
     expose:
     - "27017"
-    container_name: "unique-name-db"`
-    
+    container_name: "${payload.uniqueProjectName}_db"`;
+
+  fs.writeFile(path, '', {
+    flag: 'wx'
+  }, function (err) {
+    if (err) {
+      console.log("Docker compose file already exists!")
+    } else {
+      fs.appendFileSync(path, data);
+    }
+  });
+
+  await start_containers_composer(payload);
 }
 
 
 const { exec } = require('child_process');
 
-function start_containers_composer(){
-  exec('docker-compose ', (err, stdout, stderr) => {
+function start_containers_composer(payload){
+  exec(`cd ../../docker/${payload.uniqueProjectName} docker-compose up -d`, (err, stdout, stderr) => {
     if (err) { throw (err); }
     console.log(stdout || stderr);
     
   });
 }
-
 
 
 module.exports = router;
