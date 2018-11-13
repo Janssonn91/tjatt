@@ -14,7 +14,7 @@
           {/* <span id="channelName"></span>  */}
           <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannelGroup
-            && <span className="dialog-icon p-0">
+            ? <span className="dialog-icon p-0">
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                 <DropdownToggle
@@ -51,6 +51,8 @@
                 </DropdownMenu>
               </Dropdown>
             </span>
+            :
+            <span style={{ width: 30 }}>{null}</span>
           }
         </Col>
       </Row>
