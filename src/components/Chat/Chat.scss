@@ -191,6 +191,7 @@ $fontSm: 12px;
             vertical-align: middle;
         }
         .message {
+            word-break: break-all;
             text-align:left;
             color: $text;
             padding: 8px 15px;
@@ -247,7 +248,7 @@ $fontSm: 12px;
         .dropdown-toggle {
           margin: 5px 0 5px 5px;
           @media (min-width: 576px) {
-          margin: 10px 0 10px 10px;
+            margin: 10px 0 10px 10px;
           }
           border-radius: 50%;
             width: 50px;
@@ -314,7 +315,7 @@ $fontSm: 12px;
         .send {
             margin: 5px 5px 5px 0;
             @media (min-width: 576px) {
-          margin: 10px 10px 10px 0;
+              margin: 10px 10px 10px 0;
             }
             border-color: $blue;
             background-color: $blue;
@@ -341,9 +342,9 @@ $fontSm: 12px;
 }
 
 .messageAreaForm {
-  position: relative;
+    position: relative;
 }
-.emoji-container{  
+.emoji-container{
     text-align:center;
     position: absolute;
     right: 33px;
