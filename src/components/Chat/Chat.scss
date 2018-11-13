@@ -42,7 +42,7 @@ $fontSm: 12px;
     width:100%;
     padding: 0;
     float: left;
-    background: lighten($gray, 28%);
+    background-color: white;
     height: 100vh;
 
     img {
@@ -52,6 +52,7 @@ $fontSm: 12px;
       }
 
     .chat-header {
+      background-color: white;
       .chat-about{
         display: flex;
         align-items: center;
@@ -212,7 +213,7 @@ $fontSm: 12px;
             }
         }
         .other-message {
-            background: white;
+            background-color: lighten($gray, 30%);
             color: $text;
             &:after {
                 border-bottom-color: white;
@@ -239,7 +240,7 @@ $fontSm: 12px;
     }
 
     .chat-message {
-        background-color: lighten($gray, 20%);
+        background-color: white;
         width: 100%;
         display: flex;
         justify-content: space-around;
