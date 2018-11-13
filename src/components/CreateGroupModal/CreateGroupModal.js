@@ -26,8 +26,9 @@ import ScrollableFeed from 'react-scrollable-feed';
     let regex = new RegExp(e.target.value, 'i');
     let result = this.props.loginStore.myContacts.filter(user => {
       if (regex.test(user.nickname || user.username || user.email)) {
-        this.searchContact.push(user);
+        return this.searchContact.push(user);
       }
+      return false;
     })
   }
 

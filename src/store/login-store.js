@@ -24,13 +24,13 @@ class LoginStore {
     this.pageLoad();
   }
 
-  @action pageLoad(time) {
+  @action pageLoad(time = 500) {
     console.time(time);
     this.isLoading = true;
     setTimeout(() => {
       console.timeEnd(time)
-      return this.isLoading = false, time;
-    }, 1000)
+      return this.isLoading = false
+    }, (1000 + time))
   }
 
   @action checkIfLoggedIn() {

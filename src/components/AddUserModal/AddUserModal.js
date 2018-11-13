@@ -19,8 +19,9 @@ import './AddUserModal.scss';
     let regex = new RegExp(e.target.value, 'i');
     let result = this.props.loginStore.candidates.filter(user => {
       if (regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)) {
-        this.userCandidates.push(user);
+        return this.userCandidates.push(user);
       }
+      return false;
     })
   }
 

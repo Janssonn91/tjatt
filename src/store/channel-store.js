@@ -305,7 +305,7 @@ class ChannelStore {
   @action exitChannel(channel) {
     // remove the user from the channel
     for (let channelArr of this.myChannels) {
-      if (channelArr._id == channel._id) {
+      if (channelArr._id === channel._id) {
         const index = channel.members.indexOf(loginStore.user._id);
         if (index > 0) {
           channel.members.splice(index, 1);
@@ -316,7 +316,7 @@ class ChannelStore {
     // remove the channel from the user and re-render users channels
     let i = 0;
     for (let channelArr of this.groupChannels) {
-      if (channelArr._id == channel._id) {
+      if (channelArr._id === channel._id) {
         this.groupChannels.splice(i, 1);
       }
       i++;
