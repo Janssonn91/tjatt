@@ -62,7 +62,6 @@ class LoginStore {
             channelStore.getUserList()
           })
           socket.on('login', message => {
-            console.log(message)
             this.onLineUsers = message.loginUser;
           })
           socket.on('logout', message => {
@@ -93,7 +92,6 @@ class LoginStore {
         if (res.success) {
           this.user = res.user;
           this.isLoggedIn = true;
-          socket.emit('login', this.user._id)
         }
         else {
           this.loginError = true;

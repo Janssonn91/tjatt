@@ -113,8 +113,9 @@ io.on('connection', (socket) => {
   })
 
   socket.on('newChannel', (channel)=> {
+    console.log('newChannel', channel)
   socket.join(channel);
-  io.to(channel).emit("newChannel", channel);
+  socket.broadcast.emit('newChannel', channel);
   })
 
 
@@ -164,7 +165,7 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-    if(user._id){
+    if(user){
        onlineUsers = onlineUsers.filter(id => id !== user._id);
         console.log('client disconnect...', user._id);
         socket.broadcast.emit('logout', {
@@ -304,6 +305,7 @@ app.put('/updateAdmin/:_id', async (req, res) => {
 
 app.put('/users/:_id', (req, res) => {
   console.log("user", req.body);
+  if(req.body.contact){
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
@@ -314,6 +316,20 @@ app.put('/users/:_id', (req, res) => {
     .catch(err => {
       throw err;
     });
+  }
+  if(!req.body.contact){
+      User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: {channel: req.body.channel, group: req.body.group } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+  }
+
 });
 
 app.put('/channel/:_id', (req, res) => {
