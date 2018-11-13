@@ -85,12 +85,12 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-    console.log("user is connected", user.nickname)
-    onlineUsers= onlineUsers.filter(id=>id!==user._id);
-    onlineUsers.push(user._id); 
-    socket.broadcast.emit('online', {
-      loginUser: onlineUsers
-    });
+    // console.log("user is connected", user.nickname)
+    // onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    // onlineUsers.push(user._id); 
+    // socket.broadcast.emit('online', {
+    //   loginUser: onlineUsers
+    // });
 
   socket.on('sign up', (user)=>{
     console.log("sign up", user)

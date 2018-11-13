@@ -165,8 +165,8 @@ class LoginStore {
 
 
   // remove added user in candidates
-  @action updateContact(userId) {
-    const addedUser = this.candidates.find(user => user._id === userId);
+  @action async updateContact(userId) {
+    const addedUser = await this.candidates.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
@@ -181,23 +181,28 @@ class LoginStore {
     this.selectedGroupMember = [];
   }
 
-  @action addContact(userId) {
+  @action async addContact(userId) {
     const channelname = this.user._id + " and " + userId;
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];
 
-    channelStore.createChannel(channelname, admin, members, false).then(channel => {
+    channelStore.createChannel(channelname, admin, members, false);
+    await sleep(60);
+    Channel.find({channelname: channelname}).then(channel => {
+      socket.emit('join channel', channel[0]._id)
+       channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
         method: 'PUT',
         body: JSON.stringify({
-          _id: this.user._id, contact: userId, channel: channel._id
+          _id: this.user._id, contact: userId, channel: channel[0]._id
         }),
         headers: { 'Content-Type': 'application/json' }
       })
         .then(res => res.json())
         .then(() => {
           this.updateContact(userId);
+         
         })
         .catch(err => {
           console.log(err);
@@ -206,7 +211,7 @@ class LoginStore {
       // add my id to the new friend contact
       fetch(`/api/users/${userId}`, {
         method: 'PUT',
-        body: JSON.stringify({ userId, contact: this.user._id, channel: channel._id }),
+        body: JSON.stringify({ userId, contact: this.user._id, channel: channel[0]._id}),
         headers: { 'Content-Type': 'application/json' }
       })
         .then(res => res.json())
