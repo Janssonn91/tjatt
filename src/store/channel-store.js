@@ -25,6 +25,9 @@ class ChannelStore {
   @observable channelChatHistory = [];
   @observable contactImg = "";
   @observable contactChannelname = "";
+  @observable userDict = {};
+  @observable adminLeavingError = false;
+
 
 
   //TODO: as a new user, introduction page shows instead of chat page
@@ -98,6 +101,15 @@ class ChannelStore {
     }
   }
 
+  @action async getUserList(){
+    let res = await fetch('/api/users');
+    let user = await res.json();
+    user.map((u)=>{
+      this.userDict[u._id] = {name: u.nickname, img: u.image}
+    })
+  }
+
+
   getGroupMembersData(memberIds) {
     fetch('/api/users')
       .then(res => res.json())
@@ -110,7 +122,7 @@ class ChannelStore {
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
-        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id)); 
       });
   }
 
@@ -350,6 +362,32 @@ class ChannelStore {
     this.hideChat = false;
   }
 
+  @action setAdmin(newAdminId){
+    this.adminLeavingError = false;
+    this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        adminId: newAdminId
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      }).then(res => {
+        console.log('admin updated: ', res)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  @action showAdminLeaveError(){
+    this.adminLeavingError = true;
+  }
+
   @action exitChannel(channel) {
     // remove the user from the channel
     for (let channelArr of this.myChannels) {
@@ -386,6 +424,33 @@ class ChannelStore {
         return res.json();
       }).then(res => {
         console.log(res.resultChannel, res.resultUser)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      if(this.amIAdmin){
+        this.removeAdmin(userId, channel);
+      }
+  }
+
+  removeAdmin(id, channel){
+    // remove admin from frontend
+    let index = this.currentChannel.admin.indexOf(id);
+    this.currentChannel.admin.splice(index, 1);
+    // remove admin from db
+    fetch(`/api/removeAdmin/${channel._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        userid: id
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        return res.json();
+      }).then(res => {
+        console.log(res)
       })
       .catch(err => {
         console.log(err);

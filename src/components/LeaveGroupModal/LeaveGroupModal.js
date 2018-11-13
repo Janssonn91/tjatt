@@ -4,5 +4,6 @@ import './LeaveGroupModal.scss';
   leaveChannel(){
     let channelToLeave = this.props.channelStore.currentChannel;
     this.props.channelStore.exitChannel(channelToLeave);
+    this.props.toggle();
   }
 }

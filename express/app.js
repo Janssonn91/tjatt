@@ -79,15 +79,48 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
-
+let onlineUsers=[];
 
 io.on('connection', (socket) => {
+
+
+  let user = socket.handshake.session.loggedInUser;
+    console.log("user is connected", user.nickname)
+    onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    onlineUsers.push(user._id); 
+    socket.broadcast.emit('online', {
+      loginUser: onlineUsers
+    });
+
+  socket.on('sign up', (user)=>{
+    console.log("sign up", user)
+    socket.username = user;
+    socket.broadcast.emit('sign up', {
+      username: socket.username
+    });
+  })
   
 
-  console.log("user is connected")
-  let user = socket.handshake.session.loggedInUser;
+  socket.on('login', (userId)=>{
+    onlineUsers= onlineUsers.filter(id=>id!==userId);
+      onlineUsers.push(userId)
+        socket.emit('login', {
+      loginUser:onlineUsers
+    })
+  
+  
+  })
 
- 
+  socket.on('logout', (userId)=>{ 
+    onlineUsers= onlineUsers.filter(id=>id!==userId);
+    socket.broadcast.emit('logout', {
+      loginUser: onlineUsers
+    })
+  })
+
+  socket.on('message', (data)=> {
+    console.log('Incoming data ', data);
+  });
 
 
 
@@ -124,39 +157,16 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
    // console.log('user disconnected');
-    console.log('client disconnect...', user);
+    console.log('client disconnect...', user._id);
+      onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    socket.broadcast.emit('logout', {
+      loginUser: onlineUsers
+    })
+
+    
     //handleDisconnect()
   });
-
-  
-
-   
 });
-
-// io.on('connection', function (client) {
-//   client.on('register', handleRegister)
-
-//   client.on('join', handleJoin)
-
-//   client.on('leave', handleLeave)
-
-//   client.on('message', handleMessage)
-
-//   client.on('chatrooms', handleGetChatrooms)
-
-//   client.on('availableUsers', handleGetAvailableUsers)
-
-//   client.on('disconnect', function () {
-//     console.log('client disconnect...', client.id)
-//     handleDisconnect()
-//   })
-
-//   client.on('error', function (err) {
-//     console.log('received error from client:', client.id)
-//     console.log(err)
-//   })
-// })
-
 
 app.get('/hello', (req, res) => {
   res.send('hello')
@@ -189,7 +199,7 @@ const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
 app.post('/users', (req, res) => {
-  console.log(req.session);
+  //console.log(req.session);
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
@@ -269,6 +279,20 @@ app.post('/login', (req, res) => {
     })
 });
 
+app.put('/updateAdmin/:_id', async (req, res) => {
+  console.log(req.body.adminId);
+  let resultChannel = channel.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { admin: req.body.adminId } }
+  )
+  .then(() => {
+    res.json({ success: true })
+  })
+  .catch(err => {
+    throw err;
+  });
+})
+
 app.put('/users/:_id', (req, res) => {
   console.log(req.body.contact);
   User.findOneAndUpdate(
@@ -333,6 +357,15 @@ app.put('/memberChannels/:_id', async (req, res) => {
     { $pull: { channel: mongoose.Types.ObjectId(req.params._id) } }
   ).catch(err => console.log(err))
   res.json({ resultChannel, resultUser });
+});
+
+app.put('/removeAdmin/:_id', async (req, res) => {
+   let resultAdmin = await channel.update(
+    { _id: req.params._id },
+    { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
+    { multi: true }
+  ).catch((err) => console.log("err", err));
+  res.json({ resultAdmin });
 });
 
 app.put('/users/:_id/setting', (req, res) => {

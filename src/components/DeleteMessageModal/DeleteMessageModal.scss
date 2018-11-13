@@ -4,11 +4,12 @@ $green: #70C1B3;
 $blue: #1976D1;
 $lightblue: #63A4FF;
 $darkblue: #004B9F;
-$red: rgb(255, 0, 0);
+$red: #FF3C00;
+$darkred: #bb1e2d;
 $orange: #E38968;
 $text:#434651;
 
-.leave-group-modal {
+.delete-message-modal {
   width: 75%;
   margin: 1.75rem auto;
   .modal-header {
@@ -19,23 +20,36 @@ $text:#434651;
       outline: none;
       border: none;
     }
+    #setGroupName{
+      border-radius: 4px;
+    }
+    .feedback{
+      font-size:10px;
+    }
+    .group-name {
+      color: $blue;
+    }
   }
+  
   .btn {
     border: none;
     border-radius: 30px;
     padding: 0.275rem 0.65rem;
     font-size: 0.9rem;
-    &.btn-leave-group {
-      background-color: $red;
+    &.btn-cancel {
+      background-color: $blue;
       &:hover {
-        background-color: darken($red, 10%);
+        background-color: $darkblue;
+      }
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
       }
     }
 
-    &.btn-cancel {
-      background-color: $gray;
+    &.btn-delete-message {
+      background-color: $darkred;
       &:hover {
-        background-color: darken($gray, 10%);
+        background-color: darken($darkred, 10%);
       }
     }
   }

@@ -91,6 +91,15 @@ $text:#434651;
       text-align: left;
       width: 60%;
       order: 1;
+      cursor: unset;
+      .nav-item {
+        text-align: left;
+        display: inline-block;
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
       @media (min-width: 768px){
         width: 85%;
         order: 0;
@@ -102,10 +111,6 @@ $text:#434651;
          padding-left: 0;
       } */
 
-      .nav-item {
-        text-align: left;
-        display: inline-block;
-      }
     }
     .nav-link.contacts{
       width: 100%;
@@ -170,7 +175,8 @@ hr {
 
 .contactsCollapse{
   background: $backgroundColor;
-  height: 190px;
+  min-height: 40px;
+  max-height: 190px;
   .card-body {
     overflow-y: auto;
     @include scrollbar;

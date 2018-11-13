@@ -33,7 +33,7 @@
                       onClick={this
                         .addDeleteMemberModalToggle
                         .bind(this)}>
-                      Add / Delete members
+                      Add/Delete members
                   </DropdownItem>
                     <DropdownItem
                       className="py-2 px-3"
@@ -42,6 +42,9 @@
                         .bind(this)}>
                       View members
                   </DropdownItem>
+                    {this.props.channelStore.amIAdmin &&
+                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                    }
                   </div>
                   <DropdownItem className="m-0" divider />
                   <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
@@ -64,13 +67,15 @@
             </span>
           }
         </Col>
-      </Row> < hr className="mt-0 mb-2" /> <Row>
-        <Col>
-          <div className="chat-history px-3 mr-1">
+      </Row>
+      <hr className="mt-0 mb-2" />
+      <Row>
+        <Col className="pr-0">
+          <div className="chat-history pl-2 mr-1">
             <ScrollableFeed forceScroll={true}>
               <ul ref="messageList" onScroll={this.onScroll}>
                 {/* <div id="chatHistory"></div>  */}
-                <ChatMessage {...this.sendToChatHistory} />
+                <ChatMessage />
                 <li ref={(el) => {
                   this.messagesEnd = el;
                 }}></li>
@@ -86,84 +91,77 @@
             </ScrollableFeed>
           </div>
         </Col>
-      </Row> < Row className="formRow" > <Col className="p-0">
-        <Form inline className="chat-message clearfix">
-          <ButtonDropdown
-            direction="up"
-            isOpen={this.isOpen}
-            toggle={e => this.toggle()}
-            className="btn-dropup">
-            <DropdownToggle className="p-0" caret>
-              <i className="fas fa-plus"></i>
-            </DropdownToggle>
-            {this.props.channelStore.amIAdmin ?
-
-              <DropdownMenu>
-                <DropdownItem>
-                  <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                <Link to="server" tabIndex="-1">
-                  <DropdownItem>
-                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
-                </Link>
-              </DropdownMenu>
-              :
-
-              <DropdownMenu>
-                <DropdownItem>
-                  <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-              </DropdownMenu>
-
-            }
-
-          </ButtonDropdown>
-
-
-
-          <FormGroup className="m-0 messageAreaForm">
-            <Label for="messageArea" className="d-none">Message</Label>
-            <Textarea
-              minRows={1}
-              maxRows={10}
-              useCacheForDOMMeasurements
-              style={{ boxSizing: 'border-box' }}
-              type="textarea"
-              name="text"
-              id="messageArea"
-              placeholder="Write your message here"
-              value={this.inputMessage}
-              onChange={e => this.inputMessage = e.currentTarget.value}
-              onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
-            />
-
-            <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
-              <DropdownToggle className="emoji-container bg-light">
-                <i className="far emojiOpener">😃</i>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-left">
-                <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
-              </DropdownMenu>
-            </Dropdown>
-          </FormGroup>
-          <Button className="send p-0" onClick={e => this.sendMessage()}>
-            <img
-              src="/images/sent-mail.svg"
-              alt="send mail"
-              style={{
-                width: 23
-              }} />
-          </Button>
-        </Form>
-      </Col>
       </Row>
-    </Fragment> : <Fragment>
+      <Row className="formRow">
+        <Col className="p-0">
+          <Form inline className="chat-message py-2 clearfix">
+            <ButtonDropdown
+              direction="up"
+              isOpen={this.isOpen}
+              toggle={e => this.toggle()}
+              className="btn-dropup">
+              <DropdownToggle className="p-0" caret>
+                <i className="fas fa-plus"></i>
+              </DropdownToggle>
+              {this.props.channelStore.amIAdmin ?
+                <DropdownMenu>
+                  <DropdownItem>
+                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+                  <DropdownItem>
+                    <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                  <DropdownItem>
+                    <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                  <Link to="server" tabIndex="-1">
+                    <DropdownItem>
+                      <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
+                  </Link>
+                </DropdownMenu>
+                :
+                <DropdownMenu>
+                  <DropdownItem>
+                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+                  <DropdownItem>
+                    <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                  <DropdownItem>
+                    <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                </DropdownMenu>
+              }
+            </ButtonDropdown>
+            <FormGroup className="m-0 messageAreaForm">
+              <Label for="messageArea" className="d-none">Message</Label>
+              <Textarea
+                minRows={1}
+                maxRows={10}
+                useCacheForDOMMeasurements
+                style={{ boxSizing: 'border-box' }}
+                type="textarea"
+                name="text"
+                id="messageArea"
+                placeholder="Write your message here"
+                value={this.inputMessage}
+                onChange={e => this.inputMessage = e.currentTarget.value}
+                onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
+              />
+              <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
+                <DropdownToggle className="emoji-container bg-light">
+                  <i className="far emojiOpener">😃</i>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-left">
+                  <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                </DropdownMenu>
+              </Dropdown>
+            </FormGroup>
+            <Button className="send p-0" onClick={e => this.sendMessage()}>
+              <img
+                src="/images/sent-mail.svg"
+                alt="send mail"
+                style={{ width: 23 }} />
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Fragment> :
+    <Fragment>
       <Row className="chat-header m-0 p-0">
         <Col sm="12" className="chat-about pl-3 pl-md-4">
           <Button
@@ -174,6 +172,6 @@
         </Col>
       </Row>
       <h1>Place holder</h1>
-    </Fragment>}
-
+    </Fragment>
+  }
 </Fragment>

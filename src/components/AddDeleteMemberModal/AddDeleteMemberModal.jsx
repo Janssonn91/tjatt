@@ -2,7 +2,7 @@
   <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} className="add-member-modal">
     {this.props.children}
     <ModalHeader tag="h4" toggle={e => this.props.toggle("group")}>
-      Add / Delete members: <span className="group-name">{this.props.channelStore.channelName}</span>
+      Add/Delete members: <span className="group-name">{this.props.channelStore.channelName}</span>
     </ModalHeader>
     <ModalBody>
       {this.props.channelStore.currentGroupMembers.length > 0 &&
@@ -37,7 +37,7 @@
       <Form className="m-0">
         <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
-          <Input className="m-0" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:" onChange={e => this.searchCandidates(e)} />
+          <Input className="m-0" type="text" name="text" id="searchContacts" autoComplete="off" placeholder="Find members by searching here:" onChange={e => this.searchCandidates(e)} />
         </FormGroup>
 
         <Row className="select-area">
@@ -93,8 +93,8 @@
       }
     </ModalBody>
     <ModalFooter className="p-2">
-      <Button className="btn btn-save" onClick={() => this.updateGroup()}>Save</Button>{' '}
       <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
+      <Button className="btn btn-save" onClick={() => this.updateGroup()}>Save</Button>
     </ModalFooter>
   </Modal>
 </Fragment>

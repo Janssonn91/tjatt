@@ -84,11 +84,17 @@ export default class Chat extends Component {
   }
 
   viewMembersModalToggle() {
-    this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen
+    this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen;
   }
 
   leaveGroupModalToggle() {
-    this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
+    if(this.props.channelStore.currentChannel.admin.length < 2 && this.props.channelStore.amIAdmin){
+      this.props.channelStore.showAdminLeaveError();
+      this.viewMembersModalToggle();
+    }
+    else{
+      this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
+    }
   }
 
   toggle() {
