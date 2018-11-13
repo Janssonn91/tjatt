@@ -15,17 +15,18 @@ class LoginStore {
   @observable isNotCorrectPass = false;
   @observable savedNickname = false;
   @observable savedPassword = false;
-  @observable isLoading = false;
+  @observable isLoading = true;
   // @observable myGroups = [];
 
   constructor() {
     this.checkIfLoggedIn();
-    console.log('login-store här?????')
+    console.log('login-store här?????');
+    this.pageLoad();
   }
 
   @action pageLoad(time) {
-    this.isLoading = true;
     console.time(time);
+    this.isLoading = true;
     setTimeout(() => {
       console.timeEnd(time)
       return this.isLoading = false, time;
@@ -76,7 +77,7 @@ class LoginStore {
   }
 
   @action login(username, password) {
-    this.pageLoad(fetch('/api/login', {
+    fetch('/api/login', {
       credentials: 'include',
       method: 'POST',
       body: JSON.stringify({ username, password }),
@@ -86,6 +87,7 @@ class LoginStore {
       .then(res => {
         if (res.success) {
           this.user = res.user;
+          this.pageLoad();
           this.isLoggedIn = true;
           this.checkIfLoggedIn();
           console.log(this.checkIfLoggedIn());
@@ -98,7 +100,6 @@ class LoginStore {
       }).catch(err => {
         console.log("err", err)
       })
-    )
   }
 
   @action signUp(username, password, useremail) {
