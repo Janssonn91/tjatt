@@ -112,10 +112,12 @@ io.on('connection', (socket) => {
 
   })
 
-  socket.on('newChannel', (channel)=>{
-    console.log("newChannel", channel)
-    socket.broadcast.emit('newChannel', channel);
+  socket.on('newChannel', (channel)=> {
+  socket.join(channel);
+  io.to(channel).emit("newChannel", channel);
   })
+
+
 
   socket.on('logout', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
@@ -146,7 +148,7 @@ io.on('connection', (socket) => {
     let message = new ChatMessage({
       ...messageFromClient
     });
-    console.log(message)
+    console.log("message",message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -222,7 +224,7 @@ app.post('/users', (req, res) => {
       } else {
         res.json({ success: false })
       }
-    }).catch(err => console.log(err));
+    }).catch(err => console.log("get user", err));
 });
 
 app.get('/users', (req, res) => {
@@ -238,7 +240,7 @@ app.get('/users/:_id', (req, res) => {
       else { res.json(user) }
     }).catch(
       err => {
-        console.log(err)
+        console.log("find one user", err)
       }
     )
 
@@ -258,7 +260,7 @@ app.get('/login', (req, res) => {
         res.json({ loggedIn: false })
       }
     }).catch(err => {
-      console.log(err);
+      console.log("login err", err);
     })
 });
 
@@ -282,12 +284,12 @@ app.post('/login', (req, res) => {
         }
       }
     }).catch(err => {
-      console.log(err);
+      console.log("err", err);
     })
 });
 
 app.put('/updateAdmin/:_id', async (req, res) => {
-  console.log(req.body.adminId);
+  console.log("updateAdmin", req.body.adminId);
   let resultChannel = channel.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { admin: req.body.adminId } }
@@ -301,7 +303,7 @@ app.put('/updateAdmin/:_id', async (req, res) => {
 })
 
 app.put('/users/:_id', (req, res) => {
-  console.log(req.body.contact);
+  console.log("user", req.body);
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
@@ -362,7 +364,7 @@ app.put('/memberChannels/:_id', async (req, res) => {
   let resultUser = await User.update(
     { _id: req.body.userid },
     { $pull: { channel: mongoose.Types.ObjectId(req.params._id) } }
-  ).catch(err => console.log(err))
+  ).catch(err => console.log("err", err))
   res.json({ resultChannel, resultUser });
 });
 
