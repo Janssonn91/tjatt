@@ -64,6 +64,7 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
+    console.log(channels)
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -127,6 +128,7 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    console.log("changeChannel", channel)
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
@@ -153,6 +155,7 @@ class ChannelStore {
   }
 
   async getChannelChatHistory(channel) {
+    console.log(channel)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: channel._id
@@ -216,28 +219,28 @@ class ChannelStore {
       open: true,
       group: group
     }
-    if (!group) {
-      this.updateContactChannels(this.newChannel);
-    }
-    if (group) {
-      this.updateGroupChannel(this.newChannel)
-    }
 
-    return Channel.create(this.newChannel);
+
+    return Channel.create(this.newChannel).then(data=>console.log("!!!!!!",data));
   }
 
-  @action createGroup(groupName) {
+  @action async createGroup(groupName) {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    this.createChannel(groupName, admin, members, true)
-      .then((channel) => {
-        channel.members.forEach(member => {
+    this.createChannel(groupName, admin, members, true);
+    await sleep(60);
+    Channel.find({channelname: groupName}).then(channel => {
+      console.log("lllllllllll",channel)
+      this.changeChannel(channel[0]);
+        socket.emit('join channel', channel[0]._id);
+         this.updateGroupChannel(channel[0]);
+        channel[0].members.forEach(member => {
           fetch(`/api/users/${member}`, {
             method: 'PUT',
             body: JSON.stringify({
               _id: member,
-              channel: channel._id
+              channel: channel[0]._id
             }),
             headers: {
               'Content-Type': 'application/json'
@@ -267,10 +270,11 @@ class ChannelStore {
 
 
 
-  updateContactChannels(channel) {
+ updateContactChannels(channel) {
     console.log(channel)
     this.contactChannels.push(channel);
     console.log(this.contactChannels)
+    //await this.getChannels();
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
     //this.props.channelStore.getChannelByUser(user._id)}
   }
@@ -291,6 +295,7 @@ class ChannelStore {
     console.log(this.groupChannels)
     console.log(channel)
     this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
+      //  this.getChannels();
     // console.log(this.groupChannels);
     // this.renderGroup();
     // this.getGroupChannel(this.newChannel);
