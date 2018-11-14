@@ -5,6 +5,7 @@ import channelStore from '../../store/channel-store';
 import EmojiPicker from 'emoji-picker-react';
 import 'emoji-picker-react/dist/universal/style.scss';
 import JSEMOJI from 'emoji-js';
+import Textarea from 'react-textarea-autosize';
 // you can import it with a script tag instead
 
 
@@ -26,7 +27,7 @@ export default class Chat extends Component {
   @observable emoji = '';
   @observable inputMessage = '';
   // @observable messagesEnd = '';
-  
+
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable addMemberModal = false;
@@ -134,7 +135,7 @@ export default class Chat extends Component {
 
       this.scrollToBottom();
 
-  
+
     } else {
       return false;
     }

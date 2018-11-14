@@ -5,7 +5,7 @@
         <CardImg src={this.props.loginStore.user.image || imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
+            <h5 className="ml-1 username">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu className="p-0" tag="div">
             <DropdownItem className="px-3 py-2 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
@@ -22,7 +22,7 @@
       </NavLink> */}
 
 
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openContacts}>My Contacts</NavItem>
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
@@ -39,7 +39,7 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
       <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>

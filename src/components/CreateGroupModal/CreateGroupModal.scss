@@ -40,7 +40,7 @@ $text:#434651;
     }
     #setGroupName{
       border-radius: 4px;
-    }  
+    }
     .feedback{
       font-size:10px;
     }
@@ -70,7 +70,7 @@ $text:#434651;
         }
       }
     }
-    
+
     form {
       &:focus {
         border-color: $lightblue;
@@ -111,10 +111,6 @@ $text:#434651;
             }
           }
 
-          .searched-user-big-screen-profile {
-            width: 53% !important;
-          }
-          
           button.btn-add-user, button.btn-remove-user {
             color: $blue;
             font-size: 0.7rem;
