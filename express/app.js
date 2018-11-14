@@ -85,12 +85,12 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-    // console.log("user is connected", user.nickname)
-    // onlineUsers= onlineUsers.filter(id=>id!==user._id);
-    // onlineUsers.push(user._id); 
-    // socket.broadcast.emit('online', {
-    //   loginUser: onlineUsers
-    // });
+  // console.log("user is connected", user.nickname)
+  // onlineUsers= onlineUsers.filter(id=>id!==user._id);
+  // onlineUsers.push(user._id);
+  // socket.broadcast.emit('online', {
+  //   loginUser: onlineUsers
+  // });
 
   socket.on('sign up', (user) => {
     console.log("sign up", user)
@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('login', (userId) => {
-    console.log("login",userId)
+    console.log("login", userId)
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
     socket.broadcast.emit('login', {
@@ -112,10 +112,10 @@ io.on('connection', (socket) => {
 
   })
 
-  socket.on('newChannel', (channel)=> {
+  socket.on('newChannel', (channel) => {
     console.log('newChannel', channel)
-  socket.join(channel);
-  socket.broadcast.emit('newChannel', channel);
+    socket.join(channel);
+    socket.broadcast.emit('newChannel', channel);
   })
 
 
@@ -143,13 +143,13 @@ io.on('connection', (socket) => {
     // if(
     //   typeof c !== 'string' ||
     //   !user.channel.includes(c)
-    // ){ return; } 
+    // ){ return; }
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
       ...messageFromClient
     });
-    console.log("message",message)
+    console.log("message", message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -165,16 +165,16 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-    if(user){
-       onlineUsers = onlineUsers.filter(id => id !== user._id);
-        console.log('client disconnect...', user._id);
-        socket.broadcast.emit('logout', {
-          loginUser: onlineUsers
-        })
+    if (user) {
+      onlineUsers = onlineUsers.filter(id => id !== user._id);
+      console.log('client disconnect...', user._id);
+      socket.broadcast.emit('logout', {
+        loginUser: onlineUsers
+      })
     }
     // EMILS DATOR BUGGAR LOSS PÅ RADEN UNDER
- 
-  
+
+
   });
 });
 
@@ -305,29 +305,29 @@ app.put('/updateAdmin/:_id', async (req, res) => {
 
 app.put('/users/:_id', (req, res) => {
   console.log("user", req.body);
-  if(req.body.contact){
-  User.findOneAndUpdate(
-    { _id: req.params._id },
-    { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
-  )
-    .then(() => {
-      res.json({ success: true })
-    })
-    .catch(err => {
-      throw err;
-    });
+  if (req.body.contact) {
+    User.findOneAndUpdate(
+      { _id: req.params._id },
+      { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+    )
+      .then(() => {
+        res.json({ success: true })
+      })
+      .catch(err => {
+        throw err;
+      });
   }
-  if(!req.body.contact){
-      User.findOneAndUpdate(
-    { _id: req.params._id },
-    { $push: {channel: req.body.channel, group: req.body.group } }
-  )
-    .then(() => {
-      res.json({ success: true })
-    })
-    .catch(err => {
-      throw err;
-    });
+  if (!req.body.contact) {
+    User.findOneAndUpdate(
+      { _id: req.params._id },
+      { $push: { channel: req.body.channel, group: req.body.group } }
+    )
+      .then(() => {
+        res.json({ success: true })
+      })
+      .catch(err => {
+        throw err;
+      });
   }
 
 });
