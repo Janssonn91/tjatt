@@ -6,6 +6,7 @@ import './Signup.scss';
   @observable useremailToSet = '';
   @observable passWordToSet = '';
   @observable confirmPassword = '';
+  @observable passwordsDontMatch = false;
 
   usernameChange(e) {
     this.usernameToSet = e.currentTarget.value;
@@ -21,7 +22,16 @@ import './Signup.scss';
 
   confirmPasswordChange = (e) => {
     this.confirmPassword = e.currentTarget.value;
+    this.checkPasswordsMatch();
     // behöver email-validering här och sök på om den redan finns i backend?
+  }
+
+  checkPasswordsMatch = () => {
+    if (this.passWordToSet === this.confirmPassword) {
+      this.passwordsDontMatch = false;
+    } else {
+      this.passwordsDontMatch = true;
+    }
   }
 
   goToChat = async () => {

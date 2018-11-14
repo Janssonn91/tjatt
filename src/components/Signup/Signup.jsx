@@ -13,16 +13,21 @@
           <Input type="text" name="useremail" id="useremail" placeholder="Enter your email" onChange={e => this.useremailChange(e)} />
         </FormGroup>
         <FormGroup>
-          <Input type="password" name="password" id="userpassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />
+          <Input className={this.passwordsDontMatch ? "input-alert" : ''} type="password" name="password" id="userpassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />
         </FormGroup>
         <FormGroup>
-          <Input type="password" name="password" id="confirmPassword" placeholder="Confirm password" onChange={e => this.confirmPasswordChange(e)} />
+          <Input className={this.passwordsDontMatch ? "input-alert" : ''} type="password" name="password" id="confirmPassword" placeholder="Confirm password" onChange={e => this.confirmPasswordChange(e)} />
         </FormGroup>
         <div className="text-center mb-3">
           <Button className="overlay" disabled={this.usernameToSet && this.useremailToSet.length && this.passWordToSet.length && (this.passWordToSet === this.confirmPassword) ? null : true}>Sign up</Button>
           {this.props.loginStore.usernameExits &&
             < Alert className="my-3 alert-color">
               Username already in use, please choose another
+            </Alert>
+          }
+          {this.passwordsDontMatch && 
+            < Alert className="my-3 alert-color">
+              Passwords doesn't match, please check
             </Alert>
           }
         </div>
