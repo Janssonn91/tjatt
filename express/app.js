@@ -105,6 +105,7 @@ io.on('connection', (socket) => {
     console.log("login",userId)
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
+    console.log("onlineuser after login", onlineUsers)
     socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })

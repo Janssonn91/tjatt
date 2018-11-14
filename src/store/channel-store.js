@@ -160,10 +160,18 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      return this.userDict[u._id] = { name: u.nickname, img: u.image }
+      this.userDict[u._id] = { name: u.nickname, img: u.image }
+      for(let id of loginStore.onLineUsers){
+        if(u._id===id){
+          this.userDict[u._id].status= true;
+        }else{
+          this.userDict[u._id].status= false;
+        }
+      }
+      return this.userDict[u._id];
     })
+    console.log(this.userDict)
   }
-
 
   getGroupMembersData(memberIds) {
     fetch('/api/users')
@@ -192,6 +200,7 @@ class ChannelStore {
     // console.log(this.currentChannel.admin);
     this.showChat();
     this.getChannelChatHistory(channel);
+    this.getUserList();
     let admin = [];
     if (typeof (channel.admin) === "string") {
       admin.push(channel.admin);
