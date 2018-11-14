@@ -630,6 +630,10 @@ class ChannelStore {
     this.removedSuccess = false;
   }
 
+  @action resetCurrentChannel() {
+    this.currentChannel = "";
+  }
+
 }
 
 

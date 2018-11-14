@@ -63,6 +63,7 @@ export const imgPath = '/images/placeholder.png';
   logout() {
     fetch('/api/logout').then(() => {
       this.props.loginStore.isLoggedIn = false;
+      this.props.channelStore.resetCurrentChannel();
       this.props.history.push('/');
       socket.emit("logout", this.props.loginStore.user._id);
     });
