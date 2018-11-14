@@ -20,6 +20,7 @@ class ChannelStore {
   @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
+  @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -175,6 +176,7 @@ class ChannelStore {
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.viewMembers = [...this.currentGroupMembers]; // Copy members for viewMembersModal
       });
   }
 
@@ -598,6 +600,8 @@ class ChannelStore {
   }
 
   updateGroup() {
+    this.viewMembers = [...this.currentGroupMembers]; // Update viewMembers too
+
     const { _id, members: previousMemberIds } = this.currentChannel;
     const newMemberIds = this.currentGroupMembers.map(user => user._id);
 
