@@ -150,7 +150,7 @@ $fontSm: 12px;
       }
     }
     .chat-history {
-        height: 72vh;
+        height: 69.5vh;
         overflow-y: auto;
         position: relative;
         ul {
@@ -287,7 +287,7 @@ $fontSm: 12px;
         }
 
         #messageArea {
-            padding: 15px;
+            padding: 15px 35px 15px 15px;
             vertical-align: middle;
             margin: 10px 0;
             border: 1px solid lighten($lightblue, 16%);

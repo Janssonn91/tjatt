@@ -393,6 +393,15 @@ app.put('/removeAdmin/:_id', async (req, res) => {
   res.json({ resultAdmin });
 });
 
+app.delete('/removeGroup/:_id', (req, res) => {
+  channel.findOneAndRemove(
+    { _id: req.params._id}
+  )
+    .then(result => {
+      res.json(result)
+    })
+})
+
 app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },

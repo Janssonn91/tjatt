@@ -20,6 +20,7 @@ class ChannelStore {
   @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
+  @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -27,10 +28,12 @@ class ChannelStore {
   @observable contactChannelname = "";
   @observable userDict = {};
   @observable adminLeavingError = false;
+  // holds all the admins of the current group
+  @observable currentChannelAdmins = [];
 
-  constructor() {
-    // this.listenToPopState();
-  }
+  // constructor() {
+  // this.listenToPopState();
+  // }
 
   // This is a dirty Thomas hack to fick back/forward buttons
   // so that the work with channel changes
@@ -121,11 +124,11 @@ class ChannelStore {
         contact = await this.getContactName(channel.members);
       }
       return (type === 'group' ?
-        <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
+        <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
           <div className="d-inline-block" >{channel.channelname} </div>
         </div>
         :
-        <div key={i} className="nav-link pl-5 pl-md-4 py-md-1 contacts" onClick={() => this.changeChannel(channel)}>
+        <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
           <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
           <div className="d-inline-block" >{contact.contactChannelname}</div>
         </div>
@@ -175,21 +178,34 @@ class ChannelStore {
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.viewMembers = [...this.currentGroupMembers]; // Copy members for viewMembersModal
       });
   }
 
-  @action async changeChannel(channel, addPushState = true) {
+  @action async changeChannel(channel) {
+    this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
+    //this.currentChannel.admin = [];
+    // this.currentChannel.admin.push(channel.admin);
+    // console.log(this.currentChannel.admin);
     this.showChat();
     this.getChannelChatHistory(channel);
     let admin = [];
     if (typeof (channel.admin) === "string") {
       admin.push(channel.admin);
       console.log(admin)
+      this.currentChannelAdmins.push(channel.admin);
+      console.log(this.currentChannelAdmins);
+      //this.currentChannel.admin.push(channel.admin);
+      //console.log(this.currentChannel.admin);
     } else {
       admin = channel.admin;
+      this.currentChannelAdmins = channel.admin;
+      console.log(this.currentChannelAdmins);
+      console.log(admin);
+      //this.currentChannel.admin = channel.admin;
     }
     this.amIAdmin = admin.some(a => a === loginStore.user._id);
     let element = "";
@@ -201,9 +217,9 @@ class ChannelStore {
       this.channelName = channel.channelname;
       this.groupAdminId = channel.admin[0];
     }
-    if (addPushState) {
-      window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
-    }
+    // if (addPushState) {
+    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    // }
   }
 
   async getChannelChatHistory(channel) {
@@ -419,7 +435,10 @@ class ChannelStore {
 
   @action setAdmin(newAdminId) {
     this.adminLeavingError = false;
-    this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    this.currentChannelAdmins = [...this.currentChannelAdmins, newAdminId];
+    // this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    console.log(this.currentChannel);
+    console.log(this.currentChannel._id);
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -463,6 +482,10 @@ class ChannelStore {
       i++;
     }
     this.renderChannels();
+    // test att lämna grupp och historik i frontend
+    this.ChannelChatHistory = [];
+    this.currentChannelGroup = false;
+    this.channelName = '';
 
     // remove both channel from user and user from channel in backend
     const userId = loginStore.user._id;
@@ -486,6 +509,22 @@ class ChannelStore {
     if (this.amIAdmin) {
       this.removeAdmin(userId, channel);
     }
+    if (this.currentGroupMembers.length === 1) {
+      this.deleteGroup(channel);
+    }
+    window.history.pushState(null, null, '/' + loginStore.user.username);
+  }
+
+  deleteGroup(channel) {
+    fetch(`/api/removeGroup/${channel._id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        res.json()
+      })
+      .then(() => {
+        console.log(`slut på group, ${channel._id}`)
+      })
   }
 
   removeAdmin(id, channel) {
@@ -510,6 +549,7 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
+    this.amIAdmin = false;
   }
 
   @action searchCandidates(regex) {
@@ -598,6 +638,8 @@ class ChannelStore {
   }
 
   updateGroup() {
+    this.viewMembers = [...this.currentGroupMembers]; // Update viewMembers too
+
     const { _id, members: previousMemberIds } = this.currentChannel;
     const newMemberIds = this.currentGroupMembers.map(user => user._id);
 
@@ -624,6 +666,10 @@ class ChannelStore {
   @action closeAlert() {
     this.addedSuccess = false;
     this.removedSuccess = false;
+  }
+
+  @action resetCurrentChannel() {
+    this.currentChannel = "";
   }
 
 }

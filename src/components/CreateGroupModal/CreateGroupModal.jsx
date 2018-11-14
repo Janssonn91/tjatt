@@ -7,36 +7,34 @@
         <Label for="setGroupName" className="mb-1 d-none">Group Name</Label>
         <Input className="group-name mt-2" type="text" name="text" id="setGroupName" autoComplete="off" placeholder="Group name" onChange={e => this.groupNameChange(e)} />
         <div className={this.myAttr} >
-          <p className="feedback">Oh noes! You forget your group name!</p>
+          <p className="feedback ml-1">Oh noes! You forget your group name!</p>
         </div>
       </InputGroup>
     </ModalHeader>
     <ModalBody>
-      {this.props.loginStore.selectedGroupMember.length > 0 ?
+      {this.props.loginStore.selectedGroupMember.length > 0 &&
         <div className="selected-members d-md-none d-inline-block">
           <ScrollableFeed forceScroll={true}>
             {this.props.loginStore.selectedGroupMember.map((user, i) =>
-              <span key={i} className="nav-link pl-0 pt-0 d-inline-block" onClick={() => this.props.loginStore.removeFromSelect(user)}>
-                <CardImg className="mr-2 img" src={user.image || "/images/placeholder.png"} />
+              <div key={i} className="nav-link pl-0 d-inline-block">
+                <div className="wrapper d-block">
+                  <i className="fas fa-times-circle icon" onClick={() => this.props.loginStore.removeFromSelect(user)}></i>
+                  <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
+                </div>
                 <div className="profile">
                   <p className="text-muted m-0">
                     <small className="font-weight-bold">{user.nickname}</small>
                   </p>
                 </div>
-                <div style={{
-                  float: "left",
-                  clear: "both"
-                }}
+                <div
                   ref={(el) => {
                     this.selectedMemberEnd = el;
                   }}>
                 </div>
-              </span>
+              </div>
             )}
           </ScrollableFeed>
         </div>
-        :
-        <Fragment></Fragment>
       }
 
       <Form className="m-0" onSubmit={e => e.preventDefault()}>
@@ -87,7 +85,7 @@
           </Col>
         </Row>
       </Form>
-      <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
+      {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
     </ModalBody>
     <ModalFooter className="p-2">
       <Button className="btn btn-cancel" onClick={e => this.props.toggle()}>Cancel</Button>&nbsp;

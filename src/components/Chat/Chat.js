@@ -88,10 +88,27 @@ export default class Chat extends Component {
   }
 
   leaveGroupModalToggle() {
-    if(this.props.channelStore.currentChannel.admin.length < 2 && this.props.channelStore.amIAdmin){
+    console.log(toJS(this.props.channelStore.currentChannelAdmins));
+    console.log(this.props.channelStore.currentChannelAdmins.length);
+    // console.log((this.props.channelStore.currentChannel.admin).length);
+    // console.log(this.props.channelStore.currentChannel.admin);
+    // console.log(this.props.channelStore.amIAdmin);
+    // console.log(toJS(this.props.channelStore.currentGroupMembers));
+     console.log(this.props.channelStore.currentChannel.admin.includes(this.props.loginStore.user._id));
+    // console.log((this.props.channelStore.currentChannel.admin.length < 2 || (typeof(this.props.channelStore.currentChannel.admin === 'string'))))
+    // console.log((typeof(this.props.channelStore.currentChannel.admin === 'string')));
+    if(this.props.channelStore.currentGroupMembers.length === 1){
+      console.log('endast en medlem');
+      this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
+    }
+    else if(this.props.channelStore.currentChannelAdmins.includes(this.props.loginStore.user._id) && this.props.channelStore.currentChannelAdmins.length === 1){
       this.props.channelStore.showAdminLeaveError();
       this.viewMembersModalToggle();
     }
+    /*else if(this.props.channelStore.currentChannel.admin.includes(this.props.loginStore.user._id) && (typeof(this.props.channelStore.currentChannel.admin === 'string'))){
+      this.props.channelStore.showAdminLeaveError();
+      this.viewMembersModalToggle();
+    }*/
     else{
       this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
     }
