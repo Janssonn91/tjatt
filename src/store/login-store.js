@@ -45,9 +45,9 @@ class LoginStore {
           this.user = res.user;
           this.isLoggedIn = true;
           socket.emit('login', this.user._id)
-          socket.on('online', message => {
-            this.onLineUsers = message.loginUser;
-          })
+          // socket.on('online', message => {
+          //   this.onLineUsers = message.loginUser;
+          // })
           socket.off('chat message');
           socket.on(
             'chat message',
@@ -75,9 +75,11 @@ class LoginStore {
           })
           socket.on('login', message => {
             this.onLineUsers = message.loginUser;
+            channelStore.getUserList()
           })
           socket.on('logout', message => {
             this.onLineUsers = message.loginUser;
+            channelStore.getUserList()
           })
         }
         socket.on('newChannel', channel=>{
@@ -102,6 +104,7 @@ class LoginStore {
       .then(res => res.json())
       .then(res => {
         if (res.success) {
+          socket.emit('login', this.user._id)
           this.user = res.user;
           this.pageLoad();
           this.isLoggedIn = true;
