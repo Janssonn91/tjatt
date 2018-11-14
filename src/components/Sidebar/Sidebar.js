@@ -23,6 +23,10 @@ export const imgPath = '/images/placeholder.png';
   @observable contactsOpen = false;
   @observable groupsOpen = false;
 
+  start() {
+    this.props.channelStore.getChannels();
+  }
+
 
   async toggle() {
     await sleep(1);

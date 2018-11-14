@@ -29,7 +29,7 @@ class ChannelStore {
   @observable adminLeavingError = false;
 
   constructor() {
-    this.listenToPopState();
+    // this.listenToPopState();
   }
 
   // This is a dirty Thomas hack to fick back/forward buttons
@@ -81,7 +81,7 @@ class ChannelStore {
 
   @action async getChannels() {
     this.myChannels = [];
-    this.myChannels =await Channel.find({
+    this.myChannels = await Channel.find({
       _id: loginStore.user.channel,
     })
     this.groupChannels = [];
@@ -111,6 +111,8 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
+    console.log("anchor", anchor)
+    console.log(document.getElementById(anchor))
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -128,7 +130,10 @@ class ChannelStore {
           <div className="d-inline-block" >{contact.contactChannelname}</div>
         </div>
       );
-    });
+    })
+
+
+
 
     Promise.all(elements).then((els) => {
       ReactDOM.render(els, document.getElementById(anchor));
@@ -148,7 +153,7 @@ class ChannelStore {
     }
   }
 
-  @action async getUserList(){
+  @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
@@ -169,7 +174,7 @@ class ChannelStore {
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
-        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id)); 
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
       });
   }
 
@@ -197,8 +202,8 @@ class ChannelStore {
       this.groupAdminId = channel.admin[0];
     }
     if (addPushState) {
-    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
-  }
+      window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    }
   }
 
   async getChannelChatHistory(channel) {
@@ -275,29 +280,29 @@ class ChannelStore {
     members.push(admin);
     this.createChannel(groupName, admin, members, true);
     await sleep(60);
-    Channel.find({channelname: groupName}).then(channel => {
+    Channel.find({ channelname: groupName }).then(channel => {
       this.changeChannel(channel[0]);
-        channel[0].members.forEach(member => {
-          console.log("push channel into member", member)
-          fetch(`/api/users/${member}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-              _id: member,
-              channel: channel[0]._id
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-            .then(res => {
-              res.json();
-            }).catch(err => {
-              console.log(err);
-            })
+      channel[0].members.forEach(member => {
+        console.log("push channel into member", member)
+        fetch(`/api/users/${member}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            _id: member,
+            channel: channel[0]._id
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
-         socket.emit('newChannel', channel[0]._id)
-         this.updateGroupChannel(channel[0]);
+          .then(res => {
+            res.json();
+          }).catch(err => {
+            console.log(err);
+          })
       })
+      socket.emit('newChannel', channel[0]._id)
+      this.updateGroupChannel(channel[0]);
+    })
   }
 
 
@@ -315,7 +320,7 @@ class ChannelStore {
 
 
 
- updateContactChannels(channel) {
+  updateContactChannels(channel) {
     console.log(channel)
     this.contactChannels.push(channel);
     console.log(this.contactChannels)
@@ -340,7 +345,7 @@ class ChannelStore {
     console.log(this.groupChannels)
     console.log(channel)
     this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
-      //  this.getChannels();
+    //  this.getChannels();
     // console.log(this.groupChannels);
     // this.renderGroup();
     // this.getGroupChannel(this.newChannel);
@@ -412,7 +417,7 @@ class ChannelStore {
     this.hideChat = false;
   }
 
-  @action setAdmin(newAdminId){
+  @action setAdmin(newAdminId) {
     this.adminLeavingError = false;
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
@@ -434,7 +439,7 @@ class ChannelStore {
       })
   }
 
-  @action showAdminLeaveError(){
+  @action showAdminLeaveError() {
     this.adminLeavingError = true;
   }
 
@@ -478,12 +483,12 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
-      if(this.amIAdmin){
-        this.removeAdmin(userId, channel);
-      }
+    if (this.amIAdmin) {
+      this.removeAdmin(userId, channel);
+    }
   }
 
-  removeAdmin(id, channel){
+  removeAdmin(id, channel) {
     // remove admin from frontend
     let index = this.currentChannel.admin.indexOf(id);
     this.currentChannel.admin.splice(index, 1);
