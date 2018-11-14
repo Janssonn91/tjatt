@@ -5,7 +5,7 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   @observable groupName = '';
   @observable myAttr = 'd-none';
-  @observable showAttr = 'd-none';
+  @observable error = false;
   @observable check = 'false';
   @observable searchContact = [];
 
@@ -63,14 +63,13 @@ import ScrollableFeed from 'react-scrollable-feed';
     }
     //check if groupMember.length is large than 2
     if (this.props.loginStore.selectedGroupMember.length < 2) {
-      this.showAttr = 'show';
+      this.error = true;
       return;
-    } else {
-      this.showAttr = 'd-none';
     }
     await this.props.channelStore.createGroup(this.groupName);
     this.props.loginStore.cleanUpGroupModal();
     this.groupName = "";
+    this.error = false;
     this.props.toggle();
 
   }
