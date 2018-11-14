@@ -45,10 +45,7 @@ export default class Chat extends Component {
     toggle: this.viewMembersModalToggle.bind(this)
   }
 
-  // chat history hard code
-  // @observable sendToChatHistory = {
-  //   histories: this.chatHistories
-  // }
+ 
 
   @observable sendToLeaveModal = {
     isOpen: false,

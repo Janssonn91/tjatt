@@ -12,8 +12,8 @@
             <i className="fas fa-ellipsis-v"></i>
           </Button>
           {/* <span id="channelName"></span>  */}
-          <span className="chat-with">{this.props.channelStore.channelName}</span>
-          {this.props.channelStore.currentChannelGroup
+          <span className="chat-with">{this.props.channelStore.currentChannel.name}</span>
+          {this.props.channelStore.currentChannel.group
             ? <span className="dialog-icon p-0">
 
               <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
@@ -25,7 +25,7 @@
                   <i className="fas fa-users"></i>
                 </DropdownToggle>
                 <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.channelName}</DropdownItem>
+                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.name}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
                     <DropdownItem
