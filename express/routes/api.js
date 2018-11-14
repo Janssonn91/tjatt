@@ -2,7 +2,6 @@ const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 const del = require("del");
-const tar = require('tar-fs');
 const simplegit = require("simple-git/promise");
 const {
   Docker
@@ -11,12 +10,6 @@ const {
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
 });
-
-const promisifyStream = (stream) => new Promise((resolve, reject) => {
-  stream.on('data', (d) => console.log('.'))
-  stream.on('end', resolve)
-  stream.on('error', reject)
-})
 
 router.post('/addRepo', async (req, res) => {
   let dockerPort = await select_docker_port();
