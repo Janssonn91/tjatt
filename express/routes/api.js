@@ -122,7 +122,7 @@ services:
     - mongo
     container_name: "${payload.uniqueProjectName}_app"
   mongo:
-    build: "../${payload.uniqueProjectName}"
+    image: mvertes/alpine-mongo
     expose:
     - "27017"
     container_name: "${payload.uniqueProjectName}_db"`;
