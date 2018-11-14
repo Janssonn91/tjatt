@@ -92,12 +92,14 @@ $text:#434651;
       width: 60%;
       order: 1;
       cursor: unset;
+      &:hover {
+        color: lightgray;
+      }
       .nav-item {
         text-align: left;
         display: inline-block;
         &:hover {
           cursor: pointer;
-          color: lightgray;
           text-decoration: underline;
         }
       }
