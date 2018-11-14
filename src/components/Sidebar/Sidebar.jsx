@@ -5,7 +5,7 @@
         <CardImg src={this.props.loginStore.user.image || imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5 className="ml-1">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
+            <h5 className="ml-1 username">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu className="p-0" tag="div">
             <DropdownItem className="px-3 py-2 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>
@@ -22,14 +22,14 @@
       </NavLink> */}
 
 
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openContacts}>My Contacts</NavItem>
       </NavLink>
-        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
+      <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
       <Collapse isOpen={this.contactsOpen}>
         <Card className="contactsCollapse border-0 m-0">
           <CardBody className="p-0">
-          <div id="contactsRender"></div>
+            <div id="contactsRender"></div>
             {/* {this.props.loginStore.myContacts.map((user, i) =>
               <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
                 <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
@@ -39,13 +39,12 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink to="#">
+      <NavLink>
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
-        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
-
+      <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
       <Collapse isOpen={this.groupsOpen}>
-        <Card className="contactsCollapse border-0 m-0">
+        <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">
             <div id="groupsRender"></div>
           </CardBody>

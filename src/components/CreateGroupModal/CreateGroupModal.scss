@@ -40,27 +40,52 @@ $text:#434651;
     }
     #setGroupName{
       border-radius: 4px;
-    }  
+    }
     .feedback{
       font-size:10px;
     }
   }
   .modal-body {
-    height: 275px;
     @media (max-width: 767.5px){
       .selected-members{
         height: 80px;
         overflow-y: auto;
         @include scrollbar;
-        span {
-          &:hover{
-            cursor: pointer;
+        div {
+          .wrapper{
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: 1px solid lighten($gray, 30%);
+            border-radius: 5px;
+          }
+          .icon {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 10px;
+            color: darken($gray, 30%);
+            &:hover{
+              cursor: pointer;
+            }
           }
           .img{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+            -webkit-transform: translateY(-50%) translateX(-50%);
             vertical-align: baseline;
             border-radius: 5px;
             width: 30px;
             height: 30px;
+          }
+          .admin {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            font-size: 8px;
+            color: $red;
           }
           .profile {
             p:nth-child(2) {
@@ -70,7 +95,7 @@ $text:#434651;
         }
       }
     }
-    
+
     form {
       &:focus {
         border-color: $lightblue;
@@ -86,6 +111,9 @@ $text:#434651;
           }
         }
         .list-group-item {
+          display: flex;
+          align-items: center;
+          height: 42px;
           margin-right: 3px;
           color: $blue;
           &:hover {
@@ -111,10 +139,6 @@ $text:#434651;
             }
           }
 
-          .searched-user-big-screen-profile {
-            width: 53% !important;
-          }
-          
           button.btn-add-user, button.btn-remove-user {
             color: $blue;
             font-size: 0.7rem;
@@ -129,17 +153,8 @@ $text:#434651;
               box-shadow: unset;
             }
           }
-          button.btn-add-user {
-            margin-top: 9px;
-          }
-          button.btn-remove-user {
-            margin-top: 11px;
-          }
         }
       }
-    }
-    .show{
-      height:10px;
     }
   }
   input {
@@ -154,6 +169,9 @@ $text:#434651;
   }
   ._scrollable-div_1dj6m_1 {
     height: unset;
+  }
+  .alert {
+    margin-top: 20px;
   }
   .btn {
     border: none;

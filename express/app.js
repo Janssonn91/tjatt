@@ -79,53 +79,64 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
-let onlineUsers=[];
+let onlineUsers = [];
 
 io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-    console.log("user is connected", user.nickname)
-    onlineUsers= onlineUsers.filter(id=>id!==user._id);
-    onlineUsers.push(user._id); 
-    socket.broadcast.emit('online', {
-      loginUser: onlineUsers
-    });
+    // console.log("user is connected", user.nickname)
+    // onlineUsers= onlineUsers.filter(id=>id!==user._id);
+    // onlineUsers.push(user._id); 
+    // socket.broadcast.emit('online', {
+    //   loginUser: onlineUsers
+    // });
 
-  socket.on('sign up', (user)=>{
+  socket.on('sign up', (user) => {
     console.log("sign up", user)
     socket.username = user;
     socket.broadcast.emit('sign up', {
       username: socket.username
     });
   })
-  
 
-  socket.on('login', (userId)=>{
-    onlineUsers= onlineUsers.filter(id=>id!==userId);
-      onlineUsers.push(userId)
-        socket.emit('login', {
-      loginUser:onlineUsers
+
+  socket.on('login', (userId) => {
+    console.log("login",userId)
+    onlineUsers = onlineUsers.filter(id => id !== userId);
+    onlineUsers.push(userId)
+    socket.broadcast.emit('login', {
+      loginUser: onlineUsers
     })
-  
-  
+
+
   })
 
-  socket.on('logout', (userId)=>{ 
-    onlineUsers= onlineUsers.filter(id=>id!==userId);
+  socket.on('newChannel', (channel)=> {
+    console.log('newChannel', channel)
+  socket.join(channel);
+  socket.broadcast.emit('newChannel', channel);
+  })
+
+
+
+  socket.on('logout', (userId) => {
+    onlineUsers = onlineUsers.filter(id => id !== userId);
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })
   })
 
- 
+  socket.on('message', (data) => {
+    console.log('Incoming data ', data);
+  });
 
 
 
 
   socket.on('chat message', async (messageFromClient) => {
     // Get the user from session
-    console.log(messageFromClient)
+    //console.log(messageFromClient)
     let c = messageFromClient.channel;
     console.log("c", c)
     socket.join(c);
@@ -136,14 +147,14 @@ io.on('connection', (socket) => {
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
-       ...messageFromClient
+      ...messageFromClient
     });
-    console.log(message)
-    await message.save();    
+    console.log("message",message)
+    await message.save();
 
     // Send the message to all the sockets in the channel
-    io.to(c).emit('chat message',[{
-      sender: message.sender, 
+    io.to(c).emit('chat message', [{
+      sender: message.sender,
       text: message.text,
       channel: message.channel,
       textType: message.textType,
@@ -154,11 +165,16 @@ io.on('connection', (socket) => {
   //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
-   // console.log('user disconnected');
-    console.log('client disconnect...', user._id);
-
-    
-    //handleDisconnect()
+    if(user){
+       onlineUsers = onlineUsers.filter(id => id !== user._id);
+        console.log('client disconnect...', user._id);
+        socket.broadcast.emit('logout', {
+          loginUser: onlineUsers
+        })
+    }
+    // EMILS DATOR BUGGAR LOSS PÅ RADEN UNDER
+ 
+  
   });
 });
 
@@ -171,9 +187,9 @@ app.post('/pwcheck', (req, res) => {
     req.body.pass + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
-  if(hash === req.body.oldpassword){
+  if (hash === req.body.oldpassword) {
     console.log('de stämmer')
-    res.json( {success: true, hash: hash} );
+    res.json({ success: true, hash: hash });
   }
   else {
     console.log('nix stämmer icke, försök igen');
@@ -186,7 +202,7 @@ app.post('/pwhash', (req, res) => {
     req.body.pass + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
-    res.json( {success: true, hash: hash} );
+  res.json({ success: true, hash: hash });
 })
 
 const mailer = require('./classes/Sendmail.class');
@@ -209,7 +225,7 @@ app.post('/users', (req, res) => {
       } else {
         res.json({ success: false })
       }
-    }).catch(err => console.log(err));
+    }).catch(err => console.log("get user", err));
 });
 
 app.get('/users', (req, res) => {
@@ -217,17 +233,17 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/users/:_id', (req, res) => {
-  User.findOne({_id: req.params._id })
-  .then(user=>{
-    if (!user) {
-      res.json({ success: false })
-    } 
-    else { res.json(user)}
-  }).catch(
-    err=>{
-      console.log(err)
-    }
-  )
+  User.findOne({ _id: req.params._id })
+    .then(user => {
+      if (!user) {
+        res.json({ success: false })
+      }
+      else { res.json(user) }
+    }).catch(
+      err => {
+        console.log("find one user", err)
+      }
+    )
 
 })
 
@@ -245,7 +261,7 @@ app.get('/login', (req, res) => {
         res.json({ loggedIn: false })
       }
     }).catch(err => {
-      console.log(err);
+      console.log("login err", err);
     })
 });
 
@@ -269,26 +285,27 @@ app.post('/login', (req, res) => {
         }
       }
     }).catch(err => {
-      console.log(err);
+      console.log("err", err);
     })
 });
 
 app.put('/updateAdmin/:_id', async (req, res) => {
-  console.log(req.body.adminId);
+  console.log("updateAdmin", req.body.adminId);
   let resultChannel = channel.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { admin: req.body.adminId } }
   )
-  .then(() => {
-    res.json({ success: true })
-  })
-  .catch(err => {
-    throw err;
-  });
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
 })
 
 app.put('/users/:_id', (req, res) => {
-  console.log(req.body.contact);
+  console.log("user", req.body);
+  if(req.body.contact){
   User.findOneAndUpdate(
     { _id: req.params._id },
     { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
@@ -299,6 +316,20 @@ app.put('/users/:_id', (req, res) => {
     .catch(err => {
       throw err;
     });
+  }
+  if(!req.body.contact){
+      User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: {channel: req.body.channel, group: req.body.group } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+  }
+
 });
 
 app.put('/channel/:_id', (req, res) => {
@@ -341,7 +372,7 @@ app.put('/users/:_id/remove', (req, res) => {
 });
 
 app.put('/memberChannels/:_id', async (req, res) => {
-   let resultChannel = await channel.update(
+  let resultChannel = await channel.update(
     { _id: req.params._id },
     { $pull: { members: mongoose.Types.ObjectId(req.body.userid) } },
     { multi: true }
@@ -349,12 +380,12 @@ app.put('/memberChannels/:_id', async (req, res) => {
   let resultUser = await User.update(
     { _id: req.body.userid },
     { $pull: { channel: mongoose.Types.ObjectId(req.params._id) } }
-  ).catch(err => console.log(err))
+  ).catch(err => console.log("err", err))
   res.json({ resultChannel, resultUser });
 });
 
 app.put('/removeAdmin/:_id', async (req, res) => {
-   let resultAdmin = await channel.update(
+  let resultAdmin = await channel.update(
     { _id: req.params._id },
     { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
     { multi: true }
@@ -392,7 +423,7 @@ app.put('/users/:_id/setting/password', (req, res) => {
   //console.log(req.body.password);
   User.findOneAndUpdate(
     { _id: req.params._id },
-    { $set: { password: req.body.password} }
+    { $set: { password: req.body.password } }
   )
     .then(user => {
       //console.log(user);

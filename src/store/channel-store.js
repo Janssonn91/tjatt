@@ -20,6 +20,7 @@ class ChannelStore {
   @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
+  @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -30,7 +31,54 @@ class ChannelStore {
   // holds all the admins of the current group
   @observable currentChannelAdmins = [];
 
+  constructor() {
+    // this.listenToPopState();
+  }
 
+  // This is a dirty Thomas hack to fick back/forward buttons
+  // so that the work with channel changes
+  // - would have been better to do with React Router
+  // but can't get the router to work with elements directly
+  // React.rendered from the store...
+  listenToPopState() {
+    // Add a raw JS listener to popstate
+    // if it hasn't been added before
+    if (!this.popStateListenerSet) {
+      console.log('adding listener');
+      this.popStateListenerSet = true;
+      window.onpopstate = async () => {
+
+        // since non-group channels don't have human readable
+        // channel names - just ids - we need to fetch the readble names
+        // we store those in a new properrt ._contact.contactChannelname
+        for (let channel of this.myChannels) {
+          if (!channel.group) {
+            channel._contact = await this.getContactName(channel.members);
+          }
+        }
+
+        // Now let's try to find a match between the url path and a channel name
+        // and change to that channel
+        let channelFound = false;
+        let lastUrlPart = window.location.pathname.split('/').pop();
+        for (let channel of this.myChannels) {
+          let cname = !channel.group && channel._contact ? channel._contact.contactChannelname : channel.channelname;
+          if (lastUrlPart === cname) {
+            this.changeChannel(channel, false);
+            channelFound = true;
+            break;
+          };
+        }
+
+        // I (Thomas) have NO IDEA how to restore the initial view "PLACE HOLDER"
+        // when we hit the back button and do not find a channel (see above)
+        // so this is EXTREMELY DIRTY - I just do a hard reload of the whole page
+        if (!channelFound) {
+          window.location.reload();
+        }
+      }
+    }
+  }
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -66,6 +114,8 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
+    console.log("anchor", anchor)
+    console.log(document.getElementById(anchor))
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -83,7 +133,10 @@ class ChannelStore {
           <div className="d-inline-block" >{contact.contactChannelname}</div>
         </div>
       );
-    });
+    })
+
+
+
 
     Promise.all(elements).then((els) => {
       ReactDOM.render(els, document.getElementById(anchor));
@@ -103,11 +156,11 @@ class ChannelStore {
     }
   }
 
-  @action async getUserList(){
+  @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
-    user.map((u)=>{
-      this.userDict[u._id] = {name: u.nickname, img: u.image}
+    user.map((u) => {
+      return this.userDict[u._id] = { name: u.nickname, img: u.image }
     })
   }
 
@@ -124,7 +177,8 @@ class ChannelStore {
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
-        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id)); 
+        this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        this.viewMembers = [...this.currentGroupMembers]; // Copy members for viewMembersModal
       });
   }
 
@@ -163,10 +217,13 @@ class ChannelStore {
       this.channelName = channel.channelname;
       this.groupAdminId = channel.admin[0];
     }
-    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    if (addPushState) {
+      window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    }
   }
 
   async getChannelChatHistory(channel) {
+    console.log(channel)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: channel._id
@@ -230,40 +287,38 @@ class ChannelStore {
       open: true,
       group: group
     }
-    if (!group) {
-      this.updateContactChannels(this.newChannel);
-    }
-    if (group) {
-      this.updateGroupChannel(this.newChannel)
-    }
-
-    return Channel.create(this.newChannel);
+    Channel.create(this.newChannel);
   }
 
-  @action createGroup(groupName) {
+  @action async createGroup(groupName) {
     const admin = loginStore.user._id;
     const members = loginStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    this.createChannel(groupName, admin, members, true)
-      .then((channel) => {
-        channel.members.forEach(member => {
-          fetch(`/api/users/${member}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-              _id: member,
-              channel: channel._id
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-            .then(res => {
-              res.json();
-            }).catch(err => {
-              console.log(err);
-            })
+    this.createChannel(groupName, admin, members, true);
+    await sleep(60);
+    Channel.find({ channelname: groupName }).then(channel => {
+      this.changeChannel(channel[0]);
+      channel[0].members.forEach(member => {
+        console.log("push channel into member", member)
+        fetch(`/api/users/${member}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            _id: member,
+            channel: channel[0]._id
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
+          .then(res => {
+            res.json();
+          }).catch(err => {
+            console.log(err);
+          })
       })
+      socket.emit('newChannel', channel[0]._id)
+      this.updateGroupChannel(channel[0]);
+    })
   }
 
 
@@ -285,6 +340,7 @@ class ChannelStore {
     console.log(channel)
     this.contactChannels.push(channel);
     console.log(this.contactChannels)
+    //await this.getChannels();
     this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
     //this.props.channelStore.getChannelByUser(user._id)}
   }
@@ -305,6 +361,7 @@ class ChannelStore {
     console.log(this.groupChannels)
     console.log(channel)
     this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
+    //  this.getChannels();
     // console.log(this.groupChannels);
     // this.renderGroup();
     // this.getGroupChannel(this.newChannel);
@@ -376,7 +433,7 @@ class ChannelStore {
     this.hideChat = false;
   }
 
-  @action setAdmin(newAdminId){
+  @action setAdmin(newAdminId) {
     this.adminLeavingError = false;
     this.currentChannelAdmins = [...this.currentChannelAdmins, newAdminId];
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
@@ -401,7 +458,7 @@ class ChannelStore {
       })
   }
 
-  @action showAdminLeaveError(){
+  @action showAdminLeaveError() {
     this.adminLeavingError = true;
   }
 
@@ -452,22 +509,6 @@ class ChannelStore {
       if(this.amIAdmin){
         this.removeAdmin(userId, channel);
       }
-      if(this.currentGroupMembers.length === 1){
-        this.deleteGroup(channel);
-      }
-      window.history.pushState(null, null, "/" + loginStore.user.username);
-  }
-
-  deleteGroup(channel){
-    fetch(`/api/removeGroup/${channel._id}`, {
-      method: 'DELETE'
-    })
-      .then(res => {
-        res.json()
-      })
-      .then(() => {
-        console.log(`slut removegroup, ${channel._id}`)
-      })
   }
 
   removeAdmin(id, channel){
@@ -581,6 +622,8 @@ class ChannelStore {
   }
 
   updateGroup() {
+    this.viewMembers = [...this.currentGroupMembers]; // Update viewMembers too
+
     const { _id, members: previousMemberIds } = this.currentChannel;
     const newMemberIds = this.currentGroupMembers.map(user => user._id);
 
@@ -607,6 +650,10 @@ class ChannelStore {
   @action closeAlert() {
     this.addedSuccess = false;
     this.removedSuccess = false;
+  }
+
+  @action resetCurrentChannel() {
+    this.currentChannel = "";
   }
 
 }
