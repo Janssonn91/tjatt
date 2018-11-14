@@ -25,9 +25,6 @@ import './Login.scss';
     this.password = e.currentTarget.value;
   }
 
-  // checkIfLoggedIn() {
-  //   this.props.loginStore.checkIfLoggedIn();
-  // }
   checkIfLoggedIn() {
     this.props.loginStore.checkIfLoggedIn();
     this.goToChat();
@@ -41,7 +38,6 @@ import './Login.scss';
       // this.props.loginStore.pageLoad(3000);
       this.props.history.push(`/${this.props.loginStore.user.username}`);
       this.props.channelStore.getChannels();
-      //this.props.loginStore.checkIfLoggedIn();
     }
   }
 

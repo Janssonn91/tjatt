@@ -5,10 +5,7 @@ import './AddUserModal.scss';
   @observable userCandidates = [];
 
   start() {
-    this.props.loginStore.fetchContact()
-    // .then(() => {
-    //   this.userCandidates = this.props.loginStore.candidates;
-    // })
+    this.props.loginStore.fetchContact();
   }
 
   searchCandidates = (e) => {

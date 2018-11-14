@@ -173,7 +173,6 @@ class LoginStore {
   }
 
   @action fetchContact() {
-    return new Promise((resolve, reject) => {
       fetch('/api/users')
         .then(res => res.json())
         .then(users => {
@@ -182,11 +181,9 @@ class LoginStore {
           const isIncluded = (userId) => {
             return this.user.contact.some(contactId => userId === contactId);
           }
-          this.candidates = withoutMe.filter(user => !isIncluded(user._id));
-          this.myContacts = withoutMe.filter(user => isIncluded(user._id));
-          this.groupCandidates = withoutMe.filter(user => isIncluded(user._id));
-          resolve();
-        })
+        this.candidates = withoutMe.filter(user => !isIncluded(user._id)); //use in AddUserModal
+        this.myContacts = withoutMe.filter(user => isIncluded(user._id)); //use in Sidebar
+        this.groupCandidates = withoutMe.filter(user => isIncluded(user._id)); //use in CreateGroupModal
     })
 
   }
