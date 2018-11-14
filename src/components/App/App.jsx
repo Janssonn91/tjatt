@@ -7,11 +7,13 @@
         <Route path="/signup" component={Signup} />
         <Route path="/server" component={Server} />
         {this.props.loginStore.user &&
-          <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} />}
+          <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} />
+        }
+
+        {/* 404 */}
         <Route>
-          {/* 404 */}
-          <h1>This site can't be reached</h1>
-          <p>This address could not be found</p>
+          <h1>This is not the chat you are looking for</h1>
+          <p>Use the force to find the right chat, or type a correct URL</p>
         </Route>
       </Switch>
     </Container>

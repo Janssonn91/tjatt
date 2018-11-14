@@ -1,4 +1,6 @@
 $white: rgb(219, 219, 219);
+$red: #FF3C00;
+$text:#434651;
 
 .Signup {
 
@@ -26,6 +28,16 @@ $white: rgb(219, 219, 219);
     background: rgba(0, 0, 0, .1);
     color: $white;
     text-align: center;
+  }
+
+  .alert-color {
+    background-color: lighten($red, 40%);
+    border: none;
+    color: $text;
+  }
+  
+  .signupForm{
+    box-shadow: 2px 2px 2px 100vmax rgba(0,0,0,0.4);
   }
 
 }

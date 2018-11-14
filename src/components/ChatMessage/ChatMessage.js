@@ -1,9 +1,12 @@
-import './Message.scss';
+import './ChatMessage.scss';
 
 @inject('loginStore', 'channelStore') @observer
-export default class Message extends Component {
-
+export default class ChatMessage extends Component {
+  
+  @observable iconShow = false;
+  @observable iconDisappear = false;
   @observable isOpen = false;
+  @observable dropdownOpen = false;
   @observable deleteMessageModal = false;
 
   @observable sendToDeleteMessageModal = {
@@ -15,6 +18,10 @@ export default class Message extends Component {
 
   toggle() {
     this.isOpen = !this.isOpen;
+  }
+
+  dropdownToggle() {
+    this.dropdownOpen = !this.dropdownOpen;
   }
 
   deleteMessageModalToggle() {

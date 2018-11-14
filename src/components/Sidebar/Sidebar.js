@@ -16,18 +16,30 @@ export const imgPath = '/images/placeholder.png';
   @observable createGroupModalOpen = {
     isOpen: false,
     keyboard: true,
-    toggle: this.openModalCreateGroup.bind(this)
+    toggle: this.closeModal.bind(this)
   }
 
   @observable collapseOpen = false;
+  @observable contactsOpen = false;
+  @observable groupsOpen = false;
+
 
   async toggle() {
     await sleep(1);
     this.collapseOpen = !this.collapseOpen;
   }
 
+  openContacts = () => {
+    this.contactsOpen = !this.contactsOpen;
+  }
+
+  openGroups = () => {
+    this.groupsOpen = !this.groupsOpen;
+  }
+
   openModalupdateSetting() {
     this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
+    this.props.loginStore.resetAlert();
   }
 
   openModalAddNewUser() {
@@ -35,17 +47,26 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalCreateGroup() {
-    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+
+  }
+
+  closeModal() {
+    this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
+    this.props.loginStore.cleanUpGroupModal();
   }
 
   logout() {
     fetch('/api/logout').then(() => {
       this.props.loginStore.isLoggedIn = false;
+      this.props.history.push('/');
+      socket.emit("logout", this.props.loginStore.user._id);
     });
   }
 
   changeLogStatus() {
     return false;
   }
+
 
 }
