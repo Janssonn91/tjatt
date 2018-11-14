@@ -43,74 +43,45 @@ function git_clone(payload) {
     .then(err => {
       console.log("Downloaded repo from: " + payload.gitUrl);
       console.log("Proceeding with building Docker image")
-      build_docker_image(payload, payload.uniqueProjectName);
+      prepare_docker_files(payload, payload.uniqueProjectName);
     })
     .catch(err => console.log("error", err));
 }
 
 
-function build_docker_image(payload) {
-  let name = payload.uniqueProjectName;
+function prepare_docker_files(payload) {
   create_docker_dockerfile(payload);
-
-  var tarStream = tar.pack('./docker/' + name)
-  docker.image.build(tarStream, {
-      t: payload.uniqueProjectName
-    })
-    .then((stream) => promisifyStream(stream))
-    .then(() => {
-      create_docker_container(payload)
-    })
-    .then(() => {
-      create_docker_compose_file(payload)
-    })
-    .catch((error) => console.log(error))
+  create_docker_compose_file(payload)
 }
 
 async function get_used_ports() {
   return new Promise((resolve, reject) => {
     docker.container.list().then(containers => {
-      let ports = containers.map(container => {
-        return container.data.Ports[0].PublicPort;
+      let ports = containers.filter(container => {
+        if (container.data.Ports.length == 1) {
+          return true
+        } else {
+          return false
+        }
+      }).map(_container => {
+        let _ports = _container.data.Ports.map(port => {
+          return port.PublicPort
+        })
+        return _ports
       });
-      resolve(ports);
+      resolve([].concat.apply([], ports));
     });
   })
 }
-
 
 async function select_docker_port() {
   let probePort = 49152;
   let found = false;
   let usedPorts = await get_used_ports();
-
   while (!found) {
     usedPorts.includes(probePort) ? probePort++ : (found = true);
   }
-
   return probePort;
-  //create_docker_container(_name, probePort);
-}
-
-function create_docker_container(payload) {
-
-  let config = {
-    Image: payload.uniqueProjectName,
-    name: payload.uniqueProjectName,
-    "HostConfig": {
-      "PortBindings": {},
-    }
-  }
-
-  config.HostConfig.PortBindings[`${payload.webPort}/tcp`] = [{
-    HostPort: `${payload.dockerPort}`
-  }]
-
-  docker.container.create(config)
-    .then((container) => {
-      //container.start()
-    })
-    .catch((error) => console.log(error))
 }
 
 function create_docker_dockerfile(payload) {
@@ -135,23 +106,23 @@ CMD [ "npm", "start" ]`);
   });
 }
 
-async function create_docker_compose_file(payload){
+async function create_docker_compose_file(payload) {
   let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
 
-let data =
-`version: "2"
+  console.log('payload', payload)
+
+  let data =
+    `version: "2"
 services:
   web:
     build: "../${payload.uniqueProjectName}"
-    # entrypoint: "/docker/${payload.uniqueProjectName}"
     ports:
-    - "${payload.webPort}:3000"
+    - "${payload.dockerPort}:${payload.webPort}"
     depends_on:
     - mongo
     container_name: "${payload.uniqueProjectName}_app"
   mongo:
     build: "../${payload.uniqueProjectName}"
-    # entrypoint: "/docker/${payload.uniqueProjectName}"
     expose:
     - "27017"
     container_name: "${payload.uniqueProjectName}_db"`;
@@ -169,16 +140,19 @@ services:
   await start_containers_composer(payload);
 }
 
+const {
+  exec
+} = require('child_process');
 
-const { exec } = require('child_process');
-
-function start_containers_composer(payload){
-  exec(`cd ../../docker/${payload.uniqueProjectName} docker-compose up -d`, (err, stdout, stderr) => {
-    if (err) { throw (err); }
+function start_containers_composer(payload) {
+  exec(`docker-compose up -d`, {
+    cwd: payload.localPath
+  }, (err, stdout, stderr) => {
+    if (err) {
+      throw (err);
+    }
     console.log(stdout || stderr);
-    
   });
 }
-
 
 module.exports = router;
