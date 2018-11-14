@@ -27,6 +27,8 @@ class ChannelStore {
   @observable contactChannelname = "";
   @observable userDict = {};
   @observable adminLeavingError = false;
+  // holds all the admins of the current group
+  @observable currentChannelAdmins = [];
 
 
 
@@ -127,17 +129,29 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
+    //this.currentChannel.admin = [];
+    // this.currentChannel.admin.push(channel.admin);
+    // console.log(this.currentChannel.admin);
     this.showChat();
     this.getChannelChatHistory(channel);
     let admin = [];
     if (typeof (channel.admin) === "string") {
       admin.push(channel.admin);
       console.log(admin)
+      this.currentChannelAdmins.push(channel.admin);
+      console.log(this.currentChannelAdmins);
+      //this.currentChannel.admin.push(channel.admin);
+      //console.log(this.currentChannel.admin);
     } else {
       admin = channel.admin;
+      this.currentChannelAdmins = channel.admin;
+      console.log(this.currentChannelAdmins);
+      console.log(admin);
+      //this.currentChannel.admin = channel.admin;
     }
     this.amIAdmin = admin.some(a => a === loginStore.user._id);
     let element = "";
@@ -364,7 +378,10 @@ class ChannelStore {
 
   @action setAdmin(newAdminId){
     this.adminLeavingError = false;
+    this.currentChannelAdmins = [...this.currentChannelAdmins, newAdminId];
     this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    console.log(this.currentChannel);
+    console.log(this.currentChannel._id);
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -408,6 +425,10 @@ class ChannelStore {
       i++;
     }
     this.renderChannels();
+    // test att lämna grupp och historik i frontend
+    this.ChannelChatHistory = [];
+    this.currentChannelGroup = false;
+    this.channelName = '';
 
     // remove both channel from user and user from channel in backend
     const userId = loginStore.user._id;
@@ -431,6 +452,22 @@ class ChannelStore {
       if(this.amIAdmin){
         this.removeAdmin(userId, channel);
       }
+      if(this.currentGroupMembers.length === 1){
+        this.deleteGroup(channel);
+      }
+      window.history.pushState(null, null, "/" + loginStore.user.username);
+  }
+
+  deleteGroup(channel){
+    fetch(`/api/removeGroup/${channel._id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        res.json()
+      })
+      .then(() => {
+        console.log(`slut removegroup, ${channel._id}`)
+      })
   }
 
   removeAdmin(id, channel){
@@ -455,6 +492,7 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
+      this.amIAdmin = false;
   }
 
   @action searchCandidates(regex) {
