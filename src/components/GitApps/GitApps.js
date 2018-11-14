@@ -101,6 +101,11 @@ import './GitApps.scss';
   }
 
   onSubmit(){
+     fetch('/api/addRepo', { 
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
+      method: 'POST' // or 'PUT'
+    })
     this.importingRepo = true;
     this.importRepo(this.urlToSet,this.urlToSet);
     this.urlToSet = '';
