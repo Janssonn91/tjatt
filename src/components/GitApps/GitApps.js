@@ -117,22 +117,23 @@ import './GitApps.scss';
         this.importingRepo = true;
 
         //this should be removed when the fetch method is uncommented
-        this.importRepo(this.urlToSet,this.urlToSet);
-        this.urlToSet = '';
-        this.projectToSet = '';
+        // this.importRepo(this.urlToSet,this.urlToSet);
+        // this.urlToSet = '';
+        // this.projectToSet = '';
 
         
-        // await fetch('/api/addRepo', { 
-        //   headers:{'Content-Type': 'application/json'},
-        //   body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
-        //   method: 'POST' // or 'PUT'
-        // })
-        // .then(response => {
-        //     this.importRepo(this.urlToSet,this.urlToSet);
-        //     this.urlToSet = '';
-        //     this.projectToSet = '';
-        // })
-        // .catch(error=>console.log(error));
+        await fetch('/api/addRepo', { 
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
+          method: 'POST' // or 'PUT'
+        })
+        .then(response => {
+            this.importRepo(this.urlToSet,this.urlToSet);
+            this.urlToSet = '';
+            this.projectToSet = '';
+            this.importingRepo = false;
+        })
+        .catch(error=>console.log(error));
         
     }
   
