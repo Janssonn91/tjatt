@@ -42,14 +42,15 @@
       <Form className="m-0">
         <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
-          <Input className="m-0" type="text" name="text" id="searchContacts" autoComplete="off" placeholder="Find members by searching here:" />
+          <Input className="m-0" type="text" name="text" id="searchContacts" placeholder="Find members by searching here:"
+            onChange={this.searchContacts} autoComplete="off" />
         </FormGroup>
 
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched users</h5>
             <FormGroup className="m-0 overflow-y-auto">
-              {this.props.loginStore.groupCandidates.map((user, i) =>
+              {this.searchContact.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
@@ -59,7 +60,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => this.props.loginStore.selectOneForGroup(user)}>Add user</Button>
+                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.props.loginStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
                   </span>
                 </ListGroupItem>
               )}
@@ -78,7 +79,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => this.props.loginStore.removeFromSelect(user)}>Remove user</Button>
+                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => { this.props.loginStore.removeFromSelect(user); this.removeFromSelectedUser(user) }}>Remove user</Button>
                   </span>
                 </ListGroupItem>
               )}
@@ -89,7 +90,7 @@
       <div className={this.showAttr}><p className='feedback'>A group needs at least 3 members!</p></div>
     </ModalBody>
     <ModalFooter className="p-2">
-      <Button className="btn btn-cancel" onClick={e => this.props.toggle()  }>Cancel</Button>&nbsp;
+      <Button className="btn btn-cancel" onClick={e => this.props.toggle()}>Cancel</Button>&nbsp;
       <Button className="btn btn-create" onClick={e => this.createGroup(e)}>Create Group</Button>
     </ModalFooter>
   </Modal>

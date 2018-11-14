@@ -43,9 +43,8 @@
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
       <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
-
       <Collapse isOpen={this.groupsOpen}>
-        <Card className="contactsCollapse border-0 m-0">
+        <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">
             <div id="groupsRender"></div>
           </CardBody>
