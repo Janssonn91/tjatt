@@ -22,11 +22,11 @@
       </NavLink> */}
 
 
-      <NavLink>
+      <NavLink className="pt-0 pr-0">
         <NavItem onClick={this.openContacts}>My Contacts</NavItem>
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
-      <Collapse isOpen={this.contactsOpen}>
+      <Collapse className="pl-2" isOpen={this.contactsOpen}>
         <Card className="contactsCollapse border-0 m-0">
           <CardBody className="p-0">
             <div id="contactsRender"></div>
@@ -39,13 +39,12 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink>
+      <NavLink className="pr-0">
         <NavItem onClick={this.openGroups}>My Groups</NavItem>
       </NavLink>
       <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
-
-      <Collapse isOpen={this.groupsOpen}>
-        <Card className="contactsCollapse border-0 m-0">
+      <Collapse className="pl-2" isOpen={this.groupsOpen}>
+        <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">
             <div id="groupsRender"></div>
           </CardBody>

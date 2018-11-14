@@ -15,7 +15,7 @@ export default class Tjatt extends Component {
     this.hideChat = true;
   }
 
-  showChat(){
+  showChat() {
     this.hideMenu = true;
     this.hideChat = false;
   }

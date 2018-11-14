@@ -9,7 +9,7 @@
         <div className="selected-members d-md-none d-inline-block">
           <ScrollableFeed forceScroll={true}>
             {this.props.channelStore.currentGroupMembers.map((user, i) =>
-              <div key={i} className="nav-link pl-0 d-inline-block" onClick={() => this.props.loginStore.removeFromSelect(user)}>
+              <div key={i} className="nav-link pl-0 d-inline-block">
                 <div className="wrapper d-block">
                   {user._id !== this.props.loginStore.user._id &&
                     user._id !== this.props.channelStore.groupAdminId &&

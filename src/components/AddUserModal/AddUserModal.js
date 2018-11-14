@@ -21,7 +21,7 @@ import './AddUserModal.scss';
       if (regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)) {
         return this.userCandidates.push(user);
       }
-      return null;
+      return false;
     })
   }
 

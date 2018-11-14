@@ -17,10 +17,22 @@ class LoginStore {
   @observable savedPassword = false;
   @observable areAllEmpty = false;
   @observable onLineUsers = [];
+  @observable isLoading = true;
   // @observable myGroups = [];
 
   constructor() {
     this.checkIfLoggedIn();
+    console.log('login-store här?????');
+    this.pageLoad();
+  }
+
+  @action pageLoad(time = 500) {
+    console.time(time);
+    this.isLoading = true;
+    setTimeout(() => {
+      console.timeEnd(time)
+      return this.isLoading = false
+    }, (1000 + time))
   }
 
   @action checkIfLoggedIn() {
@@ -91,6 +103,7 @@ class LoginStore {
       .then(res => {
         if (res.success) {
           this.user = res.user;
+          this.pageLoad();
           this.isLoggedIn = true;
         }
         else {
@@ -231,6 +244,8 @@ class LoginStore {
     const addedUser = this.groupCandidates.find(u => u._id === user._id);
     const index = this.groupCandidates.indexOf(addedUser);
     this.groupCandidates.splice(index, 1);
+    console.log(toJS(this.groupCandidates))
+    console.log(index);
   }
 
   @action removeFromSelect(user) {

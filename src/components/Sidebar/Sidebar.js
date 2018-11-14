@@ -23,6 +23,10 @@ export const imgPath = '/images/placeholder.png';
   @observable contactsOpen = false;
   @observable groupsOpen = false;
 
+  start() {
+    this.props.channelStore.getChannels();
+  }
+
 
   async toggle() {
     await sleep(1);
@@ -59,6 +63,7 @@ export const imgPath = '/images/placeholder.png';
   logout() {
     fetch('/api/logout').then(() => {
       this.props.loginStore.isLoggedIn = false;
+      this.props.channelStore.resetCurrentChannel();
       this.props.history.push('/');
       socket.emit("logout", this.props.loginStore.user._id);
     });
