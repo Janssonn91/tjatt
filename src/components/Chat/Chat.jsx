@@ -132,7 +132,7 @@
               />
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
-                  <i className="far emojiOpener">😃</i>
+                  <i className="far emojiOpener"><span role="img" aria-label="emoji">😃</span></i>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />

@@ -33,7 +33,7 @@
         <li key={i} className="clearfix">
           <div className="message-data">
             {
-              this.props.loginStore.onLineUsers.some(id => id === message.sender) ?
+              this.props.channelStore.userDict[message.sender].status ?
                 <span className="online circle">
                   <i className="fas fa-circle"></i>
                 </span> :
