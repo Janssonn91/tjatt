@@ -32,7 +32,7 @@ class ChannelStore {
   @observable currentChannelAdmins = [];
 
   // constructor() {
-    // this.listenToPopState();
+  // this.listenToPopState();
   // }
 
   // This is a dirty Thomas hack to fick back/forward buttons
@@ -227,7 +227,7 @@ class ChannelStore {
       this.groupAdminId = channel.admin[0];
     }
     // if (addPushState) {
-      window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
     // }
   }
 
@@ -445,7 +445,7 @@ class ChannelStore {
   @action setAdmin(newAdminId) {
     this.adminLeavingError = false;
     this.currentChannelAdmins = [...this.currentChannelAdmins, newAdminId];
-    this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
+    // this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
     console.log(this.currentChannel);
     console.log(this.currentChannel._id);
     fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
@@ -515,12 +515,28 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
-      if(this.amIAdmin){
-        this.removeAdmin(userId, channel);
-      }
+    if (this.amIAdmin) {
+      this.removeAdmin(userId, channel);
+    }
+    if (this.currentGroupMembers.length === 1) {
+      this.deleteGroup(channel);
+    }
+    window.history.pushState(null, null, '/' + loginStore.user.username);
   }
 
-  removeAdmin(id, channel){
+  deleteGroup(channel) {
+    fetch(`/api/removeGroup/${channel._id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        res.json()
+      })
+      .then(() => {
+        console.log(`slut på group, ${channel._id}`)
+      })
+  }
+
+  removeAdmin(id, channel) {
     // remove admin from frontend
     let index = this.currentChannel.admin.indexOf(id);
     this.currentChannel.admin.splice(index, 1);
@@ -542,7 +558,7 @@ class ChannelStore {
       .catch(err => {
         console.log(err);
       })
-      this.amIAdmin = false;
+    this.amIAdmin = false;
   }
 
   @action searchCandidates(regex) {

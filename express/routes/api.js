@@ -1,85 +1,152 @@
 const router = require('express').Router();
-const { exec, spawn } = require('child_process');
-const util = require('util');
-const promisifiedExec = util.promisify(exec); //Gör så att exec await kan användas
 const fs = require('fs');
 const path = require('path');
-const buf = require('buffer').Buffer;
+const del = require("del");
+const simplegit = require("simple-git/promise");
+const {
+  Docker
+} = require('node-docker-api');
+
+const docker = new Docker({
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
+});
 
 router.post('/addRepo', async (req, res) => {
-  await promisifiedExec(
-    `cd repos && git clone ${req.body.url} ${req.body.projectName} && cd ${
-    req.body.projectName
-    } && npm install`
-  );
+  let dockerPort = await select_docker_port();
+  let uniqueProjectName = req.body.url.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '') + dockerPort;
 
-  // Change back params to 'npm' and ['start']
-  // This is to get it to work with express apps
-  let process = spawn('node', ['app'], {
-    cwd: `./repos/${req.body.projectName}`
-  });
-  process.on('error', error => console.log('error: ' + error));
-  process.stdout.on('data', data => console.log('data: ' + data));
-  res.json(req.body);
-
-  /**
-   * Randomize a number between 1025-65535
-   * to use as port number
-   */
-  function randomizePortNumber() {
-    let newPortNumber = 1025 + Math.floor(Math.random() * 65535);
-    // Protect our specific ports for Mongo etc
-    let protectedPorts = [80, 443, 3000, 4500, 8080, 27017, 39812];
-    for (let i = 0; i < protectedPorts.length; i++) {
-      if (newPortNumber === protectedPorts[i]) {
-        randomizePortNumber();
-      }
-    }
-    return newPortNumber;
+  let payload = {
+    gitUrl: req.body.url.toLowerCase(),
+    projectName: req.body.projectName,
+    uniqueProjectName: uniqueProjectName,
+    dockerPort: dockerPort,
+    webPort: 3300,
+    dbPort: 7000,
+    localPath: path.join(__dirname, "../../docker/" + uniqueProjectName)
   }
 
-  let port = randomizePortNumber();
+  fs.existsSync(payload.localPath) ?
+    del(payload.localPath).then(() => git_clone(payload)) : git_clone(payload);
+});
 
-  /**
-   * On POST request:
-   * use path.resolve to get correct working directory
-   * read app.js to find current port number
-   * Change port number to one chosen by us then
-   * overwrite app.js file
-   */
-  await promisifiedExec(
-    `cd ${path.resolve(`./repos/${req.body.projectName}`)}`,
-    {},
-    () => {
-      const filePath = path.resolve(`./repos/${req.body.projectName}`);
-      fs.readFile(filePath + '/app.js', (err, data) => {
-        if (err) throw err;
-        let appString = data.toString(); // returns Buffer we convert to string
-        if (appString.includes('app.listen')) {
-          let stringIndex = appString.indexOf('app.listen'); //find "app.listen"
-          let portIndex = stringIndex + 11; // index of portnumber
-          let portNumber = appString.slice(portIndex, portIndex + 4);
-          let newString = appString.replace(portNumber, port);
+function git_clone(payload) {
+  simplegit()
+    .silent(true)
+    .clone(payload.gitUrl, payload.localPath)
+    .then(err => {
+      console.log("Downloaded repo from: " + payload.gitUrl);
+      console.log("Proceeding with building Docker image")
+      prepare_docker_files(payload, payload.uniqueProjectName);
+    })
+    .catch(err => console.log("error", err));
+}
 
-          // If console log port differs from actual port
-          let stringIndexInConsoleLog = appString.indexOf('istening on port');
-          let portIndexInConsoleLog = stringIndexInConsoleLog + 17;
-          let portNumberInConsoleLog = appString.slice(
-            portIndexInConsoleLog,
-            portIndexInConsoleLog + 4
-          );
-          // Replace all occurances
-          newString = newString.replace(portNumberInConsoleLog, port);
-          newString = newString.replace(portNumberInConsoleLog, port);
-          console.log(newString);
 
-          fs.writeFile(filePath + '/app.js', newString, err => {
-            if (err) throw err;
-          });
+function prepare_docker_files(payload) {
+  create_docker_dockerfile(payload);
+  create_docker_compose_file(payload)
+}
+
+async function get_used_ports() {
+  return new Promise((resolve, reject) => {
+    docker.container.list().then(containers => {
+      let ports = containers.filter(container => {
+        if (container.data.Ports.length == 1) {
+          return true
+        } else {
+          return false
         }
+      }).map(_container => {
+        let _ports = _container.data.Ports.map(port => {
+          return port.PublicPort
+        })
+        return _ports
       });
+      resolve([].concat.apply([], ports));
+    });
+  })
+}
+
+async function select_docker_port() {
+  let probePort = 49152;
+  let found = false;
+  let usedPorts = await get_used_ports();
+  while (!found) {
+    usedPorts.includes(probePort) ? probePort++ : (found = true);
+  }
+  return probePort;
+}
+
+function create_docker_dockerfile(payload) {
+  let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
+
+  fs.writeFile(path, '', {
+    flag: 'wx'
+  }, function (err) {
+    if (err) {
+      console.log("Dockerfile already exists!")
+    } else {
+      fs.appendFileSync(path,
+        `FROM mhart/alpine-node:latest
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE ${payload.webPort}
+CMD [ "npm", "start" ]`);
     }
-  );
+
   });
+}
+
+async function create_docker_compose_file(payload) {
+  let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
+
+  console.log('payload', payload)
+
+  let data =
+    `version: "2"
+services:
+  web:
+    build: "../${payload.uniqueProjectName}"
+    ports:
+    - "${payload.dockerPort}:${payload.webPort}"
+    depends_on:
+    - mongo
+    container_name: "${payload.uniqueProjectName}_app"
+  mongo:
+    image: mvertes/alpine-mongo
+    expose:
+    - "27017"
+    container_name: "${payload.uniqueProjectName}_db"`;
+
+  fs.writeFile(path, '', {
+    flag: 'wx'
+  }, function (err) {
+    if (err) {
+      console.log("Docker compose file already exists!")
+    } else {
+      fs.appendFileSync(path, data);
+    }
+  });
+
+  await start_containers_composer(payload);
+}
+
+const {
+  exec
+} = require('child_process');
+
+function start_containers_composer(payload) {
+  exec(`docker-compose up -d`, {
+    cwd: payload.localPath
+  }, (err, stdout, stderr) => {
+    if (err) {
+      throw (err);
+    }
+    console.log(stdout || stderr);
+  });
+}
 
 module.exports = router;

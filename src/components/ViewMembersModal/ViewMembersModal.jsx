@@ -4,28 +4,28 @@
       View members
     </ModalHeader>
     <ModalBody>
-    {this.props.channelStore.amIAdmin && this.props.channelStore.adminLeavingError && (this.props.channelStore.currentChannel.admin.length < 2 || (typeof(this.props.channelStore.currentChannel.admin === 'string'))) &&
-      <Alert color="danger" className="my-2 text-center">
-        You are the only admin in the group, please make another member admin before leaving
+      {this.props.channelStore.amIAdmin && this.props.channelStore.adminLeavingError && (this.props.channelStore.currentChannelAdmins.length < 2 || (typeof (this.props.channelStore.currentChannel.admin === 'string'))) &&
+        <Alert color="danger" className="my-2 text-center">
+          You are the only admin in the group, please make another member admin before leaving
       </Alert>}
-      <ListGroup className="border-0 rounded-0 member-list">    
+      <ListGroup className="border-0 rounded-0 member-list">
         {this.props.channelStore.viewMembers.map((user, i) =>
-        <ListGroupItem key={i} className="m-0 py-2 px-1 border-left-0 border-right-0 rounded-0 admin-user">
-          <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"}/>
-          <div className="profile d-inline-block">
-          <p className="m-0 font-weight-bold">{user.username}</p>
-          <p className="text-muted m-0">
-            <small>{user.nickname}</small>
-          </p>
-          </div>
-          {this.props.channelStore.currentChannel.admin.includes(user._id) &&
-            <p className="m-0 p-0 d-inline float-right admin-text">(Admin)</p>
-          }
-          {!this.props.channelStore.currentChannel.admin.includes(user._id) && this.props.channelStore.amIAdmin &&
-          <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button>
-          }
-        </ListGroupItem>
-      )}
+          <ListGroupItem key={i} className="m-0 py-2 px-1 border-left-0 border-right-0 rounded-0 admin-user">
+            <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+            <div className="profile d-inline-block">
+              <p className="m-0 font-weight-bold">{user.username}</p>
+              <p className="text-muted m-0">
+                <small>{user.nickname}</small>
+              </p>
+            </div>
+            {this.props.channelStore.currentChannelAdmins.includes(user._id) &&
+              <p className="m-0 p-0 d-inline float-right admin-text">(Admin)</p>
+            }
+            {!this.props.channelStore.currentChannelAdmins.includes(user._id) && this.props.channelStore.amIAdmin &&
+              <Button className="btn btn-make-admin border-0 float-right" onClick={e => this.setNewAdmin(e, user._id)}>Make admin</Button>
+            }
+          </ListGroupItem>
+        )}
       </ListGroup>
     </ModalBody>
   </Modal>
