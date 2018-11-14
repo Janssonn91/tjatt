@@ -9,6 +9,7 @@ const {
 
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 router.post('/addRepo', async (req, res) => {
