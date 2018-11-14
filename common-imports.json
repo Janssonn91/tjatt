@@ -5,20 +5,27 @@
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
   "  Channel": "classes/channel.class.js",
+  "  Message": "classes/message.class.js",
   "  Repo": "classes/repo.class.js",
   "  Chat": "components/Chat/Chat",
   "  App" : "components/App/App",
   "  Sidebar": "components/Sidebar/Sidebar",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
-  "  AddMemberModal": "components/AddMemberModal/AddMemberModal",
-  "  DeleteMemberModal": "components/DeleteMemberModal/DeleteMemberModal",
-  "  Message": "components/Message/Message",
+  "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
+  "  AddDeleteMemberModal": "components/AddDeleteMemberModal/AddDeleteMemberModal",
+  "  LeaveGroupModal": "components/LeaveGroupModal/LeaveGroupModal",
+  "  ChatMessage": "components/ChatMessage/ChatMessage",
   "  Tjatt": "components/Tjatt/Tjatt",
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
-  "  AddUserModal": "components/AddUser/AddUserModal",
+  "  AddUserModal": "components/AddUserModal/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
   "  Server": "components/Server/Server",
+  "  GitApps": "components/GitApps/GitApps",
+  "  Spinner": "components/Spinner/Spinner",
+
+  "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
+  "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -60,6 +67,8 @@
   "{autorun}": "mobx",
   "{reaction}": "mobx",
   "{toJS}": "mobx",
+  "{action}": "mobx",
+  "{inject}": "mobx-react",
   "{observer}": "mobx-react",
 
   "/*7": "------------------- jQuery -------------------",
@@ -160,5 +169,8 @@
 
   "/*9": "------------ Syntax highlighting -------------",
   "SyntaxHighlighter": "react-syntax-highlighter/prism",
-  "shstyle": "react-syntax-highlighter/styles/prism/duotone-light"
+  "shstyle": "react-syntax-highlighter/styles/prism/duotone-light",
+
+  "Iframe": "react-iframe",
+  "ReactTooltip": "react-tooltip"
 }

@@ -1,0 +1,42 @@
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: rgb(255, 0, 0);
+$orange: #E38968;
+$text:#434651;
+
+.leave-group-modal {
+  width: 75%;
+  margin: 1.75rem auto;
+  .modal-header {
+    h4 {
+      color: $gray;
+    }
+    button, button:hover, button:focus, button:active {
+      outline: none;
+      border: none;
+    }
+  }
+  .btn {
+    border: none;
+    border-radius: 30px;
+    padding: 0.275rem 0.65rem;
+    font-size: 0.9rem;
+    &.btn-leave-group {
+      background-color: $red;
+      &:hover {
+        background-color: darken($red, 10%);
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $gray;
+      &:hover {
+        background-color: darken($gray, 10%);
+      }
+    }
+  }
+}

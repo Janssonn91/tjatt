@@ -1,1 +1,1 @@
-export default class PrivateRoute extends Component { }
+@inject('loginStore') export default class PrivateRoute extends Component { }
