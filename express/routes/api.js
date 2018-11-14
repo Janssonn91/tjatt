@@ -10,6 +10,7 @@ const {
 
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 const promisifyStream = (stream) => new Promise((resolve, reject) => {
