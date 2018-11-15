@@ -195,6 +195,7 @@ class ChannelStore {
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
+    this.searchedGroupCandidates = []; // Reset searchedGroupCandidates used on Add/Delete menbers Modal
     //this.currentChannel.admin = [];
     // this.currentChannel.admin.push(channel.admin);
     // console.log(this.currentChannel.admin);
