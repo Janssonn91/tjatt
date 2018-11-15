@@ -276,9 +276,6 @@ class ChannelStore {
       this.channelName = channel.channelname;
       this.groupAdminId = channel.admin[0];
     }
-    // if (addPushState) {
-    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
-    // }
   }
 
   async getChannelChatHistory(id) {
