@@ -54,7 +54,9 @@ class ChannelStore {
         // we store those in a new properrt ._contact.contactChannelname
         for (let channel of this.myChannels) {
           if (!channel.group) {
-            channel._contact = await this.getContactName(channel.members);
+            let user = this.getContactName(channel.members);
+            console.log(user)
+            channel._contact =  user.name;
           }
         }
 
@@ -63,7 +65,7 @@ class ChannelStore {
         let channelFound = false;
         let lastUrlPart = window.location.pathname.split('/').pop();
         for (let channel of this.myChannels) {
-          let cname = !channel.group && channel._contact ? channel._contact.contactChannelname : channel.channelname;
+          let cname = !channel.group && channel._contact ? channel._contact : channel.channelname;
           if (lastUrlPart === cname) {
             this.changeChannel(channel, false);
             channelFound = true;
@@ -140,16 +142,18 @@ class ChannelStore {
   // }
 
 
-  async getContactName(ids) {
+  @action getContactName(ids) {
     let n = ids.filter(id => { return id !== loginStore.user._id });
-    let contact = {};
-    if (n[0]) {
-      let res = await fetch(`/api/users/${n}`);
-      let user = await res.json();
-      contact.contactImg = user.image;
-      contact.contactChannelname = user.nickname;
-      return contact;
-    }
+    let u = this.userDict[n];
+    return u;
+    // let contact = {};
+    // if (n[0]) {
+    //   let res = await fetch(`/api/users/${n}`);
+    //   let user = await res.json();
+    //   contact.contactImg = user.image;
+    //   contact.contactChannelname = user.nickname;
+    //   return contact;
+    // }
   }
 
   @action async getUserList() {
@@ -165,7 +169,10 @@ class ChannelStore {
   @action async getLoginStatus(){
       if(loginStore.onLineUsers){
         for(let id of loginStore.onLineUsers){
-          this.userDict[id].status= true;
+          if(this.userDict[id]){
+            this.userDict[id].status = true;
+          }
+        
         }
       }
     }
@@ -182,14 +189,20 @@ class ChannelStore {
       if(c.group){
         this.channelDict[c._id] = {_id:c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open}
         this.groupChannels.push(this.channelDict[c._id]);
+        console.log("check group",  this.groupChannels)
       }else{
-        let n = c.members.filter(id=>{ return id!== loginStore.user._id});
-        this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
-        this.contactChannels.push(this.channelDict[c._id])
+        let name = this.getContactName(c.members);
+        this.channelDict[c._id] = {_id:c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+        this.contactChannels.push(this.channelDict[c._id]);
+        // let n = c.members.filter(id=>{ return id!== loginStore.user._id});
+        // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+        // this.contactChannels.push(this.channelDict[c._id])
       }
       
     })
   }
+
+
 
   getGroupMembersData(memberIds) {
     fetch('/api/users')
@@ -290,6 +303,7 @@ class ChannelStore {
     await sleep(60);
     Channel.find({ channelname: groupName }).then(channel => {
       this.changeChannel(channel[0]);
+      this.groupChannels.push(channel[0]);
       channel[0].members.forEach(member => {
         console.log("push channel into member", member)
         fetch(`/api/users/${member}`, {
@@ -309,7 +323,7 @@ class ChannelStore {
           })
       })
       socket.emit('newChannel', channel[0]._id)
-      this.getChannelList();
+     
       //this.updateGroupChannel(channel[0]);
     })
   }
