@@ -228,6 +228,7 @@ class ChannelStore {
     
     this.showChat();
     this.getChannelChatHistory(this.currentChannel._id);
+    this.getLoginStatus();
 
     this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
