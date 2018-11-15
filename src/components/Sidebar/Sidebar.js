@@ -24,7 +24,7 @@ export const imgPath = '/images/placeholder.png';
   @observable groupsOpen = false;
 
   start() {
-   // this.props.channelStore.getChannels();
+    // this.props.channelStore.getChannels();
   }
 
 
@@ -73,5 +73,9 @@ export const imgPath = '/images/placeholder.png';
     return false;
   }
 
+  changeChannel(channel) {
+    this.props.channelStore.changeChannel(channel);
+    this.props.history.push(`/${this.props.loginStore.user.username}/${channel.channelname}`);
+  }
 
 }
