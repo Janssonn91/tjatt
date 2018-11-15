@@ -17,7 +17,6 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable searchedGroupCandidates = [];
-  @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
   @observable viewMembers = [];
@@ -225,7 +224,6 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
-      this.groupAdminId = channel.admin[0];
     }
     // if (addPushState) {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
