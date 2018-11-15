@@ -160,16 +160,16 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      //this.userDict[u._id] = { name: u.nickname, img: u.image }
-      for(let id of loginStore.onLineUsers){
-        if(u._id===id){
-          this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
+      return this.userDict[u._id] = { name: u.nickname, img: u.image }
+      // for(let id of loginStore.onLineUsers){
+      //   if(u._id===id){
+      //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
 
-        }else{
-          this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
-        }
-      }
-      return this.userDict[u._id];
+      //   }else{
+      //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
+      //   }
+      // }
+      // return this.userDict[u._id];
     })
     console.log(this.userDict)
   }
