@@ -156,33 +156,35 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      //this.userDict[u._id] = { name: u.nickname, img: u.image }
-      for(let id of loginStore.onLineUsers){
-        if(u._id===id){
-          this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
-
-        }else{
-          this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
-        }
-      }
-      return this.userDict[u._id];
+      return this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
+     
     })
     console.log(this.userDict)
   }
+  
+  @action async getLoginStatus(){
+      if(loginStore.onLineUsers){
+        for(let id of loginStore.onLineUsers){
+          this.userDict[id].status= true;
+        }
+      }
+    }
+  
 
   @action async getChannelList(){
+    console.log(this.userDict)
     this.groupChannels = [];
     this.contactChannels = [];
-    let channels = await Channel.find({_id: loginStore.user.channel,});
-    channels.map((c)=>{
+    this.myChannels = [];
+    this.myChannels = await Channel.find({_id: loginStore.user.channel,});
+      this.myChannels.map((c)=>{
       socket.emit('join channel', c._id)
-      console.log(c)
       if(c.group){
-        this.channelDict[c._id] = {id:c._id, name: c.channelname, member: c.members, admin: c.admin, favorite: c.favorite, group: true, open: true}
+        this.channelDict[c._id] = {_id:c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open}
         this.groupChannels.push(this.channelDict[c._id]);
       }else{
         let n = c.members.filter(id=>{ return id!== loginStore.user._id});
-        this.channelDict[c._id] = {id:c._id, name: this.userDict[n].name, img: this.userDict[n].img, member: c.members, admin: c.admin, favorite: c.favorite, group: true, open: true }
+        this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
         this.contactChannels.push(this.channelDict[c._id])
       }
       
@@ -207,9 +209,12 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    console.log(channel)
     this.currentChannel = channel;
+    console.log("channelname", this.currentChannel)
+    
     this.showChat();
-    this.getChannelChatHistory(channel.id);
+    this.getChannelChatHistory(this.currentChannel._id);
 
     this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
@@ -238,20 +243,21 @@ class ChannelStore {
     }
     this.amIAdmin = admin.some(a => a === loginStore.user._id);
     let element = "";
-    // if (!channel.group) {
-    //   const name = await this.getContactName(channel.members);
-    //   this.channelName = name.contactChannelname;
-    // } else {
-    //   this.getGroupMembersData(channel.members);
-    //   this.channelName = channel.channelname;
-    //   this.groupAdminId = channel.admin[0];
-    // }
+    if (!channel.group) {
+      const name = await this.getContactName(channel.members);
+      this.channelName = name.contactChannelname;
+    } else {
+      this.getGroupMembersData(channel.members);
+      this.channelName = channel.channelname;
+      this.groupAdminId = channel.admin[0];
+    }
     // if (addPushState) {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
     // }
   }
 
   async getChannelChatHistory(id) {
+    console.log("changeChannel", id)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: id
@@ -311,15 +317,16 @@ class ChannelStore {
 
 
 
-  // updateContactChannels(channel) {
-  //   console.log(channel)
-  //   this.contactChannels.push(channel);
-  //   console.log(this.contactChannels);
-  //   this.getChannelList();
-  //   //await this.getChannels();
-  //  // this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
-  //   //this.props.channelStore.getChannelByUser(user._id)}
-  // }
+  updateContactChannels(channel) {
+    console.log(channel)
+    this.contactChannels.push(channel);
+    console.log(this.contactChannels);
+    this.getChannelList();
+   
+    //await this.getChannels();
+   // this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
+    //this.props.channelStore.getChannelByUser(user._id)}
+  }
 
 
   // updateGroupChannel(channel) {
@@ -448,7 +455,7 @@ class ChannelStore {
       }
       i++;
     }
-    this.renderChannels();
+    //this.renderChannels();
     // test att lämna grupp och historik i frontend
     this.ChannelChatHistory = [];
     this.currentChannelGroup = false;

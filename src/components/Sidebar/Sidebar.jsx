@@ -32,8 +32,8 @@
             {/* {<div id="contactsRender"></div> */}
             {this.props.channelStore.contactChannels.map((channel, i)=>
             <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.props.channelStore.changeChannel(channel)}>
-            <CardImg className="mr-3 d-inline-block" src={channel.img || "/images/placeholder.png"} />
-            <div className="d-inline-block">{channel.name}</div>
+            <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
+            <div className="d-inline-block">{channel.channelname}</div>
           </div>
               )}
             {/* {this.props.loginStore.myContacts.map((user, i) =>
@@ -55,7 +55,7 @@
             {/* <div id="groupsRender"></div> */}
             {this.props.channelStore.groupChannels.map((channel, i)=>
             <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.props.channelStore.changeChannel(channel)}>
-            <div className="d-inline-block">{channel.name}</div>
+            <div className="d-inline-block">{channel.channelname}</div>
           </div>
               )}
           </CardBody>

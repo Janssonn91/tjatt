@@ -42,6 +42,7 @@ class LoginStore {
       .then(res => res.json())
       .then(res => {
         if (res.loggedIn) {
+          channelStore.getUserList()
           this.user = res.user;
           this.isLoggedIn = true;
           socket.emit('login', this.user._id)
@@ -75,7 +76,7 @@ class LoginStore {
           })
           socket.on('login', message => {
             this.onLineUsers = message.loginUser;
-            channelStore.getUserList()
+            channelStore.getLoginStatus()
           })
           socket.on('logout', message => {
             this.onLineUsers = message.loginUser;
@@ -191,7 +192,7 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
+    //channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
   }
 
   @action cleanUpGroupModal() {
@@ -208,11 +209,15 @@ class LoginStore {
 
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
+   
     Channel.find({channelname: channelname}).then(channel => {
-      channelStore.changeChannel(channel[0]);
+      console.log("add contact", channel[0]._id)
+
+       
+      
       socket.emit('newChannel', channel[0]._id)
       socket.emit('join channel', channel[0]._id)
-      channelStore.getChannelList();
+     
        //channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
