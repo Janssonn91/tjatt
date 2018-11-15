@@ -54,9 +54,8 @@ class ChannelStore {
         // we store those in a new properrt ._contact.contactChannelname
         for (let channel of this.myChannels) {
           if (!channel.group) {
-            let user = this.getContactName(channel.members);
-            console.log(user)
-            channel._contact =  user.name;
+            channel._contact =  await this.getContactUrl(channel.members)
+            console.log(channel._contact)
           }
         }
 
@@ -65,7 +64,7 @@ class ChannelStore {
         let channelFound = false;
         let lastUrlPart = window.location.pathname.split('/').pop();
         for (let channel of this.myChannels) {
-          let cname = !channel.group && channel._contact ? channel._contact : channel.channelname;
+          let cname = !channel.group && channel._contact ? channel._contact.contactChannelname : channel.channelname;
           if (lastUrlPart === cname) {
             this.changeChannel(channel, false);
             channelFound = true;
@@ -156,6 +155,18 @@ class ChannelStore {
     // }
   }
 
+  async getContactUrl(ids) {
+    let n = ids.filter(id => { return id !== loginStore.user._id });
+    let contact = {};
+    if (n[0]) {
+      let res = await fetch(`/api/users/${n}`);
+      let user = await res.json();
+      contact.contactImg = user.image;
+      contact.contactChannelname = user.nickname;
+      return contact;
+    }
+  }
+
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
@@ -189,7 +200,7 @@ class ChannelStore {
       if(c.group){
         this.channelDict[c._id] = {_id:c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open}
         this.groupChannels.push(this.channelDict[c._id]);
-        console.log("check group",  this.groupChannels)
+       // console.log("check group",  this.groupChannels)
       }else{
         let name = this.getContactName(c.members);
         this.channelDict[c._id] = {_id:c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
