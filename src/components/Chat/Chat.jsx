@@ -99,7 +99,7 @@
                     <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
                   <DropdownItem>
                     <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <Link to="server" tabIndex="-1">
+                  <Link to="git" tabIndex="-1">
                     <DropdownItem>
                       <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
                   </Link>
