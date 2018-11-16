@@ -8,8 +8,8 @@ const {
 } = require('node-docker-api');
 
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  //socketPath: '//./pipe/docker_engine'
 });
 
 router.post('/addRepo', async (req, res) => {
@@ -21,13 +21,14 @@ router.post('/addRepo', async (req, res) => {
     projectName: req.body.projectName,
     uniqueProjectName: uniqueProjectName,
     dockerPort: dockerPort,
-    webPort: 3300,
+    webPort: req.body.webPort,
     dbPort: 7000,
-    localPath: path.join(__dirname, "../../docker/" + uniqueProjectName)
+    localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
+    res: res
   }
-
   fs.existsSync(payload.localPath) ?
     del(payload.localPath).then(() => git_clone(payload)) : git_clone(payload);
+
 });
 
 function git_clone(payload) {
@@ -37,15 +38,15 @@ function git_clone(payload) {
     .then(err => {
       console.log("Downloaded repo from: " + payload.gitUrl);
       console.log("Proceeding with building Docker image")
-      prepare_docker_files(payload, payload.uniqueProjectName);
+      prepare_docker_files(payload);
     })
-    .catch(err => console.log("error", err));
+    .catch(err => { console.log("error", err); payload.res.json('err'); });
 }
 
 
-function prepare_docker_files(payload) {
-  create_docker_dockerfile(payload);
-  create_docker_compose_file(payload)
+async function prepare_docker_files(payload) {
+  let did = await create_docker_dockerfile(payload);
+  did && create_docker_compose_file(payload)
 }
 
 async function get_used_ports() {
@@ -80,30 +81,31 @@ async function select_docker_port() {
 
 function create_docker_dockerfile(payload) {
   let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
-
-  fs.writeFile(path, '', {
-    flag: 'wx'
-  }, function (err) {
-    if (err) {
-      console.log("Dockerfile already exists!")
-    } else {
-      fs.appendFileSync(path,
-        `FROM mhart/alpine-node:latest
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE ${payload.webPort}
-CMD [ "npm", "start" ]`);
-    }
-
+  return new Promise((promiseResult) =>{
+    fs.writeFile(path, '', {
+      flag: 'wx'
+    }, function (err) {
+      if (err) {
+        console.log("Dockerfile already exists!")
+        promiseResult(false);
+      } else {
+        fs.appendFileSync(path,
+          `FROM mhart/alpine-node:latest
+          WORKDIR /usr/src/app
+          COPY package*.json ./
+          RUN npm install
+          COPY . .
+          EXPOSE ${payload.webPort}
+          CMD [ "npm", "start" ]`);
+      };
+      promiseResult(true);
+    });
   });
+
 }
 
-async function create_docker_compose_file(payload) {
+function create_docker_compose_file(payload) {
   let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-
-  console.log('payload', payload)
 
   let data =
     `version: "2"
@@ -125,13 +127,12 @@ services:
     flag: 'wx'
   }, function (err) {
     if (err) {
-      console.log("Docker compose file already exists!")
+      console.log("Docker compose file already exists!");
     } else {
       fs.appendFileSync(path, data);
+      start_containers_composer(payload);
     }
   });
-
-  await start_containers_composer(payload);
 }
 
 const {
@@ -145,6 +146,8 @@ function start_containers_composer(payload) {
     if (err) {
       throw (err);
     }
+    let response = Object.assign({}, payload, {res: null})
+    payload.res.json(response);
     console.log(stdout || stderr);
   });
 }

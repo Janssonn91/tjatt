@@ -28,22 +28,14 @@
                   <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .addDeleteMemberModalToggle
-                        .bind(this)}>
-                      Add/Delete members
-                  </DropdownItem>
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .viewMembersModalToggle
-                        .bind(this)}>
+                    
+                    <DropdownItem className="py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>
                       View members
-                  </DropdownItem>
+                    </DropdownItem>
                     {this.props.channelStore.amIAdmin &&
-                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                      <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
+                      Add/Delete members
+                    </DropdownItem>
                     }
                   </div>
                   <DropdownItem className="m-0" divider />
@@ -99,10 +91,8 @@
                     <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
                   <DropdownItem>
                     <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <Link to="server" tabIndex="-1">
-                    <DropdownItem>
-                      <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
-                  </Link>
+                  <DropdownItem onClick={()=> this.openSideDrawerHandler()}>
+                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
                 </DropdownMenu>
                 :
                 <DropdownMenu>
@@ -132,7 +122,7 @@
               />
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
-                  <i className="far emojiOpener">😃</i>
+                  <i className="far emojiOpener"><span role="img" aria-label="emoji">😃</span></i>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
@@ -148,6 +138,7 @@
           </Form>
         </Col>
       </Row>
+      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()}/>
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -159,7 +150,12 @@
           </Button>
         </Col>
       </Row>
-      <h1 style={{ color: "black" }}>Place holder</h1>
+      <Row>
+        <Col sm="12">
+          <h1><img src="/images/tja@Logo.png" alt="" className="logo default" /></h1>
+        </Col>
+      </Row>
     </Fragment>
   }
+  
 </Fragment>

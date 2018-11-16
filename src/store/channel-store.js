@@ -17,7 +17,6 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable searchedGroupCandidates = [];
-  @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
   @observable viewMembers = [];
@@ -243,8 +242,8 @@ class ChannelStore {
 
     this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
-   
-    //this.currentChannelGroup = channel.group;
+    this.currentChannelGroup = channel.group;
+    this.searchedGroupCandidates = []; // Reset searchedGroupCandidates used on Add/Delete menbers Modal
     //this.currentChannel.admin = [];
     // this.currentChannel.admin.push(channel.admin);
     // console.log(this.currentChannel.admin);
@@ -274,7 +273,6 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
-      this.groupAdminId = channel.admin[0];
     }
     // if (addPushState) {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);

@@ -34,7 +34,7 @@ import './Login.scss';
   }
 
   goToChat = async () => {
-    await sleep(60);
+    // this.props.loginStore.pageLoad();
 
     // console.log(this.props.loginStore.isLoading);
     if (this.props.loginStore.isLoggedIn) {
