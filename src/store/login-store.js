@@ -1,15 +1,11 @@
 import channelStore from './channel-store';
 
 class LoginStore {
-  @observable user = { channel: [], contact: [] };
-  @observable isLoggedIn = false;
-  @observable loginError = false;
-  @observable usernameExist = false;
-  @observable emailExist = false;
-  @observable candidates = [];
-  @observable myContacts = [];
-  //@observable myChannel = [];
-  @observable groupCandidates = [];
+  @observable user = { channel: [], contact: [] }; //Login.js: behövs vara här
+  @observable isLoggedIn = false; //Login.js, Sidebar.js, Signup.js: behövs vara här
+  // @observable loginError = false; //används bara i Login.js => move to Login.js
+  // @observable usernameExits = false; //används i Signup.js => move to Signup.js
+  @observable onLineUsers = []; //Ta data i Login.js och används i ChatMessage.js
   @observable selectedGroupMember = [];
   @observable message = '';
   // @observable receivedMessages = [];
@@ -22,12 +18,10 @@ class LoginStore {
   // @observable myGroups = [];
 
   constructor() {
-    this.checkIfLoggedIn();
     console.log('login-store här?????');
     setTimeout(() => {
       this.isLoading = false;
     }, 500);
-    // this.pageLoad();
   }
 
   @action pageLoad(time = 1000) {
@@ -37,157 +31,26 @@ class LoginStore {
     }, (time))
   }
 
-  @action checkIfLoggedIn() {
-    fetch('/api/login', {
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.loggedIn) {
-          this.user = res.user;
-          this.isLoggedIn = true;
-          socket.emit('login', this.user._id)
-          // socket.on('online', message => {
-          //   this.onLineUsers = message.loginUser;
-          // })
-          socket.off('chat message');
-          socket.on(
-            'chat message',
-            (messages) => {
-              for (let message of messages) {
-                let date = new Date();
-                if (message.channel === channelStore.currentChannel._id) {
-                  channelStore.channelChatHistory.push(
-                    {
-                      channel: message.channel,
-                      sender: message.sender,
-                      star: false,
-                      text: message.text,
-                      textType: message.textType,
-                      time: date
-                    }
-                  )
-
-                }
-              }
-
-            })
-          socket.on('sign up', message => {
-            channelStore.getUserList()
-          })
-          socket.on('login', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getUserList()
-          })
-          socket.on('logout', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getUserList()
-          })
-        }
-        socket.on('newChannel', channel => {
-          console.log(channel)
-          channelStore.getChannels();
-        })
-        socket.on('message', event => {
-          console.log('Message from server ', event);
-        });
-      }).catch(err => {
-        console.log("err", err)
-      })
-  }
-
-  @action login(username, password) {
-    fetch('/api/login', {
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          socket.emit('login', this.user._id)
-          this.user = res.user;
-          this.pageLoad();
-          this.isLoggedIn = true;
-        }
-        else {
-          this.loginError = true;
-        }
-      }).catch(err => {
-        console.log("err", err)
-      })
-  }
-
-  @action signUp(username, password, useremail) {
-    console.log(username, password, useremail);
-    fetch('/api/users',
-      {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify({ username, password, useremail }),
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('created user: ' + username + ' med mail ' + useremail)
-          this.user = res.user
-          this.usernameExist = false;
-          this.isLoggedIn = true;
-          this.sendWelcomeMail(username, useremail);
-          socket.emit('sign up', this.user);
-        } else {
-          console.log('träff, användarnamn finns');
-          if (res.userResult) {
-            console.log('träff på username')
-            this.usernameExist = true;
-          }
-          else {
-            console.log('träff på useremail');
-            this.emailExist = true;
-          }
-        }
-      }).catch((err) => {
-        console.log('error', err);
-      });
-  }
-
-
-
-  sendWelcomeMail(username, email) {
-    console.log(username, email);
-    fetch('/api/send-mail', {
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify({ username, email }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('mail skickat')
-        }
-      }).catch(err => {
-        console.log("err", err)
-      })
+  @action.bound setUserAndIsLoggedIn(userdata) {
+    const { user, isLoggedIn } = userdata;
+    this.user = user;
+    this.isLoggedIn = isLoggedIn;
   }
 
   @action fetchContact() {
-      fetch('/api/users')
-        .then(res => res.json())
-        .then(users => {
-          const withoutMe = users.filter(user => user._id !== this.user._id);
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(users => {
+        const withoutMe = users.filter(user => user._id !== this.user._id);
 
-          const isIncluded = (userId) => {
-            return this.user.contact.some(contactId => userId === contactId);
-          }
+        const isIncluded = (userId) => {
+          return this.user.contact.some(contactId => userId === contactId);
+        }
         this.candidates = withoutMe.filter(user => !isIncluded(user._id)); //use in AddUserModal
         this.myContacts = withoutMe.filter(user => isIncluded(user._id)); //use in Sidebar
         this.groupCandidates = withoutMe.filter(user => isIncluded(user._id)); //use in CreateGroupModal
-    })
-
+      })
   }
-
 
   // remove added user in candidates
   @action async updateContact(userId) {

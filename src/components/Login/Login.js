@@ -5,10 +5,11 @@ import './Login.scss';
   @observable collapseOpen = false;
   @observable username = '';
   @observable password = '';
+  @observable loginError = false;
 
 
   componentDidMount() {
-    this.props.loginStore.loginError = false;
+    this.loginError = false;
     this.checkIfLoggedIn();
 
   }
@@ -26,7 +27,56 @@ import './Login.scss';
   }
 
   checkIfLoggedIn() {
-    this.props.loginStore.checkIfLoggedIn();
+    fetch('/api/login', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.loggedIn) {
+          this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          socket.emit('login', this.user._id)
+          socket.on('online', message => {
+            this.props.loginStore.setOnLineUsers(message.loginUser);
+          })
+          socket.off('chat message');
+          socket.on(
+            'chat message',
+            (messages) => {
+              for (let message of messages) {
+                let date = new Date();
+                if (message.channel === this.props.channelStore.currentChannel._id) {
+                  this.props.channelStore.channelChatHistory.push(
+                    {
+                      channel: message.channel,
+                      sender: message.sender,
+                      star: false,
+                      text: message.text,
+                      textType: message.textType,
+                      time: date
+                    }
+                  )
+                }
+              }
+            })
+          socket.on('sign up', message => {
+            this.props.channelStore.getUserList()
+          })
+          socket.on('login', message => {
+            this.props.loginStore.setOnLineUsers(message.loginUser);
+            // this.onLineUsers = message.loginUser; // move to store
+          })
+          socket.on('logout', message => {
+            this.props.loginStore.setOnLineUsers(message.loginUser);
+            // this.onLineUsers = message.loginUser; // move to store
+          })
+        }
+        socket.on('message', event => {
+          console.log('Message from server ', event);
+        });
+      }).catch(err => {
+        console.log("err", err)
+      })
+
     this.goToChat();
   }
 
@@ -41,9 +91,33 @@ import './Login.scss';
     }
   }
 
+  login(username, password) {
+    fetch('/api/login', {
+      credentials: 'include',
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          // this.user = res.user;
+          // this.isLoggedIn = true;
+          socket.emit("login", this.user._id)
+        }
+        else {
+          this.loginError = true;
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.loginStore.login(this.username, this.password);
+    // this.props.loginStore.login(this.username, this.password);
+    this.login(this.username, this.password);
     this.goToChat();
 
     document.getElementById('password').value = '';
