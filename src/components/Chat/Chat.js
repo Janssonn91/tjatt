@@ -33,6 +33,7 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
+  @observable openSideDrawer = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -161,6 +162,10 @@ export default class Chat extends Component {
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
+  }
+
+  openSideDrawerHandler(){
+    this.openSideDrawer = !this.openSideDrawer;
   }
 
 

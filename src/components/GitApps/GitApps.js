@@ -7,7 +7,7 @@ import './GitApps.scss';
 @observable importedApps = [];
 @observable runningApps = [];
 @observable openApp = {};
-@observable showSidedrawer = true;
+@observable showSidedrawer = this.props.open;
 @observable showImport = false;
 @observable showApps = true;
 @observable importingRepo = false;
@@ -74,7 +74,8 @@ import './GitApps.scss';
     }
 
     sideDrawerHandler(){
-        this.showSidedrawer = !this.showSidedrawer;
+        // this.showSidedrawer = !this.props.open;
+        this.props.onClose();
     }
 
     sideDrawerShowImportHandler(){
