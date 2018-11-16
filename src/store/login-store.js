@@ -143,7 +143,6 @@ class LoginStore {
           }
           else {
             console.log('träff på useremail');
-            console.log(res.userResult, res.emailResult);
             this.emailExist = true;
           }
         }
