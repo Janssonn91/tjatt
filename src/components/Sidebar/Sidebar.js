@@ -42,8 +42,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalupdateSetting() {
-    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
-    this.props.loginStore.resetAlert();
+    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen;
   }
 
   openModalAddNewUser() {

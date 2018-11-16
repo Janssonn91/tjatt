@@ -13,13 +13,16 @@ class LoginStore {
   // @observable groupCandidates = []; //CreateGroupModal
 
   // @observable selectedGroupMember = []; // CreateGroupModal, channel-store
-  @observable message = '';
+
+
+  // Move to updateSettingsModal
+  // @observable isNotCorrectPass = false;
+  // @observable savedNickname = false;
+  // @observable savedPassword = false;
+  // @observable areAllEmpty = false;
+
+  // @observable myChannel = [];
   // @observable receivedMessages = [];
-  @observable isNotCorrectPass = false;
-  @observable savedNickname = false;
-  @observable savedPassword = false;
-  @observable areAllEmpty = false;
-  @observable onLineUsers = [];
   @observable isLoading = true;
   // @observable myGroups = [];
 
@@ -43,106 +46,10 @@ class LoginStore {
     this.isLoggedIn = isLoggedIn;
   }
 
-  @action updateSettings(settings) {
-    const { imageFormData, nickname, password, currentPassword } = settings;
-
-    if (Object.values(settings).every(value => value === "")) {
-      this.areAllEmpty = true;
-    }
-    if (nickname !== "") {
-      fetch(`/api/users/${this.user._id}/setting`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          _id: this.user._id,
-          nickname,
-        }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            this.savedNickname = true;
-            this.user = { ...this.user, nickname };
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-
-    if (password !== '') {
-      fetch('/api/pwcheck', {
-        method: 'POST',
-        body: JSON.stringify({
-          pass: currentPassword,
-          oldpassword: this.user.password
-        }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            fetch('/api/pwhash', {
-              method: 'POST',
-              body: JSON.stringify({
-                pass: password
-              }),
-              headers: { 'Content-Type': 'application/json' }
-            })
-              .then(res => res.json())
-              .then(data => {
-                const password = data.hash;
-                fetch(`/api/users/${this.user._id}/setting/password`, {
-                  method: 'PUT',
-                  body: JSON.stringify({
-                    _id: this.user._id,
-                    password,
-                  }),
-                  headers: { 'Content-Type': 'application/json' }
-                })
-                document.getElementById('currentPassword').value = '';
-                document.getElementById('setNewPassword').value = '';
-                document.getElementById('confirmNewPassword').value = '';
-                this.savedPassword = true;
-                this.user = { ...this.user, password };
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          }
-          else {
-            this.isNotCorrectPass = true;
-            return;
-          }
-          console.log(data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-
-    if (imageFormData) {
-      fetch('/api/upload', {
-        method: 'POST',
-        body: imageFormData
-      })
-        .then(res => res.json())
-        .then(res => {
-          this.user = { ...this.user, image: res.path };
-        });
-    }
+  @action updateProfile(setting) {
+    this.user = { ...this.user, setting };
   }
 
-  @action isCorrectPass() {
-    this.isNotCorrectPass = false;
-  }
-
-  @action resetAlert() {
-    this.isNotCorrectPass = false;
-    this.savedNickname = false;
-    this.savedPassword = false;
-    this.areAllEmpty = false;
-  }
 }
 
 export const loginStore = new LoginStore();
