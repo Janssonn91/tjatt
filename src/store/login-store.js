@@ -6,6 +6,12 @@ class LoginStore {
   // @observable loginError = false; //används bara i Login.js => move to Login.js
   // @observable usernameExits = false; //används i Signup.js => move to Signup.js
   @observable onLineUsers = []; //Ta data i Login.js och används i ChatMessage.js
+
+  // Flytta till UserStore? behövs i store eftersom de data behövs från olika component
+  // @observable candidates = []; //AddUserModal
+  // @observable myContacts = []; //Sidebar, channel-store
+  // @observable groupCandidates = []; //CreateGroupModal
+
   @observable selectedGroupMember = [];
   @observable message = '';
   // @observable receivedMessages = [];
