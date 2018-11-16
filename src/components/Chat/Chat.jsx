@@ -151,7 +151,11 @@
           </Button>
         </Col>
       </Row>
-      <h1 style={{ color: "black" }}>Place holder</h1>
+      <Row>
+        <Col sm="12">
+          <h1><img src="/images/tja@Logo.png" alt="" className="logo default" /></h1>
+        </Col>
+      </Row>
     </Fragment>
   }
 </Fragment>
