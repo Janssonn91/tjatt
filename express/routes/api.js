@@ -8,8 +8,8 @@ const {
 } = require('node-docker-api');
 
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  //socketPath: '//./pipe/docker_engine'
 });
 
 router.post('/addRepo', async (req, res) => {
@@ -106,8 +106,6 @@ function create_docker_dockerfile(payload) {
 
 function create_docker_compose_file(payload) {
   let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-
-  console.log('payload', payload)
 
   let data =
     `version: "2"
