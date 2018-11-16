@@ -60,7 +60,6 @@
                   <span className="d-inline-block ml-auto">
                     <Button className="btn btn-add-user border-0 d-inline-block ml-auto" onClick={() => { this.props.loginStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
                   </span>
-                  <h1>hej</h1>
                 </ListGroupItem>
               )}
             </FormGroup>
