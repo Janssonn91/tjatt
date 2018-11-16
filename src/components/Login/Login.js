@@ -34,7 +34,7 @@ import './Login.scss';
   }
 
   goToChat = async () => {
-    await sleep(60);
+    // this.props.loginStore.pageLoad();
 
     // console.log(this.props.loginStore.isLoading);
     if (this.props.loginStore.isLoggedIn) {
@@ -46,7 +46,7 @@ import './Login.scss';
   }
 
   onSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     this.props.loginStore.login(this.username, this.password);
     this.goToChat();
 

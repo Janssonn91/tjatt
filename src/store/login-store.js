@@ -82,7 +82,7 @@ class LoginStore {
             channelStore.getUserList()
           })
         }
-        socket.on('newChannel', channel=>{
+        socket.on('newChannel', channel => {
           console.log(channel)
           channelStore.getChannels();
         })
@@ -106,7 +106,7 @@ class LoginStore {
         if (res.success) {
           socket.emit('login', this.user._id)
           this.user = res.user;
-          this.pageLoad();
+          // this.pageLoad();
           this.isLoggedIn = true;
         }
         else {
@@ -207,11 +207,11 @@ class LoginStore {
 
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
-    Channel.find({channelname: channelname}).then(channel => {
+    Channel.find({ channelname: channelname }).then(channel => {
       channelStore.changeChannel(channel[0]);
       socket.emit('newChannel', channel[0]._id)
       socket.emit('join channel', channel[0]._id)
-       channelStore.updateContactChannels(channel[0]);
+      channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
         method: 'PUT',
@@ -223,7 +223,7 @@ class LoginStore {
         .then(res => res.json())
         .then(() => {
           this.updateContact(userId);
-         
+
         })
         .catch(err => {
           console.log(err);
@@ -232,7 +232,7 @@ class LoginStore {
       // add my id to the new friend contact
       fetch(`/api/users/${userId}`, {
         method: 'PUT',
-        body: JSON.stringify({ userId, contact: this.user._id, channel: channel[0]._id}),
+        body: JSON.stringify({ userId, contact: this.user._id, channel: channel[0]._id }),
         headers: { 'Content-Type': 'application/json' }
       })
         .then(res => res.json())
