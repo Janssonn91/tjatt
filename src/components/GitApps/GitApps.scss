@@ -32,6 +32,7 @@
 .gitApps-sideDrawer-open{
     right: 0;
     width: 500px;
+    max-width: 100%;
 }
 
 .gitApps-sideDrawer-close-button{
@@ -52,6 +53,7 @@
     position: fixed;
     height: 145px;
     width: 500px;
+    max-width: 100%;
     z-index: 4;
     text-align: center;
     display: -ms-flexbox;
