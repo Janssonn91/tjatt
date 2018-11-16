@@ -28,23 +28,15 @@
                   <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.channelName}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .addDeleteMemberModalToggle
-                        .bind(this)}>
+                    <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
                       Add/Delete members
-                  </DropdownItem>
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .viewMembersModalToggle
-                        .bind(this)}>
+                    </DropdownItem>
+                    <DropdownItem className="py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>
                       View members
-                  </DropdownItem>
-                    {this.props.channelStore.amIAdmin &&
-                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
-                    }
+                    </DropdownItem>
+                    {/* {this.props.channelStore.amIAdmin &&
+                    <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                    } */}
                   </div>
                   <DropdownItem className="m-0" divider />
                   <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
@@ -132,7 +124,7 @@
               />
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
-                  <i className="far emojiOpener">😃</i>
+                  <i className="far emojiOpener"><span role="img" aria-label="emoji">😃</span></i>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
@@ -159,7 +151,11 @@
           </Button>
         </Col>
       </Row>
-      <h1 style={{ color: "black" }}>Place holder</h1>
+      <Row>
+        <Col sm="12">
+          <h1><img src="/images/tja@Logo.png" alt="" className="logo default" /></h1>
+        </Col>
+      </Row>
     </Fragment>
   }
 </Fragment>

@@ -17,7 +17,6 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable searchedGroupCandidates = [];
-  @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
   @observable viewMembers = [];
@@ -124,11 +123,11 @@ class ChannelStore {
         contact = await this.getContactName(channel.members);
       }
       return (type === 'group' ?
-        <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
+        <div key={i} className="nav-link pl-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
           <div className="d-inline-block" >{channel.channelname} </div>
         </div>
         :
-        <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
+        <div key={i} className="nav-link pl-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
           <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
           <div className="d-inline-block" >{contact.contactChannelname}</div>
         </div>
@@ -160,18 +159,20 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      return this.userDict[u._id] = { name: u.nickname, img: u.image }
-      // for(let id of loginStore.onLineUsers){
-      //   if(u._id===id){
+      //this.userDict[u._id] = { name: u.nickname, img: u.image }
+      // for (let id of loginStore.onLineUsers) {
+      //   if (u._id === id) {
       //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
-
-      //   }else{
+      //     console.log(u);
+      //   } else {
       //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
       //   }
       // }
+      return this.userDict[u._id] = { name: u.nickname, img: u.image }
       // return this.userDict[u._id];
     })
-    console.log(this.userDict)
+
+    console.log(toJS(this.userDict));
   }
 
   getGroupMembersData(memberIds) {
@@ -196,6 +197,7 @@ class ChannelStore {
     this.ChannelChatHistory = [];
     this.currentChannel = channel;
     this.currentChannelGroup = channel.group;
+    this.searchedGroupCandidates = []; // Reset searchedGroupCandidates used on Add/Delete menbers Modal
     //this.currentChannel.admin = [];
     // this.currentChannel.admin.push(channel.admin);
     // console.log(this.currentChannel.admin);
@@ -225,7 +227,6 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
-      this.groupAdminId = channel.admin[0];
     }
     // if (addPushState) {
     window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);

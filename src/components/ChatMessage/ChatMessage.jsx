@@ -21,8 +21,8 @@
                 <i className="fas fa-pen"></i>
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem header className="py-2 px-3 dropdown-header">Configure message</DropdownItem>
-                <DropdownItem className="m-0"divider/>
+                {/* <DropdownItem header className="py-2 px-3 dropdown-header">Configure message</DropdownItem>
+                <DropdownItem className="m-0"divider/> */}
                 <DropdownItem className="py-2 px-3 delete-message" onClick={this.deleteMessageModalToggle.bind(this)}>Delete message</DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>
@@ -32,7 +32,7 @@
 
         <li key={i} className="clearfix">
           <div className="message-data">
-            {
+            {/* {
               this.props.channelStore.userDict[message.sender].status ?
                 <span className="online circle">
                   <i className="fas fa-circle"></i>
@@ -40,7 +40,7 @@
                 <span className="offline circle">
                   <i className="fas fa-circle"></i>
                 </span>
-            }&nbsp; &nbsp;
+            }&nbsp; &nbsp; */}
             <span>
               <img alt="user-img" src={this.props.channelStore.userDict[message.sender].img || "/images/placeholder.png"} />
             </span>&nbsp; &nbsp;
