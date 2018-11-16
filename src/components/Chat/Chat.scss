@@ -64,22 +64,36 @@ $fontSm: 12px;
             transform: translate3d(-5px, 17px, 0px) !important;
             height: auto;
             padding: 0;
-                .dropdown-header {
-                    color: $gray;
-                    font-weight: bold;
-                    &:hover {
-                        cursor: unset !important;
-                    }
+            .dropdown-header {
+                color: $gray;
+                font-weight: bold;
+                &:hover {
+                    cursor: unset !important;
                 }
-                .channel-manage {
-                    .dropdown-item {
+            }
+            .channel-manage {
+                .dropdown-item {
                     font-size: 0.8rem;
                     font-weight: 600;
                     color: $blue;
-                    &:hover, &:active {
+                    &:hover, &:active, &:focus {
                         cursor: pointer;
                         background-color: lighten($gray, 35%);
                     }
+                }
+            }
+            .leave-group{
+                font-weight: bold;
+                font-size: 0.8rem;
+                color: $darkred;
+                &:hover, &:active, &:focus {
+                    color: white;
+                    background-color: lighten($darkred, 5%);
+                    -webkit-box-shadow: unset;
+                    box-shadow: unset;
+                    cursor: pointer;
+                    border-bottom-left-radius: 4px;
+                    border-bottom-right-radius: 4px;
                 }
             }
         }
@@ -110,18 +124,6 @@ $fontSm: 12px;
             padding-left: 20px;
             font-size: $fontSm;
             border-color: white;
-        }
-
-        .leave-group{
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: $red;
-            &:hover {
-                background-color: lighten($gray, 35%);
-                -webkit-box-shadow: unset;
-                box-shadow: unset;
-                cursor: pointer;
-            }
         }
         .editable-gn {
             padding: 4px;
@@ -188,7 +190,7 @@ $fontSm: 12px;
             vertical-align: middle;
         }
         .message {
-            word-break: break-all;
+            word-break: break-word;
             text-align:left;
             color: $text;
             padding: 8px 15px;
@@ -284,7 +286,7 @@ $fontSm: 12px;
         }
 
         #messageArea {
-            padding: 15px 35px 15px 15px;
+            padding: 15px 48px 15px 15px;
             vertical-align: middle;
             margin: 10px 0;
             border: 1px solid lighten($lightblue, 16%);
@@ -360,11 +362,11 @@ $fontSm: 12px;
 
 .emojiOpener {
     color: black;
-    font-size: 28px;
-    text-align:center;
+    font-size: 36px;
+    text-align: center;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: -15px;
+    top: -7px;
 }
 
 .dropdown-menu-left{
