@@ -23,10 +23,10 @@ import './GitApps.scss';
     }
 
     async importRepo(name, url){
-        // await sleep(1000);
+        await sleep(5000);
         await Repo.create({
-            name: name,
-            url: url,
+            name: name.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, ''),
+            url: `http://localhost:${49152 + this.importedApps.length}/`,
             port: "port",
             running: false
         })
@@ -113,27 +113,26 @@ import './GitApps.scss';
         this.openApp._id === appId ? this.openApp = {} : null;
     }
 
-    async onSubmit(){
+    onSubmit(){
         this.importingRepo = true;
-
-        //this should be removed when the fetch method is uncommented
-        // this.importRepo(this.urlToSet,this.urlToSet);
-        // this.urlToSet = '';
-        // this.projectToSet = '';
-
-        
-        await fetch('/api/addRepo', { 
+        fetch('/api/addRepo', { 
           headers:{'Content-Type': 'application/json'},
           body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
           method: 'POST' // or 'PUT'
         })
         .then(response => {
-            this.importRepo(this.urlToSet,this.urlToSet);
-            this.urlToSet = '';
-            this.projectToSet = '';
-            this.importingRepo = false;
+            console.log(response.json());
+            // this.importRepo(this.urlToSet,this.urlToSet);
+            // this.urlToSet = '';
+            // this.projectToSet = '';
+            // this.importingRepo = false;
         })
         .catch(error=>console.log(error));
+
+        //this should be removed when the fetch method is uncommented
+        this.importRepo(this.urlToSet,this.urlToSet);
+        this.urlToSet = '';
+        this.projectToSet = '';
         
     }
   

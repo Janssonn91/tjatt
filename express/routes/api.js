@@ -8,8 +8,8 @@ const {
 } = require('node-docker-api');
 
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 router.post('/addRepo', async (req, res) => {
@@ -25,30 +25,30 @@ router.post('/addRepo', async (req, res) => {
     dbPort: 7000,
     localPath: path.join(__dirname, "../../docker/" + uniqueProjectName)
   }
-
   fs.existsSync(payload.localPath) ?
-    del(payload.localPath).then(() => git_clone(payload)) : git_clone(payload);
+    del(payload.localPath).then(() => git_clone(payload, res)) : git_clone(payload, res);
+
 });
 
-function git_clone(payload) {
+function git_clone(payload, res) {
   simplegit()
     .silent(true)
     .clone(payload.gitUrl, payload.localPath)
     .then(err => {
       console.log("Downloaded repo from: " + payload.gitUrl);
       console.log("Proceeding with building Docker image")
-      prepare_docker_files(payload, payload.uniqueProjectName);
+      prepare_docker_files(payload, res);
     })
-    .catch(err => console.log("error", err));
+    .catch(err => { console.log("error", err); res.json('err'); });
 }
 
 
-function prepare_docker_files(payload) {
-  create_docker_dockerfile(payload);
-  create_docker_compose_file(payload)
+async function prepare_docker_files(payload,res) {
+  let did = await create_docker_dockerfile(payload, res);
+  did && create_docker_compose_file(payload,res)
 }
 
-async function get_used_ports() {
+async function get_used_ports(res) {
   return new Promise((resolve, reject) => {
     docker.container.list().then(containers => {
       let ports = containers.filter(container => {
@@ -68,39 +68,43 @@ async function get_used_ports() {
   })
 }
 
-async function select_docker_port() {
+async function select_docker_port(res) {
   let probePort = 49152;
   let found = false;
-  let usedPorts = await get_used_ports();
+  let usedPorts = await get_used_ports(res);
   while (!found) {
     usedPorts.includes(probePort) ? probePort++ : (found = true);
   }
   return probePort;
 }
 
-function create_docker_dockerfile(payload) {
+function create_docker_dockerfile(payload, res) {
   let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
-
-  fs.writeFile(path, '', {
-    flag: 'wx'
-  }, function (err) {
-    if (err) {
-      console.log("Dockerfile already exists!")
-    } else {
-      fs.appendFileSync(path,
-        `FROM mhart/alpine-node:latest
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE ${payload.webPort}
-CMD [ "npm", "start" ]`);
-    }
-
+  return new Promise((promiseResult) =>{
+    fs.writeFile(path, '', {
+      flag: 'wx'
+    }, function (err) {
+      if (err) {
+        console.log("Dockerfile already exists!")
+        res.json('error ...');
+        promiseResult(false);
+      } else {
+        fs.appendFileSync(path,
+          `FROM mhart/alpine-node:latest
+          WORKDIR /usr/src/app
+          COPY package*.json ./
+          RUN npm install
+          COPY . .
+          EXPOSE ${payload.webPort}
+          CMD [ "npm", "start" ]`);
+      };
+      promiseResult(true);
+    });
   });
+
 }
 
-async function create_docker_compose_file(payload) {
+function create_docker_compose_file(payload, res) {
   let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
 
   console.log('payload', payload)
@@ -125,26 +129,28 @@ services:
     flag: 'wx'
   }, function (err) {
     if (err) {
-      console.log("Docker compose file already exists!")
+      console.log("Docker compose file already exists!");
+      res.json('error');
     } else {
       fs.appendFileSync(path, data);
+      start_containers_composer(payload, res);
     }
   });
-
-  await start_containers_composer(payload);
 }
 
 const {
   exec
 } = require('child_process');
 
-function start_containers_composer(payload) {
+function start_containers_composer(payload, res) {
   exec(`docker-compose up -d`, {
     cwd: payload.localPath
   }, (err, stdout, stderr) => {
     if (err) {
+      res.json('error');
       throw (err);
     }
+    res.json('ok');
     console.log(stdout || stderr);
   });
 }
