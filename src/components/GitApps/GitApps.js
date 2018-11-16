@@ -22,12 +22,13 @@ import './GitApps.scss';
         await this.fetchRepos();
     }
 
-    async importRepo(name, url){
-        await sleep(5000);
+    async addRepo(name, url, port){
+        // await sleep(5000);
         await Repo.create({
-            name: name.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, ''),
-            url: `http://localhost:${49152 + this.importedApps.length}/`,
-            port: "port",
+            name: name,
+            url: `http://localhost:${port}/`,
+            gitUrl: url,
+            port: port,
             running: false
         })
         .then(response=>{
@@ -120,19 +121,20 @@ import './GitApps.scss';
           body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
           method: 'POST' // or 'PUT'
         })
+        .then(response => response.json())
         .then(response => {
-            console.log(response.json());
-            // this.importRepo(this.urlToSet,this.urlToSet);
-            // this.urlToSet = '';
-            // this.projectToSet = '';
-            // this.importingRepo = false;
+            console.log(response);
+            this.addRepo(response.uniqueProjectName,response.gitUrl, response.dockerPort);
+            this.urlToSet = '';
+            this.projectToSet = '';
+            this.importingRepo = false;
         })
         .catch(error=>console.log(error));
 
         //this should be removed when the fetch method is uncommented
-        this.importRepo(this.urlToSet,this.urlToSet);
-        this.urlToSet = '';
-        this.projectToSet = '';
+        // this.importRepo(this.urlToSet,this.urlToSet);
+        // this.urlToSet = '';
+        // this.projectToSet = '';
         
     }
   

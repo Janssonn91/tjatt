@@ -150,7 +150,7 @@ function start_containers_composer(payload, res) {
       res.json('error');
       throw (err);
     }
-    res.json('ok');
+    res.json(payload);
     console.log(stdout || stderr);
   });
 }
