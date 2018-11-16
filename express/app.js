@@ -209,10 +209,11 @@ app.post('/pwhash', (req, res) => {
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
   //console.log(req.session);
+  const userResult = await User.findOne({ username: req.body.username });
+  const emailResult = await User.findOne({ email: req.body.useremail });
   User.findOne({ username: req.body.username })
-    .then(user => {
       User.findOne({ email: req.body.useremail })
         .then(user => {
       if (!user) {
@@ -226,10 +227,10 @@ app.post('/users', (req, res) => {
           res.json({ success: true, user: user })
         })
       } else {
-        res.json({ success: false })
+        // console.log('userresult: ', userResult, 'emailresult: ', emailResult);
+        res.json({ success: false, userResult: userResult, emailResult: emailResult});
       }
     }).catch(err => console.log("get user", err));
-  })
 });
 
 app.get('/users', (req, res) => {

@@ -5,6 +5,7 @@ class LoginStore {
   @observable isLoggedIn = false;
   @observable loginError = false;
   @observable usernameExist = false;
+  @observable emailExist = false;
   @observable candidates = [];
   @observable myContacts = [];
   //@observable myChannel = [];
@@ -136,9 +137,16 @@ class LoginStore {
           socket.emit('sign up', this.user);
         } else {
           console.log('träff, användarnamn finns');
-          this.usernameExist = true;
+          if(res.userResult) {
+            console.log('träff på username')
+            this.usernameExist = true;
+          }
+          else {
+            console.log('träff på useremail');
+            console.log(res.userResult, res.emailResult);
+            this.emailExist = true;
+          }
         }
-
       }).catch((err) => {
         console.log('error', err);
       });
@@ -147,6 +155,7 @@ class LoginStore {
 
 
   sendWelcomeMail(username, email) {
+    console.log(username, email);
     fetch('/api/send-mail', {
       credentials: 'include',
       method: 'POST',

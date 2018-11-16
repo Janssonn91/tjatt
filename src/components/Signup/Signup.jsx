@@ -10,7 +10,7 @@
           <Input className={this.props.loginStore.usernameExist ? "input-alert" : ''}type="text" name="username" id="username" placeholder="Choose username" onChange={e => this.usernameChange(e)} onFocus={e => this.removeError(e)}/>
         </FormGroup>
         <FormGroup>
-          <Input className={!this.validEmail ? "input-alert" : ''} type="text" name="useremail" id="useremail" placeholder="Enter your email" onChange={e => this.useremailChange(e)} />
+          <Input className={!this.validEmail || this.props.loginStore.emailExist ? "input-alert" : ''} type="text" name="useremail" id="useremail" placeholder="Enter your email" onChange={e => this.useremailChange(e)} onFocus={e => this.removeEmailError(e)} />
         </FormGroup>
         <FormGroup>
           <Input className={this.passwordsDontMatch ? "input-alert" : ''} type="password" name="password" id="userpassword" placeholder="Choose password" onChange={e => this.passwordChange(e)} />

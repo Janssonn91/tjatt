@@ -13,6 +13,7 @@ import './Signup.scss';
 
   componentDidMount() {
     this.props.loginStore.usernameExist = false;
+    this.props.loginStore.emailExist = false;
   }
 
   usernameChange(e) {
@@ -26,7 +27,6 @@ import './Signup.scss';
 
   validateEmail(){
     this.validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.useremailToSet);
-    console.log(this.invalidEmail);
   }
 
   passwordChange(e) {
@@ -58,7 +58,7 @@ import './Signup.scss';
   }
 
   removeEmailError = (e) => {
-    this.props.loginStore.emailExist
+    this.props.loginStore.emailExist = false;
   }
 
   onSubmit = (e) => {
