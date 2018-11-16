@@ -1,7 +1,7 @@
 import "./CreateGroupModal.scss";
 import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
+@inject('loginStore', 'userStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
 
   @observable groupName = '';
   @observable myAttr = 'd-none';
@@ -42,15 +42,12 @@ import ScrollableFeed from 'react-scrollable-feed';
     this.searchContact.push(user);
   }
 
-
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
   }
 
   checkBeforeSubmit() {
     //check if groupName is available
-
-
   }
 
   async createGroup(e) {
@@ -67,19 +64,14 @@ import ScrollableFeed from 'react-scrollable-feed';
       return;
     }
     await this.props.channelStore.createGroup(this.groupName);
-    this.props.loginStore.cleanUpGroupModal();
+    this.props.userStore.cleanUpGroupModal();
     this.groupName = "";
     this.error = false;
     this.props.toggle();
-
   }
-
-
 
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
   };
-
-
 
 }

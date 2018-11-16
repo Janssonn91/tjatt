@@ -1,7 +1,7 @@
 import './Sidebar.scss';
 export const imgPath = '/images/placeholder.png';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
+@inject('loginStore', 'userStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
   @observable updateSettingModalOpen = {
     isOpen: false,
@@ -57,7 +57,7 @@ export const imgPath = '/images/placeholder.png';
 
   closeModal() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
-    this.props.loginStore.cleanUpGroupModal();
+    this.props.userStore.cleanUpGroupModal();
   }
 
   logout() {

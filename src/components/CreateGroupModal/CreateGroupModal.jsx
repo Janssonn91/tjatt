@@ -12,13 +12,13 @@
       </InputGroup>
     </ModalHeader>
     <ModalBody>
-      {this.props.loginStore.selectedGroupMember.length > 0 &&
+      {this.props.userStore.selectedGroupMember.length > 0 &&
         <div className="selected-members d-md-none d-inline-block">
           <ScrollableFeed forceScroll={true}>
-            {this.props.loginStore.selectedGroupMember.map((user, i) =>
+            {this.props.userStore.selectedGroupMember.map((user, i) =>
               <div key={i} className="nav-link pl-0 d-inline-block">
                 <div className="wrapper d-block">
-                  <i className="fas fa-times-circle icon" onClick={() => this.props.loginStore.removeFromSelect(user)}></i>
+                  <i className="fas fa-times-circle icon" onClick={() => this.props.userStore.removeFromSelect(user)}></i>
                   <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
                 </div>
                 <div className="profile">
@@ -48,7 +48,8 @@
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched users</h5>
             <FormGroup className="m-0 overflow-y-auto">
-              {this.searchContact.map((user, i) =>
+              {/* {this.searchContact.map((user, i) => */}
+              {this.props.userStore.groupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
@@ -58,7 +59,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block ml-auto">
-                    <Button className="btn btn-add-user border-0 d-inline-block ml-auto" onClick={() => { this.props.loginStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
+                    <Button className="btn btn-add-user border-0 d-inline-block ml-auto" onClick={() => { this.props.userStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
                   </span>
                 </ListGroupItem>
               )}
@@ -67,7 +68,7 @@
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
             <h5>Added users</h5>
             <FormGroup className="m-0 pl-1 overflow-y-auto">
-              {this.props.loginStore.selectedGroupMember.map((user, i) =>
+              {this.props.userStore.selectedGroupMember.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile d-inline-block">
@@ -77,7 +78,7 @@
                     </p>
                   </div>
                   <span className="d-inline-block float-right">
-                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => { this.props.loginStore.removeFromSelect(user); this.removeFromSelectedUser(user) }}>Remove user</Button>
+                    <Button className="btn btn-remove-user border-0 p-0 mr-2 d-inline-block float-right" onClick={() => { this.props.userStore.removeFromSelect(user); this.removeFromSelectedUser(user) }}>Remove user</Button>
                   </span>
                 </ListGroupItem>
               )}

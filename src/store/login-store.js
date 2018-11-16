@@ -12,7 +12,7 @@ class LoginStore {
   // @observable myContacts = []; //Sidebar, channel-store
   // @observable groupCandidates = []; //CreateGroupModal
 
-  @observable selectedGroupMember = [];
+  // @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable message = '';
   // @observable receivedMessages = [];
   @observable isNotCorrectPass = false;
@@ -41,29 +41,6 @@ class LoginStore {
     const { user, isLoggedIn } = userdata;
     this.user = user;
     this.isLoggedIn = isLoggedIn;
-  }
-
-  @action cleanUpGroupModal() {
-    this.selectedGroupMember.map((data) => {
-      return this.groupCandidates.push(data);
-    });
-    this.selectedGroupMember = [];
-  }
-
-  @action selectOneForGroup(user) {
-    this.selectedGroupMember.push(user);
-    const addedUser = this.groupCandidates.find(u => u._id === user._id);
-    const index = this.groupCandidates.indexOf(addedUser);
-    this.groupCandidates.splice(index, 1);
-    console.log(toJS(this.groupCandidates))
-    console.log(index);
-  }
-
-  @action removeFromSelect(user) {
-    this.groupCandidates.push(user);
-    const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
-    const index = this.selectedGroupMember.indexOf(addedUser);
-    this.selectedGroupMember.splice(index, 1);
   }
 
   @action updateSettings(settings) {
