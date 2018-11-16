@@ -82,16 +82,26 @@ background: lighten($blue, 8%);
 float: left;
 min-width: 40px;
 max-width: 630px;
+@media (max-width: 767.5px) {
+  .btn-group, .btn-group:hover {
+    display: inline-block!important;
+    position: absolute;
+    top: -8px;
+    right: 15px;
+
+  }
+}
 &:hover {
   .btn-group {
     display: inline-block!important;
+    position: absolute;
+    top: -8px;
+    right: 15px;
   }
 }
 i.fa-pen {
   color: white;
   position: absolute;
-  bottom: 10px;
-  left: 2px;
   background-color: $backgroundColor;
   width: 20px;
   height: 20px;
@@ -99,7 +109,7 @@ i.fa-pen {
   border: $backgroundColor 1px solid;
   padding: 5px 0 0 5px;
   font-size: 9px;
-  &:hover {
+  &:hover, &:focus, &:active {
     color: darken(white, 10%);
     background-color: darken($backgroundColor, 10%);
     border-color: darken($backgroundColor, 10%);
