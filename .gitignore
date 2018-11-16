@@ -6,3 +6,4 @@ node_modules/*
 public/images/uploads
 repos/*
 !repos/.gitkeep
+docker/*
