@@ -23,7 +23,7 @@
               <DropdownMenu>
                 {/* <DropdownItem header className="py-2 px-3 dropdown-header">Configure message</DropdownItem>
                 <DropdownItem className="m-0"divider/> */}
-                <DropdownItem className="py-2 px-3 delete-message" onClick={this.deleteMessageModalToggle.bind(this)}>Delete message</DropdownItem>
+                <DropdownItem className="py-2 px-3 delete-message" onClick={() => this.deleteMessageModalToggle(message._id)}>Delete message</DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>
           </div>
