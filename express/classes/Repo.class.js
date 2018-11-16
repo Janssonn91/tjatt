@@ -8,6 +8,7 @@ module.exports = class Repo extends ModelAndRoutes {
       name: String,
       url: String,
       port: String,
+      running: Boolean
     }
   }
 }

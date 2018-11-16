@@ -23,6 +23,9 @@
   "  Server": "components/Server/Server",
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
+  "  GitApps": "components/GitApps/GitApps",
+  "  Spinner": "components/Spinner/Spinner",
+
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
@@ -166,5 +169,8 @@
 
   "/*9": "------------ Syntax highlighting -------------",
   "SyntaxHighlighter": "react-syntax-highlighter/prism",
-  "shstyle": "react-syntax-highlighter/styles/prism/duotone-light"
+  "shstyle": "react-syntax-highlighter/styles/prism/duotone-light",
+
+  "Iframe": "react-iframe",
+  "ReactTooltip": "react-tooltip"
 }

@@ -91,7 +91,7 @@
                     <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
                   <DropdownItem>
                     <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <Link to="server" tabIndex="-1">
+                  <Link to="git" tabIndex="-1">
                     <DropdownItem>
                       <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
                   </Link>
@@ -151,7 +151,11 @@
           </Button>
         </Col>
       </Row>
-      <h1 style={{ color: "black" }}>Place holder</h1>
+      <Row>
+        <Col sm="12">
+          <h1><img src="/images/tja@Logo.png" alt="" className="logo default" /></h1>
+        </Col>
+      </Row>
     </Fragment>
   }
 </Fragment>

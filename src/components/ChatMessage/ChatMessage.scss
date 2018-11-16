@@ -118,6 +118,8 @@ i.fa-pen {
 }
 .dropdown-menu {
   position: absolute;
+  transform: none!important;
+  will-change: unset!important;
   border-radius: 5px;
   top: -30px!important;
   margin-top: 0;
@@ -141,7 +143,8 @@ i.fa-pen {
       }
       &.delete-message {
         color: $darkred;
-        &:hover {
+        &:hover, &:focus, &:active {
+          border-radius: 5px;
           background-color: $darkred;
           color: white;
         }
