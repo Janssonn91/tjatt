@@ -57,8 +57,8 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  <span className="d-inline-block float-right">
-                    <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.props.loginStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
+                  <span className="d-inline-block ml-auto">
+                    <Button className="btn btn-add-user border-0 d-inline-block ml-auto" onClick={() => { this.props.loginStore.selectOneForGroup(user); this.removeFromSearchedUsers(user) }}>Add user</Button>
                   </span>
                 </ListGroupItem>
               )}
