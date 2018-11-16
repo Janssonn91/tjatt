@@ -2,6 +2,7 @@ import './GitApps.scss';
 @observer export default class GitApps extends Component{
 
 @observable urlToSet = '';
+@observable portToSet = '';
 @observable projectToSet = '';
 @observable importedApps = [];
 @observable runningApps = [];
@@ -61,6 +62,11 @@ import './GitApps.scss';
         this.urlToSet = e.currentTarget.value;
     }
 
+    onWebPortChangeHandler(e){
+        this.portToSet = e.currentTarget.value;
+        
+    }
+
     checkForEnter(e){
         if(e.key ==='Enter'){
             this.submit()
@@ -118,7 +124,7 @@ import './GitApps.scss';
         this.importingRepo = true;
         fetch('/api/addRepo', { 
           headers:{'Content-Type': 'application/json'},
-          body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
+          body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
           method: 'POST' // or 'PUT'
         })
         .then(response => response.json())

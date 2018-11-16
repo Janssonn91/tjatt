@@ -8,8 +8,8 @@ const {
 } = require('node-docker-api');
 
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  // socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
 
 router.post('/addRepo', async (req, res) => {
@@ -21,7 +21,7 @@ router.post('/addRepo', async (req, res) => {
     projectName: req.body.projectName,
     uniqueProjectName: uniqueProjectName,
     dockerPort: dockerPort,
-    webPort: 3300,
+    webPort: req.body.webPort,
     dbPort: 7000,
     localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
     res: res
