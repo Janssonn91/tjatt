@@ -4,7 +4,7 @@ class LoginStore {
   @observable user = { channel: [], contact: [] };
   @observable isLoggedIn = false;
   @observable loginError = false;
-  @observable usernameExits = false;
+  @observable usernameExist = false;
   @observable candidates = [];
   @observable myContacts = [];
   //@observable myChannel = [];
@@ -130,13 +130,13 @@ class LoginStore {
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.user = res.user
-          this.usernameExits = false;
+          this.usernameExist = false;
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', this.user);
         } else {
-          console.log('träff');
-          this.usernameExits = true;
+          console.log('träff, användarnamn finns');
+          this.usernameExist = true;
         }
 
       }).catch((err) => {

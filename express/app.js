@@ -213,6 +213,8 @@ app.post('/users', (req, res) => {
   //console.log(req.session);
   User.findOne({ username: req.body.username })
     .then(user => {
+      User.findOne({ email: req.body.useremail })
+        .then(user => {
       if (!user) {
         new User({
           username: req.body.username,
@@ -227,6 +229,7 @@ app.post('/users', (req, res) => {
         res.json({ success: false })
       }
     }).catch(err => console.log("get user", err));
+  })
 });
 
 app.get('/users', (req, res) => {
