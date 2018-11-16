@@ -58,6 +58,17 @@
                         onKeyPress={(e)=> this.onSubmitEnterHandler(e)}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <Label className="gitApps-sideDrawer-import-form-label-port" for="PortNo">Web port</Label>
+                        <Input
+                        id="port-git"
+                        type="text"
+                        placeholder="Web Port"
+                        value={this.portToSet}
+                        onChange={e => this.onWebPortChangeHandler(e)}
+                        onKeyPress={(e)=> this.onSubmitEnterHandler(e)}
+                        />
+                    </FormGroup>
                     <InputGroupAddon addonType="append">
                         <Button 
                             className="gitApps-sideDrawer-submit-button ml-1 float-right"

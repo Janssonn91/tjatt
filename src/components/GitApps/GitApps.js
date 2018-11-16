@@ -2,6 +2,7 @@ import './GitApps.scss';
 @observer export default class GitApps extends Component{
 
 @observable urlToSet = '';
+@observable portToSet = '';
 @observable projectToSet = '';
 @observable importedApps = [];
 @observable runningApps = [];
@@ -22,12 +23,13 @@ import './GitApps.scss';
         await this.fetchRepos();
     }
 
-    async importRepo(name, url){
-        // await sleep(1000);
+    async addRepo(name, url, port){
+        // await sleep(5000);
         await Repo.create({
             name: name,
-            url: url,
-            port: "port",
+            url: `http://localhost:${port}/`,
+            gitUrl: url,
+            port: port,
             running: false
         })
         .then(response=>{
@@ -58,6 +60,11 @@ import './GitApps.scss';
 
     onUrlChangeHandler(e){
         this.urlToSet = e.currentTarget.value;
+    }
+
+    onWebPortChangeHandler(e){
+        this.portToSet = e.currentTarget.value;
+        
     }
 
     checkForEnter(e){
@@ -113,27 +120,28 @@ import './GitApps.scss';
         this.openApp._id === appId ? this.openApp = {} : null;
     }
 
-    async onSubmit(){
+    onSubmit(){
         this.importingRepo = true;
+        fetch('/api/addRepo', { 
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
+          method: 'POST' // or 'PUT'
+        })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+            this.addRepo(response.uniqueProjectName,response.gitUrl, response.dockerPort);
+            this.urlToSet = '';
+            this.portToSet = '';
+            this.projectToSet = '';
+            this.importingRepo = false;
+        })
+        .catch(error=>console.log(error));
 
         //this should be removed when the fetch method is uncommented
         // this.importRepo(this.urlToSet,this.urlToSet);
         // this.urlToSet = '';
         // this.projectToSet = '';
-
-        
-        await fetch('/api/addRepo', { 
-          headers:{'Content-Type': 'application/json'},
-          body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet}), // data can be `string` or {object}!
-          method: 'POST' // or 'PUT'
-        })
-        .then(response => {
-            this.importRepo(this.urlToSet,this.urlToSet);
-            this.urlToSet = '';
-            this.projectToSet = '';
-            this.importingRepo = false;
-        })
-        .catch(error=>console.log(error));
         
     }
   
