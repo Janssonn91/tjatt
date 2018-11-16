@@ -72,13 +72,13 @@
                     </p>
                   </div>
                   {user._id !== this.props.loginStore.user._id &&
-                    user._id !== this.props.channelStore.groupAdminId &&
+                    !this.props.channelStore.currentChannelAdmins.includes(user._id) &&
                     <Button
                       className="btn btn-remove-user border-0 p-0 mr-2"
                       onClick={() => this.props.channelStore.removeFromSelect(user)}
                     >Remove user</Button>
                   }
-                  {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
+                  {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
                 </ListGroupItem>
               )}
             </FormGroup>
