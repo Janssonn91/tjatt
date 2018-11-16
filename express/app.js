@@ -215,21 +215,21 @@ app.post('/users', (req, res) => {
     .then(user => {
       User.findOne({ email: req.body.useremail })
         .then(user => {
-      if (!user) {
-        new User({
-          username: req.body.username,
-          email: req.body.useremail,
-          password: req.body.password,
-          nickname: req.body.username
-        }).save().then(user => {
-          req.session.userId = user._id;
-          res.json({ success: true, user: user })
-        })
-      } else {
-        res.json({ success: false })
-      }
-    }).catch(err => console.log("get user", err));
-  })
+          if (!user) {
+            new User({
+              username: req.body.username,
+              email: req.body.useremail,
+              password: req.body.password,
+              nickname: req.body.username
+            }).save().then(user => {
+              req.session.userId = user._id;
+              res.json({ success: true, user: user })
+            })
+          } else {
+            res.json({ success: false })
+          }
+        }).catch(err => console.log("get user", err));
+    })
 });
 
 app.get('/users', (req, res) => {
@@ -399,7 +399,7 @@ app.put('/removeAdmin/:_id', async (req, res) => {
 
 app.delete('/removeGroup/:_id', (req, res) => {
   channel.findOneAndRemove(
-    { _id: req.params._id}
+    { _id: req.params._id }
   )
     .then(result => {
       res.json(result)
@@ -489,7 +489,17 @@ app.post('/upload', upload.single('file'), (req, res) => {
     });
 });
 
-
+app.delete(('/message/:_id/delete/'), (req, res) => {
+  ChatMessage.findOneAndRemove(
+    { _id: req.params._id },
+  )
+    .then(() => {
+      res.json({ successdelete: true });
+    })
+    .catch(err => {
+      throw err;
+    });
+});
 
 const Repo = require('./classes/Repo.class');
 new Repo(app);
