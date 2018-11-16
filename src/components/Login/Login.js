@@ -46,7 +46,7 @@ import './Login.scss';
   }
 
   onSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     this.props.loginStore.login(this.username, this.password);
     this.goToChat();
 

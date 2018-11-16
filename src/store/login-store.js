@@ -24,16 +24,17 @@ class LoginStore {
   constructor() {
     this.checkIfLoggedIn();
     console.log('login-store här?????');
-    this.pageLoad();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+    // this.pageLoad();
   }
 
-  @action pageLoad(time = 500) {
-    console.time(time);
+  @action pageLoad(time = 1000) {
     this.isLoading = true;
     setTimeout(() => {
-      console.timeEnd(time)
       return this.isLoading = false
-    }, (1000 + time))
+    }, (time))
   }
 
   @action checkIfLoggedIn() {
@@ -107,7 +108,7 @@ class LoginStore {
         if (res.success) {
           socket.emit('login', this.user._id)
           this.user = res.user;
-          // this.pageLoad();
+          this.pageLoad();
           this.isLoggedIn = true;
         }
         else {
@@ -137,7 +138,7 @@ class LoginStore {
           socket.emit('sign up', this.user);
         } else {
           console.log('träff, användarnamn finns');
-          if(res.userResult) {
+          if (res.userResult) {
             console.log('träff på username')
             this.usernameExist = true;
           }
