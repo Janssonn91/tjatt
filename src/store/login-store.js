@@ -64,6 +64,7 @@ class LoginStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
+          channelStore.getChannels();
           socket.emit('login', this.user._id)
           socket.on('online', message => {
             console.log('online', message)
