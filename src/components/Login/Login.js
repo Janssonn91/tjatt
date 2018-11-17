@@ -24,11 +24,6 @@ import './Login.scss';
     this.password = e.currentTarget.value;
   }
 
-  goToChat = () => {
-    this.props.loginStore.isLoggedIn && this.props.history.push(`/${this.props.loginStore.user.username}`);
-    this.props.channelStore.getChannels();
-  }
-
   login(username, password) {
     fetch('/api/login', {
       credentials: 'include',
@@ -40,8 +35,9 @@ import './Login.scss';
       .then(res => {
         if (res.success) {
           this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          this.props.history.push(`/${this.props.loginStore.user.username}`);
+          this.props.channelStore.getChannels();
           socket.emit("login", this.props.loginStore.user._id);
-          this.goToChat();
         }
         else {
           this.loginError = true;
