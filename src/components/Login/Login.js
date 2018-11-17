@@ -54,7 +54,6 @@ import './Login.scss';
     document.getElementById('username').value = '';
     this.username = '';
     this.password = '';
-
   }
 
 

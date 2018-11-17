@@ -10,21 +10,20 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable searchContact = [];
 
   start() {
-    this.props.loginStore.fetchContact()
-      // Show all contacts from beginning
-      .then(() => {
-        this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
-      })
+    // Show all contacts from beginning
+    // .then(() => {
+    this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
+    // })
   }
 
   searchContacts = (e) => {
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
-      return this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
+      return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
     }
     let regex = new RegExp(e.target.value, 'i');
-    let result = this.props.loginStore.groupCandidates.filter(user => {
+    let result = this.props.userStore.groupCandidates.filter(user => {
       if (regex.test(user.nickname || user.username || user.email)) {
         return this.searchContact.push(user);
       }
@@ -59,7 +58,7 @@ import ScrollableFeed from 'react-scrollable-feed';
       this.myAttr = 'd-none';
     }
     //check if groupMember.length is large than 2
-    if (this.props.loginStore.selectedGroupMember.length < 2) {
+    if (this.props.userStore.selectedGroupMember.length < 2) {
       this.error = true;
       return;
     }

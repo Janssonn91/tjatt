@@ -8,13 +8,10 @@ import './Signup.scss';
   @observable confirmPassword = '';
   @observable passwordsDontMatch = false;
   @observable validEmail = true;
-  @observable usernameExits = false;
+  @observable usernameExist = false;
+  @observable emailExist = false;
 
   // olika meddelande om det är dublett på mail eller user
-
-  componentDidMount() {
-    this.props.loginStore.emailExist = false;
-  }
 
   usernameChange(e) {
     this.usernameToSet = e.currentTarget.value;
@@ -47,12 +44,12 @@ import './Signup.scss';
   }
 
   removeError = (e) => {
-    this.props.loginStore.usernameExist = false;
+    this.usernameExist = false;
   }
 
   removeEmailError = (e) => {
-    this.props.loginStore.emailExist = false;
-    this.usernameExits = false;
+    this.emailExist = false;
+    this.usernameExist = false;
   }
 
   sendWelcomeMail(username, email) {
@@ -86,12 +83,12 @@ import './Signup.scss';
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           this.props.history.push(`/${this.props.loginStore.user.username}`);
-          this.usernameExits = false;
+          this.usernameExist = false;
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', this.user);
         } else {
           console.log('träff');
-          this.usernameExits = true;
+          this.usernameExist = true;
         }
       }).catch((err) => {
         console.log('error', err);
