@@ -50,6 +50,10 @@ class LoginStore {
     this.user = { ...this.user, setting };
   }
 
+  @action logout() {
+    this.isLoggedIn = false;
+  }
+
 }
 
 export const loginStore = new LoginStore();
