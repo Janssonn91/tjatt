@@ -182,7 +182,8 @@ hr {
 
 .contactsCollapse, .groupCollapse{
   background: $backgroundColor;
-  height: 34vh;
+  max-height: 34vh;
+  min-height: 5vh;
   padding-top: 5px;
   padding-bottom:5px;
   box-shadow: inset 0 0 7px #000000;
