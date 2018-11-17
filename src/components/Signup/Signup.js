@@ -46,11 +46,8 @@ import './Signup.scss';
     }
   }
 
-  goToChat = async () => {
-    await sleep(30);
-    if (this.props.loginStore.isLoggedIn) {
-      this.props.history.push(`/${this.props.loginStore.user.username}`);
-    }
+  goToChat = () => {
+    this.props.loginStore.isLoggedIn && this.props.history.push(`/${this.props.loginStore.user.username}`);
   }
 
   removeError = (e) => {
@@ -92,11 +89,10 @@ import './Signup.scss';
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          // this.user = res.user
           this.usernameExits = false;
-          // this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', this.user);
+          this.goToChat();
         } else {
           console.log('träff');
           this.usernameExits = true;
@@ -109,7 +105,6 @@ import './Signup.scss';
   onSubmit = (e) => {
     e.preventDefault();
     this.signUp(this.usernameToSet, this.passWordToSet, this.useremailToSet);
-    this.goToChat();
   };
 
 }

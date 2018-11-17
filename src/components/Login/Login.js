@@ -41,6 +41,7 @@ import './Login.scss';
         if (res.success) {
           this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           socket.emit("login", this.props.loginStore.user._id);
+          this.goToChat();
         }
         else {
           this.loginError = true;
@@ -52,10 +53,7 @@ import './Login.scss';
 
   onSubmit = (e) => {
     e.preventDefault();
-    // this.props.loginStore.login(this.username, this.password);
     this.login(this.username, this.password);
-    this.goToChat();
-
     document.getElementById('password').value = '';
     document.getElementById('username').value = '';
     this.username = '';
