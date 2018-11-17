@@ -1,9 +1,7 @@
-import {
-  loginStore
-} from './login-store';
-import {
-  renderReporter
-} from 'mobx-react';
+import { loginStore } from './login-store';
+import { userStore } from './user-store';
+import { renderReporter } from 'mobx-react';
+
 class ChannelStore {
   @observable newChannel = [];
   @observable myChannels = [];
@@ -303,7 +301,7 @@ class ChannelStore {
 
   @action async createGroup(groupName) {
     const admin = loginStore.user._id;
-    const members = loginStore.selectedGroupMember.map(user => user._id);
+    const members = userStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
     this.createChannel(groupName, admin, members, true);
     await sleep(60);
