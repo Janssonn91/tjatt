@@ -40,9 +40,7 @@ import './Login.scss';
       .then(res => {
         if (res.success) {
           this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          // this.user = res.user;
-          // this.isLoggedIn = true;
-          socket.emit("login", this.user._id)
+          socket.emit("login", this.props.loginStore.user._id);
         }
         else {
           this.loginError = true;
