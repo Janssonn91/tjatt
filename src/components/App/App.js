@@ -21,9 +21,7 @@ import './App.scss';
     $(document).on('click', 'button', function () {
       $(this).blur();
     })
-  }
 
-  componentDidMount() {
     this.props.loginStore.checkIfLoggedIn();
   }
 

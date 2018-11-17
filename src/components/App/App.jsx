@@ -20,8 +20,9 @@
           <Route path="/signup" component={Signup} />
           <Route path="/server" component={Server} />
           <Route path="/git" component={GitApps} />
-          {this.props.loginStore.user &&
-            <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} />
+          {this.props.loginStore.checkedLoginState ?
+            <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} /> :
+            <Route path="/" component={Loading} />
           }
 
           {/* 404 */}

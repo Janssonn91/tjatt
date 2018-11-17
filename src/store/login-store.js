@@ -3,6 +3,7 @@ import channelStore from './channel-store';
 class LoginStore {
   @observable user = { channel: [], contact: [] }; //Login.js: behövs vara här
   @observable isLoggedIn = false; //Login.js, Sidebar.js, Signup.js: behövs vara här
+  @observable checkedLoginState = false;
   // @observable loginError = false; //används bara i Login.js => move to Login.js
   // @observable usernameExits = false; //används i Signup.js => move to Signup.js
   @observable onLineUsers = []; //Ta data i Login.js och används i ChatMessage.js
@@ -101,6 +102,7 @@ class LoginStore {
         socket.on('message', event => {
           console.log('Message from server ', event);
         })
+        this.checkedLoginState = true;
       }).catch(err => {
         console.log("err", err)
       });
