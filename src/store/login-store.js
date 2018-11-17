@@ -54,6 +54,58 @@ class LoginStore {
     this.isLoggedIn = false;
   }
 
+  @action checkIfLoggedIn() {
+    fetch('/api/login', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.loggedIn) {
+          this.user = res.user;
+          this.isLoggedIn = true;
+          socket.emit('login', this.user._id)
+          socket.on('online', message => {
+            console.log('online', message)
+            this.onLineUsers = message.loginUser;
+          })
+          socket.off('chat message');
+          socket.on(
+            'chat message',
+            (messages) => {
+              for (let message of messages) {
+                let date = new Date();
+                if (message.channel === channelStore.currentChannel._id) {
+                  channelStore.channelChatHistory.push(
+                    {
+                      channel: message.channel,
+                      sender: message.sender,
+                      star: false,
+                      text: message.text,
+                      textType: message.textType,
+                      time: date
+                    }
+                  )
+                }
+              }
+            })
+          socket.on('sign up', message => {
+            channelStore.getUserList();
+          })
+          socket.on('login', message => {
+            this.onLineUsers = message.loginUser;
+          })
+          socket.on('logout', message => {
+            this.onLineUsers = message.loginUser;
+          })
+        }
+        socket.on('message', event => {
+          console.log('Message from server ', event);
+        })
+      }).catch(err => {
+        console.log("err", err)
+      });
+  }
+
 }
 
 export const loginStore = new LoginStore();
