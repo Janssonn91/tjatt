@@ -93,8 +93,6 @@ class UserStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-
-    this.props.channelStore.renderChannelElements(this.props.channelStore.contactChannels, 'contact', 'contactsRender');
   }
 
   @action updateProfile(key, val) {
