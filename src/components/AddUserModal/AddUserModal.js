@@ -5,7 +5,8 @@ import './AddUserModal.scss';
   @observable searchedCandidates = [];
 
 
-  componentDidMount() {
+  async start() {
+    await sleep(10);
     // Show all candidates from beginning
     this.searchedCandidates = this.props.userStore.candidates;
   }
