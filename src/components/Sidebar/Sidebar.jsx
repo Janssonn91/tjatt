@@ -23,7 +23,7 @@
 
 
       <NavLink className="pt-0 pr-0">
-        <NavItem onClick={this.openContacts}>My Contacts</NavItem>
+        <NavItem onClick={this.openContacts}>My Contacts {!this.contactsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
       </NavLink>
       <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
       <Collapse className="pl-2" isOpen={this.contactsOpen}>
@@ -37,7 +37,7 @@
         </Card>
       </Collapse>
       <NavLink className="pr-0">
-        <NavItem onClick={this.openGroups}>My Groups</NavItem>
+        <NavItem onClick={this.openGroups}>My Groups {!this.groupsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
       </NavLink>
       <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
       <Collapse className="pl-2" isOpen={this.groupsOpen}>
