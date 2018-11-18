@@ -1,8 +1,8 @@
 import './ChatMessage.scss';
 
-@inject('loginStore', 'channelStore') @observer
+@inject('userStore', 'channelStore') @observer
 export default class ChatMessage extends Component {
-  
+
   @observable iconShow = false;
   @observable iconDisappear = false;
   @observable isOpen = false;
@@ -14,7 +14,7 @@ export default class ChatMessage extends Component {
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
-  async start() {}
+  async start() { }
 
   toggle() {
     this.isOpen = !this.isOpen;

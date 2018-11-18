@@ -1,16 +1,22 @@
 import './UpdateSettingModal.scss';
 const defaultImg = "/images/placeholder.png";
 
-@inject('loginStore') @observer export default class UpdateSettingModal extends Component {
+@inject('userStore') @observer export default class UpdateSettingModal extends Component {
 
-  @observable imgPath = this.props.loginStore.user.image || defaultImg;
+  @observable imgPath = this.props.userStore.user.image || defaultImg;
   @observable image = '';
   @observable nickname = '';
   @observable newPassword = '';
   @observable currentPasswordValue = '';
   @observable setNewPasswordValue = '';
   @observable confirmNewPasswordValue = '';
+
+  // For alert
   @observable isNotSamePass = false;
+  @observable isNotCorrectPass = false;
+  @observable savedNickname = false;
+  @observable savedPassword = false;
+  @observable areAllEmpty = false;
 
   onFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -21,21 +27,21 @@ const defaultImg = "/images/placeholder.png";
       reader.readAsDataURL(e.target.files[0]);
 
       const formData = new FormData();
-      formData.append('id', this.props.loginStore.user._id);
+      formData.append('id', this.props.userStore.user._id);
       formData.append('file', e.target.files[0]);
       this.image = formData;
-      this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+      this.areAllEmpty = false; // Close "areAllEmpty" alert
     }
   }
 
   handleNicknameChange = (e) => {
     this.nickname = e.currentTarget.value;
-    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+    this.areAllEmpty = false; // Close "areAllEmpty" alert
   }
 
   currentPassword(e) {
     this.currentPasswordValue = e.currentTarget.value;
-    this.props.loginStore.areAllEmpty = false; // Close "areAllEmpty" alert
+    this.areAllEmpty = false; // Close "areAllEmpty" alert
   }
 
   setNewPassword(e) {
@@ -47,8 +53,12 @@ const defaultImg = "/images/placeholder.png";
     this.checkNewPassword();
   }
 
+  isCorrectPass() {
+    this.isNotCorrectPass = false;
+  }
+
   passwordFocus() {
-    this.props.loginStore.isCorrectPass();
+    this.isCorrectPass();
   }
 
   checkNewPassword = () => {
@@ -61,27 +71,119 @@ const defaultImg = "/images/placeholder.png";
     }
   }
 
+  resetAlert() {
+    this.isNotCorrectPass = false;
+    this.savedNickname = false;
+    this.savedPassword = false;
+    this.areAllEmpty = false;
+  }
+
   resetInput() {
     this.nickname = '';
     this.newPassword = '';
     this.currentPasswordValue = '';
+    this.setNewPasswordValue = '';
+    this.confirmNewPasswordValue = '';
   }
 
   async closeModal() {
     await sleep(1500);
-    if (!this.props.loginStore.isNotCorrectPass && !this.isNotSamePass && !this.props.loginStore.areAllEmpty) {
+    if (!this.isNotCorrectPass && !this.isNotSamePass && !this.areAllEmpty) {
       this.props.toggle();
+      this.resetAlert();
     }
-    this.isNotSamePass = false;
   }
 
-  callUpdateSettings() {
-    this.props.loginStore.updateSettings({
-      nickname: this.nickname,
-      password: this.newPassword,
-      imageFormData: this.image,
-      currentPassword: this.currentPasswordValue
-    });
+  async updateSettings(settings) {
+    const { imageFormData, nickname, password, currentPassword } = settings;
+    const { user } = this.props.userStore;
+
+    if (Object.values(settings).every(value => value === "")) {
+      this.areAllEmpty = true;
+    }
+    if (nickname !== "") {
+      fetch(`/api/users/${user._id}/setting`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          _id: user._id,
+          nickname,
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            this.savedNickname = true;
+            this.props.userStore.updateProfile("nickname", nickname);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if (password !== '') {
+      fetch('/api/pwcheck', {
+        method: 'POST',
+        body: JSON.stringify({
+          pass: currentPassword,
+          oldpassword: user.password
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            fetch('/api/pwhash', {
+              method: 'POST',
+              body: JSON.stringify({
+                pass: password
+              }),
+              headers: { 'Content-Type': 'application/json' }
+            })
+              .then(res => res.json())
+              .then(data => {
+                const password = data.hash;
+                fetch(`/api/users/${user._id}/setting/password`, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    _id: user._id,
+                    password,
+                  }),
+                  headers: { 'Content-Type': 'application/json' }
+                })
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('setNewPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+                this.savedPassword = true;
+                this.props.userStore.updateProfile("password", password);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+          else {
+            this.isNotCorrectPass = true;
+            return;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if (imageFormData) {
+      fetch('/api/upload', {
+        method: 'POST',
+        body: imageFormData
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.props.userStore.updateProfile("image", res.path);
+        });
+    }
+
+    await sleep(200);
     this.resetInput();
     this.closeModal();
   }

@@ -44,6 +44,7 @@ class LoginStore {
       .then(res => res.json())
       .then(res => {
         if (res.loggedIn) {
+          channelStore.getUserList()
           this.user = res.user;
           this.isLoggedIn = true;
           socket.emit('login', this.user._id)
@@ -77,7 +78,7 @@ class LoginStore {
           })
           socket.on('login', message => {
             this.onLineUsers = message.loginUser;
-            channelStore.getUserList()
+            channelStore.getLoginStatus()
           })
           socket.on('logout', message => {
             this.onLineUsers = message.loginUser;
@@ -86,7 +87,8 @@ class LoginStore {
         }
         socket.on('newChannel', channel => {
           console.log(channel)
-          channelStore.getChannels();
+          channelStore.getChannelList();
+          //channelStore.getChannels();
         })
         socket.on('message', event => {
           console.log('Message from server ', event);
@@ -199,7 +201,7 @@ class LoginStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-    channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
+    //channelStore.renderChannelElements(channelStore.contactChannels, 'contact', 'contactsRender');
   }
 
   @action cleanUpGroupModal() {
@@ -210,17 +212,30 @@ class LoginStore {
   }
 
   @action async addContact(userId) {
+    console.log("add")
     const channelname = this.user._id + " and " + userId;
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];
 
     channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
-    Channel.find({ channelname: channelname }).then(channel => {
+   
+    Channel.find({channelname: channelname}).then(channel => {
+      console.log("add contact", channel[0]._id)
+      let user = channelStore.getContactName(channel[0].members);
+      console.log("user", user)
+      channel[0].channelname= user.name;
+      channel[0].image = user.img;
+      console.log(channel[0])
+      channelStore.contactChannels.push(channel[0]);
       channelStore.changeChannel(channel[0]);
+      //this.channelDict[c._id] = {_id:c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+       
+      
       socket.emit('newChannel', channel[0]._id)
       socket.emit('join channel', channel[0]._id)
-      channelStore.updateContactChannels(channel[0]);
+     
+       //channelStore.updateContactChannels(channel[0]);
       // add contact in my contact
       fetch(`/api/users/${this.user._id}`, {
         method: 'PUT',

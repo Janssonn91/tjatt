@@ -99,7 +99,7 @@ $text:#434651;
       &:hover {
         color: lightgray;
       }
-      .nav-item {
+      .nav-item{
         text-align: left;
         display: inline-block;
         &:hover {
@@ -194,7 +194,20 @@ hr {
 
   @media (max-width:768px){
     &{
-      height: 34vh;
+      max-height: 34vh;
+      min-height: 5vh;
     }
   }
+}
+
+.arrow-down {
+  vertical-align: middle;
+  height: 20px;
+  padding-left: 2px;
+}
+
+.arrow-up{
+  vertical-align: middle;
+  padding-left: 2px;
+  height:10px;
 }

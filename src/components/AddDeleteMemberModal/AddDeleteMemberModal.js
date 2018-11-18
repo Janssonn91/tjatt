@@ -1,7 +1,7 @@
 import './AddDeleteMemberModal.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('loginStore', 'channelStore') @observer
+@inject('userStore', 'channelStore') @observer
 export default class AddDeleteMemberModal extends Component {
 
   @observable error = false;
@@ -11,7 +11,8 @@ export default class AddDeleteMemberModal extends Component {
     await sleep(1500);
     if (this.props.channelStore.addedSuccess && this.props.channelStore.removedSuccess) {
       this.props.toggle();
-      this.props.channelStore.getChannels();
+      this.props.channelStore.getChannelList();
+      //this.props.channelStore.getChannels();
       this.props.channelStore.closeAlert();
       this.showConfirmation = false;
     }

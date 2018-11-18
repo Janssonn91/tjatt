@@ -1,6 +1,6 @@
 import './ViewMembersModal.scss';
 
-@inject('loginStore', 'channelStore') 
+@inject('userStore', 'channelStore')
 @observer export default class ViewMembersModal extends Component {
   
   setNewAdmin(e, userId){

@@ -25,7 +25,7 @@
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
   "  GitApps": "components/GitApps/GitApps",
   "  Spinner": "components/Spinner/Spinner",
-
+  "  Loading": "components/Loading/Loading",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

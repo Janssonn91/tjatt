@@ -1,16 +1,15 @@
 import './Login.scss';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class Login extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class Login extends Component {
 
   @observable collapseOpen = false;
   @observable username = '';
   @observable password = '';
+  @observable loginError = false;
 
 
   componentDidMount() {
-    this.props.loginStore.loginError = false;
-    this.checkIfLoggedIn();
-
+    this.loginError = false;
   }
 
   toggle() {
@@ -25,36 +24,36 @@ import './Login.scss';
     this.password = e.currentTarget.value;
   }
 
-  // checkIfLoggedIn() {
-  //   this.props.loginStore.checkIfLoggedIn();
-  // }
-  checkIfLoggedIn() {
-    this.props.loginStore.checkIfLoggedIn();
-    this.goToChat();
-  }
-
-  goToChat = async () => {
-    // this.props.loginStore.pageLoad();
-
-    // console.log(this.props.loginStore.isLoading);
-    if (this.props.loginStore.isLoggedIn) {
-      // this.props.loginStore.pageLoad(3000);
-      this.props.history.push(`/${this.props.loginStore.user.username}`);
-      this.props.channelStore.getChannels();
-      //this.props.loginStore.checkIfLoggedIn();
-    }
+  login(username, password) {
+    fetch('/api/login', {
+      credentials: 'include',
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          this.props.userStore.fetchContact();
+          this.props.history.push(`/${this.props.userStore.user.username}`);
+          socket.emit("login", this.props.userStore.user._id);
+        }
+        else {
+          this.loginError = true;
+        }
+      }).catch(err => {
+        console.log("err", err)
+      })
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.loginStore.login(this.username, this.password);
-    this.goToChat();
-
+    this.login(this.username, this.password);
     document.getElementById('password').value = '';
     document.getElementById('username').value = '';
     this.username = '';
     this.password = '';
-
   }
 
 
