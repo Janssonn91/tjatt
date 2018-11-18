@@ -1,4 +1,4 @@
-@inject('loginStore', 'channelStore') @withRouter @observer
+@inject('userStore', 'channelStore') @withRouter @observer
 export default class Tjatt extends Component {
   @observable hideMenu = true;
   @observable hideChat = false;

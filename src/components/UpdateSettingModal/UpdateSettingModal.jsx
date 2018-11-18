@@ -39,7 +39,7 @@
               name="nickname"
               id="changeNickname"
               autoComplete="off"
-              placeholder={this.props.loginStore.user.nickname}
+              placeholder={this.props.userStore.user.nickname}
               value={this.nickname}
               onChange={e => this.handleNicknameChange(e)}
               onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}

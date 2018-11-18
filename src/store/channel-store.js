@@ -1,4 +1,3 @@
-import { loginStore } from './login-store';
 import { userStore } from './user-store';
 import { renderReporter } from 'mobx-react';
 
@@ -82,7 +81,7 @@ class ChannelStore {
   @action async getChannels() {
     this.myChannels = [];
     this.myChannels = await Channel.find({
-      _id: loginStore.user.channel,
+      _id: userStore.user.channel,
     })
     this.groupChannels = [];
     this.contactChannels = [];
@@ -142,7 +141,7 @@ class ChannelStore {
 
 
   async getContactName(ids) {
-    let n = ids.filter(id => { return id !== loginStore.user._id });
+    let n = ids.filter(id => { return id !== userStore.user._id });
     let contact = {};
     if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
@@ -158,7 +157,7 @@ class ChannelStore {
     let user = await res.json();
     user.map((u) => {
       //this.userDict[u._id] = { name: u.nickname, img: u.image }
-      // for (let id of loginStore.onLineUsers) {
+      // for (let id of userStore.onLineUsers) {
       //   if (u._id === id) {
       //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
       //     console.log(u);
@@ -181,7 +180,7 @@ class ChannelStore {
           return memberIds.some(id => userId === id);
         }
         const existInMyContact = (userId) => {
-          return loginStore.user.contact.some(contactId => userId === contactId);
+          return userStore.user.contact.some(contactId => userId === contactId);
         }
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
@@ -217,7 +216,7 @@ class ChannelStore {
       console.log(admin);
       //this.currentChannel.admin = channel.admin;
     }
-    this.amIAdmin = admin.some(a => a === loginStore.user._id);
+    this.amIAdmin = admin.some(a => a === userStore.user._id);
     let element = "";
     if (!channel.group) {
       const name = await this.getContactName(channel.members);
@@ -227,7 +226,7 @@ class ChannelStore {
       this.channelName = channel.channelname;
     }
     // if (addPushState) {
-    window.history.pushState(null, null, "/" + loginStore.user.username + "/" + this.channelName);
+    window.history.pushState(null, null, "/" + userStore.user.username + "/" + this.channelName);
     // }
   }
 
@@ -244,14 +243,14 @@ class ChannelStore {
   // @action renderChatMessage(){
   //   let element = this.channelChatHistory.map((message, i) => {
   //     return (
-  //       message.sender === (loginStore.user._id) ?
+  //       message.sender === (userStore.user._id) ?
   //         <li key={i} className="clearfix">
   //           <div className="me">
   //             <span>
-  //               <img alt="user-img" src={loginStore.user.image || "/images/placeholder.png"} />
+  //               <img alt="user-img" src={userStore.user.image || "/images/placeholder.png"} />
   //             </span>&nbsp;&nbsp;
   //             <span className="message-data-name">
-  //               {loginStore.user.nickname}
+  //               {userStore.user.nickname}
   //             </span>&nbsp;
   //             {/* <span className="message-data-time">{message.time}</span> */}
   //           </div>
@@ -300,7 +299,7 @@ class ChannelStore {
   }
 
   @action async createGroup(groupName) {
-    const admin = loginStore.user._id;
+    const admin = userStore.user._id;
     const members = userStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
     this.createChannel(groupName, admin, members, true);
@@ -406,15 +405,15 @@ class ChannelStore {
 
   //   console.log(this.currentChannel)
   //   let channel = this.currentChannel;
-  //   this.amIAdmin = channel.admin.some(a => a === loginStore.user._id);
+  //   this.amIAdmin = channel.admin.some(a => a === userStore.user._id);
   //   if (!channel) {
   //     console.log("hej")
   //   } else {
   //     console.log(channel)
   //     if (channel.group === false) {
   //       this.currentChannelGroup = false;
-  //       let nameId = channel.admin.filter(a => a !== loginStore.user._id);
-  //       let otheruser = loginStore.myContacts.filter(user =>
+  //       let nameId = channel.admin.filter(a => a !== userStore.user._id);
+  //       let otheruser = userStore.myContacts.filter(user =>
   //         user._id === nameId[0]);
   //       //console.log(toJS(otheruser))
   //       this.channelName = otheruser[0].nickname;
@@ -475,7 +474,7 @@ class ChannelStore {
     // remove the user from the channel
     for (let channelArr of this.myChannels) {
       if (channelArr._id === channel._id) {
-        const index = channel.members.indexOf(loginStore.user._id);
+        const index = channel.members.indexOf(userStore.user._id);
         if (index > 0) {
           channel.members.splice(index, 1);
         };
@@ -497,7 +496,7 @@ class ChannelStore {
     this.channelName = '';
 
     // remove both channel from user and user from channel in backend
-    const userId = loginStore.user._id;
+    const userId = userStore.user._id;
     fetch(`/api/memberChannels/${channel._id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -521,7 +520,7 @@ class ChannelStore {
     if (this.currentGroupMembers.length === 1) {
       this.deleteGroup(channel);
     }
-    window.history.pushState(null, null, '/' + loginStore.user.username);
+    window.history.pushState(null, null, '/' + userStore.user.username);
   }
 
   deleteGroup(channel) {

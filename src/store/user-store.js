@@ -1,11 +1,117 @@
-import loginStore from './channel-store';
 import channelStore from './channel-store';
+import { applicationStateStore } from "./application-state-store";
 
 class UserStore {
+  @observable user = { channel: [], contact: [] };
+  @observable isLoggedIn = false;
+  @observable checkedLoginState = false;
+  @observable onLineUsers = [];
+  @observable candidates = [];
   @observable myContacts = []; //Sidebar, channel-store
   @observable groupCandidates = []; //CreateGroupModal
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
+  @observable isLoading = true;
 
+  constructor() {
+    console.log('login-store här?????');
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+  }
+
+  @action pageLoad(time = 1000) {
+    this.isLoading = true;
+    setTimeout(() => {
+      return this.isLoading = false
+    }, (time))
+  }
+
+  @action.bound setUserAndIsLoggedIn(userdata) {
+    const { user, isLoggedIn } = userdata;
+    this.user = user;
+    this.isLoggedIn = isLoggedIn;
+  }
+
+  @action checkIfLoggedIn() {
+    fetch('/api/login', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.loggedIn) {
+          this.user = res.user;
+          this.isLoggedIn = true;
+          channelStore.getChannels();
+          socket.emit('login', this.user._id)
+          applicationStateStore.fetchUser();
+
+          // socket.on('online', message => {
+          //   console.log('online', message)
+          //   this.onLineUsers = message.loginUser;
+          // })
+          socket.off('chat message');
+          socket.on(
+            'chat message',
+            (messages) => {
+              for (let message of messages) {
+                let date = new Date();
+                if (message.channel === channelStore.currentChannel._id) {
+                  channelStore.channelChatHistory.push(
+                    {
+                      channel: message.channel,
+                      sender: message.sender,
+                      star: false,
+                      text: message.text,
+                      textType: message.textType,
+                      time: date
+                    }
+                  )
+                }
+              }
+            })
+          socket.on('sign up', message => {
+            channelStore.getUserList();
+          })
+          socket.on('login', message => {
+            this.onLineUsers = message.loginUser;
+          })
+          socket.on('logout', message => {
+            this.onLineUsers = message.loginUser;
+          })
+        }
+        socket.on('message', event => {
+          console.log('Message from server ', event);
+        })
+        this.checkedLoginState = true;
+      }).catch(err => {
+        console.log("err", err)
+      });
+  }
+
+  @action updateProfile(setting) {
+    this.user = { ...this.user, setting };
+  }
+
+  @action logout() {
+    this.isLoggedIn = false;
+  }
+
+  // @action fetchContact() {
+  //   fetch('/api/users')
+  //     .then(res => res.json())
+  //     .then(users => {
+  //       const withoutMe = users.filter(user => user._id !== this.user._id);
+
+  //       const isIncludedInContact = (userId) => {
+  //         return this.user.contact.some(contactId => userId === contactId);
+  //       }
+  //       this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
+  //       this.myContacts = withoutMe.filter(user => isIncludedInContact(user._id)); //use in Sidebar
+  //       this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
+
+  //       this.props.userStore.setMyContactsAndGroupCandidates(myContacts, groupCandidates);
+  //     });
+  // }
 
   @action setMyContactsAndGroupCandidates(myContacts, groupCandidates) {
     this.myContacts = myContacts;

@@ -1,6 +1,6 @@
 import './Login.scss';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class Login extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class Login extends Component {
 
   @observable collapseOpen = false;
   @observable username = '';
@@ -34,10 +34,10 @@ import './Login.scss';
       .then(res => res.json())
       .then(res => {
         if (res.success) {
-          this.props.loginStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          this.props.history.push(`/${this.props.loginStore.user.username}`);
+          this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          this.props.history.push(`/${this.props.userStore.user.username}`);
           this.props.channelStore.getChannels();
-          socket.emit("login", this.props.loginStore.user._id);
+          socket.emit("login", this.props.userStore.user._id);
         }
         else {
           this.loginError = true;

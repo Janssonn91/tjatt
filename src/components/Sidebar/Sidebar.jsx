@@ -2,10 +2,10 @@
   <div className="sidebar">
     <div className="profile">
       <div className="user-holder pl-3 pt-4">
-        <CardImg src={this.props.loginStore.user.image || imgPath} />
+        <CardImg src={this.props.userStore.user.image || imgPath} />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
-            <h5 className="ml-1 username">{this.props.loginStore.user.nickname || this.props.loginStore.user.username}</h5>
+            <h5 className="ml-1 username">{this.props.userStore.user.nickname || this.props.userStore.user.username}</h5>
           </DropdownToggle >
           <DropdownMenu className="p-0 m-0" tag="div">
             <DropdownItem className="px-3 py-2 btn-li" tag="li" onClick={() => this.openModalupdateSetting()}>Settings</DropdownItem>

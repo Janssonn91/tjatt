@@ -1,6 +1,6 @@
 import './AddUserModal.scss';
 
-@inject('loginStore', 'userStore', 'channelStore') @observer export default class AddUser extends Component {
+@inject('userStore', 'channelStore') @observer export default class AddUser extends Component {
 
   @observable candidates = [];
   @observable searchedCandidates = [];
@@ -13,10 +13,10 @@ import './AddUserModal.scss';
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.props.loginStore.user._id);
+        const withoutMe = users.filter(user => user._id !== this.props.userStore.user._id);
 
         const isIncluded = (userId) => {
-          return this.props.loginStore.user.contact.some(contactId => userId === contactId);
+          return this.props.userStore.user.contact.some(contactId => userId === contactId);
         }
         this.candidates = withoutMe.filter(user => !isIncluded(user._id)); //use in AddUserModal
         const myContacts = withoutMe.filter(user => isIncluded(user._id)); //use in Sidebar => save in user-store
@@ -54,7 +54,7 @@ import './AddUserModal.scss';
   async addContact(userId) {
     this.userWasClicked(userId);
 
-    const { user } = this.props.loginStore;
+    const { user } = this.props.userStore;
 
     const channelname = user._id + " and " + userId;
     const admin = [user._id, userId];

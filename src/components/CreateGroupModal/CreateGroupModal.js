@@ -1,7 +1,7 @@
 import "./CreateGroupModal.scss";
 import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('loginStore', 'userStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
 
   @observable groupName = '';
   @observable myAttr = 'd-none';

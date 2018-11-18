@@ -1,6 +1,6 @@
 import './Message.scss';
 
-@inject('loginStore', 'channelStore') @observer
+@inject('userStore', 'channelStore') @observer
 export default class Message extends Component {
 
   @observable isOpen = false;
@@ -11,7 +11,7 @@ export default class Message extends Component {
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
-  async start() {}
+  async start() { }
 
   toggle() {
     this.isOpen = !this.isOpen;

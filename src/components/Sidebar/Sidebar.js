@@ -1,7 +1,7 @@
 import './Sidebar.scss';
 export const imgPath = '/images/placeholder.png';
 
-@inject('loginStore', 'userStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
   @observable updateSettingModalOpen = {
     isOpen: false,
@@ -62,9 +62,9 @@ export const imgPath = '/images/placeholder.png';
   logout() {
     fetch('/api/logout').then(() => {
       this.props.channelStore.resetCurrentChannel();
-      this.props.loginStore.logout(); // set isLoggedIn false
+      this.props.userStore.logout(); // set isLoggedIn false
       this.props.history.push('/');
-      socket.emit("logout", this.props.loginStore.user._id);
+      socket.emit("logout", this.props.userStore.user._id);
     });
   }
 

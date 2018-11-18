@@ -1,9 +1,9 @@
 import './UpdateSettingModal.scss';
 const defaultImg = "/images/placeholder.png";
 
-@inject('loginStore') @observer export default class UpdateSettingModal extends Component {
+@inject('userStore') @observer export default class UpdateSettingModal extends Component {
 
-  @observable imgPath = this.props.loginStore.user.image || defaultImg;
+  @observable imgPath = this.props.userStore.user.image || defaultImg;
   @observable image = '';
   @observable nickname = '';
   @observable newPassword = '';
@@ -27,7 +27,7 @@ const defaultImg = "/images/placeholder.png";
       reader.readAsDataURL(e.target.files[0]);
 
       const formData = new FormData();
-      formData.append('id', this.props.loginStore.user._id);
+      formData.append('id', this.props.userStore.user._id);
       formData.append('file', e.target.files[0]);
       this.image = formData;
       this.areAllEmpty = false; // Close "areAllEmpty" alert
@@ -96,7 +96,7 @@ const defaultImg = "/images/placeholder.png";
 
   async updateSettings(settings) {
     const { imageFormData, nickname, password, currentPassword } = settings;
-    const { user } = this.props.loginStore;
+    const { user } = this.props.userStore;
 
     if (Object.values(settings).every(value => value === "")) {
       this.areAllEmpty = true;
@@ -114,7 +114,7 @@ const defaultImg = "/images/placeholder.png";
         .then(data => {
           if (data.success) {
             this.savedNickname = true;
-            this.props.loginStore.updateProfile({ nickname });
+            this.props.userStore.updateProfile({ nickname });
           }
         })
         .catch(err => {
@@ -156,7 +156,7 @@ const defaultImg = "/images/placeholder.png";
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
                 this.savedPassword = true;
-                this.props.loginStore.updateProfile({ password });
+                this.props.userStore.updateProfile({ password });
               })
               .catch(err => {
                 console.log(err);
@@ -179,7 +179,7 @@ const defaultImg = "/images/placeholder.png";
       })
         .then(res => res.json())
         .then(res => {
-          this.props.loginStore.updateProfile({ image: res.path });
+          this.props.userStore.updateProfile({ image: res.path });
         });
     }
 
