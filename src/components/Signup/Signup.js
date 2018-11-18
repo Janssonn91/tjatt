@@ -79,6 +79,7 @@ import './Signup.scss';
       })
       .then(res => res.json())
       .then(res => {
+        console.log("resssssss",res)
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });

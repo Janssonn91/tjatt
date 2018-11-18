@@ -40,7 +40,7 @@ import './AddUserModal.scss';
     this.props.channelStore.createChannel(channelname, admin, members, false);
     await sleep(60);
     Channel.find({ channelname: channelname }).then(channel => {
-      socket.emit('join channel', channel[0]._id)
+      socket.emit('newChannel', channel[0]._id)
       
       this.props.channelStore.updateContactChannels(channel[0]);
 

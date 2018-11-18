@@ -62,15 +62,15 @@
         <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">
             {this.props.channelStore.groupChannels.length > 0 ?
-              <div id="groupsRender"></div>
+              this.props.channelStore.groupChannels.map((channel, i) =>
+                <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
+                  <div className="d-inline-block">{channel.channelname}</div>
+                </div>
+              )
               : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong>+</strong></h6>
             }
             {/* <div id="groupsRender"></div> */}
-            {this.props.channelStore.groupChannels.map((channel, i) =>
-              <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
-                <div className="d-inline-block">{channel.channelname}</div>
-              </div>
-            )}
+           
           </CardBody>
         </Card>
       </Collapse>
