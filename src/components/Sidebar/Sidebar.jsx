@@ -45,7 +45,7 @@
           <CardBody className="p-0">
             {this.props.channelStore.groupChannels.length > 0 ?
               <div id="groupsRender"></div>
-              : <h6 className="text-secondary pl-3 pt-1">Add a group on the  <strong>+</strong></h6>
+              : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong>+</strong></h6>
             }
           </CardBody>
         </Card>
