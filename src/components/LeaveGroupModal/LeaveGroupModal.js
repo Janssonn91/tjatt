@@ -1,13 +1,13 @@
 import './LeaveGroupModal.scss';
 
-@inject('loginStore', 'channelStore') export default class LeaveGroupModal extends Component {
+@inject('channelStore', 'userStore') export default class LeaveGroupModal extends Component {
 
   leaveChannel(){
     let channel = this.props.channelStore.currentChannel;
 
     for (let channelArr of this.props.channelStore.myChannels) {
       if (channelArr._id === channel._id) {
-        const index = channel.members.indexOf(this.props.loginStore.user._id);
+        const index = channel.members.indexOf(this.props.userStore.user._id);
         if (index > 0) {
           channel.members.splice(index, 1);
         };
@@ -22,10 +22,10 @@ import './LeaveGroupModal.scss';
       }
       i++;
     }
-    this.props.channelStore.renderChannels();
+    //this.props.channelStore.renderChannels();
 
     // remove both channel from user and user from channel in backend
-    const userId = this.props.loginStore.user._id;
+    const userId = this.props.userStore.user._id;
     fetch(`/api/memberChannels/${channel._id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -49,7 +49,7 @@ import './LeaveGroupModal.scss';
     if (this.props.channelStore.currentGroupMembers.length === 1) {
       this.deleteGroup(channel);
     }
-    window.history.pushState(null, null, '/' + this.props.loginStore.user.username);
+    window.history.pushState(null, null, '/' + this.props.userStore.user.username);
     this.props.toggle();
   }
 
