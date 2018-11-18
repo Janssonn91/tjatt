@@ -22,11 +22,8 @@ import ScrollableFeed from 'react-scrollable-feed';
       return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
     }
     let regex = new RegExp(e.target.value, 'i');
-    let result = this.props.userStore.groupCandidates.filter(user => {
-      if (regex.test(user.nickname || user.username || user.email)) {
-        return this.searchContact.push(user);
-      }
-      return null;
+    this.searchContact = this.props.userStore.groupCandidates.filter(user => {
+      return regex.test(user.nickname || user.username || user.email)
     })
   }
 
