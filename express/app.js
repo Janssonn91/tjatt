@@ -136,7 +136,6 @@ io.on('connection', (socket) => {
 
   socket.on('newChannel', (id) => {
     socket.join(id);
-    
     channel.find({_id : id}).then(
       channel=>
       socket.broadcast.emit('newChannel', channel)
