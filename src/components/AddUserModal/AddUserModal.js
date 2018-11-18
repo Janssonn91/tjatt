@@ -2,55 +2,32 @@ import './AddUserModal.scss';
 
 @inject('userStore', 'channelStore') @observer export default class AddUser extends Component {
 
-  @observable candidates = [];
   @observable searchedCandidates = [];
 
-  start() {
-    this.fetchContact();
-  }
 
-  fetchContact() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.props.userStore.user._id);
-
-        const isIncluded = (userId) => {
-          return this.props.userStore.user.contact.some(contactId => userId === contactId);
-        }
-        this.candidates = withoutMe.filter(user => !isIncluded(user._id)); //use in AddUserModal
-        const myContacts = withoutMe.filter(user => isIncluded(user._id)); //use in Sidebar => save in user-store
-        const groupCandidates = withoutMe.filter(user => isIncluded(user._id)); //use in CreateGroupModal => save in user-store
-
-        this.props.userStore.setMyContactsAndGroupCandidates(myContacts, groupCandidates);
-      });
+  componentDidMount() {
+    // Show all candidates from beginning
+    this.searchedCandidates = this.props.userStore.candidates;
   }
 
   searchCandidates = (e) => {
     this.searchedCandidates = [];
     if (!e.target.value) {
-      return this.searchedCandidates = [];
+      // Show all candidates if input value is empty
+      return this.searchedCandidates = this.props.userStore.candidates;
     }
     const regex = new RegExp(e.target.value, 'i');
-    this.searchedCandidates = this.candidates.filter(user => {
+    this.searchedCandidates = this.props.userStore.candidates.filter(user => {
       return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email);
     })
   }
 
+  // remove added user in candidates in view
   userWasClicked = (userId) => {
     this.searchedCandidates = this.searchedCandidates.filter(user => user._id !== userId);
   }
 
-  // remove added user in candidates
-  async updateContact(userId) {
-    const addedUser = await this.candidates.find(user => user._id === userId);
-    const index = this.candidates.indexOf(addedUser);
-    this.candidates.splice(index, 1);
-
-    this.props.userStore.updateMyContactsAndGroupCandidates(addedUser);
-    this.props.channelStore.renderChannelElements(this.props.channelStore.contactChannels, 'contact', 'contactsRender');
-  }
-
+  // add clicked user in candidates in user-store
   async addContact(userId) {
     this.userWasClicked(userId);
 
@@ -66,7 +43,7 @@ import './AddUserModal.scss';
       socket.emit('join channel', channel[0]._id)
       this.props.channelStore.updateContactChannels(channel[0]);
 
-      // add contact in my contact
+      // add contact into my contact
       fetch(`/api/users/${user._id}`, {
         method: 'PUT',
         body: JSON.stringify({
@@ -76,13 +53,14 @@ import './AddUserModal.scss';
       })
         .then(res => res.json())
         .then(() => {
-          this.updateContact(userId);
+          // remove added user in candidates and add the user in myContacts in user-store
+          this.props.userStore.updateMyContact(userId);
         })
         .catch(err => {
           console.log(err);
         });
 
-      // add my id to the new friend contact
+      // add my id into the new friend contact
       fetch(`/api/users/${userId}`, {
         method: 'PUT',
         body: JSON.stringify({ userId, contact: user._id, channel: channel[0]._id }),
