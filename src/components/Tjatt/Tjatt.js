@@ -23,15 +23,5 @@ export default class Tjatt extends Component {
 
 
 
-
-
   // @observable sendToChat = this.showMenu.bind(this);
-
-
-
-
-
-
-
-
 }

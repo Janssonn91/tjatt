@@ -24,7 +24,7 @@ export const imgPath = '/images/placeholder.png';
   @observable groupsOpen = false;
 
   start() {
-   // this.props.channelStore.getChannels();
+    // this.props.channelStore.getChannels();
   }
 
 

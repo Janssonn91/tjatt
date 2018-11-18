@@ -194,11 +194,10 @@ class ChannelStore {
     this.myChannels = [];
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
     this.myChannels.map((c) => {
-      socket.emit('join channel', c._id)
+      //socket.emit('join channel', c._id)
       if (c.group) {
         this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
         this.groupChannels.push(this.channelDict[c._id]);
-        // console.log("check group",  this.groupChannels)
       } else {
         let name = this.getContactName(c.members);
         // TODO: "name" become sometimes undefined (Till Hui från Nana)
@@ -270,7 +269,7 @@ class ChannelStore {
     this.amIAdmin = admin.some(a => a === userStore.user._id);
     let element = "";
     if (!channel.group) {
-      const name = await this.getContactName(channel.members);
+      const name = this.getContactName(channel.members);
       this.channelName = name.contactChannelname;
     } else {
       this.getGroupMembersData(channel.members);

@@ -233,7 +233,6 @@ class LoginStore {
        
       
       socket.emit('newChannel', channel[0]._id)
-      socket.emit('join channel', channel[0]._id)
      
        //channelStore.updateContactChannels(channel[0]);
       // add contact in my contact

@@ -85,6 +85,14 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
+  let channels = user.channel;
+  for(let channel of channels){
+    socket.join(channel);
+  }
+
+ 
+  
+
   // console.log("user is connected", user.nickname)
   // onlineUsers = onlineUsers.filter(id => id !== user._id);
   // onlineUsers.push(user._id);
@@ -97,9 +105,12 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
+
+    console.log("try mongo", user)
     socket.broadcast.emit('online', {
       onlineUsers
     });
+
   })
 
   socket.on('sign up', (user) => {
@@ -123,10 +134,13 @@ io.on('connection', (socket) => {
 
   })
 
-  socket.on('newChannel', (channel) => {
-    console.log('newChannel', channel)
-    socket.join(channel);
-    socket.broadcast.emit('newChannel', channel);
+  socket.on('newChannel', (id) => {
+    socket.join(id);
+    channel.find({_id : id}).then(
+      channel=>
+      socket.broadcast.emit('newChannel', channel)
+      )
+    
   })
 
 
