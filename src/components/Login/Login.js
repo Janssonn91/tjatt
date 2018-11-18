@@ -36,7 +36,6 @@ import './Login.scss';
         if (res.success) {
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           this.props.history.push(`/${this.props.userStore.user.username}`);
-          this.props.channelStore.getChannels();
           socket.emit("login", this.props.userStore.user._id);
         }
         else {
