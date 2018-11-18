@@ -1,6 +1,4 @@
-
-
-@inject('loginStore', 'channelStore') @withRouter @observer
+@inject('userStore', 'channelStore') @withRouter @observer
 export default class Tjatt extends Component {
   @observable hideMenu = true;
   @observable hideChat = false;
@@ -9,8 +7,8 @@ export default class Tjatt extends Component {
 
   async start() {
     this.props.channelStore.getChannelList();
+    this.props.channelStore.getUserList();
     await sleep(60);
-    
   }
 
   showMenu() {
@@ -22,6 +20,8 @@ export default class Tjatt extends Component {
     this.hideMenu = true;
     this.hideChat = false;
   }
+
+
 
 
 

@@ -2,7 +2,7 @@
   {/* MobX observable style needs spread wrapping */}
   <div className="App d-flex flex-column" style={{ ...this.style }}>
     <Container fluid={true} tag="main" className="flex-grow-1">
-      {this.props.loginStore.isLoading ?
+      {this.props.userStore.isLoading ?
         <div className="loading-container">
           <div className="loading">
             {/* <span className="letters" id="letterOne">i</span>
@@ -20,8 +20,9 @@
           <Route path="/signup" component={Signup} />
           <Route path="/server" component={Server} />
           <Route path="/git" component={GitApps} />
-          {this.props.loginStore.user &&
-            <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} />
+          {this.props.userStore.checkedLoginState ?
+            <PrivateRoute path={`/${this.props.userStore.user.username}`} component={Tjatt} /> :
+            <Route path="/" component={Loading} />
           }
 
           {/* 404 */}

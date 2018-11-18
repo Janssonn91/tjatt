@@ -367,6 +367,10 @@ $fontSm: 12px;
     position: absolute;
     left: -15px;
     top: -3px;
+
+    @media only screen and(max-width: 1024px){
+        display: none;
+    }
 }
 
 .dropdown-menu-left{

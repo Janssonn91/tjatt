@@ -212,6 +212,7 @@ class LoginStore {
   }
 
   @action async addContact(userId) {
+    console.log("add")
     const channelname = this.user._id + " and " + userId;
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];

@@ -3,14 +3,14 @@
   {this.props.channelStore.channelChatHistory.map((message, i) => {
     // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
     return (
-      message.sender === (this.props.loginStore.user._id) ?
+      message.sender === (this.props.userStore.user._id) ?
         <li key={i} className="clearfix">
           <div className="me">
             <span>
-              <img alt="user-img" src={this.props.loginStore.user.image || "/images/placeholder.png"} />
+              <img alt="user-img" src={this.props.userStore.user.image || "/images/placeholder.png"} />
             </span>&nbsp;&nbsp;
             <span className="message-data-name">
-              {this.props.loginStore.user.nickname}
+              {this.props.userStore.user.nickname}
             </span>&nbsp;
             {/* <span className="message-data-time">{message.time}</span> */}
           </div>

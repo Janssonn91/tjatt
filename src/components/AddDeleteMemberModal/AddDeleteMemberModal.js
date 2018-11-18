@@ -1,7 +1,7 @@
 import './AddDeleteMemberModal.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('loginStore', 'channelStore') @observer
+@inject('userStore', 'channelStore') @observer
 export default class AddDeleteMemberModal extends Component {
 
   @observable error = false;

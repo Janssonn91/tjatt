@@ -1,5 +1,5 @@
 import './App.scss';
-@inject('loginStore', 'channelStore') @observer export default class App extends Component {
+@inject('applicationStateStore', 'userStore') @observer export default class App extends Component {
 
   @observable style = {
     opacity: 0
@@ -21,6 +21,8 @@ import './App.scss';
     $(document).on('click', 'button', function () {
       $(this).blur();
     })
+
+    this.props.userStore.checkIfLoggedIn();
   }
 
 }

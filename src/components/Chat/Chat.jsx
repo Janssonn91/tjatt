@@ -28,14 +28,22 @@
                   <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
                   <DropdownItem className="m-0" divider />
                   <div className="channel-manage">
-                    
-                    <DropdownItem className="py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>
-                      View members
-                    </DropdownItem>
-                    {this.props.channelStore.amIAdmin &&
-                      <DropdownItem className="py-2 px-3" onClick={this.addDeleteMemberModalToggle.bind(this)}>
+                    <DropdownItem
+                      className="py-2 px-3"
+                      onClick={this
+                        .addDeleteMemberModalToggle
+                        .bind(this)}>
                       Add/Delete members
-                    </DropdownItem>
+                  </DropdownItem>
+                    <DropdownItem
+                      className="py-2 px-3"
+                      onClick={this
+                        .viewMembersModalToggle
+                        .bind(this)}>
+                      View members
+                  </DropdownItem>
+                    {this.props.channelStore.amIAdmin &&
+                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
                     }
                   </div>
                   <DropdownItem className="m-0" divider />
@@ -91,7 +99,7 @@
                     <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
                   <DropdownItem>
                     <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <DropdownItem onClick={()=> this.openSideDrawerHandler()}>
+                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
                 </DropdownMenu>
                 :
@@ -138,7 +146,7 @@
           </Form>
         </Col>
       </Row>
-      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()}/>
+      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()} />
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -157,5 +165,5 @@
       </Row>
     </Fragment>
   }
-  
+
 </Fragment>
