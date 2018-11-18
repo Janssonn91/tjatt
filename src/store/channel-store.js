@@ -1,6 +1,9 @@
-import { userStore } from './user-store';
-import { renderReporter } from 'mobx-react';
-
+import {
+  userStore
+} from './user-store';
+import {
+  renderReporter
+} from 'mobx-react';
 class ChannelStore {
   @observable newChannel = [];
   @observable myChannels = [];
@@ -14,6 +17,7 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable searchedGroupCandidates = [];
+  @observable groupAdminId = "";
   @observable addedSuccess = false;
   @observable removedSuccess = false;
   @observable viewMembers = [];
@@ -26,6 +30,7 @@ class ChannelStore {
   @observable adminLeavingError = false;
   // holds all the admins of the current group
   @observable currentChannelAdmins = [];
+  @observable channelDict = {};
 
   // constructor() {
   // this.listenToPopState();
@@ -49,7 +54,8 @@ class ChannelStore {
         // we store those in a new properrt ._contact.contactChannelname
         for (let channel of this.myChannels) {
           if (!channel.group) {
-            channel._contact = await this.getContactName(channel.members);
+            channel._contact = await this.getContactUrl(channel.members)
+            console.log(channel._contact)
           }
         }
 
@@ -78,69 +84,78 @@ class ChannelStore {
 
   //TODO: as a new user, introduction page shows instead of chat page
 
-  @action async getChannels() {
-    this.myChannels = [];
-    this.myChannels = await Channel.find({
-      _id: userStore.user.channel,
-    })
-    this.groupChannels = [];
-    this.contactChannels = [];
-    this.myChannels.forEach(
-      channel => {
-        if (channel.group === false) {
-          this.contactChannels.push(channel);
-        }
-        if (channel.group === true) {
-          this.groupChannels.push(channel);
-        }
-      }
+  // @action async getChannels() {
+  //   this.myChannels = [];
+  //   this.myChannels = await Channel.find({
+  //     _id: userStore.user.channel,
+  //   })
+  //   this.groupChannels = [];
+  //   this.contactChannels = [];
+  //   this.myChannels.forEach(
+  //     channel => {
+  //       if (channel.group === false) {
+  //         this.contactChannels.push(channel);
+  //       }
+  //       if (channel.group === true) {
+  //         this.groupChannels.push(channel);
+  //       }
+  //     }
 
-    );
-    await sleep(60);
-    this.renderChannels();
-    this.myChannels.map((channel) => {
-      return socket.emit('join channel', channel._id)
-    });
+  //   );
+  //   await sleep(60);
+  //   //this.renderChannels();
+  //   this.myChannels.map((channel) => {
+  //     return socket.emit('join channel', channel._id)
+  //   });
+  // }
+
+
+  // renderChannels() {
+  //   this.renderChannelElements(this.groupChannels, 'group', 'groupsRender');
+  //   this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
+  // }
+  // async renderChannelElements(channels, type, anchor) {
+  //   console.log("anchor", anchor)
+  //   console.log(document.getElementById(anchor))
+  //   let contact = "";
+  //   let elements = await channels.map(async (channel, i) => {
+  //     let img = "";
+  //     let channelname = "";
+  //     if (type === "contact") {
+  //       contact = await this.getContactName(channel.members);
+  //     }
+  //     return (type === 'group' ?
+  //       <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
+  //         <div className="d-inline-block" >{channel.channelname} </div>
+  //       </div>
+  //       :
+  //       <div key={i} className="nav-link pl-5 pl-md-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
+  //         <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
+  //         <div className="d-inline-block" >{contact.contactChannelname}</div>
+  //       </div>
+  //     );
+  //   })
+  //   Promise.all(elements).then((els) => {
+  //     ReactDOM.render(els, document.getElementById(anchor));
+  //   }).catch(err => console.log(err));
+  // }
+
+
+  @action getContactName(ids) {
+    let n = ids.filter(id => { return id !== userStore.user._id });
+    let u = this.userDict[n];
+    return u;
+    // let contact = {};
+    // if (n[0]) {
+    //   let res = await fetch(`/api/users/${n}`);
+    //   let user = await res.json();
+    //   contact.contactImg = user.image;
+    //   contact.contactChannelname = user.nickname;
+    //   return contact;
+    // }
   }
 
-
-  renderChannels() {
-    this.renderChannelElements(this.groupChannels, 'group', 'groupsRender');
-    this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
-  }
-
-  async renderChannelElements(channels, type, anchor) {
-    console.log("anchor", anchor)
-    console.log(document.getElementById(anchor))
-    let contact = "";
-    let elements = await channels.map(async (channel, i) => {
-      let img = "";
-      let channelname = "";
-      if (type === "contact") {
-        contact = await this.getContactName(channel.members);
-      }
-      return (type === 'group' ?
-        <div key={i} className="nav-link pl-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
-          <div className="d-inline-block" >{channel.channelname} </div>
-        </div>
-        :
-        <div key={i} className="nav-link pl-3 py-md-1 pr-1 contacts" onClick={() => this.changeChannel(channel)}>
-          <CardImg className="mr-2 d-inline-block" src={contact.contactImg || "/images/placeholder.png"} />
-          <div className="d-inline-block" >{contact.contactChannelname}</div>
-        </div>
-      );
-    })
-
-
-
-
-    Promise.all(elements).then((els) => {
-      ReactDOM.render(els, document.getElementById(anchor));
-    }).catch(err => console.log(err));
-  }
-
-
-  async getContactName(ids) {
+  async getContactUrl(ids) {
     let n = ids.filter(id => { return id !== userStore.user._id });
     let contact = {};
     if (n[0]) {
@@ -156,21 +171,52 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      //this.userDict[u._id] = { name: u.nickname, img: u.image }
-      // for (let id of userStore.onLineUsers) {
-      //   if (u._id === id) {
-      //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: true }
-      //     console.log(u);
-      //   } else {
-      //     this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
-      //   }
-      // }
-      return this.userDict[u._id] = { name: u.nickname, img: u.image }
-      // return this.userDict[u._id];
-    })
+      return this.userDict[u._id] = { name: u.nickname, img: u.image, status: false }
 
-    console.log(toJS(this.userDict));
+    })
+    console.log(this.userDict)
   }
+
+  @action async getLoginStatus() {
+    if (userStore.onLineUsers) {
+      for (let id of userStore.onLineUsers) {
+        if (this.userDict[id]) {
+          this.userDict[id].status = true;
+        }
+
+      }
+    }
+  }
+
+
+  @action async getChannelList() {
+    console.log(this.userDict)
+    this.groupChannels = [];
+    this.contactChannels = [];
+    this.myChannels = [];
+    this.myChannels = await Channel.find({ _id: userStore.user.channel, });
+    this.myChannels.map((c) => {
+      socket.emit('join channel', c._id)
+      if (c.group) {
+        this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+        this.groupChannels.push(this.channelDict[c._id]);
+        // console.log("check group",  this.groupChannels)
+      } else {
+        let name = this.getContactName(c.members);
+        // TODO: "name" become sometimes undefined (Till Hui från Nana)
+        if (name !== undefined) {
+          this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+          this.contactChannels.push(this.channelDict[c._id]);
+        }
+        // let n = c.members.filter(id=>{ return id!== userStore.user._id});
+        // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+        // this.contactChannels.push(this.channelDict[c._id])
+      }
+
+    })
+  }
+
+
 
   getGroupMembersData(memberIds) {
     fetch('/api/users')
@@ -190,17 +236,24 @@ class ChannelStore {
   }
 
   @action async changeChannel(channel) {
+    console.log(channel)
+    this.currentChannel = channel;
+    console.log("channelname", this.currentChannel)
+
+    this.showChat();
+    this.getChannelChatHistory(this.currentChannel._id);
+    this.getLoginStatus();
+
     this.currentChannelAdmins = [];
     this.ChannelChatHistory = [];
-    this.currentChannel = channel;
-    this.currentChannelGroup = channel.group;
-    this.searchedGroupCandidates = []; // Reset searchedGroupCandidates used on Add/Delete menbers Modal
+
+    //this.currentChannelGroup = channel.group;
     //this.currentChannel.admin = [];
     // this.currentChannel.admin.push(channel.admin);
     // console.log(this.currentChannel.admin);
-    this.showChat();
-    this.getChannelChatHistory(channel);
-    this.getUserList();
+
+
+
     let admin = [];
     if (typeof (channel.admin) === "string") {
       admin.push(channel.admin);
@@ -224,65 +277,21 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
+      this.groupAdminId = channel.admin[0];
     }
-    // if (addPushState) {
-    window.history.pushState(null, null, "/" + userStore.user.username + "/" + this.channelName);
-    // }
   }
 
-  async getChannelChatHistory(channel) {
-    console.log(channel)
+  async getChannelChatHistory(id) {
+    console.log("changeChannel", id)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
-      channel: channel._id
+      channel: id
     });
     console.log(this.channelChatHistory)
     // this.renderChatMessage();
   }
 
-  // @action renderChatMessage(){
-  //   let element = this.channelChatHistory.map((message, i) => {
-  //     return (
-  //       message.sender === (userStore.user._id) ?
-  //         <li key={i} className="clearfix">
-  //           <div className="me">
-  //             <span>
-  //               <img alt="user-img" src={userStore.user.image || "/images/placeholder.png"} />
-  //             </span>&nbsp;&nbsp;
-  //             <span className="message-data-name">
-  //               {userStore.user.nickname}
-  //             </span>&nbsp;
-  //             {/* <span className="message-data-time">{message.time}</span> */}
-  //           </div>
-  //           <div className="message my-message">
-  //             {message.text}
-  //           </div>
-  //         </li> :
-  //         <li key={i} className="clearfix">
-  //           <div className="message-data">
-  //             {
-  //               message.status === "online" ?
-  //             <span className="online circle">
-  //               <i className="fas fa-circle"></i>
-  //             </span> :
-  //             <span className="offline circle">
-  //               <i className="fas fa-circle"></i>
-  //             </span>
-  //             }&nbsp; &nbsp;
-  //             <span>
-  //               <img alt="user-img" src={message.image || "/images/placeholder.png"}/>
-  //             </span>&nbsp; &nbsp;
-  //             <span className="message-data-name">{message.sender}</span>
-  //             {/* <span className="message-data-time">{message.time}</span> */}
-  //           </div>
-  //           <div className="message other-message">
-  //             {message.text}
-  //           </div>
-  //         </li>
-  //       )
-  //     })
-  //     ReactDOM.render(element, document.getElementById("chatHistory"));
-  //   }
+
 
 
 
@@ -306,6 +315,7 @@ class ChannelStore {
     await sleep(60);
     Channel.find({ channelname: groupName }).then(channel => {
       this.changeChannel(channel[0]);
+      this.groupChannels.push(channel[0]);
       channel[0].members.forEach(member => {
         console.log("push channel into member", member)
         fetch(`/api/users/${member}`, {
@@ -325,55 +335,37 @@ class ChannelStore {
           })
       })
       socket.emit('newChannel', channel[0]._id)
-      this.updateGroupChannel(channel[0]);
+
+      //this.updateGroupChannel(channel[0]);
     })
   }
 
 
 
 
-
-  // if(type==="contact"){
-  //   this.getChannelByUser(id);
-  // }
-  // if(type === "group"){
-  //   this.getGroupChannel(id);
-  // }
-  // this.channelChatHistory=[];
-  // this.getChannelChatHistory()
-
-
-
   updateContactChannels(channel) {
     console.log(channel)
     this.contactChannels.push(channel);
-    console.log(this.contactChannels)
+    console.log(this.contactChannels);
+    this.getChannelList();
+
     //await this.getChannels();
-    this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
+    // this.renderChannelElements(this.contactChannels, 'contact', 'contactsRender');
     //this.props.channelStore.getChannelByUser(user._id)}
   }
 
 
-
-
-
-
-
-  // @action updateContactChannels() {
-  //   this.contactChannels.push(this.newChannel);
+  // updateGroupChannel(channel) {
+  //   console.log(this.groupChannels)
+  //   this.groupChannels.push(channel);
+  //   console.log(this.groupChannels)
+  //   console.log(channel)
+  //   //this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
+  //   //  this.getChannels();
+  //   // console.log(this.groupChannels);
+  //   // this.renderGroup();
+  //   // this.getGroupChannel(this.newChannel);
   // }
-
-  updateGroupChannel(channel) {
-    console.log(this.groupChannels)
-    this.groupChannels.push(channel);
-    console.log(this.groupChannels)
-    console.log(channel)
-    this.renderChannelElements(toJS(this.groupChannels), 'group', 'groupsRender');
-    //  this.getChannels();
-    // console.log(this.groupChannels);
-    // this.renderGroup();
-    // this.getGroupChannel(this.newChannel);
-  }
 
   // @action async getChannelByUser(userId) {
   //   this.currentChannel = "";
@@ -489,7 +481,7 @@ class ChannelStore {
       }
       i++;
     }
-    this.renderChannels();
+    //this.renderChannels();
     // test att lämna grupp och historik i frontend
     this.ChannelChatHistory = [];
     this.currentChannelGroup = false;
