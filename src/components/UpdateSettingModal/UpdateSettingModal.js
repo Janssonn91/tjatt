@@ -114,7 +114,7 @@ const defaultImg = "/images/placeholder.png";
         .then(data => {
           if (data.success) {
             this.savedNickname = true;
-            this.props.userStore.updateProfile({ nickname });
+            this.props.userStore.updateProfile("nickname", nickname);
           }
         })
         .catch(err => {
@@ -156,7 +156,7 @@ const defaultImg = "/images/placeholder.png";
                 document.getElementById('setNewPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
                 this.savedPassword = true;
-                this.props.userStore.updateProfile({ password });
+                this.props.userStore.updateProfile("password", password);
               })
               .catch(err => {
                 console.log(err);
@@ -179,7 +179,7 @@ const defaultImg = "/images/placeholder.png";
       })
         .then(res => res.json())
         .then(res => {
-          this.props.userStore.updateProfile({ image: res.path });
+          this.props.userStore.updateProfile("image", res.path);
         });
     }
 

@@ -100,8 +100,8 @@ class UserStore {
     this.props.channelStore.renderChannelElements(this.props.channelStore.contactChannels, 'contact', 'contactsRender');
   }
 
-  @action updateProfile(setting) {
-    this.user = { ...this.user, setting };
+  @action updateProfile(key, val) {
+    this.user = { ...this.user, [key]: val };
   }
 
   @action logout() {
