@@ -435,123 +435,31 @@ class ChannelStore {
     this.hideChat = false;
   }
 
-  @action setAdmin(newAdminId) {
+  // for setting new admin on frontend
+  @action setAdmin(id) {
     this.adminLeavingError = false;
-    this.currentChannelAdmins = [...this.currentChannelAdmins, newAdminId];
-    // this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
-    console.log(this.currentChannel);
-    console.log(this.currentChannel._id);
-    fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        adminId: newAdminId
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json();
-      }).then(res => {
-        console.log('admin updated: ', res)
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    this.currentChannelAdmins = [...this.currentChannelAdmins, id];
   }
 
   @action showAdminLeaveError() {
     this.adminLeavingError = true;
   }
 
-  @action exitChannel(channel) {
-    // remove the user from the channel
-    for (let channelArr of this.myChannels) {
-      if (channelArr._id === channel._id) {
-        const index = channel.members.indexOf(userStore.user._id);
-        if (index > 0) {
-          channel.members.splice(index, 1);
-        };
-      }
-    }
-
-    // remove the channel from the user and re-render users channels
-    let i = 0;
-    for (let channelArr of this.groupChannels) {
-      if (channelArr._id === channel._id) {
-        this.groupChannels.splice(i, 1);
-      }
-      i++;
-    }
-    //this.renderChannels();
-    // test att lämna grupp och historik i frontend
+  // for splicing a channel from a user. Needs an index to start from
+  @action spliceChannel(i){
+    this.groupChannels.splice(i, 1);
     this.ChannelChatHistory = [];
     this.currentChannelGroup = false;
     this.channelName = '';
-
-    // remove both channel from user and user from channel in backend
-    const userId = userStore.user._id;
-    fetch(`/api/memberChannels/${channel._id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        userid: userId
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json();
-      }).then(res => {
-        console.log(res.resultChannel, res.resultUser)
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    if (this.amIAdmin) {
-      this.removeAdmin(userId, channel);
-    }
-    if (this.currentGroupMembers.length === 1) {
-      this.deleteGroup(channel);
-    }
-    window.history.pushState(null, null, '/' + userStore.user.username);
   }
 
-  deleteGroup(channel) {
-    fetch(`/api/removeGroup/${channel._id}`, {
-      method: 'DELETE'
-    })
-      .then(res => {
-        res.json()
-      })
-      .then(() => {
-        console.log(`slut på group, ${channel._id}`)
-      })
+  @action adminStatus(){
+    this.amIAdmin = !this.amIAdmin;
   }
 
-  removeAdmin(id, channel) {
-    // remove admin from frontend
-    let index = this.currentChannel.admin.indexOf(id);
-    this.currentChannel.admin.splice(index, 1);
-    // remove admin from db
-    fetch(`/api/removeAdmin/${channel._id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        userid: id
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json();
-      }).then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    this.amIAdmin = false;
+  // for splicing an admin from a group. Needs an index to start from
+  @action spliceAdmin(i){
+    this.currentChannelAdmins.splice(i, 1);
   }
 
   @action searchCandidates(regex) {
@@ -679,3 +587,5 @@ class ChannelStore {
 
 const channelStore = new ChannelStore();
 export default channelStore;
+
+
