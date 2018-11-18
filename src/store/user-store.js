@@ -87,9 +87,20 @@ class UserStore {
             
           })
         }
-        socket.on('newChannel', channel => {
-          console.log(channel)
-          channelStore.getChannelList();
+        socket.on('newChannel', async channel => {
+          console.log(channel);
+          let c = channel[0];
+          if(c.group){
+            channelStore.groupChannels.push(c);
+            console.log(channelStore.groupChannels)
+
+          }else{
+            let name = await channelStore.getContactName(c.members);
+            if(name!== undefined){
+              channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+              channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+            }
+          }
           //channelStore.getChannels();
         })
         socket.on('message', event => {
