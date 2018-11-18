@@ -29,7 +29,7 @@
       <Collapse className="pl-2" isOpen={this.contactsOpen}>
         <Card className="contactsCollapse border-0 m-0">
           <CardBody className="p-0">
-            {this.props.loginStore.myContacts.length > 0 ?
+            {this.props.userStore.myContacts.length > 0 ?
               <div id="contactsRender"></div>
               : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong>+</strong></h6>
             }
