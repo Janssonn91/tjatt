@@ -190,7 +190,6 @@ class ChannelStore {
 
 
   @action async getChannelList() {
-    console.log(this.userDict)
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels = [];
@@ -344,7 +343,6 @@ class ChannelStore {
 
 
   updateContactChannels(channel) {
-    console.log(channel)
     this.contactChannels.push(channel);
     console.log(this.contactChannels);
     this.getChannelList();

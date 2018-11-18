@@ -13,7 +13,6 @@ class UserStore {
   @observable isLoading = true;
 
   constructor() {
-    console.log('login-store här?????');
     setTimeout(() => {
       this.isLoading = false;
     }, 500);

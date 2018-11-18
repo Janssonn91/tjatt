@@ -28,7 +28,6 @@ import './AddUserModal.scss';
     this.searchedCandidates = this.searchedCandidates.filter(user => user._id !== userId);
   }
 
-  // add clicked user in candidates in user-store
   async addContact(userId) {
     this.userWasClicked(userId);
 

@@ -1,7 +1,6 @@
 <Fragment>
   <DeleteMessageModal {...this.sendToDeleteMessageModal} />
   {this.props.histories.map((message, i) => {
-    console.log(message);
     return (
       message.sender === (this.props.userStore.user._id) ?
         <li key={i} className="clearfix">
