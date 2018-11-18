@@ -17,8 +17,6 @@ class UserStore {
     setTimeout(() => {
       this.isLoading = false;
     }, 500);
-
-    this.fetchContact();
   }
 
   @action pageLoad(time = 1000) {
@@ -43,7 +41,7 @@ class UserStore {
         if (res.loggedIn) {
           this.user = res.user;
           this.isLoggedIn = true;
-          channelStore.getChannels();
+          this.fetchContact();
           socket.emit('login', this.user._id)
           applicationStateStore.fetchUser();
 
