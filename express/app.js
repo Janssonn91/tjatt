@@ -86,11 +86,21 @@ io.on('connection', (socket) => {
 
   let user = socket.handshake.session.loggedInUser;
   // console.log("user is connected", user.nickname)
-  // onlineUsers= onlineUsers.filter(id=>id!==user._id);
+  // onlineUsers = onlineUsers.filter(id => id !== user._id);
   // onlineUsers.push(user._id);
   // socket.broadcast.emit('online', {
   //   loginUser: onlineUsers
   // });
+
+  socket.on('online', (userId) => {
+    onlineUsers = onlineUsers.filter(id => id !== userId);
+    onlineUsers.push(userId)
+    console.log("onlineuser", onlineUsers)
+    console.log("online message received")
+    socket.broadcast.emit('online', {
+      onlineUsers
+    });
+  })
 
   socket.on('sign up', (user) => {
     console.log("sign up", user)
@@ -123,6 +133,7 @@ io.on('connection', (socket) => {
 
   socket.on('logout', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
+    console.log("user logout", userId, onlineUsers)
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })
@@ -209,24 +220,28 @@ app.post('/pwhash', (req, res) => {
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
   //console.log(req.session);
-  User.findOne({ username: req.body.username })
-    .then(user => {
-      if (!user) {
-        new User({
-          username: req.body.username,
-          email: req.body.useremail,
-          password: req.body.password,
-          nickname: req.body.username
-        }).save().then(user => {
-          req.session.userId = user._id;
-          res.json({ success: true, user: user })
-        })
-      } else {
-        res.json({ success: false })
-      }
-    }).catch(err => console.log("get user", err));
+  const userResult = await User.findOne({ username: req.body.username });
+  const emailResult = await User.findOne({ email: req.body.useremail });
+  /*User.findOne({ username: req.body.username })
+      User.findOne({ email: req.body.useremail })
+        .then(user => {*/
+  if (!userResult && !emailResult) {
+    new User({
+      username: req.body.username,
+      email: req.body.useremail,
+      password: req.body.password,
+      nickname: req.body.username
+    }).save().then(user => {
+      req.session.userId = user._id;
+      res.json({ success: true, user: user })
+    })
+  } else {
+    // console.log('userresult: ', userResult, 'emailresult: ', emailResult);
+    res.json({ success: false, userResult: userResult, emailResult: emailResult });
+  }
+  //}).catch(err => console.log("get user", err));
 });
 
 app.get('/users', (req, res) => {
@@ -396,7 +411,7 @@ app.put('/removeAdmin/:_id', async (req, res) => {
 
 app.delete('/removeGroup/:_id', (req, res) => {
   channel.findOneAndRemove(
-    { _id: req.params._id}
+    { _id: req.params._id }
   )
     .then(result => {
       res.json(result)

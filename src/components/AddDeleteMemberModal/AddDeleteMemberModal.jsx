@@ -11,7 +11,7 @@
             {this.props.channelStore.currentGroupMembers.map((user, i) =>
               <div key={i} className="nav-link pl-0 d-inline-block">
                 <div className="wrapper d-block">
-                  {user._id !== this.props.loginStore.user._id &&
+                  {user._id !== this.props.userStore.user._id &&
                     user._id !== this.props.channelStore.groupAdminId &&
                     <i className="fas fa-times-circle icon" onClick={() => this.props.channelStore.removeFromSelect(user)}></i>
                   }
@@ -71,14 +71,14 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  {user._id !== this.props.loginStore.user._id &&
-                    user._id !== this.props.channelStore.groupAdminId &&
+                  {user._id !== this.props.userStore.user._id &&
+                    !this.props.channelStore.currentChannelAdmins.includes(user._id) &&
                     <Button
                       className="btn btn-remove-user border-0 p-0 mr-2"
                       onClick={() => this.props.channelStore.removeFromSelect(user)}
                     >Remove user</Button>
                   }
-                  {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
+                  {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
                 </ListGroupItem>
               )}
             </FormGroup>

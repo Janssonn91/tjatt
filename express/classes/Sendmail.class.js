@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 module.exports = function(req, res) {
-    console.log(req.body);
+    console.log('i sendmail: ', req.body);
     nodemailer.createTestAccount((err, account) => {
         let transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text

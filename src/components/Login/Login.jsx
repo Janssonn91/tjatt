@@ -23,7 +23,7 @@
             </Link>
           </div>
         </Form>
-        {this.props.loginStore.loginError &&
+        {this.loginError &&
           < Alert color="danger" className="my-2">
             Username or password is incorrect
             </Alert>}

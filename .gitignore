@@ -1,5 +1,9 @@
-node_modules
+node_modules/*
+!node_modules/entities
+!node_modules/sanitize-html-react
+!node_modules/htmlparser2
 .DS_Store
 public/images/uploads
 repos/*
 !repos/.gitkeep
+docker/*

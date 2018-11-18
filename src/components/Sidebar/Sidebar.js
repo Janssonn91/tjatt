@@ -1,7 +1,7 @@
 import './Sidebar.scss';
 export const imgPath = '/images/placeholder.png';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class Sidebar extends Component {
 
   @observable updateSettingModalOpen = {
     isOpen: false,
@@ -42,8 +42,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalupdateSetting() {
-    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen
-    this.props.loginStore.resetAlert();
+    this.updateSettingModalOpen.isOpen = !this.updateSettingModalOpen.isOpen;
   }
 
   openModalAddNewUser() {
@@ -57,15 +56,15 @@ export const imgPath = '/images/placeholder.png';
 
   closeModal() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
-    this.props.loginStore.cleanUpGroupModal();
+    this.props.userStore.cleanUpGroupModal();
   }
 
   logout() {
     fetch('/api/logout').then(() => {
-      this.props.loginStore.isLoggedIn = false;
       this.props.channelStore.resetCurrentChannel();
+      this.props.userStore.logout(); // set isLoggedIn false
       this.props.history.push('/');
-      socket.emit("logout", this.props.loginStore.user._id);
+      socket.emit("logout", this.props.userStore.user._id);
     });
   }
 
@@ -75,7 +74,8 @@ export const imgPath = '/images/placeholder.png';
 
   changeChannel(channel) {
     this.props.channelStore.changeChannel(channel);
-    this.props.history.push(`/${this.props.loginStore.user.username}/${channel.channelname}`);
+    this.props.history.push(`/${this.props.userStore.user.username}/${channel.channelname}`);
   }
+
 
 }

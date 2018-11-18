@@ -4,7 +4,8 @@ class LoginStore {
   @observable user = { channel: [], contact: [] };
   @observable isLoggedIn = false;
   @observable loginError = false;
-  @observable usernameExits = false;
+  @observable usernameExist = false;
+  @observable emailExist = false;
   @observable candidates = [];
   @observable myContacts = [];
   //@observable myChannel = [];
@@ -23,16 +24,17 @@ class LoginStore {
   constructor() {
     this.checkIfLoggedIn();
     console.log('login-store här?????');
-    this.pageLoad();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+    // this.pageLoad();
   }
 
-  @action pageLoad(time = 500) {
-    console.time(time);
+  @action pageLoad(time = 1000) {
     this.isLoading = true;
     setTimeout(() => {
-      console.timeEnd(time)
       return this.isLoading = false
-    }, (1000 + time))
+    }, (time))
   }
 
   @action checkIfLoggedIn() {
@@ -83,7 +85,7 @@ class LoginStore {
             channelStore.getUserList()
           })
         }
-        socket.on('newChannel', channel=>{
+        socket.on('newChannel', channel => {
           console.log(channel)
           channelStore.getChannelList();
           //channelStore.getChannels();
@@ -132,15 +134,21 @@ class LoginStore {
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.user = res.user
-          this.usernameExits = false;
+          this.usernameExist = false;
           this.isLoggedIn = true;
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', this.user);
         } else {
-          console.log('träff');
-          this.usernameExits = true;
+          console.log('träff, användarnamn finns');
+          if (res.userResult) {
+            console.log('träff på username')
+            this.usernameExist = true;
+          }
+          else {
+            console.log('träff på useremail');
+            this.emailExist = true;
+          }
         }
-
       }).catch((err) => {
         console.log('error', err);
       });
@@ -149,6 +157,7 @@ class LoginStore {
 
 
   sendWelcomeMail(username, email) {
+    console.log(username, email);
     fetch('/api/send-mail', {
       credentials: 'include',
       method: 'POST',
@@ -203,6 +212,7 @@ class LoginStore {
   }
 
   @action async addContact(userId) {
+    console.log("add")
     const channelname = this.user._id + " and " + userId;
     const admin = [this.user._id, userId];
     const members = [this.user._id, userId];
@@ -237,7 +247,7 @@ class LoginStore {
         .then(res => res.json())
         .then(() => {
           this.updateContact(userId);
-         
+
         })
         .catch(err => {
           console.log(err);
@@ -246,7 +256,7 @@ class LoginStore {
       // add my id to the new friend contact
       fetch(`/api/users/${userId}`, {
         method: 'PUT',
-        body: JSON.stringify({ userId, contact: this.user._id, channel: channel[0]._id}),
+        body: JSON.stringify({ userId, contact: this.user._id, channel: channel[0]._id }),
         headers: { 'Content-Type': 'application/json' }
       })
         .then(res => res.json())

@@ -21,7 +21,7 @@ jsemoji.supports_css = false;
 jsemoji.allow_native = false;
 jsemoji.replace_mode = 'unified';
 
-@inject('loginStore', 'channelStore') @observer
+@inject('userStore', 'channelStore') @observer
 export default class Chat extends Component {
 
   @observable emoji = '';
@@ -33,6 +33,7 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
+  @observable openSideDrawer = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -91,22 +92,22 @@ export default class Chat extends Component {
     // console.log(this.props.channelStore.currentChannel.admin);
     // console.log(this.props.channelStore.amIAdmin);
     // console.log(toJS(this.props.channelStore.currentGroupMembers));
-     console.log(this.props.channelStore.currentChannel.admin.includes(this.props.loginStore.user._id));
+    console.log(this.props.channelStore.currentChannel.admin.includes(this.props.userStore.user._id));
     // console.log((this.props.channelStore.currentChannel.admin.length < 2 || (typeof(this.props.channelStore.currentChannel.admin === 'string'))))
     // console.log((typeof(this.props.channelStore.currentChannel.admin === 'string')));
-    if(this.props.channelStore.currentGroupMembers.length === 1){
+    if (this.props.channelStore.currentGroupMembers.length === 1) {
       console.log('endast en medlem');
       this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
     }
-    else if(this.props.channelStore.currentChannelAdmins.includes(this.props.loginStore.user._id) && this.props.channelStore.currentChannelAdmins.length === 1){
+    else if (this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && this.props.channelStore.currentChannelAdmins.length === 1) {
       this.props.channelStore.showAdminLeaveError();
       this.viewMembersModalToggle();
     }
-    /*else if(this.props.channelStore.currentChannel.admin.includes(this.props.loginStore.user._id) && (typeof(this.props.channelStore.currentChannel.admin === 'string'))){
+    /*else if(this.props.channelStore.currentChannel.admin.includes(this.props.userStore.user._id) && (typeof(this.props.channelStore.currentChannel.admin === 'string'))){
       this.props.channelStore.showAdminLeaveError();
       this.viewMembersModalToggle();
     }*/
-    else{
+    else {
       this.sendToLeaveModal.isOpen = !this.sendToLeaveModal.isOpen
     }
   }
@@ -137,7 +138,7 @@ export default class Chat extends Component {
   async sendMessage() {
 
     let newMessage = {
-      sender: this.props.loginStore.user._id,
+      sender: this.props.userStore.user._id,
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
@@ -158,6 +159,10 @@ export default class Chat extends Component {
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
+  }
+
+  openSideDrawerHandler() {
+    this.openSideDrawer = !this.openSideDrawer;
   }
 
 
