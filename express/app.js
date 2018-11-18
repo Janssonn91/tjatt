@@ -92,9 +92,12 @@ io.on('connection', (socket) => {
   //   loginUser: onlineUsers
   // });
 
-  socket.on('online', () => {
+  socket.on('online', (userId) => {
+    onlineUsers = onlineUsers.filter(id => id !== userId);
+    onlineUsers.push(userId)
+    console.log("onlineuser", onlineUsers)
     console.log("online message received")
-    socket.emit('online', {
+    socket.broadcast.emit('online', {
       onlineUsers
     });
   })
@@ -130,6 +133,7 @@ io.on('connection', (socket) => {
 
   socket.on('logout', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
+    console.log("user logout", userId, onlineUsers)
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })

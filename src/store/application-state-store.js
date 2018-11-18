@@ -1,15 +1,18 @@
+import channelStore from './channel-store';
+import {userStore} from './user-store';
 class ApplicationStateStore {
   @observable onLineUsers = [];
 
   constructor() {
     socket.on('online', message => {
       console.log('online', message)
-      this.onLineUsers = message.onLineUsers;
+      userStore.onLineUsers= message.onlineUsers;
+      channelStore.getLoginStatus();
     })
   }
 
   @action fetchUser() {
-    socket.emit('online');
+    socket.emit('online', userStore.user._id);
   }
 }
 

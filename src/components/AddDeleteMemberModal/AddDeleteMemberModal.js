@@ -11,6 +11,8 @@ export default class AddDeleteMemberModal extends Component {
     await sleep(1500);
     if (this.props.channelStore.addedSuccess && this.props.channelStore.removedSuccess) {
       this.props.toggle();
+      this.props.channelStore.getChannelList();
+      //this.props.channelStore.getChannels();
       this.props.channelStore.closeAlert();
       this.showConfirmation = false;
     }

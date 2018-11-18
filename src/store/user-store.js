@@ -66,18 +66,32 @@ class UserStore {
                     }
                   )
                 }
+                if(message.sender){
+                  channelStore.userDict[message.sender].status = true;
+                }
               }
+            
             })
           socket.on('sign up', message => {
             channelStore.getUserList();
           })
           socket.on('login', message => {
             this.onLineUsers = message.loginUser;
+            channelStore.getLoginStatus();
           })
           socket.on('logout', message => {
             this.onLineUsers = message.loginUser;
+            channelStore.getUserList().then(
+              channelStore.getLoginStatus()
+            )
+            
           })
         }
+        socket.on('newChannel', channel => {
+          console.log(channel)
+          channelStore.getChannelList();
+          //channelStore.getChannels();
+        })
         socket.on('message', event => {
           console.log('Message from server ', event);
         })
@@ -93,6 +107,7 @@ class UserStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
+   
   }
 
   @action updateProfile(key, val) {

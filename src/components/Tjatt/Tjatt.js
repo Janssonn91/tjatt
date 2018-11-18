@@ -5,8 +5,10 @@ export default class Tjatt extends Component {
   @observable sendToMenu = this.showChat.bind(this);
 
 
-  start() {
+  async start() {
+    this.props.channelStore.getChannelList();
     this.props.channelStore.getUserList();
+    await sleep(60);
   }
 
   showMenu() {
@@ -18,6 +20,8 @@ export default class Tjatt extends Component {
     this.hideMenu = true;
     this.hideChat = false;
   }
+
+
 
 
 
