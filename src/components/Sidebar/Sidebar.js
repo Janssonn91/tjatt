@@ -24,7 +24,7 @@ export const imgPath = '/images/placeholder.png';
   @observable groupsOpen = false;
 
   start() {
-    this.props.channelStore.getChannels();
+    this.props.channelStore.getChannelList();
   }
 
 
@@ -70,6 +70,11 @@ export const imgPath = '/images/placeholder.png';
 
   changeLogStatus() {
     return false;
+  }
+
+  changeChannel(channel) {
+    this.props.channelStore.changeChannel(channel);
+    this.props.history.push(`/${this.props.userStore.user.username}/${channel.channelname}`);
   }
 
 
