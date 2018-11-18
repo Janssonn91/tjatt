@@ -193,7 +193,7 @@ class ChannelStore {
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels = [];
-    this.myChannels = await Channel.find({ _id: userStore.user.channel, });
+    this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
     this.myChannels.map((c) => {
       socket.emit('join channel', c._id)
       if (c.group) {
@@ -344,7 +344,7 @@ class ChannelStore {
 
   updateContactChannels(channel) {
     this.contactChannels.push(channel);
-    console.log(this.contactChannels);
+    // channel.channelname is "id and id", so we need to get name
     this.getChannelList();
 
     //await this.getChannels();
