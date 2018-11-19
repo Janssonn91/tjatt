@@ -145,11 +145,15 @@ io.on('connection', (socket) => {
   })
 
   socket.on('newChannel', (id) => {
-    socket.join(id);
-    channel.find({_id : id}).then(
-      channel=>
-      socket.broadcast.emit('newChannel', channel)
+    socket.join(id, () => {
+     // let rooms = Object.keys(socket.rooms);
+     // io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
+     channel.find({_id : id}).then(
+      c=>
+      socket.broadcast.emit('newChannel', c)
       )
+    });
+   
     
   })
 
