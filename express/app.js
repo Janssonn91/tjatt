@@ -246,17 +246,13 @@ app.post('/pwhash', (req, res) => {
 })
 
 const mailer = require('./classes/Sendmail.class');
-//const pwReset = require('./classes/Sendpassword.class');
 app.post('/send-mail', mailer)
-//app.post('/send-password', pwReset);
+// const pwReset = require('./classes/Sendpassword.class');
+// app.post('/send-password', pwReset);
 
 app.post('/users', async (req, res) => {
-  //console.log(req.session);
   const userResult = await User.findOne({ username: req.body.username });
   const emailResult = await User.findOne({ email: req.body.useremail });
-  /*User.findOne({ username: req.body.username })
-      User.findOne({ email: req.body.useremail })
-        .then(user => {*/
   if (!userResult && !emailResult) {
     new User({
       username: req.body.username,
@@ -268,7 +264,6 @@ app.post('/users', async (req, res) => {
       res.json({ success: true, user: user })
     })
   } else {
-    // console.log('userresult: ', userResult, 'emailresult: ', emailResult);
     res.json({ success: false, userResult: userResult, emailResult: emailResult });
   }
   //}).catch(err => console.log("get user", err));
@@ -312,23 +307,30 @@ app.get('/login', (req, res) => {
 });
 
 app.put('/retrieve-password', async (req, res) => {
-  const testPW = 'test';
-  //console.log('pw = ', PW);
+  const password = (Math.random() +1).toString(36).substr(0, 9)
+  const email = req.body.email;
+  console.log('pw = ', password);
   const hash = hasha(
-    testPW + global.passwordSalt,
+    password + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
   const resultEmail = await User.findOne(
     { email: req.body.email}
   )
-  console.log('resultemail: ', resultEmail);
   if(resultEmail){
     User.findOneAndUpdate(
     { email: req.body.email},
     { $set: { password: hash } }
   )
     .then(() => {
-      res.json({ success: true, password: testPW })
+      res.json({ success: true, password: password })
+      fetch('/api/send-mail', {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      console.log('passwordmail skickat')
     })
     .catch(err => {
       throw err, resultEmail;
@@ -339,21 +341,6 @@ app.put('/retrieve-password', async (req, res) => {
   }
 });
 
-/*
-app.put('/updateAdmin/:_id', async (req, res) => {
-  console.log("updateAdmin", req.body.adminId);
-  let resultChannel = channel.findOneAndUpdate(
-    { _id: req.params._id },
-    { $push: { admin: req.body.adminId } }
-  )
-    .then(() => {
-      res.json({ success: true })
-    })
-    .catch(err => {
-      throw err;
-    });
-})
-*/
 app.post('/login', (req, res) => {
   User.findOne({ username: req.body.username })
     .then(user => {
