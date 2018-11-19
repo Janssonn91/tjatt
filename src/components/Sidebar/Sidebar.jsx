@@ -31,7 +31,7 @@
           <CardBody className="p-0">
             {this.props.channelStore.contactChannels.length > 0 ?
               <div id="contactsRender"></div>
-              : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong>+</strong></h6>
+              : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong className="plus-text">+</strong></h6>
             }
             {/* {<div id="contactsRender"></div> */}
             {this.props.channelStore.contactChannels.map((channel, i) =>
@@ -75,7 +75,7 @@
                   </div>
                 </React.Fragment>
               )
-              : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong>+</strong></h6>
+              : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong className="plus-text">+</strong></h6>
             }
             {/* <div id="groupsRender"></div> */}
 
