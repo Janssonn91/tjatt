@@ -247,8 +247,8 @@ app.post('/pwhash', (req, res) => {
 
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
-// const pwReset = require('./classes/Sendpassword.class');
-// app.post('/send-password', pwReset);
+const pwReset = require('./classes/Sendpassword.class');
+app.post('/send-password', pwReset);
 
 app.post('/users', async (req, res) => {
   const userResult = await User.findOne({ username: req.body.username });
@@ -324,14 +324,16 @@ app.put('/retrieve-password', async (req, res) => {
   )
     .then(() => {
       res.json({ success: true, password: password })
-      fetch('/api/send-mail', {
+    })
+    .then(() => 
+      fetch('/api/send-password', {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' }
       })
-      console.log('passwordmail skickat')
-    })
+      //console.log('passwordmail skickat');
+    )
     .catch(err => {
       throw err, resultEmail;
     });
