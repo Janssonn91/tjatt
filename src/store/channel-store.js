@@ -235,6 +235,7 @@ class ChannelStore {
   @action async changeChannel(channel) {
     console.log(channel)
     this.currentChannel = channel;
+    this.currentChannel.messageNum = 0;
     console.log("channelname", this.currentChannel)
 
     this.showChat();

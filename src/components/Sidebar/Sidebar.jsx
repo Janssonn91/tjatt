@@ -37,10 +37,12 @@
             {this.props.channelStore.contactChannels.map((channel, i) =>
               <React.Fragment key={i}>
                 <Link to={`/${this.props.userStore.user.username}/${channel.channelname}`} onClick={() => this.changeChannel(channel)}>
-                  <div key={i} className="nav-link pl-5 pl-md-3 contacts">
+                  <span  className="nav-link pl-5 pl-md-3 contacts">
                     <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                     <div className="d-inline-block">{channel.channelname}</div>
-                  </div>
+                  </span>
+                  {channel.messageNum>0 ? <span key={i} className="message-number">{channel.messageNum}</span> :  <span key={i} className="d-none"></span>}
+                  
                 </Link>
                 {/* <Route exact path={`/${this.props.loginStore.user.username}/:id`} component={Tjatt} /> */}
               </React.Fragment>
@@ -63,9 +65,14 @@
           <CardBody className="p-0">
             {this.props.channelStore.groupChannels.length > 0 ?
               this.props.channelStore.groupChannels.map((channel, i) =>
-                <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
+              <React.Fragment key={i}>
+                <span  className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
                   <div className="d-inline-block">{channel.channelname}</div>
-                </div>
+                </span>
+                {channel.messageNum>0 ? <span  className="message-number">
+                <Badge color="danger">{channel.messageNum}</Badge>
+                </span> :  <span key={i} className="d-none"> 0</span>}
+                </React.Fragment>
               )
               : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong>+</strong></h6>
             }
