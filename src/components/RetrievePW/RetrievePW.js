@@ -18,6 +18,7 @@ import './RetrievePW.scss';
 
   removeEmailError = (e) => {
     this.emailDontExist = false;
+    this.successInfo = false;
   }
 
   onSubmit = (e) => {

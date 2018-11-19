@@ -18,7 +18,6 @@ const multer = require('multer');
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
-const crypto = require('crypto');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
@@ -247,9 +246,9 @@ app.post('/pwhash', (req, res) => {
 })
 
 const mailer = require('./classes/Sendmail.class');
-const pwReset = require('./classes/Sendpassword.class');
+//const pwReset = require('./classes/Sendpassword.class');
 app.post('/send-mail', mailer)
-app.post('/send-password', pwReset);
+//app.post('/send-password', pwReset);
 
 app.post('/users', async (req, res) => {
   //console.log(req.session);
@@ -313,10 +312,10 @@ app.get('/login', (req, res) => {
 });
 
 app.put('/retrieve-password', async (req, res) => {
-  const PW = crypto.randomBytes(8).toString('hex');
-  console.log('pw = ', PW);
+  const testPW = 'test';
+  //console.log('pw = ', PW);
   const hash = hasha(
-    PW + global.passwordSalt,
+    testPW + global.passwordSalt,
     { encoding: 'base64', algorithm: 'sha512' }
   );
   const resultEmail = await User.findOne(
@@ -329,7 +328,7 @@ app.put('/retrieve-password', async (req, res) => {
     { $set: { password: hash } }
   )
     .then(() => {
-      res.json({ success: true, password: PW })
+      res.json({ success: true, password: testPW })
     })
     .catch(err => {
       throw err, resultEmail;
