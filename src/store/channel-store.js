@@ -10,7 +10,7 @@ class ChannelStore {
   @observable currentChannel = "";
   @observable channelName = "";
   @observable channelImg = "";
-  @observable currentChannelGroup = false;
+  @observable currentChannelGroup = false; // never used, removable ??
   @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
@@ -449,7 +449,7 @@ class ChannelStore {
   @action spliceChannel(i) {
     this.groupChannels.splice(i, 1);
     this.ChannelChatHistory = [];
-    this.currentChannelGroup = false;
+    this.currentChannel = '';
     this.channelName = '';
   }
 
