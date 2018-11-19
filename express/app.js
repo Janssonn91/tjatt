@@ -18,6 +18,7 @@ const multer = require('multer');
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
+const crypto = require('crypto');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
@@ -246,7 +247,9 @@ app.post('/pwhash', (req, res) => {
 })
 
 const mailer = require('./classes/Sendmail.class');
+const pwReset = require('./classes/Sendpassword.class');
 app.post('/send-mail', mailer)
+app.post('/send-password', pwReset);
 
 app.post('/users', async (req, res) => {
   //console.log(req.session);
@@ -309,6 +312,49 @@ app.get('/login', (req, res) => {
     })
 });
 
+app.put('/retrieve-password', async (req, res) => {
+  const PW = crypto.randomBytes(8).toString('hex');
+  console.log('pw = ', PW);
+  const hash = hasha(
+    PW + global.passwordSalt,
+    { encoding: 'base64', algorithm: 'sha512' }
+  );
+  const resultEmail = await User.findOne(
+    { email: req.body.email}
+  )
+  console.log('resultemail: ', resultEmail);
+  if(resultEmail){
+    User.findOneAndUpdate(
+    { email: req.body.email},
+    { $set: { password: hash } }
+  )
+    .then(() => {
+      res.json({ success: true, password: PW })
+    })
+    .catch(err => {
+      throw err, resultEmail;
+    });
+  }
+  else{
+    res.json({ success: false});
+  }
+});
+
+/*
+app.put('/updateAdmin/:_id', async (req, res) => {
+  console.log("updateAdmin", req.body.adminId);
+  let resultChannel = channel.findOneAndUpdate(
+    { _id: req.params._id },
+    { $push: { admin: req.body.adminId } }
+  )
+    .then(() => {
+      res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+})
+*/
 app.post('/login', (req, res) => {
   User.findOne({ username: req.body.username })
     .then(user => {

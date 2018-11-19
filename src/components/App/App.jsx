@@ -18,6 +18,7 @@
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/signup" component={Signup} />
+          <Route path="/retrievepassword" component={RetrievePW} />
           <Route path="/server" component={Server} />
           <Route path="/git" component={GitApps} />
           {this.props.userStore.checkedLoginState ?
