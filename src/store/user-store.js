@@ -69,6 +69,22 @@ class UserStore {
                 if(message.sender){
                   channelStore.userDict[message.sender].status = true;
                 }
+
+                if(message.channel!==toJS(channelStore.currentChannel)._id){
+                  channelStore.groupChannels.map(channel=> 
+                    {
+                      if(channel._id === message.channel){
+                        if(!channel.messageNum){
+                          channel.messageNum=1;
+                        }else{
+                          channel.messageNum++;
+                        }
+                         
+                        }
+                      })
+                }
+               
+                
               }
             
             })
@@ -90,6 +106,7 @@ class UserStore {
         socket.on('newChannel', async channel => {
           console.log(channel);
           let c = channel[0];
+          c.messageNum=0;
           if(c.members.some(id=>id===this.user._id)){
             console.log("true")
             if(c.group){
@@ -99,7 +116,7 @@ class UserStore {
             }else{
               let name = await channelStore.getContactName(c.members);
               if(name!== undefined){
-                channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+                channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
                 channelStore.contactChannels.push(channelStore.channelDict[c._id]);
               }
             }
