@@ -66,38 +66,30 @@ class UserStore {
                     }
                   )
                 }
-                if(message.sender){
+                if (message.sender) {
                   channelStore.userDict[message.sender].status = true;
                 }
-
-                if(message.channel!==toJS(channelStore.currentChannel)._id){
-                  channelStore.groupChannels.map(channel=> 
-                    {
-                      if(channel._id === message.channel){
-                        if(!channel.messageNum){
-                          channel.messageNum=1;
-                        }else{
-                          channel.messageNum++;
-                        }
-                         
-                        }
-                      })
-                      channelStore.contactChannels.map(channel=> 
-                        {
-                          if(channel._id === message.channel){
-                            if(!channel.messageNum){
-                              channel.messageNum=1;
-                            }else{
-                              channel.messageNum++;
-                            }
-                             
-                            }
-                          })
+                if (message.channel !== toJS(channelStore.currentChannel)._id) {
+                  channelStore.groupChannels.forEach(channel => {
+                    if (channel._id === message.channel) {
+                      if (!channel.messageNum) {
+                        channel.messageNum = 1;
+                      } else {
+                        channel.messageNum++;
+                      }
+                    }
+                  })
+                  channelStore.contactChannels.forEach(channel => {
+                    if (channel._id === message.channel) {
+                      if (!channel.messageNum) {
+                        channel.messageNum = 1;
+                      } else {
+                        channel.messageNum++;
+                      }
+                    }
+                  })
                 }
-               
-                
               }
-            
             })
           socket.on('sign up', message => {
             channelStore.getUserList();
@@ -111,31 +103,28 @@ class UserStore {
             channelStore.getUserList().then(
               channelStore.getLoginStatus()
             )
-            
           })
         }
         socket.on('newChannel', async channel => {
           console.log(channel);
           let c = channel[0];
-          c.messageNum=0;
-          if(c.members.some(id=>id===this.user._id)){
+          c.messageNum = 0;
+          if (c.members.some(id => id === this.user._id)) {
             console.log("true")
-            if(c.group){
+            if (c.group) {
               channelStore.groupChannels.push(c);
               console.log(channelStore.groupChannels)
-  
-            }else{
+            } else {
               let name = await channelStore.getContactName(c.members);
-              if(name!== undefined){
+              if (name !== undefined) {
                 channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
                 channelStore.contactChannels.push(channelStore.channelDict[c._id]);
               }
             }
           }
-          else{
+          else {
             console.log("false")
           }
-         
           //channelStore.getChannels();
         })
         socket.on('message', event => {
@@ -153,7 +142,6 @@ class UserStore {
     this.candidates.splice(index, 1);
     this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-   
   }
 
   @action updateProfile(key, val) {
