@@ -6,9 +6,8 @@ class UserStore {
   @observable isLoggedIn = false;
   @observable checkedLoginState = false;
   @observable onLineUsers = [];
-  @observable candidates = [];
-  @observable myContacts = []; //Sidebar, channel-store
-  @observable groupCandidates = []; //CreateGroupModal
+  @observable candidates = []; // AddUserModal
+  @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable isLoading = true;
 
@@ -140,7 +139,6 @@ class UserStore {
     const addedUser = this.candidates.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
-    this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
   }
 
@@ -162,7 +160,6 @@ class UserStore {
           return this.user.contact.some(contactId => userId === contactId);
         }
         this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
-        this.myContacts = withoutMe.filter(user => isIncludedInContact(user._id)); //use in Sidebar
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
       });
   }
