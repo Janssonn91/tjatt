@@ -82,6 +82,17 @@ class UserStore {
                          
                         }
                       })
+                      channelStore.contactChannels.map(channel=> 
+                        {
+                          if(channel._id === message.channel){
+                            if(!channel.messageNum){
+                              channel.messageNum=1;
+                            }else{
+                              channel.messageNum++;
+                            }
+                             
+                            }
+                          })
                 }
                
                 
