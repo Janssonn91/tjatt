@@ -85,13 +85,8 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  let channels = user.channel;
-  for(let channel of channels){
-    socket.join(channel);
-  }
-
  
-  
+
 
   // console.log("user is connected", user.nickname)
   // onlineUsers = onlineUsers.filter(id => id !== user._id);
@@ -105,8 +100,23 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
-
-    console.log("try mongo", user)
+    User.findOne({_id: userId}).then(u=> {
+      let channels = u.channel;
+      console.log("length", channels.length, u.nickname)
+      for(let channel of channels){
+        socket.join(channel, () => {
+          let rooms = Object.keys(socket.rooms);
+          io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
+          
+        });
+    }
+     
+     
+    }
+      )
+    //console.log("user", user)
+    
+   // console.log("rooms", socket.rooms)
     socket.broadcast.emit('online', {
       onlineUsers
     });
