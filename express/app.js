@@ -247,15 +247,11 @@ app.post('/pwhash', (req, res) => {
 
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
-const pwReset = require('./classes/Sendpassword.class');
-app.post('/send-password', pwReset);
 
-// testing mail
 const nodemailer = require('nodemailer');
 app.post('/mail-password', async function(req, res, next) {
-  console.log('är i mail-password nu', req.body);
   const password = (Math.random() +1).toString(36).substr(0, 9)
-  console.log('pw = ', password);
+  console.log('new password = ', password);
   const hash = await hasha(
   password + global.passwordSalt,
       { encoding: 'base64', algorithm: 'sha512' }
@@ -264,7 +260,6 @@ app.post('/mail-password', async function(req, res, next) {
       { email: req.body.email},
       { $set: { password: hash } }
     )
-  console.log('resultat: ', updateResult);
   nodemailer.createTestAccount((err, account) => {
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text
@@ -315,8 +310,6 @@ app.post('/mail-password', async function(req, res, next) {
     });
   })
 })
-// slut testing mail
-
 
 app.post('/users', async (req, res) => {
   const userResult = await User.findOne({ username: req.body.username });
@@ -375,42 +368,16 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/check-mail', async (req, res) => {
-  // const password = (Math.random() +1).toString(36).substr(0, 9)
-  // const email = req.body.email;
-  // console.log('pw = ', password);
-  // const hash = hasha(
-  //   password + global.passwordSalt,
-  //   { encoding: 'base64', algorithm: 'sha512' }
-  // );
   const resultEmail = await User.findOne(
     { email: req.body.email}
   )
-  // if(resultEmail){
-  //   User.findOneAndUpdate(
-  //   { email: req.body.email},
-  //   { $set: { password: hash } }
-  // )
     .then(() => {
-      //res.json({ success: true, password: password })
       res.json({ success: true })
     })
-    /*.then(() => 
-      fetch('/api/send-password', {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      // console.log('passwordmail skickat');
-    )*/
     .catch(err => {
       throw err, resultEmail;
     });
-  });
-  // else{
-  //   res.json({ success: false});
-  // }
-//});
+});
 
 app.post('/login', (req, res) => {
   User.findOne({ username: req.body.username })

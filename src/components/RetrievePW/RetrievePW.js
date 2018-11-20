@@ -39,7 +39,6 @@ import './RetrievePW.scss';
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }
           })
-          //console.log('nytt password: ', res.password);
           this.successInfo = true;
         }
         else {
