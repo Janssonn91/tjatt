@@ -128,11 +128,14 @@ io.on('connection', (socket) => {
       let channels = u.channel;
       console.log("length", channels.length, u.nickname)
       for(let channel of channels){
-        channel = channel.toString();
-        socket.join(channel, () => {
-          let rooms = Object.keys(socket.rooms);
-          io.to(channel).emit(userId + "has joined in channel" + channel);
-        });
+        if(channel){
+          channel = channel.toString();
+          socket.join(channel, () => {
+            let rooms = Object.keys(socket.rooms);
+            io.to(channel).emit(userId + "has joined in channel" + channel);
+          });
+        }
+       
 
     }
     socket.broadcast.emit('login', {
