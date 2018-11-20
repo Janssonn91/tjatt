@@ -116,6 +116,15 @@
                                               <span>{`${app.running ? 'Stop' : 'Start'}`} App</span>
                                             </ReactTooltip>
                                             <button
+                                                data-tip data-for={`refresh-${app._id}`}
+                                                onClick={()=>this.onPullApp(app.name)}
+                                                className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                               <i className="fas fa-sync-alt"></i>
+                                            </button>
+                                            <ReactTooltip id={`refresh-${app._id}`} effect='solid'>
+                                              <span> Pull App</span>
+                                            </ReactTooltip>
+                                            <button
                                                 data-tip data-for={`delete-${app._id}`}
                                                 onClick={()=>this.deleteRepo(app._id)}
                                                 type="button"
