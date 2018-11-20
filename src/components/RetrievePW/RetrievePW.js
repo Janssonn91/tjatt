@@ -24,6 +24,7 @@ import './RetrievePW.scss';
   onSubmit = (e) => {
     e.preventDefault();
     const email = this.useremailToRetrieve;
+    const testpassword = 'hejdinget!';
     fetch('/api/retrieve-password', {
       credentials: 'include',
       method: 'PUT',
@@ -33,6 +34,12 @@ import './RetrievePW.scss';
       .then(res => res.json())
       .then(res => {
         if (res.success) {
+          fetch('/api/send-password', {
+            credentials: 'include',
+            method: 'POST',
+            body: JSON.stringify({ email, testpassword }),
+            headers: { 'Content-Type': 'application/json' }
+          })
           console.log('nytt password: ', res.password);
           this.successInfo = true;
         }

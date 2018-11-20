@@ -19,6 +19,7 @@ const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
 const jo = require('jpeg-autorotate');
+const fetch = require('node-fetch');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
@@ -325,16 +326,15 @@ app.put('/retrieve-password', async (req, res) => {
     .then(() => {
       res.json({ success: true, password: password })
     })
-    .then(() => 
-      /*fetch('/api/send-password', {
+    /*.then(() => 
+      fetch('/api/send-password', {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' }
-      })*/
-      testing(email, password)
-      //console.log('passwordmail skickat');
-    )
+      })
+      // console.log('passwordmail skickat');
+    )*/
     .catch(err => {
       throw err, resultEmail;
     });
@@ -343,17 +343,6 @@ app.put('/retrieve-password', async (req, res) => {
     res.json({ success: false});
   }
 });
-
-async function testing(email, password){
-  console.log('hej din get');
-  await fetch('/api/send-password', {
-    credentials: 'include',
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  console.log('verkar funka')
-}
 
 app.post('/login', (req, res) => {
   User.findOne({ username: req.body.username })
