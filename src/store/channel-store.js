@@ -443,6 +443,10 @@ class ChannelStore {
     this.adminLeavingError = true;
   }
 
+  @action hideAdminLeaveError() {
+    this.adminLeavingError = false;
+  }
+
   // for splicing a channel from a user. Needs an index to start from
   @action spliceChannel(i) {
     this.groupChannels.splice(i, 1);

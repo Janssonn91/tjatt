@@ -4,7 +4,7 @@
       View members
     </ModalHeader>
     <ModalBody>
-      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && this.props.channelStore.currentChannelAdmins.length < 2 &&
+      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && this.props.channelStore.currentChannelAdmins.length < 2 && this.props.channelStore.adminLeavingError &&
         <Alert color="danger" className="my-2 text-center">
           You are the only admin in the group, please make another member admin before leaving
       </Alert>}
