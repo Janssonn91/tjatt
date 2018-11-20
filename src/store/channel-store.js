@@ -11,7 +11,6 @@ class ChannelStore {
   @observable channelName = "";
   @observable channelImg = "";
   //@observable currentChannelGroup = false; // never used, removable ??
-  @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
@@ -28,8 +27,7 @@ class ChannelStore {
   @observable contactChannelname = "";
   @observable userDict = {};
   @observable adminLeavingError = false;
-  // holds all the admins of the current group
-  @observable currentChannelAdmins = [];
+  @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
 
   // constructor() {
@@ -267,7 +265,6 @@ class ChannelStore {
       console.log(admin);
       //this.currentChannel.admin = channel.admin;
     }
-    this.amIAdmin = admin.some(a => a === userStore.user._id);
     let element = "";
     if (!channel.group) {
       const name = this.getContactName(channel.members);
@@ -446,16 +443,16 @@ class ChannelStore {
     this.adminLeavingError = true;
   }
 
+  @action hideAdminLeaveError() {
+    this.adminLeavingError = false;
+  }
+
   // for splicing a channel from a user. Needs an index to start from
   @action spliceChannel(i) {
     this.groupChannels.splice(i, 1);
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
-  }
-
-  @action adminStatus() {
-    this.amIAdmin = !this.amIAdmin;
   }
 
   // for splicing an admin from a group. Needs an index to start from

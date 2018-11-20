@@ -27,25 +27,3 @@ import './ViewMembersModal.scss';
   }
 
 }
-
-// moved from setAdmin in channelstore, saved for reference only
-    // this.currentChannel.admin = [...this.currentChannel.admin, newAdminId];
-    // console.log(this.currentChannel);
-    // console.log(this.currentChannel._id);
-    // fetch(`/api/updateAdmin/${this.currentChannel._id}`, {
-    //   method: 'PUT',
-    //   body: JSON.stringify({
-    //     adminId: newAdminId
-    //   }),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    //   .then(res => {
-    //     return res.json();
-    //   }).then(res => {
-    //     console.log('admin updated: ', res)
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   })
