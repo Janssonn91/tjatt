@@ -16,7 +16,7 @@
     </div>
     :null}
     
-    <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.props.open ? 'open' : null}`}>
+    <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.showSidedrawer ? 'open' : null}`}>
         <Button
             onClick={()=> this.sideDrawerHandler()} 
             className="gitApps-sideDrawer-close-button">
@@ -117,7 +117,7 @@
                                             </ReactTooltip>
                                             <button
                                                 data-tip data-for={`refresh-${app._id}`}
-                                                onClick={()=>this.onPullApp(app.name)}
+                                                onClick={()=>this.onPullApp(app._id)}
                                                 className="gitApps-sideDrawer-appsList-app-controls-button ">
                                                <i className="fas fa-sync-alt"></i>
                                             </button>

@@ -7,7 +7,8 @@ import './GitApps.scss';
 @observable importedApps = [];
 @observable runningApps = [];
 @observable openApp = {};
-@observable showSidedrawer = this.props.open;
+// @observable showSidedrawer = this.props.open;
+@observable showSidedrawer = true;
 @observable showImport = false;
 @observable showApps = true;
 @observable importingRepo = false;
@@ -146,15 +147,15 @@ import './GitApps.scss';
         
     }
 
-    async onPullApp(appId){ console.log(appId)
-        const appToupdate = await Repo.find(appId);
-        // fetch('/api/updateRepo', { 
-        //     headers:{'Content-Type': 'application/json'},
-        //     body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
-        //     method: 'POST' // or 'PUT'
-        //   })
-        //   .then(response => response.json())
-        //   .catch(error=>console.log(error));
+    onPullApp(appId){ 
+        const appToupdate = this.importedApps.find(app => app._id === appId);
+        fetch('/api/updateRepo', { 
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
+            method: 'POST' // or 'PUT'
+          })
+          .then(response => response.json())
+          .catch(error=>console.log(error));
 
         console.log(appToupdate)
     }
