@@ -11,7 +11,6 @@ class ChannelStore {
   @observable channelName = "";
   @observable channelImg = "";
   @observable currentChannelGroup = false; // never used, removable ??
-  @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
@@ -267,7 +266,6 @@ class ChannelStore {
       console.log(admin);
       //this.currentChannel.admin = channel.admin;
     }
-    this.amIAdmin = admin.some(a => a === userStore.user._id);
     let element = "";
     if (!channel.group) {
       const name = this.getContactName(channel.members);
@@ -451,10 +449,6 @@ class ChannelStore {
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
-  }
-
-  @action adminStatus() {
-    this.amIAdmin = !this.amIAdmin;
   }
 
   // for splicing an admin from a group. Needs an index to start from
