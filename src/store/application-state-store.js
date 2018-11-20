@@ -79,27 +79,30 @@ class ApplicationStateStore {
             )
           })
         }
-        socket.on('newChannel', async channel => {
-          console.log(channel);
-          let c = channel[0];
-          c.messageNum = 0;
-          if (c.members.some(id => id === userStore.user._id)) {
-            console.log("true")
-            if (c.group) {
-              channelStore.groupChannels.push(c);
-              console.log(channelStore.groupChannels)
-            } else {
-              let name = await channelStore.getContactName(c.members);
-              if (name !== undefined) {
-                channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
+        socket.on('system message', async (data)=>{
+          if(data.newChannel){
+            let c= data.newChannel;
+            let id= userStore.user._id.toString();
+            for(let i of c.members) {
+              if(i.toString()===id ){
+                if(c.group){
+                  channelStore.groupChannels.push(c);
+                  console.log(channelStore.groupChannels)
+                }else{
+                  let name = await channelStore.getContactName(c.members);
+                  if (name !== undefined) {
+                  channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
                 channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+              } 
+                }
+                socket.emit('newChannel', data.newChannel);
               }
             }
           }
-          else {
-            console.log("false")
-          }
-          //channelStore.getChannels();
+
+        })
+        socket.on('newChannel', (data)=>{
+        
         })
         socket.on('message', event => {
           console.log('Message from server ', event);

@@ -291,7 +291,7 @@ class ChannelStore {
 
 
   createChannel(channelname, admin, members, group) {
-    newChannel = {
+    let newChannel = {
       channelname: channelname,
       admin: admin,
       members: members,
@@ -329,7 +329,8 @@ class ChannelStore {
             console.log(err);
           })
       })
-      socket.emit('newChannel', channel[0]._id)
+      socket.emit('system message', {newChannel: channel[0]})
+      //socket.emit('newChannel', channel[0]._id)
 
       //this.updateGroupChannel(channel[0]);
     })
