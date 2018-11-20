@@ -19,7 +19,6 @@ const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')(expressSession);
 const hasha = require('hasha');
 const jo = require('jpeg-autorotate');
-const fetch = require('node-fetch');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
@@ -251,6 +250,74 @@ app.post('/send-mail', mailer)
 const pwReset = require('./classes/Sendpassword.class');
 app.post('/send-password', pwReset);
 
+// testing mail
+const nodemailer = require('nodemailer');
+app.post('/mail-password', async function(req, res, next) {
+  console.log('är i mail-password nu', req.body);
+  const password = (Math.random() +1).toString(36).substr(0, 9)
+  console.log('pw = ', password);
+  const hash = await hasha(
+  password + global.passwordSalt,
+      { encoding: 'base64', algorithm: 'sha512' }
+  );
+  let updateResult = await User.findOneAndUpdate(
+      { email: req.body.email},
+      { $set: { password: hash } }
+    )
+  console.log('resultat: ', updateResult);
+  nodemailer.createTestAccount((err, account) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text
+      //in this exercise. To check mail go to generated mailadress that shows in terminalwindow Copy/paste adress to webbrowser. GL :)
+      port: 587,
+      secure: false, // true for 465, false for other ports 
+      auth: {
+        user: account.user, // generated ethereal user 
+        pass: account.pass // generated ethereal password 
+      },
+      tls:{
+        rejectUnauthorized: false
+      }
+    });
+
+    let mailOptions = {
+      from: '"Tj@ support"<noreply@tjat.net', // sender address 
+      to: `${req.body.email}`, // list of receivers 
+      subject: 'Tj@ reset password', // Subject line  
+      html: ''
+    };
+
+    let message = {
+      // Comma separated list of recipients
+      to: `${req.body.email}`,
+      // Subject of the message
+      subject: `Tj@ reset password`,
+
+      // HTML body
+      html:`
+          <h2>Your password is resetted</h2>
+          <P>Your new password is ${password}</p>
+          <p>For your safety please take a moment and change this password to something else in your settings!</p>
+          `,
+
+      attachments: [
+        {
+        }
+      ]
+    };
+
+    // send mail with defined transport object 
+    transporter.sendMail(message, (error, info, res) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    });
+  })
+})
+// slut testing mail
+
+
 app.post('/users', async (req, res) => {
   const userResult = await User.findOne({ username: req.body.username });
   const emailResult = await User.findOne({ email: req.body.useremail });
@@ -307,24 +374,25 @@ app.get('/login', (req, res) => {
     })
 });
 
-app.put('/retrieve-password', async (req, res) => {
-  const password = (Math.random() +1).toString(36).substr(0, 9)
-  const email = req.body.email;
-  console.log('pw = ', password);
-  const hash = hasha(
-    password + global.passwordSalt,
-    { encoding: 'base64', algorithm: 'sha512' }
-  );
+app.post('/check-mail', async (req, res) => {
+  // const password = (Math.random() +1).toString(36).substr(0, 9)
+  // const email = req.body.email;
+  // console.log('pw = ', password);
+  // const hash = hasha(
+  //   password + global.passwordSalt,
+  //   { encoding: 'base64', algorithm: 'sha512' }
+  // );
   const resultEmail = await User.findOne(
     { email: req.body.email}
   )
-  if(resultEmail){
-    User.findOneAndUpdate(
-    { email: req.body.email},
-    { $set: { password: hash } }
-  )
+  // if(resultEmail){
+  //   User.findOneAndUpdate(
+  //   { email: req.body.email},
+  //   { $set: { password: hash } }
+  // )
     .then(() => {
-      res.json({ success: true, password: password })
+      //res.json({ success: true, password: password })
+      res.json({ success: true })
     })
     /*.then(() => 
       fetch('/api/send-password', {
@@ -338,11 +406,11 @@ app.put('/retrieve-password', async (req, res) => {
     .catch(err => {
       throw err, resultEmail;
     });
-  }
-  else{
-    res.json({ success: false});
-  }
-});
+  });
+  // else{
+  //   res.json({ success: false});
+  // }
+//});
 
 app.post('/login', (req, res) => {
   User.findOne({ username: req.body.username })

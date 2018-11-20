@@ -24,10 +24,9 @@ import './RetrievePW.scss';
   onSubmit = (e) => {
     e.preventDefault();
     const email = this.useremailToRetrieve;
-    const testpassword = 'hejdinget!';
-    fetch('/api/retrieve-password', {
+    fetch('/api/mail-password', {
       credentials: 'include',
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify({ email }),
       headers: { 'Content-Type': 'application/json' }
     })
@@ -37,18 +36,20 @@ import './RetrievePW.scss';
           fetch('/api/send-password', {
             credentials: 'include',
             method: 'POST',
-            body: JSON.stringify({ email, testpassword }),
+            body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }
           })
-          console.log('nytt password: ', res.password);
+          //console.log('nytt password: ', res.password);
           this.successInfo = true;
         }
         else {
           this.emailDontExist = true;
         }
-      }).catch(err => {
-        console.log("err", err)
       })
+        //.then(res => res.json())
+        .catch(err => {
+          console.log("err", err)
+        })
   };
 
 }

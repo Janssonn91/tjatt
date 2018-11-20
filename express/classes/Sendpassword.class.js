@@ -1,7 +1,14 @@
 const nodemailer = require('nodemailer');
+const hasha = require('hasha');
+//const ThisUser = require('./classes/User.class');
 
 module.exports = function(req, res) {
-    console.log('i sendpassword nu, password/mail', req.body.password, req.body.email);
+    const password = (Math.random() +1).toString(36).substr(0, 9)
+    console.log('pw = ', password);
+    const hash = hasha(
+    password + global.passwordSalt,
+        { encoding: 'base64', algorithm: 'sha512' }
+    );
     nodemailer.createTestAccount((err, account) => {
         let transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text
@@ -36,7 +43,7 @@ module.exports = function(req, res) {
             // HTML body
             html:`
                 <h2>Your password is resetted</h2>
-                <P>Your new password is ${req.body.password}</p>
+                <P>Your new password is ${password}</p>
                 <p>For your safety please take a moment and change this password to something else in your settings!</p>
                 `,
 
