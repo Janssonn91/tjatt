@@ -5,12 +5,12 @@ import {
   renderReporter
 } from 'mobx-react';
 class ChannelStore {
-  @observable newChannel = [];
+  //@observable newChannel = [];
   @observable myChannels = [];
   @observable currentChannel = "";
   @observable channelName = "";
   @observable channelImg = "";
-  @observable currentChannelGroup = false; // never used, removable ??
+  //@observable currentChannelGroup = false; // never used, removable ??
   @observable contactChannels = [];
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
@@ -140,7 +140,7 @@ class ChannelStore {
   // }
 
 
-  @action getContactName(ids) {
+  getContactName(ids) {
     let n = ids.filter(id => { return id !== userStore.user._id });
     let u = this.userDict[n];
     return u;
@@ -291,8 +291,8 @@ class ChannelStore {
 
 
 
-  @action createChannel(channelname, admin, members, group) {
-    this.newChannel = {
+  createChannel(channelname, admin, members, group) {
+    newChannel = {
       channelname: channelname,
       admin: admin,
       members: members,
@@ -300,7 +300,7 @@ class ChannelStore {
       open: true,
       group: group
     }
-    Channel.create(this.newChannel);
+    Channel.create(newChannel);
   }
 
   @action async createGroup(groupName) {

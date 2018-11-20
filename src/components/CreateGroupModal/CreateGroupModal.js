@@ -7,24 +7,34 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable myAttr = 'd-none';
   @observable error = false;
   @observable check = 'false';
-  @observable searchContact = [];
+  @observable searchContact = this.props.userStore.groupCandidates;
 
   async start() {
     await sleep(10);
     // Show all contacts from beginning
-    this.searchContact = this.props.userStore.groupCandidates;
+    this.searchContact = [];
   }
 
   searchContacts = (e) => {
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
-      return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
+      console.log(toJS(this.searchContact));
+      // return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
+      return this.searchContact = [];
     }
     let regex = new RegExp(e.target.value, 'i');
     this.searchContact = this.props.userStore.groupCandidates.filter(user => {
       return regex.test(user.nickname || user.username || user.email)
     })
+  }
+
+  checkboxHandler = (e) => {
+    if (e.target.checked) {
+      this.searchContact = this.props.userStore.groupCandidates;
+    } else {
+      this.searchContact = [];
+    }
   }
 
   removeFromSearchedUsers = (user) => {
