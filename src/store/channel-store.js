@@ -5,12 +5,12 @@ import {
   renderReporter
 } from 'mobx-react';
 class ChannelStore {
-  @observable newChannel = [];
+  //@observable newChannel = [];
   @observable myChannels = [];
   @observable currentChannel = "";
   @observable channelName = "";
   @observable channelImg = "";
-  @observable currentChannelGroup = false;
+  //@observable currentChannelGroup = false; // never used, removable ??
   @observable amIAdmin = "";
   @observable contactChannels = [];
   @observable groupChannels = [];
@@ -54,7 +54,7 @@ class ChannelStore {
         // we store those in a new properrt ._contact.contactChannelname
         for (let channel of this.myChannels) {
           if (!channel.group) {
-            channel._contact =  await this.getContactUrl(channel.members)
+            channel._contact = await this.getContactUrl(channel.members)
             console.log(channel._contact)
           }
         }
@@ -141,7 +141,7 @@ class ChannelStore {
   // }
 
 
-  @action getContactName(ids) {
+  getContactName(ids) {
     let n = ids.filter(id => { return id !== userStore.user._id });
     let u = this.userDict[n];
     return u;
@@ -156,7 +156,7 @@ class ChannelStore {
   }
 
   async getContactUrl(ids) {
-    let n = ids.filter(id => { return id !== loginStore.user._id });
+    let n = ids.filter(id => { return id !== userStore.user._id });
     let contact = {};
     if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
@@ -293,8 +293,8 @@ class ChannelStore {
 
 
 
-  @action createChannel(channelname, admin, members, group) {
-    this.newChannel = {
+  createChannel(channelname, admin, members, group) {
+    newChannel = {
       channelname: channelname,
       admin: admin,
       members: members,
@@ -302,7 +302,7 @@ class ChannelStore {
       open: true,
       group: group
     }
-    Channel.create(this.newChannel);
+    Channel.create(newChannel);
   }
 
   @action async createGroup(groupName) {
@@ -343,7 +343,7 @@ class ChannelStore {
 
   updateContactChannels(channel) {
     let user = this.getContactName(channel.members);
-    channel.channelname= user.name;
+    channel.channelname = user.name;
     channel.image = user.img;
     this.contactChannels.push(channel);
     //console.log(this.contactChannels);
@@ -446,19 +446,19 @@ class ChannelStore {
   }
 
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(i){
+  @action spliceChannel(i) {
     this.groupChannels.splice(i, 1);
     this.ChannelChatHistory = [];
-    this.currentChannelGroup = false;
+    this.currentChannel = '';
     this.channelName = '';
   }
 
-  @action adminStatus(){
+  @action adminStatus() {
     this.amIAdmin = !this.amIAdmin;
   }
 
   // for splicing an admin from a group. Needs an index to start from
-  @action spliceAdmin(i){
+  @action spliceAdmin(i) {
     this.currentChannelAdmins.splice(i, 1);
   }
 

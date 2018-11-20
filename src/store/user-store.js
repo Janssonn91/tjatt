@@ -5,10 +5,8 @@ class UserStore {
   @observable user = { channel: [], contact: [] };
   @observable isLoggedIn = false;
   @observable checkedLoginState = false;
-  @observable onLineUsers = [];
-  @observable candidates = [];
-  @observable myContacts = []; //Sidebar, channel-store
-  @observable groupCandidates = []; //CreateGroupModal
+  @observable candidates = []; // AddUserModal
+  @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable isLoading = true;
 
@@ -31,129 +29,15 @@ class UserStore {
     this.isLoggedIn = isLoggedIn;
   }
 
-  @action checkIfLoggedIn() {
-    fetch('/api/login', {
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.loggedIn) {
-          this.user = res.user;
-          this.isLoggedIn = true;
-          this.fetchContact();
-          socket.emit('login', this.user._id)
-          applicationStateStore.fetchUser();
-
-          // socket.on('online', message => {
-          //   console.log('online', message)
-          //   this.onLineUsers = message.loginUser;
-          // })
-          socket.off('chat message');
-          socket.on(
-            'chat message',
-            (messages) => {
-              for (let message of messages) {
-                let date = new Date();
-                if (message.channel === channelStore.currentChannel._id) {
-                  channelStore.channelChatHistory.push(
-                    {
-                      channel: message.channel,
-                      sender: message.sender,
-                      star: false,
-                      text: message.text,
-                      textType: message.textType,
-                      time: date
-                    }
-                  )
-                }
-                if(message.sender){
-                  channelStore.userDict[message.sender].status = true;
-                }
-
-                if(message.channel!==toJS(channelStore.currentChannel)._id){
-                  channelStore.groupChannels.map(channel=> 
-                    {
-                      if(channel._id === message.channel){
-                        if(!channel.messageNum){
-                          channel.messageNum=1;
-                        }else{
-                          channel.messageNum++;
-                        }
-                         
-                        }
-                      })
-                      channelStore.contactChannels.map(channel=> 
-                        {
-                          if(channel._id === message.channel){
-                            if(!channel.messageNum){
-                              channel.messageNum=1;
-                            }else{
-                              channel.messageNum++;
-                            }
-                             
-                            }
-                          })
-                }
-               
-                
-              }
-            
-            })
-          socket.on('sign up', message => {
-            channelStore.getUserList();
-          })
-          socket.on('login', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getLoginStatus();
-          })
-          socket.on('logout', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getUserList().then(
-              channelStore.getLoginStatus()
-            )
-            
-          })
-        }
-        socket.on('newChannel', async channel => {
-          console.log(channel);
-          let c = channel[0];
-          c.messageNum=0;
-          if(c.members.some(id=>id===this.user._id)){
-            console.log("true")
-            if(c.group){
-              channelStore.groupChannels.push(c);
-              console.log(channelStore.groupChannels)
-  
-            }else{
-              let name = await channelStore.getContactName(c.members);
-              if(name!== undefined){
-                channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
-                channelStore.contactChannels.push(channelStore.channelDict[c._id]);
-              }
-            }
-          }
-          else{
-            console.log("false")
-          }
-         
-          //channelStore.getChannels();
-        })
-        socket.on('message', event => {
-          console.log('Message from server ', event);
-        })
-        this.checkedLoginState = true;
-      }).catch(err => {
-        console.log("err", err)
-      });
+  @action checkState() {
+    this.checkedLoginState = true;
   }
 
   @action updateMyContact(userId) {
     const addedUser = this.candidates.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
-    this.myContacts.push(addedUser);
     this.groupCandidates.push(addedUser);
-   
   }
 
   @action updateProfile(key, val) {
@@ -174,7 +58,6 @@ class UserStore {
           return this.user.contact.some(contactId => userId === contactId);
         }
         this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
-        this.myContacts = withoutMe.filter(user => isIncludedInContact(user._id)); //use in Sidebar
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
       });
   }

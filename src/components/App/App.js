@@ -22,7 +22,7 @@ import './App.scss';
       $(this).blur();
     })
 
-    this.props.userStore.checkIfLoggedIn();
+    this.props.applicationStateStore.checkIfLoggedIn();
   }
 
 }

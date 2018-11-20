@@ -17,7 +17,6 @@
                   placeholder="image"
                   autoComplete="off"
                   onChange={e => this.onFileChange(e)}
-                  onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
                 />
                 <Label for="changeImage">
                   <i className="fas fa-pencil-alt edit-icon"></i>
@@ -42,7 +41,12 @@
               placeholder={this.props.userStore.user.nickname}
               value={this.nickname}
               onChange={e => this.handleNicknameChange(e)}
-              onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
+              onKeyPress={e => e.key === 'Enter' && this.updateSettings({
+                nickname: this.nickname,
+                password: this.newPassword,
+                imageFormData: this.image,
+                currentPassword: this.currentPasswordValue
+              })}
             />
           </td>
         </tr>

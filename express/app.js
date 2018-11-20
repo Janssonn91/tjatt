@@ -100,20 +100,7 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
-    User.findOne({_id: userId}).then(u=> {
-      let channels = u.channel;
-      console.log("length", channels.length, u.nickname)
-      for(let channel of channels){
-        socket.join(channel, () => {
-          let rooms = Object.keys(socket.rooms);
-          io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
-          
-        });
-    }
-     
-     
-    }
-      )
+   
     //console.log("user", user)
     
    // console.log("rooms", socket.rooms)
@@ -137,22 +124,37 @@ io.on('connection', (socket) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
     console.log("onlineuser after login", onlineUsers)
+    User.findOne({_id: userId}).then(u=> {
+      let channels = u.channel;
+      console.log("length", channels.length, u.nickname)
+      for(let channel of channels){
+        socket.join(channel, () => {
+          let rooms = Object.keys(socket.rooms);
+          io.to(channel).emit(userId + "has joined in channel" + channel);
+         
+        });
+    }
     socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })
+    }
+    
+      )
+      
+    
 
 
   })
 
   socket.on('newChannel', (id) => {
-    socket.join(id, () => {
+    socket.join(id)
      // let rooms = Object.keys(socket.rooms);
      // io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
      channel.find({_id : id}).then(
       c=>
-      socket.broadcast.emit('newChannel', c)
+      socket.emit('newChannel', c)
       )
-    });
+    
    
     
   })

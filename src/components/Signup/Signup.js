@@ -83,6 +83,7 @@ import './Signup.scss';
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          this.props.userStore.fetchContact();
           this.props.history.push(`/${this.props.userStore.user.username}`);
           this.usernameExist = false;
           this.sendWelcomeMail(username, useremail);
