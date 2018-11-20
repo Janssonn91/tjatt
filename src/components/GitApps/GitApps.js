@@ -149,13 +149,13 @@ import './GitApps.scss';
 
     onPullApp(appId){ 
         const appToupdate = this.importedApps.find(app => app._id === appId);
-        fetch('/api/updateRepo', { 
-            headers:{'Content-Type': 'application/json'},
-            body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
-            method: 'POST' // or 'PUT'
-          })
-          .then(response => response.json())
-          .catch(error=>console.log(error));
+        // fetch('/api/updateRepo', { 
+        //     headers:{'Content-Type': 'application/json'},
+        //     body: JSON.stringify({url: this.urlToSet, projectName: this.projectToSet, webPort: this.portToSet}), // data can be `string` or {object}!
+        //     method: 'POST' // or 'PUT'
+        //   })
+        //   .then(response => response.json())
+        //   .catch(error=>console.log(error));
 
         console.log(appToupdate)
     }
