@@ -27,8 +27,7 @@ class ChannelStore {
   @observable contactChannelname = "";
   @observable userDict = {};
   @observable adminLeavingError = false;
-  // holds all the admins of the current group
-  @observable currentChannelAdmins = [];
+  @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
 
   // constructor() {
