@@ -11,6 +11,9 @@ module.exports = function(req, res) {
             auth: {
                 user: account.user, // generated ethereal user 
                 pass: account.pass // generated ethereal password 
+            },
+            tls:{
+                rejectUnauthorized: false
             }
         });
 

@@ -14,17 +14,19 @@
           </FormGroup>
           <FormGroup>
             <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.password} onChange={e => this.passwordChange(e)} />
-            <p className="small mt-2 text-center retrieve-pw d-none"><a onClick={e => this.retrievePassword(e)}>Can't remember your password?</a></p>
+            <Link tabIndex="-1" to="retrievepassword">
+              <p className="small mt-2 text-center retrieve-pw">Can't remember your password?</p>
+            </Link>
           </FormGroup>
           <div className="text-center mb-3">
             <Button tabIndex="3" className="btn-login">Login</Button>{' '}
-            <Link tabIndex="-1" to="signup">
+            <Link tabIndex="5" to="signup">
               <Button tabIndex="4" className="btn-create-acc">Create account</Button>{' '}
             </Link>
           </div>
         </Form>
         {this.loginError &&
-          < Alert color="danger" className="my-2">
+          < Alert color="danger" className="my-2 text-center">
             Username or password is incorrect
             </Alert>}
       </Col>
