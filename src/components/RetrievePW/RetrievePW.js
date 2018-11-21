@@ -24,7 +24,7 @@ import './RetrievePW.scss';
   onSubmit = (e) => {
     e.preventDefault();
     const email = this.useremailToRetrieve;
-    fetch('/api/mail-password', {
+    fetch('/api/check-mail', {
       credentials: 'include',
       method: 'POST',
       body: JSON.stringify({ email }),
@@ -32,8 +32,8 @@ import './RetrievePW.scss';
     })
       .then(res => res.json())
       .then(res => {
-        if (res.success) {
-          fetch('/api/send-password', {
+        if (res) {
+          fetch('/api/mail-password', {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({ email }),
@@ -45,7 +45,6 @@ import './RetrievePW.scss';
           this.emailDontExist = true;
         }
       })
-        //.then(res => res.json())
         .catch(err => {
           console.log("err", err)
         })
