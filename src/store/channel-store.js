@@ -191,16 +191,21 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
-    this.myChannels.map((c) => {
-      //socket.emit('join channel', c._id)
+    
+    this.myChannels.map(async (c) => {
+      let messages = await Message.find({channel: c._id});
+      let count=0;
+      messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
+        count++;
+      }})
       if (c.group) {
-        this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+        this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
         this.groupChannels.push(this.channelDict[c._id]);
       } else {
         let name = this.getContactName(c.members);
         // TODO: "name" become sometimes undefined (Till Hui från Nana)
         if (name !== undefined) {
-          this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+          this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
           this.contactChannels.push(this.channelDict[c._id]);
         }
         // let n = c.members.filter(id=>{ return id!== userStore.user._id});
@@ -282,6 +287,18 @@ class ChannelStore {
     this.channelChatHistory = await Message.find({
       channel: id
     });
+    this.channelChatHistory.forEach(message=>{
+      if(message.unread){
+        fetch(`/api/message/${message._id}`,{
+          method: 'PUT',
+          body: JSON.stringify({
+            unread: false
+          }),
+          headers:{'Content-Type': 'application/json'}
+        }).then(res=>res.json())
+      }
+    })
+    
     console.log(this.channelChatHistory)
     // this.renderChatMessage();
   }

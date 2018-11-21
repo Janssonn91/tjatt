@@ -20,6 +20,7 @@ module.exports = class Message extends ModelAndRoutes {
       text: String,
       textType: String,
       star: Boolean,
+      unread: Boolean,
     }
   }
 }
