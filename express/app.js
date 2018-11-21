@@ -257,7 +257,7 @@ app.post('/send-mail', mailer)
 
 const nodemailer = require('nodemailer');
 app.post('/mail-password', async function(req, res, next) {
-  const password = (Math.random() +1).toString(36).substr(0, 9)
+  const password = [...Array(10)].map(_=>(Math.random()*36|0).toString(36)).join``;
   console.log('new password = ', password);
   const hash = await hasha(
   password + global.passwordSalt,
