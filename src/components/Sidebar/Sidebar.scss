@@ -124,7 +124,13 @@ $text:#434651;
       &:hover {
         cursor: pointer;
         color: #fff;
-        background-color: darken($backgroundColor, 10%);
+        background-color: darken($backgroundColor, 15%);
+        .fa-times-circle {
+          color: $gray;
+          &:hover {
+            color: white;
+          }
+        }
       }
     }
 
@@ -142,11 +148,6 @@ $text:#434651;
       float: right;
     }
 
-    /*.flexWrapper {
-      display: flex;
-      align-items: center;
-    }*/
-
     .fa-plus {
       color: white;
       font-size: small;
@@ -162,6 +163,10 @@ $text:#434651;
 
     .fas, .far {
       display: inline-block;
+    }
+
+    .fa-times-circle {
+      color: $backgroundColor;
     }
   }
 

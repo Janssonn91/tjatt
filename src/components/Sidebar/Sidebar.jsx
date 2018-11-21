@@ -39,14 +39,14 @@
                 key={i}
                 onClick={() => this.props.channelStore.changeChannel(channel)}
               >
-                  <div className="nav-link pl-5 pl-md-3 contacts">
-                    <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
-                    <span className="d-inline-block">{channel.channelname}</span>
-                    {channel.messageNum > 0 ? <span className="message-number">
-                      <Badge color="danger">{channel.messageNum}</Badge>
-                    </span> : <span key={i} className="d-none"></span>}
-                  </div>
-                </Link>
+                <div className="nav-link pl-5 pl-md-3 contacts">
+                  <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
+                  <span className="d-inline-block">{channel.channelname}</span>
+                  {channel.messageNum > 0 ? <span className="message-number">
+                    <Badge color="danger">{channel.messageNum}</Badge>
+                  </span> : <span className="d-inline-block float-right"><i className="far fa-times-circle align-middle"></i></span>}
+                </div>
+              </Link>
             )}
           </CardBody>
         </Card>
