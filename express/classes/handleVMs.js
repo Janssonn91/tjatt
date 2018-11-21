@@ -26,7 +26,6 @@ module.exports = class HandleVMs {
       .catch(err => { console.log("error", err); payload.res.json('err'); });
   }
 
-
   static async prepare_docker_files(payload) {
     let did = await this.create_docker_dockerfile(payload);
     did && this.create_docker_compose_file(payload);
@@ -134,4 +133,15 @@ services:
       console.log(stdout || stderr);
     });
   }
+
+  static git_pull(payload) {
+    simplegit()
+      .silent(false)
+      .pull()
+      .then(() => {
+        console.log("Pulled repo from: " + payload.gitUrl);
+      })
+      .catch(err => { console.log("error", err); payload.res.json('err'); });
+  }
+
 }
