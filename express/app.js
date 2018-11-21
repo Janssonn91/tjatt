@@ -376,19 +376,6 @@ app.get('/login', (req, res) => {
 
 app.post('/check-mail', async (req, res) => {
   User.findOne({ email: req.body.email }).then(user => res.json(user))
-  /*
-  let resultAdmin = await channel.update(
-    { _id: req.params._id },
-    { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
-    { multi: true }
-  ).catch((err) => console.log("err", err));
-  res.json({ resultAdmin });
-  */
-  // const resultEmail = await User.findOne(
-  //   { email: req.body.email}
-  // )
-  // .catch((err) => console.log("err", err));
-  // res.json({ resultAdmin });
 });
 
 app.post('/login', (req, res) => {
