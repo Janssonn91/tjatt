@@ -147,7 +147,7 @@
   },
   "proxy": {
     "/api$|/api/": {
-      "target": "http://localhost:3100",
+      "target": "http://localhost:3101",
       "pathRewrite": {
         "^/api": "/"
       },

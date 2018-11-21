@@ -12,7 +12,7 @@
             <span className="message-data-name">
               {this.props.userStore.user.nickname}
             </span>&nbsp;
-            {/* <span className="message-data-time">{message.time}</span> */}
+             <span className="message-data-time">{this.formattedTime(message.time)}</span> 
           </div>
           <div className="message my-message">
             {message.text}
@@ -45,7 +45,7 @@
               <img alt="user-img" src={this.props.channelStore.userDict[message.sender].img || "/images/placeholder.png"} />
             </span>&nbsp; &nbsp;
               <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
-            {/* <span className="message-data-time">{message.time}</span> */}
+             <span className="message-data-time">{this.formattedTime(message.time)}</span> 
           </div>
           <div className="message other-message">
             {message.text}
