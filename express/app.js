@@ -206,6 +206,7 @@ io.on('connection', (socket) => {
       channel: message.channel,
       textType: message.textType,
       star: message.star,
+      unread: true,
     }]);
   });
 
@@ -560,6 +561,18 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
+
+app.put('/message/:id',(req, res)=>{
+  console.log("change message status", req.body, req.params)
+  ChatMessage.findOneAndUpdate(
+    {_id: req.params.id},
+    {$set: { unread: false}}
+  ).then(()=>{
+    res.json({success: true})
+  }).catch(err=>{
+    throw err;
+  });
+});
 
 app.post('/upload', upload.single('file'), (req, res) => {
   User.findById(req.session.userId)

@@ -36,7 +36,8 @@ class ApplicationStateStore {
                       star: false,
                       text: message.text,
                       textType: message.textType,
-                      time: date
+                      time: date, 
+                      unread: true,
                     }
                   )
                 }

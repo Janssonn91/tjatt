@@ -132,7 +132,8 @@ export default class Chat extends Component {
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
-      star: false
+      star: false,
+      unread: true,
     }
     if (this.inputMessage.length > 0) {
 
