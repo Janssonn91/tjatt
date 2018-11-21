@@ -34,8 +34,11 @@
               : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong className="plus-text">+</strong></h6>
             }
             {this.props.channelStore.contactChannels.map((channel, i) =>
-              <React.Fragment key={i}>
-                <Link to={`/${this.props.userStore.user.username}/${channel.channelname}`} onClick={() => this.changeChannel(channel)}>
+              <Link
+                to={`/${this.props.userStore.user.username}/${channel.channelname}`}
+                key={i}
+                onClick={() => this.props.channelStore.changeChannel(channel)}
+              >
                   <div className="nav-link pl-5 pl-md-3 contacts">
                     <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                     <span className="d-inline-block">{channel.channelname}</span>
@@ -57,14 +60,18 @@
           <CardBody className="p-0">
             {this.props.channelStore.groupChannels.length > 0 ?
               this.props.channelStore.groupChannels.map((channel, i) =>
-                <React.Fragment key={i}>
-                  <div className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
+                <Link
+                  to={`/${this.props.userStore.user.username}/${channel.channelname}`}
+                  key={i}
+                  onClick={() => this.props.channelStore.changeChannel(channel)}
+                >
+                  <div className="nav-link pl-5 pl-md-3 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ? <span className="message-number">
                       <Badge color="danger">{channel.messageNum}</Badge>
                     </span> : <span key={i} className="d-none"> 0</span>}
                   </div>
-                </React.Fragment>
+                </Link>
               )
               : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong className="plus-text">+</strong></h6>
             }
