@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  
+
 
 
   // console.log("user is connected", user.nickname)
@@ -100,10 +100,10 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
-   
+
     //console.log("user", user)
-    
-   // console.log("rooms", socket.rooms)
+
+    // console.log("rooms", socket.rooms)
     socket.broadcast.emit('online', {
       onlineUsers
     });
@@ -124,41 +124,41 @@ io.on('connection', (socket) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
     console.log("onlineuser after login", onlineUsers)
-    User.findOne({_id: userId}).then(u=> {
+    User.findOne({ _id: userId }).then(u => {
       let channels = u.channel;
       console.log("length", channels.length, u.nickname)
-      for(let channel of channels){
-        if(channel){
+      for (let channel of channels) {
+        if (channel) {
           channel = channel.toString();
           socket.join(channel, () => {
             let rooms = Object.keys(socket.rooms);
             io.to(channel).emit(userId + "has joined in channel" + channel);
           });
         }
-       
 
+
+      }
+      socket.broadcast.emit('login', {
+        loginUser: onlineUsers
+      })
     }
-    socket.broadcast.emit('login', {
-      loginUser: onlineUsers
-    })
-    }
-    
-      )
-      
-    
+
+    )
+
+
 
 
   })
 
   socket.on('newChannel', (channel) => {
     console.log('new channel', channel._id)
-    socket.join(channel._id, ()=> console.log('received channel', socket.rooms))
-    
+    socket.join(channel._id, () => console.log('received channel', socket.rooms))
 
- 
-    
-   
-    
+
+
+
+
+
   })
 
 
@@ -170,10 +170,10 @@ io.on('connection', (socket) => {
       loginUser: onlineUsers
     })
   })
-  
+
   socket.on('system message', (data) => {
     socket.broadcast.emit('system message', data);
-    socket.join(data.newChannel._id, ()=>{
+    socket.join(data.newChannel._id, () => {
       console.log("socket room", socket.rooms)
     })
   });
@@ -193,19 +193,24 @@ io.on('connection', (socket) => {
     // ){ return; }
 
     // Create a mongoose ChatMessage and write to the db
-    let message = new ChatMessage({
-      ...messageFromClient
-    });
-    console.log("message", message)
-    await message.save();
+    if (messageFromClient.contentType === 'text') {
+      let message = new ChatMessage({
+        ...messageFromClient
+      });
+      console.log("message", message)
+      await message.save();
+    }
 
     // Send the message to all the sockets in the channel
     io.to(c).emit('chat message', [{
-      sender: message.sender,
-      text: message.text,
-      channel: message.channel,
-      textType: message.textType,
-      star: message.star,
+      sender: messageFromClient.sender,
+      text: messageFromClient.text,
+      channel: messageFromClient.channel,
+      textType: messageFromClient.textType,
+      contentType: messageFromClient.contentType,
+      filePath: messageFromClient.filePath,
+      originalName: messageFromClient.originalName,
+      star: messageFromClient.star,
     }]);
   });
 
@@ -534,6 +539,39 @@ app.post('/upload', upload.single('file'), (req, res) => {
       })
 
     });
+});
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/fileUploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + pathTo.extname(file.originalname))
+  }
+});
+const fileUpload = multer({ storage: fileStorage });
+
+app.post('/fileupload/:id', fileUpload.single('file'), async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(403);
+  }
+
+  if (!req.file) {
+    return res.status(400)
+  }
+
+  if (req.body.type === 'file') {
+    let message = new ChatMessage({
+      sender: req.session.userId,
+      contentType: 'file',
+      filePath: req.file.path.split('public')[1],
+      channel: req.params.id,
+      originalName: req.file.originalname
+    })
+    await message.save()
+    res.json(message)
+
+  }
 });
 
 

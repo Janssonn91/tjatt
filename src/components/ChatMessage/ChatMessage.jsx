@@ -15,7 +15,9 @@
             {/* <span className="message-data-time">{message.time}</span> */}
           </div>
           <div className="message my-message">
-            {message.text}
+            {message.contentType === 'text' && message.text}
+            {message.contentType === 'file' && <a className="text-light" href={message.filePath} download={message.originalName}>{message.originalName}</a>}
+
             <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
               <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
                 <i className="fas fa-pen"></i>

@@ -83,7 +83,7 @@
       <Row className="formRow">
         <Col className="p-0">
           <Form inline className="chat-message py-2 clearfix">
-            <ButtonDropdown
+            <Dropdown
               direction="up"
               isOpen={this.isOpen}
               toggle={e => this.toggle()}
@@ -92,18 +92,28 @@
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
-              <DropdownItem>
-                <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-              {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
-                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
-              }
+                <div className="dropdown-item">
+                  <input
+                    type="file"
+                    id="file"
+                    className="file"
+                    name="file"
+                    onChange={this.textfileHandler}
+                  />
+                  <label htmlFor="file">
+                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document
+                  </label>
+                </div>
+                <DropdownItem>
+                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                <DropdownItem>
+                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
+                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
+                }
               </DropdownMenu>
-            </ButtonDropdown>
+            </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
               <Label for="messageArea" className="d-none">Message</Label>
               <Textarea

@@ -46,7 +46,7 @@ export default class Chat extends Component {
     toggle: this.viewMembersModalToggle.bind(this)
   }
 
- 
+
 
   @observable sendToLeaveModal = {
     isOpen: false,
@@ -61,6 +61,22 @@ export default class Chat extends Component {
   start() {
 
 
+  }
+
+  textfileHandler = (e) => {
+    e.stopPropagation();
+    let formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    formData.append('type', 'file')
+
+    fetch(`/api/fileupload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(message => {
+        socket.emit('chat message', message)
+      })
   }
 
   scrollToBottom = () => {
@@ -83,7 +99,7 @@ export default class Chat extends Component {
 
   viewMembersModalToggle() {
     this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen;
-    if(!this.sendToViewMembersModal.isOpen){
+    if (!this.sendToViewMembersModal.isOpen) {
       this.props.channelStore.hideAdminLeaveError();
     }
   }
@@ -132,6 +148,7 @@ export default class Chat extends Component {
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
+      contentType: 'text',
       star: false
     }
     if (this.inputMessage.length > 0) {

@@ -26,6 +26,7 @@ class ApplicationStateStore {
           socket.on(
             'chat message',
             (messages) => {
+              console.log(messages)
               for (let message of messages) {
                 let date = new Date();
                 if (message.channel === channelStore.currentChannel._id) {
@@ -36,6 +37,9 @@ class ApplicationStateStore {
                       star: false,
                       text: message.text,
                       textType: message.textType,
+                      contentType: message.contentType,
+                      filePath: message.filePath,
+                      originalName: message.originalName,
                       time: date
                     }
                   )
@@ -79,21 +83,21 @@ class ApplicationStateStore {
             )
           })
         }
-        socket.on('system message', async (data)=>{
-          if(data.newChannel){
-            let c= data.newChannel;
-            let id= userStore.user._id.toString();
-            for(let i of c.members) {
-              if(i.toString()===id ){
-                if(c.group){
+        socket.on('system message', async (data) => {
+          if (data.newChannel) {
+            let c = data.newChannel;
+            let id = userStore.user._id.toString();
+            for (let i of c.members) {
+              if (i.toString() === id) {
+                if (c.group) {
                   channelStore.groupChannels.push(c);
                   console.log(channelStore.groupChannels)
-                }else{
+                } else {
                   let name = await channelStore.getContactName(c.members);
                   if (name !== undefined) {
-                  channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
-                channelStore.contactChannels.push(channelStore.channelDict[c._id]);
-              } 
+                    channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
+                    channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+                  }
                 }
                 socket.emit('newChannel', data.newChannel);
               }
@@ -101,8 +105,8 @@ class ApplicationStateStore {
           }
 
         })
-        socket.on('newChannel', (data)=>{
-        
+        socket.on('newChannel', (data) => {
+
         })
         socket.on('message', event => {
           console.log('Message from server ', event);
