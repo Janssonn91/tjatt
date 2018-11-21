@@ -85,15 +85,6 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  
-
-
-  // console.log("user is connected", user.nickname)
-  // onlineUsers = onlineUsers.filter(id => id !== user._id);
-  // onlineUsers.push(user._id);
-  // socket.broadcast.emit('online', {
-  //   loginUser: onlineUsers
-  // });
 
   socket.on('online', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
@@ -101,9 +92,6 @@ io.on('connection', (socket) => {
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
    
-    //console.log("user", user)
-    
-   // console.log("rooms", socket.rooms)
     socket.broadcast.emit('online', {
       onlineUsers
     });
@@ -151,14 +139,8 @@ io.on('connection', (socket) => {
   })
 
   socket.on('newChannel', (channel) => {
-    console.log('new channel', channel._id)
-    socket.join(channel._id, ()=> console.log('received channel', socket.rooms))
-    
-
- 
-    
-   
-    
+    console.log('new channel', channel._id);
+    socket.join(channel._id, ()=> console.log('received channel', socket.rooms));
   })
 
 
@@ -182,19 +164,15 @@ io.on('connection', (socket) => {
 
 
   socket.on('chat message', async (messageFromClient) => {
-    // Get the user from session
-    //console.log(messageFromClient)
+ 
     let c = messageFromClient.channel;
     console.log("c", c)
     socket.join(c);
-    // if(
-    //   typeof c !== 'string' ||
-    //   !user.channel.includes(c)
-    // ){ return; }
+  
 
     // Create a mongoose ChatMessage and write to the db
     let message = new ChatMessage({
-      ...messageFromClient
+      ...messageFromClient,
     });
     console.log("message", message)
     await message.save();
@@ -207,6 +185,7 @@ io.on('connection', (socket) => {
       textType: message.textType,
       star: message.star,
       unread: true,
+      time: message.time,
     }]);
   });
 

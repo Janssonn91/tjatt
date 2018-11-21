@@ -27,19 +27,20 @@ class ApplicationStateStore {
             'chat message',
             (messages) => {
               for (let message of messages) {
-                let date = new Date();
+                let time = new Date(message.time);
+                console.log(time)
                 if (message.channel === channelStore.currentChannel._id) {
-                  channelStore.channelChatHistory.push(
-                    {
-                      channel: message.channel,
-                      sender: message.sender,
-                      star: false,
-                      text: message.text,
-                      textType: message.textType,
-                      time: date, 
-                      unread: true,
-                    }
-                  )
+                  let m=  {
+                    channel: message.channel,
+                    sender: message.sender,
+                    star: false,
+                    text: message.text,
+                    textType: message.textType,
+                    time: message.time,
+                    unread: true,
+                  };
+                  // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
+                  channelStore.channelChatHistory.push(m)
                 }
                 if (message.sender) {
                   channelStore.userDict[message.sender].status = true;
