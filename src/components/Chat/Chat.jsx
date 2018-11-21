@@ -42,7 +42,7 @@
                         .bind(this)}>
                       View members
                   </DropdownItem>
-                    {this.props.channelStore.amIAdmin &&
+                    {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
                       <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
                     }
                   </div>
@@ -91,27 +91,18 @@
               <DropdownToggle className="p-0" caret>
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
-              {this.props.channelStore.amIAdmin ?
-                <DropdownMenu>
-                  <DropdownItem>
-                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-                  <DropdownItem>
-                    <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                  <DropdownItem>
-                    <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
-                </DropdownMenu>
-                :
-                <DropdownMenu>
-                  <DropdownItem>
-                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-                  <DropdownItem>
-                    <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                  <DropdownItem>
-                    <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                </DropdownMenu>
+              <DropdownMenu>
+              <DropdownItem>
+                <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+              <DropdownItem>
+                <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+              <DropdownItem>
+                <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+              {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
+                <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
               }
+              </DropdownMenu>
             </ButtonDropdown>
             <FormGroup className="m-0 messageAreaForm">
               <Label for="messageArea" className="d-none">Message</Label>

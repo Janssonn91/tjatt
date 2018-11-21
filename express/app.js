@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
- 
+  
 
 
   // console.log("user is connected", user.nickname)
@@ -100,20 +100,7 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
-    User.findOne({_id: userId}).then(u=> {
-      let channels = u.channel;
-      console.log("length", channels.length, u.nickname)
-      for(let channel of channels){
-        socket.join(channel, () => {
-          let rooms = Object.keys(socket.rooms);
-          io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
-          
-        });
-    }
-     
-     
-    }
-      )
+   
     //console.log("user", user)
     
    // console.log("rooms", socket.rooms)
@@ -137,22 +124,39 @@ io.on('connection', (socket) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
     console.log("onlineuser after login", onlineUsers)
+    User.findOne({_id: userId}).then(u=> {
+      let channels = u.channel;
+      console.log("length", channels.length, u.nickname)
+      for(let channel of channels){
+        if(channel){
+          channel = channel.toString();
+          socket.join(channel, () => {
+            let rooms = Object.keys(socket.rooms);
+            io.to(channel).emit(userId + "has joined in channel" + channel);
+          });
+        }
+       
+
+    }
     socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })
+    }
+    
+      )
+      
+    
 
 
   })
 
-  socket.on('newChannel', (id) => {
-    socket.join(id, () => {
-     // let rooms = Object.keys(socket.rooms);
-     // io.to(channel).emit(userId + "has joined in channel" + channel); // broadcast to everyone in the room
-     channel.find({_id : id}).then(
-      c=>
-      socket.broadcast.emit('newChannel', c)
-      )
-    });
+  socket.on('newChannel', (channel) => {
+    console.log('new channel', channel._id)
+    socket.join(channel._id, ()=> console.log('received channel', socket.rooms))
+    
+
+ 
+    
    
     
   })
@@ -166,9 +170,12 @@ io.on('connection', (socket) => {
       loginUser: onlineUsers
     })
   })
-
-  socket.on('message', (data) => {
-    console.log('Incoming data ', data);
+  
+  socket.on('system message', (data) => {
+    socket.broadcast.emit('system message', data);
+    socket.join(data.newChannel._id, ()=>{
+      console.log("socket room", socket.rooms)
+    })
   });
 
 
@@ -423,7 +430,7 @@ app.put('/updateAdmin/:_id', async (req, res) => {
 })
 
 app.put('/users/:_id', (req, res) => {
-  console.log("user", req.body);
+  //console.log("user", req.body);
   if (req.body.contact) {
     User.findOneAndUpdate(
       { _id: req.params._id },

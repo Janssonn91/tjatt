@@ -89,8 +89,12 @@ import './Signup.scss';
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', this.user);
         } else {
-          console.log('träff');
-          this.usernameExist = true;
+          if(res.userResult){
+            this.usernameExist = true;
+          }
+          else {
+            this.emailExist = true;
+          }
         }
       }).catch((err) => {
         console.log('error', err);
