@@ -33,27 +33,21 @@
               <div id="contactsRender"></div>
               : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong className="plus-text">+</strong></h6>
             }
-            {/* {<div id="contactsRender"></div> */}
             {this.props.channelStore.contactChannels.map((channel, i) =>
-              <React.Fragment key={i}>
-                <Link to={`/${this.props.userStore.user.username}/${channel.channelname}`} onClick={() => this.changeChannel(channel)}>
-                  <div className="nav-link pl-5 pl-md-3 contacts">
-                    <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
-                    <span className="d-inline-block">{channel.channelname}</span>
-                    {channel.messageNum > 0 ? <span className="message-number">
-                      <Badge color="danger">{channel.messageNum}</Badge>
-                    </span> : <span key={i} className="d-none"></span>}
-                  </div>
-                </Link>
-                {/* <Route exact path={`/${this.props.loginStore.user.username}/:id`} component={Tjatt} /> */}
-              </React.Fragment>
+              <Link
+                to={`/${this.props.userStore.user.username}/${channel.channelname}`}
+                key={i}
+                onClick={() => this.props.channelStore.changeChannel(channel)}
+              >
+                <div className="nav-link pl-5 pl-md-3 contacts">
+                  <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
+                  <span className="d-inline-block">{channel.channelname}</span>
+                  {channel.messageNum > 0 ? <span className="message-number">
+                    <Badge color="danger">{channel.messageNum}</Badge>
+                  </span> : <span className="d-inline-block float-right"><i className="far fa-times-circle align-middle"></i></span>}
+                </div>
+              </Link>
             )}
-            {/* {this.props.loginStore.myContacts.map((user, i) =>
-              <div key={i} className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(user._id, user.nickname)}>
-                <CardImg className="mr-3 d-inline-block" src={user.image || "/images/placeholder.png"} />
-                <div className="d-inline-block">{user.nickname}</div>
-              </div>
-            )} */}
           </CardBody>
         </Card>
       </Collapse>
@@ -66,30 +60,24 @@
           <CardBody className="p-0">
             {this.props.channelStore.groupChannels.length > 0 ?
               this.props.channelStore.groupChannels.map((channel, i) =>
-                <React.Fragment key={i}>
-                  <div className="nav-link pl-5 pl-md-3 contacts" onClick={() => this.changeChannel(channel)}>
+                <Link
+                  to={`/${this.props.userStore.user.username}/${channel.channelname}`}
+                  key={i}
+                  onClick={() => this.props.channelStore.changeChannel(channel)}
+                >
+                  <div className="nav-link pl-5 pl-md-3 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ? <span className="message-number">
                       <Badge color="danger">{channel.messageNum}</Badge>
                     </span> : <span key={i} className="d-none"> 0</span>}
                   </div>
-                </React.Fragment>
+                </Link>
               )
               : <h6 className="text-secondary pl-3 pt-1">Create new group on the  <strong className="plus-text">+</strong></h6>
             }
-            {/* <div id="groupsRender"></div> */}
-
           </CardBody>
         </Card>
       </Collapse>
-
-
-      {/* {this.props.channelStore.myChannels.map((channel, i) =>
-      <NavLink key={i} className="nav-link pl-5 pl-md-3 contacts">
-
-       <div className="d-inline-block" >{channel}</div>
-       </NavLink>
-      )} */}
     </Nav>
 
   </div>
