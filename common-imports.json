@@ -12,6 +12,7 @@
   "  Sidebar": "components/Sidebar/Sidebar",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
+  "  RetrievePW": "components/RetrievePW/RetrievePW",
   "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
   "  AddDeleteMemberModal": "components/AddDeleteMemberModal/AddDeleteMemberModal",
   "  LeaveGroupModal": "components/LeaveGroupModal/LeaveGroupModal",
