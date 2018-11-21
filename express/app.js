@@ -255,13 +255,72 @@ app.post('/pwhash', (req, res) => {
 const mailer = require('./classes/Sendmail.class');
 app.post('/send-mail', mailer)
 
+const nodemailer = require('nodemailer');
+app.post('/mail-password', async function(req, res, next) {
+  const password = (Math.random() +1).toString(36).substr(0, 9)
+  console.log('new password = ', password);
+  const hash = await hasha(
+  password + global.passwordSalt,
+      { encoding: 'base64', algorithm: 'sha512' }
+  );
+  let updateResult = await User.findOneAndUpdate(
+      { email: req.body.email},
+      { $set: { password: hash } }
+    )
+  nodemailer.createTestAccount((err, account) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text
+      //in this exercise. To check mail go to generated mailadress that shows in terminalwindow Copy/paste adress to webbrowser. GL :)
+      port: 587,
+      secure: false, // true for 465, false for other ports 
+      auth: {
+        user: account.user, // generated ethereal user 
+        pass: account.pass // generated ethereal password 
+      },
+      tls:{
+        rejectUnauthorized: false
+      }
+    });
+
+    let mailOptions = {
+      from: '"Tj@ support"<noreply@tjat.net', // sender address 
+      to: `${req.body.email}`, // list of receivers 
+      subject: 'Tj@ reset password', // Subject line  
+      html: ''
+    };
+
+    let message = {
+      // Comma separated list of recipients
+      to: `${req.body.email}`,
+      // Subject of the message
+      subject: `Tj@ reset password`,
+
+      // HTML body
+      html:`
+          <h2>Your password is resetted</h2>
+          <P>Your new password is ${password}</p>
+          <p>For your safety please take a moment and change this password to something else in your settings!</p>
+          `,
+
+      attachments: [
+        {
+        }
+      ]
+    };
+
+    // send mail with defined transport object 
+    transporter.sendMail(message, (error, info, res) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    });
+  })
+})
+
 app.post('/users', async (req, res) => {
-  //console.log(req.session);
   const userResult = await User.findOne({ username: req.body.username });
   const emailResult = await User.findOne({ email: req.body.useremail });
-  /*User.findOne({ username: req.body.username })
-      User.findOne({ email: req.body.useremail })
-        .then(user => {*/
   if (!userResult && !emailResult) {
     new User({
       username: req.body.username,
@@ -273,7 +332,6 @@ app.post('/users', async (req, res) => {
       res.json({ success: true, user: user })
     })
   } else {
-    // console.log('userresult: ', userResult, 'emailresult: ', emailResult);
     res.json({ success: false, userResult: userResult, emailResult: emailResult });
   }
   //}).catch(err => console.log("get user", err));
@@ -314,6 +372,23 @@ app.get('/login', (req, res) => {
     }).catch(err => {
       console.log("login err", err);
     })
+});
+
+app.post('/check-mail', async (req, res) => {
+  User.findOne({ email: req.body.email }).then(user => res.json(user))
+  /*
+  let resultAdmin = await channel.update(
+    { _id: req.params._id },
+    { $pull: { admin: mongoose.Types.ObjectId(req.body.userid) } },
+    { multi: true }
+  ).catch((err) => console.log("err", err));
+  res.json({ resultAdmin });
+  */
+  // const resultEmail = await User.findOne(
+  //   { email: req.body.email}
+  // )
+  // .catch((err) => console.log("err", err));
+  // res.json({ resultAdmin });
 });
 
 app.post('/login', (req, res) => {
