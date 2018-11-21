@@ -64,10 +64,10 @@ import ScrollableFeed from 'react-scrollable-feed';
       this.myAttr = 'd-none';
     }
     //check if groupMember.length is large than 2
-    if (this.props.userStore.selectedGroupMember.length < 2) {
-      this.error = true;
-      return;
-    }
+    // if (this.props.userStore.selectedGroupMember.length < 2) {
+    //   this.error = true;
+    //   return;
+    // }
     await this.props.channelStore.createGroup(this.groupName);
     this.props.userStore.cleanUpGroupModal();
     this.groupName = "";
