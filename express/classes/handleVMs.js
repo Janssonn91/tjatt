@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const del = require("del");
-const simplegit = require("simple-git/promise");
+const simplegitPromise = require("simple-git/promise");
+const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
@@ -13,9 +14,29 @@ const docker = new Docker({
 
 
 module.exports = class HandleVMs {
+
+  static git_branch(payload) {
+    if(fs.existsSync(payload.localPath)){
+      simplegit(payload.localPath)
+        .branch(function (err, branchSummary) {
+          payload.res.json({branches: (branchSummary.all)})
+      })
+    }else{
+      simplegitPromise()
+      .silent(true)
+      .clone(payload.gitUrl, payload.localPath)
+      .then(err => {
+        simplegit(payload.localPath)
+        .branch(function (err, branchSummary) {
+          payload.res.json({branches: (branchSummary.all)})
+      })
+      })
+      .catch(err => { console.log("error", err); payload.res.json('err'); });
+    }
+  }
   
   static git_clone(payload) {
-    simplegit()
+    simplegitPromise()
       .silent(true)
       .clone(payload.gitUrl, payload.localPath)
       .then(err => {
@@ -134,7 +155,7 @@ services:
   }
 
   static git_pull(payload) {
-    simplegit(payload.localPath)
+    simplegitPromise(payload.localPath)
       .silent()
       .pull()
       .then(() => {

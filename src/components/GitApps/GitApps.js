@@ -60,6 +60,19 @@ import './GitApps.scss';
     }
 
     onUrlChangeHandler(e){
+        var regex = /((git|ssh|http(s)?)|(git@[\w.]+))(:(\/\/)?)([\w.@:/\-~]+)(\.git)(\/)?/;
+        let gitUrl = (e.currentTarget.value).endsWith('.git') ? e.currentTarget.value : e.currentTarget.value+'.git';
+
+        if(regex.test(gitUrl)){
+            fetch('/api/getBranch', {
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify({url: e.currentTarget.value}), // data can be `string` or {object}!
+                method: 'POST' // or 'PUT'
+              })
+              .then(response => response.json())
+              .then(response => console.log(response))
+              .catch(error=>console.log(error));    
+        }
         this.urlToSet = e.currentTarget.value;
     }
 

@@ -19,8 +19,10 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-        fs.existsSync(payload.localPath) ?
-            del(payload.localPath).then(() => vms.git_clone(payload)) : vms.git_clone(payload);
+        vms.git_branch(payload)
+
+        //fs.existsSync(payload.localPath) ?
+        //    del(payload.localPath).then(() => vms.git_clone(payload)) : vms.git_clone(payload);
 
     });
 

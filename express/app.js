@@ -29,8 +29,8 @@ global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
 app.use(bodyParser.json({extended: false}));
 require('./routes/addRepo')(app);
 // add additional requires in the same style as the previous line here
-app.use(bodyParser.json({extended: false}));
 require('./routes/updateRepo')(app);
+require('./routes/getBranch')(app);
 
 const sharedsession = require("express-socket.io-session");
 const session = expressSession({
