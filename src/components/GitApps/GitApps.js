@@ -151,7 +151,7 @@ import './GitApps.scss';
         const appToupdate = this.importedApps.find(app => app._id === appId);
         fetch('/api/updateRepo', { 
             headers:{'Content-Type': 'application/json'},
-            body: JSON.stringify({gitUrl: appToupdate.gitUrl, projectName: appToupdate.name}), // data can be `string` or {object}!
+            body: JSON.stringify({gitUrl: appToupdate.gitUrl, projectName: appToupdate.name, appId: appToupdate._id}), // data can be `string` or {object}!
             method: 'POST' // or 'PUT'
           })
           .then(response => response.json())

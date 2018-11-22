@@ -10,6 +10,7 @@ module.exports = function (app) {
         let payload = {
             gitUrl: req.body.gitUrl,
             projectName: req.body.projectName,
+            appId: req.body.appId,
             res: res
         }
 

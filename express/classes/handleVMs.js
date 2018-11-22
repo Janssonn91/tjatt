@@ -141,21 +141,16 @@ services:
       .then(() => {
         console.log("Pulled repo from: " + payload.gitUrl);
       })
-      .then(this.restart_docker_container())  
+      .then(this.restart_docker_container(payload))  
       .catch(err => { console.log("error", err); payload.res.json('err'); })
   }
 
-  static restart_docker_container() {
+  static restart_docker_container(payload) {
     docker.container.list()
       .then(containers => {
-        let containerToRestart = containers.filter(container => {
-          if(container.name === "paulinahtmusicplayer49154_app") {
-            console.log("träff");
-            return true;
-          } else {
-            console.log("miss");
-            return false;
-          }
+        let containerToRestart = containers.map(containers => {
+          console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
+          //get correct container by name or id?
         })
       });
   }
