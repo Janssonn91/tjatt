@@ -7,8 +7,8 @@ const simplegit = require("simple-git/promise");
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  //socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -135,8 +135,7 @@ services:
   }
 
   static git_pull(payload) {
-    simplegit()
-      .silent(false)
+    require('simple-git/promise')(payload.localPath)
       .pull()
       .then(() => {
         console.log("Pulled repo from: " + payload.gitUrl);
