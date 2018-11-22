@@ -23,7 +23,7 @@ export const imgPath = '/images/placeholder.png';
     isOpen: false,
     keyboard: true,
     toggle: this.openModalDeleteContact.bind(this),
-    channelName: this.props.match.params.id,
+    channel: this.openModalDeleteContact.bind(this),
   }
 
   @observable collapseOpen = false;
@@ -66,8 +66,9 @@ export const imgPath = '/images/placeholder.png';
     this.props.userStore.cleanUpGroupModal();
   }
 
-  openModalDeleteContact() {
+  openModalDeleteContact(channel) {
     this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
+    this.deleteContactModalOpen.channel = channel;
   }
 
   logout() {

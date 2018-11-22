@@ -49,7 +49,7 @@
                     :
                     <span
                       className="d-inline-block float-right"
-                      onClick={() => this.openModalDeleteContact()} >
+                      onClick={() => this.openModalDeleteContact(channel)} >
                       <i className="far fa-times-circle align-middle"></i>
                     </span>}
                 </div>
