@@ -38,13 +38,13 @@ import ScrollableFeed from 'react-scrollable-feed';
   }
 
   removeFromSearchedUsers = (user) => {
-    const addedUser = this.searchContact.find(u => u._id === user._id);
-    const index = this.searchContact.indexOf(addedUser);
+    const index = this.searchContact.findIndex(u => u._id.toString() === user._id.toString());
     this.searchContact.splice(index, 1);
   }
 
   removeFromSelectedUser = (user) => {
-    this.searchContact.push(user);
+    this.searchContact.unshift(user);
+
   }
 
   groupNameChange(e) {
