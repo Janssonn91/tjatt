@@ -20,7 +20,7 @@ module.exports = class HandleVMs {
       .clone(payload.gitUrl, payload.localPath)
       .then(err => {
         console.log("Downloaded repo from: " + payload.gitUrl);
-        console.log("Proceeding with building Docker image")
+        console.log("Proceeding with building Docker")
         this.prepare_docker_files(payload);
       })
       .catch(err => { console.log("error", err); payload.res.json('err'); });
@@ -121,7 +121,6 @@ services:
 
   
   static start_containers_composer(payload) {
-    console.log(payload);
     exec(`docker-compose up -d`, {
       cwd: payload.localPath
     }, (err, stdout, stderr) => {
@@ -135,13 +134,28 @@ services:
   }
 
   static git_pull(payload) {
-    require('simple-git/promise')(payload.localPath)
+    simplegit(payload.localPath)
+      .silent()
       .pull()
       .then(() => {
         console.log("Pulled repo from: " + payload.gitUrl);
       })
-      .then(this.restart_docker_container(payload))  
+      .then(this.docker_rebuild_image(payload))  
       .catch(err => { console.log("error", err); payload.res.json('err'); })
+  }
+
+  static docker_rebuild_image(payload) {
+    exec(`docker-compose build`, {
+      cwd: payload.localPath
+    }, (err, stdout, stderr) => {
+      if (err) {
+        throw (err);
+      }
+      //let response = Object.assign({}, payload, {res: null})
+      //payload.res.json(response);
+      console.log(stdout || stderr);
+      this.start_containers_composer(payload)
+    });
   }
 
   static restart_docker_container(payload) {
