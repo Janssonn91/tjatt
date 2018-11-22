@@ -29,6 +29,7 @@ class ChannelStore {
   @observable adminLeavingError = false;
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
+  @observable unreadSystemMessage = {};
 
   // constructor() {
   // this.listenToPopState();
@@ -307,13 +308,13 @@ class ChannelStore {
 
 
 
-  createChannel(channelname, admin, members, group) {
+  createChannel(channelname, admin, members, group, open) {
     let newChannel = {
       channelname: channelname,
       admin: admin,
       members: members,
       favorite: false,
-      open: true,
+      open: open,
       group: group
     }
     Channel.create(newChannel);
@@ -323,7 +324,7 @@ class ChannelStore {
     const admin = userStore.user._id;
     const members = userStore.selectedGroupMember.map(user => user._id);
     members.push(admin);
-    this.createChannel(groupName, admin, members, true);
+    this.createChannel(groupName, admin, members, true, true);
     await sleep(60);
     Channel.find({ channelname: groupName }).then(channel => {
       this.changeChannel(channel[0]);

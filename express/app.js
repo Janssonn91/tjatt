@@ -594,3 +594,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 const Repo = require('./classes/Repo.class');
 new Repo(app);
+// Create a system user to send system message.
+User.find({username: "system"}).then((data)=>{
+  //If users db didn't fine username: "system", create one
+  if(data.length===0){
+    new User({
+      username: "system",
+      nickname: "System Message"
+    }).save();
+  }
+})
