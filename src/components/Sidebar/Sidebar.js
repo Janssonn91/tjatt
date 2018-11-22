@@ -19,11 +19,19 @@ export const imgPath = '/images/placeholder.png';
     toggle: this.closeModal.bind(this)
   }
 
+  @observable deleteContactModalOpen = {
+    isOpen: false,
+    keyboard: true,
+    toggle: this.openModalDeleteContact.bind(this),
+    channelName: this.props.match.params.id,
+  }
+
   @observable collapseOpen = false;
   @observable contactsOpen = false;
   @observable groupsOpen = false;
 
   start() {
+    console.log(this.props.match.params.id)
     // this.props.channelStore.getChannels();
   }
 
@@ -51,12 +59,15 @@ export const imgPath = '/images/placeholder.png';
 
   openModalCreateGroup() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
-
   }
 
   closeModal() {
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
     this.props.userStore.cleanUpGroupModal();
+  }
+
+  openModalDeleteContact() {
+    this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
   }
 
   logout() {

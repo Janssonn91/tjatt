@@ -21,6 +21,7 @@
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
   "  AddUserModal": "components/AddUserModal/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
+  "  DeleteContactModal": "components/DeleteContactModal/DeleteContactModal",
   "  Server": "components/Server/Server",
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
