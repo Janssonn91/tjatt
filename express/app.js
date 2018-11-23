@@ -560,18 +560,18 @@ app.post('/fileupload/:id', fileUpload.single('file'), async (req, res) => {
     return res.status(400)
   }
 
-  if (req.body.type === 'file') {
-    let message = new ChatMessage({
-      sender: req.session.userId,
-      contentType: 'file',
-      filePath: req.file.path.split('public')[1],
-      channel: req.params.id,
-      originalName: req.file.originalname
-    })
-    await message.save()
-    res.json(message)
+  const imageMimeTypes = ['jpeg', 'jpg', 'png', 'gif'];
+  const fileIsImage = imageMimeTypes.includes(req.file.mimetype.split('/')[1]);
 
-  }
+  let message = new ChatMessage({
+    sender: req.session.userId,
+    contentType: fileIsImage ? 'image' : 'file',
+    filePath: req.file.path.split('public')[1],
+    channel: req.params.id,
+    originalName: req.file.originalname
+  })
+  await message.save()
+  res.json(message)
 });
 
 

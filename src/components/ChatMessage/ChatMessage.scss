@@ -99,6 +99,7 @@ max-width: 630px;
     right: 15px;
   }
 }
+
 i.fa-pen {
   color: white;
   position: absolute;
@@ -155,4 +156,22 @@ i.fa-pen {
   border-bottom-color: lighten($blue, 8%);
   left:15px;
 }
+}
+
+.files {
+  text-decoration: underline;
+}
+
+.upload-image {
+  width: 100% !important;
+  height: 100%!important;
+}
+
+.img-upload-holder {
+  width: 200px;
+  height: 200px;
+  background-color:white;
+  border: 2px solid black;
+  padding: 5px;
+  border-radius: 5px;
 }

@@ -67,7 +67,8 @@ export default class Chat extends Component {
     e.stopPropagation();
     let formData = new FormData();
     formData.append('file', e.target.files[0]);
-    formData.append('type', 'file')
+    formData.append('type', 'file');
+    formData.append('type', 'image');
 
     fetch(`/api/fileupload/${this.props.channelStore.currentChannel._id}`, {
       method: 'POST',

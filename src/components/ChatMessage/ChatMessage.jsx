@@ -16,7 +16,8 @@
           </div>
           <div className="message my-message">
             {message.contentType === 'text' && message.text}
-            {message.contentType === 'file' && <a className="text-light" href={message.filePath} download={message.originalName}>{message.originalName}</a>}
+            {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
+            {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" /></div>}
 
             <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
               <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
