@@ -85,7 +85,6 @@
           </Col>
         </Row>
       </Form>
-      {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
       {this.showConfirmation && < Alert className="text-center alert" color="warning">Really ok to change your group?</Alert>}
       {this.props.channelStore.addedSuccess &&
         this.props.channelStore.removedSuccess &&

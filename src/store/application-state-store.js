@@ -24,8 +24,6 @@ class ApplicationStateStore {
             this.onLineUsers = message.loginUser;
             channelStore.getLoginStatus();
           });
-          // move !
-          
           socket.on('sign up', message => {
             channelStore.getUserList();
           });
@@ -40,7 +38,6 @@ class ApplicationStateStore {
             )
           });
         }
-       
         userStore.checkState();
       }).catch(err => {
         console.log("err", err)

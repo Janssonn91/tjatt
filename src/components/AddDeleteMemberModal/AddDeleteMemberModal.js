@@ -4,7 +4,6 @@ import ScrollableFeed from 'react-scrollable-feed';
 @inject('userStore', 'channelStore') @observer
 export default class AddDeleteMemberModal extends Component {
 
-  @observable error = false;
   @observable showConfirmation = false;
 
   async closeModal() {
@@ -26,10 +25,8 @@ export default class AddDeleteMemberModal extends Component {
   async reallyUpdateGroup() {
     await sleep(300);
     this.showConfirmation = false;
-    
 
-    const {channelStore}= this.props;
-
+    const { channelStore } = this.props;
     channelStore.viewMembers = [...channelStore.currentGroupMembers]; // Update viewMembers too
     const { _id, members: previousMemberIds } = channelStore.currentChannel;
     const newMemberIds = channelStore.currentGroupMembers.map(user => user._id);
@@ -59,12 +56,6 @@ export default class AddDeleteMemberModal extends Component {
     if (this.showConfirmation) {
       this.reallyUpdateGroup();
     }
-    //check if groupMember.length is large than 2
-    // if (this.props.channelStore.currentGroupMembers.length <= 2) {
-    //   this.error = true;
-    //   return;
-    // }
-    this.error = false;
     this.showConfirmation = true;
   }
 
