@@ -1,4 +1,3 @@
-
 // Require modules 
 const fs = require('fs');
 const path = require('path');
@@ -14,38 +13,6 @@ const docker = new Docker({
 
 
 module.exports = class HandleVMs {
-
-  static git_branch(payload) {
-    if(fs.existsSync(payload.localPath)){
-      simplegit(payload.localPath)
-        .branch(function (err, branchSummary) {
-          payload.res.json({branches: (branchSummary.all)})
-      })
-    }else{
-      simplegitPromise()
-      .silent(true)
-      .clone(payload.gitUrl, payload.localPath)
-      .then(err => {
-        simplegit(payload.localPath)
-        .branch(function (err, branchSummary) {
-          payload.res.json({branches: (branchSummary.all)})
-      })
-      })
-      .catch(err => { console.log("error", err); payload.res.json('err'); });
-    }
-  }
-  
-  static git_clone(payload) {
-    simplegitPromise()
-      .silent(true)
-      .clone(payload.gitUrl, payload.localPath)
-      .then(err => {
-        console.log("Downloaded repo from: " + payload.gitUrl);
-        console.log("Proceeding with building Docker")
-        this.prepare_docker_files(payload);
-      })
-      .catch(err => { console.log("error", err); payload.res.json('err'); });
-  }
 
   static async prepare_docker_files(payload) {
     let did = await this.create_docker_dockerfile(payload);
@@ -152,17 +119,6 @@ services:
       payload.res.json(response);
       console.log(stdout || stderr);
     });
-  }
-
-  static git_pull(payload) {
-    simplegitPromise(payload.localPath)
-      .silent()
-      .pull()
-      .then(() => {
-        console.log("Pulled repo from: " + payload.gitUrl);
-      })
-      .then(this.docker_rebuild_image(payload))  
-      .catch(err => { console.log("error", err); payload.res.json('err'); })
   }
 
   static docker_rebuild_image(payload) {

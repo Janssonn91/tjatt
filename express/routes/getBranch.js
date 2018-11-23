@@ -1,4 +1,5 @@
 const vms = require('../classes/handleVMs');
+const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
@@ -14,7 +15,7 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-        vms.git_branch(payload)
+        git.git_branch(payload)
     });
 
 };

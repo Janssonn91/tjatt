@@ -1,7 +1,9 @@
 const vms = require('../classes/handleVMs');
+const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const simplegit = require('simple-git');
 
 module.exports = function (app) {
     app.post('/updateRepo', async (req, res) => {
@@ -12,6 +14,6 @@ module.exports = function (app) {
             appId: req.body.appId,
             res: res
         }
-        vms.git_pull(payload);
+        git.git_pull(payload);
     });
 };
