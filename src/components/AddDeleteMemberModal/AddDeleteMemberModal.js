@@ -7,7 +7,17 @@ export default class AddDeleteMemberModal extends Component {
   @observable showConfirmation = false;
   @observable addedSuccess = false;
   @observable removedSuccess = false;
+  @observable searchedGroupCandidates = [];
+  @observable groupMembers = [];
 
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps !== this.props) {
+      this.groupMembers = nextProps.channelStore.currentGroupMembers;
+      return true;
+    }
+    return false;
+  }
   closeAlert() {
     this.addedSuccess = false;
     this.removedSuccess = false;
@@ -25,7 +35,9 @@ export default class AddDeleteMemberModal extends Component {
 
   searchCandidates = (e) => {
     const regex = new RegExp(e.target.value, 'i');
-    this.props.channelStore.searchCandidates(regex);
+    this.searchedGroupCandidates = this.props.channelStore.currentGroupCandidates.filter(user => {
+      return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)
+    })
   }
 
   updateUserChannel(channelId, newMemberIds, previousMemberIds) {
@@ -92,7 +104,7 @@ export default class AddDeleteMemberModal extends Component {
     const { channelStore } = this.props;
     channelStore.viewMembers = [...channelStore.currentGroupMembers]; // Update viewMembers too
     const { _id, members: previousMemberIds } = channelStore.currentChannel;
-    const newMemberIds = channelStore.currentGroupMembers.map(user => user._id);
+    const newMemberIds = this.groupMembers.map(user => user._id);
 
     fetch(`/api/channel/${_id}`, {
       method: 'PUT',
@@ -107,12 +119,12 @@ export default class AddDeleteMemberModal extends Component {
       .then(result => {
         if (result.success) {
           this.updateUserChannel(_id, newMemberIds, previousMemberIds);
+          this.closeModal();
         }
       })
       .catch(err => {
         console.log(err);
       });
-    this.closeModal();
   }
 
   updateGroup() {
@@ -122,8 +134,21 @@ export default class AddDeleteMemberModal extends Component {
     this.showConfirmation = true;
   }
 
-
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
   };
+
+  selectOneForGroup(user) {
+    this.groupMembers.unshift(user);
+    const addedUser = this.searchedGroupCandidates.find(u => u._id === user._id);
+    const index = this.searchedGroupCandidates.indexOf(addedUser);
+    this.searchedGroupCandidates.splice(index, 1);
+  }
+
+  removeFromSelect(user) {
+    this.searchedGroupCandidates.unshift(user);
+    const addedUser = this.groupMembers.find(u => u._id === user._id);
+    const index = this.groupMembers.indexOf(addedUser);
+    this.groupMembers.splice(index, 1);
+  }
 }
