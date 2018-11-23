@@ -1,0 +1,21 @@
+.infopage {
+  h2 {
+
+  }
+  .main-info {
+    overflow: auto!important;
+    max-height: 75vh !important;
+    .row.settings-info, .row.sidebar-info {
+      img {
+        width: unset;
+        height: unset;
+      }
+    }
+    .settings-info {
+      // margin-bottom: 2rem!important;
+    }
+  }
+  hr {
+    margin: 2rem 0;
+  }
+}
