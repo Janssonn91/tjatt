@@ -4,6 +4,7 @@ import {
 import {
   renderReporter
 } from 'mobx-react';
+import { applicationStateStore } from './application-state-store';
 class ChannelStore {
   //@observable newChannel = [];
   @observable myChannels = [];
@@ -87,7 +88,7 @@ class ChannelStore {
       messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
         count++;
       }})
-      if(c._id !== this.systemChannel){
+      if(c._id !== applicationStateStore.systemChannel){
         if (c.group) {
           this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
           this.groupChannels.push(this.channelDict[c._id]);
