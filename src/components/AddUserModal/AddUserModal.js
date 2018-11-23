@@ -40,7 +40,7 @@ import './AddUserModal.scss';
     this.props.channelStore.createChannel(channelname, admin, members, false, false);
     await sleep(60);
     Channel.find({ channelname: channelname }).then(channel => {
-      socket.emit('system message', {newChannel: channel[0], invitee: userId, inviter: user._id})
+      socket.emit('system', {newChannel: channel[0], invitee: userId, inviter: user._id})
       this.props.channelStore.updateContactChannels(channel[0]);
 
       // add contact into my contact

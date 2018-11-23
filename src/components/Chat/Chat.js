@@ -21,7 +21,7 @@ jsemoji.supports_css = false;
 jsemoji.allow_native = false;
 jsemoji.replace_mode = 'unified';
 
-@inject('userStore', 'channelStore') @observer
+@inject('userStore', 'channelStore', 'applicationStateStore') @observer
 export default class Chat extends Component {
 
   @observable emoji = '';
@@ -59,7 +59,14 @@ export default class Chat extends Component {
 
 
   start() {
-
+    this.setupMessageListener();
+   
+    // observe(this.props.userStore, "isLoggedIn", ()=>{
+    //   if(this.props.userStore.isLoggedIn){
+    //     this.setupMessageListener();
+    //     console.log("observing login")
+    //   }
+    // })
 
   }
 
@@ -147,10 +154,63 @@ export default class Chat extends Component {
     }
     await sleep(10);
 
+    
+
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
+
+  setupMessageListener(){
+    const {channelStore} = this.props;
+    socket.off('chat message');
+    socket.on(
+      'chat message',
+      (messages) => {
+        for (let message of messages) {
+          let time = new Date(message.time);
+          console.log(time)
+          if (message.channel === channelStore.currentChannel._id) {
+            let m=  {
+              channel: message.channel,
+              sender: message.sender,
+              star: false,
+              text: message.text,
+              textType: message.textType,
+              time: message.time,
+              unread: true,
+            };
+            // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
+            channelStore.channelChatHistory.push(m)
+          }
+          if (message.sender) {
+            channelStore.userDict[message.sender].status = true;
+          }
+          if (message.channel !== toJS(channelStore.currentChannel)._id) {
+            channelStore.groupChannels.forEach(channel => {
+              if (channel._id === message.channel) {
+                if (!channel.messageNum) {
+                  channel.messageNum = 1;
+                } else {
+                  channel.messageNum++;
+                }
+              }
+            })
+            channelStore.contactChannels.forEach(channel => {
+              if (channel._id === message.channel) {
+                if (!channel.messageNum) {
+                  channel.messageNum = 1;
+                } else {
+                  channel.messageNum++;
+                }
+              }
+            })
+          }
+        }
+      })
+  }
+
+
 
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;

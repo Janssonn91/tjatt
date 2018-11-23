@@ -69,9 +69,11 @@
   "{autorun}": "mobx",
   "{reaction}": "mobx",
   "{toJS}": "mobx",
+  "{observe}": "mobx",
   "{action}": "mobx",
   "{inject}": "mobx-react",
   "{observer}": "mobx-react",
+  
 
   "/*7": "------------------- jQuery -------------------",
   "jQuery": "jquery",

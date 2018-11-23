@@ -2,7 +2,7 @@ import channelStore from './channel-store';
 import { applicationStateStore } from "./application-state-store";
 
 class UserStore {
-  @observable user = { channel: [], contact: [] };
+  @observable user = {_id:"", channel: [], contact: [] };
   @observable isLoggedIn = false;
   @observable checkedLoginState = false;
   @observable candidates = []; // AddUserModal
@@ -71,9 +71,6 @@ class UserStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
-    // const addedUser = this.groupCandidates.find(u => u._id === user._id);
-    // const index = this.groupCandidates.indexOf(addedUser);
-    // this.groupCandidates.splice(index, 0);
 
   }
 

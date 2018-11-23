@@ -86,9 +86,7 @@ io.on('connection', (socket) => {
 
   let user = socket.handshake.session.loggedInUser;
   
-  channel.findOne({channelname: user._id + "system"}).then(data=>{
-    const systemChannel = data._id;
-  })
+  
   
 
   socket.on('online', (userId) => {
@@ -124,7 +122,7 @@ io.on('connection', (socket) => {
         throw err;
       });
     }).catch(err=> {throw err});
-    
+
     socket.broadcast.emit('sign up', {
       username: socket.username
     });
@@ -136,6 +134,9 @@ io.on('connection', (socket) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
     console.log("onlineuser after login", onlineUsers)
+    channel.findOne({channelname: userId + "system"}).then(data=>{
+      const systemChannel = data._id;
+    })
     User.findOne({_id: userId}).then(u=> {
       let channels = u.channel;
       console.log("length", channels.length, u.nickname)
@@ -177,8 +178,8 @@ io.on('connection', (socket) => {
     })
   })
   
-  socket.on('system message', async (data) => {
-    socket.broadcast.emit('system message', data);
+  socket.on('system', async (data) => {
+    socket.broadcast.emit('system', data);
 
     //join group channel 
     if(!data.invitee){
@@ -199,17 +200,37 @@ io.on('connection', (socket) => {
     // }
   });
 
-  socket.on('invitation', (data)=>{
-    socket.join(data.newChannel._id, ()=>{
-      console.log("socket room", socket.rooms)
-    });
+ 
+    
+// system textType: 
+// invitation--system send invitation
+// confirm: invitation is confirmed channel render for both users
+// decline: decline invitation, channel will not render
+// kicked out: kicked out from group
+socket.on('invitation', async (data)=>{
+  // socket.join(data.newChannel._id, ()=>{
+  //   console.log("socket room", socket.rooms)
+  // });
+
+  //sender: "system", channel: "system channel", text: "inviter's id" 
     let systemMessage = new ChatMessage({
       sender: ai,
-      text: data.inviter,
+      text: data.inviter + "&toJoin&" + data.newChannel._id,
+      textType: "invitation",
+      unread: true,
+      channel: systemChannel,
+    });
 
-
-    })
-  })
+    await systemMessage.save();
+    
+    io.to(systemChannel).emit('system message', [{
+      sender: systemMessage.sender,
+      text: systemMessage.text,
+      textType: systemMessage.textType,
+      unread: systemMessage.unread,
+      channel: systemMessage.channel,
+    }] );
+  });
 
 
 
@@ -240,7 +261,6 @@ io.on('connection', (socket) => {
     }]);
   });
 
-  //socket.on('channel', handleGetChannels);
 
   socket.on('disconnect', () => {
     if (user) {

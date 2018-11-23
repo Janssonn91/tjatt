@@ -66,7 +66,7 @@
               : <h6 className="text-secondary pl-3 pt-1">Add a contact on the  <strong className="plus-text">+</strong></h6>
             }
             {this.props.channelStore.contactChannels.map((channel, i) =>
-              channel.open ?
+              // channel.open ?
               <Link
                 to={`/${this.props.userStore.user.username}/${channel.channelname}`}
                 key={i}
@@ -87,8 +87,8 @@
                     </span>}
                 </div>
               </Link>
-              :
-              <div key={i}></div>
+              // :
+              // <div key={i}></div>
             )}
           </CardBody>
         </Card>
