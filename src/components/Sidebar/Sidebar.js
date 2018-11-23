@@ -87,7 +87,7 @@ export const imgPath = '/images/placeholder.png';
     socket.on('system', async (data)=>{
       if(data.invitee){
         if(data.invitee === userStore.user._id){
-          socket.emit('invitation', data);
+         // socket.emit('invitation', data);
         }
       }
 
