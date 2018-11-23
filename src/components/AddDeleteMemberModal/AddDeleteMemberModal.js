@@ -111,7 +111,6 @@ export default class AddDeleteMemberModal extends Component {
     this.showConfirmation = false;
 
     const { channelStore } = this.props;
-    channelStore.viewMembers = [...channelStore.currentGroupMembers]; // Update viewMembers too
     const { _id, members: previousMemberIds } = channelStore.currentChannel;
     const newMemberIds = this.groupMembers.map(user => user._id);
 

@@ -15,7 +15,6 @@ class ChannelStore {
   @observable groupChannels = [];
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
-  @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -27,7 +26,7 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessage = {};
 
-  
+
   //TODO: as a new user, introduction page shows instead of chat page
 
   getContactName(ids) {
@@ -71,13 +70,13 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
-    
+
     this.myChannels.map(async (c) => {
       let messages = await Message.find({ channel: c._id });
       let count = 0;
       messages.forEach(message => {
         if (message.sender !== userStore.user._id && message.unread) {
-        count++;
+          count++;
         }
       })
       if (c.group) {
@@ -111,7 +110,6 @@ class ChannelStore {
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
-        this.viewMembers = [...this.currentGroupMembers]; // Copy members for viewMembersModal
       });
   }
 
@@ -178,7 +176,7 @@ class ChannelStore {
   }
 
   updateContactChannels(channel) {
-     // channel.channelname is "id and id", so we need to get name
+    // channel.channelname is "id and id", so we need to get name
     let user = this.getContactName(channel.members);
     channel.channelname = user.name;
     channel.image = user.img;
