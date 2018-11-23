@@ -26,7 +26,32 @@ export default class AddDeleteMemberModal extends Component {
   async reallyUpdateGroup() {
     await sleep(300);
     this.showConfirmation = false;
-    this.props.channelStore.updateGroup();
+    
+
+    const {channelStore}= this.props;
+
+    channelStore.viewMembers = [...channelStore.currentGroupMembers]; // Update viewMembers too
+    const { _id, members: previousMemberIds } = channelStore.currentChannel;
+    const newMemberIds = channelStore.currentGroupMembers.map(user => user._id);
+
+    fetch(`/api/channel/${_id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        members: newMemberIds
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          channelStore.updateUserChannel(_id, newMemberIds, previousMemberIds);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.closeModal();
   }
 
@@ -42,6 +67,7 @@ export default class AddDeleteMemberModal extends Component {
     this.error = false;
     this.showConfirmation = true;
   }
+
 
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })

@@ -32,6 +32,7 @@ export const imgPath = '/images/placeholder.png';
 
   start() {
     console.log(this.props.match.params.id)
+    this.setupSystemMessage();
     // this.props.channelStore.getChannels();
   }
 
@@ -77,6 +78,50 @@ export const imgPath = '/images/placeholder.png';
       this.props.userStore.logout(); // set isLoggedIn false
       this.props.history.push('/');
       socket.emit("logout", this.props.userStore.user._id);
+    });
+  }
+
+  setupSystemMessage(){
+    const {userStore, channelStore} = this.props;
+    socket.off('system');
+    socket.on('system', async (data)=>{
+      if(data.invitee){
+        if(data.invitee === userStore.user._id){
+          socket.emit('invitation', data);
+        }
+      }
+
+      // group channel
+      if(data.newChannel){
+        let c= data.newChannel;
+        let id= userStore.user._id.toString();
+        for(let i of c.members) {
+          if(i.toString()===id ){
+            if(c.group){
+              channelStore.groupChannels.push(c);
+              console.log(channelStore.groupChannels)
+            }
+          //   else{
+          //     let name = await channelStore.getContactName(c.members);
+          //     if (name !== undefined) {
+          //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
+          //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+          // } 
+          //   }
+            socket.emit('newChannel', data.newChannel);
+          }
+        }
+      }
+
+    });
+
+    socket.off('system message');
+    socket.on('system message', message => {
+      console.log('Message from server ', message);
+    });
+    socket.off('newChannel');
+    socket.on('newChannel', (data)=>{
+        
     });
   }
 
