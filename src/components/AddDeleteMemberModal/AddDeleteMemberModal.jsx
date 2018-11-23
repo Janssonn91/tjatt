@@ -7,15 +7,16 @@
     <ModalBody>
       {this.props.channelStore.currentGroupMembers.length > 0 &&
         <div className="selected-members d-md-none d-inline-block">
+          <span className="note d-inline-block"><i className="fas fa-circle admin note"></i>Admin</span>
           <ScrollableFeed forceScroll={true}>
             {this.props.channelStore.currentGroupMembers.map((user, i) =>
               <div key={i} className="nav-link pl-0 d-inline-block">
                 <div className="wrapper d-block">
                   {user._id !== this.props.userStore.user._id &&
-                    user._id !== this.props.channelStore.groupAdminId &&
+                    !this.props.channelStore.currentChannelAdmins.includes(user._id) &&
                     <i className="fas fa-times-circle icon" onClick={() => this.props.channelStore.removeFromSelect(user)}></i>
                   }
-                  {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
+                  {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
                   <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
                 </div>
                 <div className="profile">
@@ -33,7 +34,6 @@
           </ScrollableFeed>
         </div>
       }
-
       <Form className="m-0">
         <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
