@@ -85,6 +85,7 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
+ 
 
   socket.on('online', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
@@ -153,12 +154,39 @@ io.on('connection', (socket) => {
     })
   })
   
-  socket.on('system message', (data) => {
+  socket.on('system message', async (data) => {
     socket.broadcast.emit('system message', data);
+
+    //join group channel 
+    if(!data.invitee){
+      socket.join(data.newChannel._id, ()=>{
+        console.log("socket room", socket.rooms)
+      });
+    }
+    
+    //  if(data.invitee){
+    //    let s=""
+    //   await User.findOne({username: "system"}).then(user=>s=user._id);
+    //   let systemMessage={
+    //     receiver: data.invitee,
+    //     sender: s,
+    //     text: 
+    //   }
+    //   socket.emit('chat message', )
+    // }
+  });
+
+  socket.on('invitation', (data)=>{
     socket.join(data.newChannel._id, ()=>{
       console.log("socket room", socket.rooms)
+    });
+    let systemMessage = new ChatMessage({
+      sender: ai,
+      text: data.inviter,
+
+
     })
-  });
+  })
 
 
 
@@ -595,12 +623,48 @@ app.post('/upload', upload.single('file'), (req, res) => {
 const Repo = require('./classes/Repo.class');
 new Repo(app);
 // Create a system user to send system message.
-User.find({username: "system"}).then((data)=>{
+var ai="";
+var allUsers=[];
+ User.find().then(users=>{
+   users.forEach(u=>{
+     allUsers.push(u._id);
+   });
+ }
+ )
+
+User.findOne({username: "system"}).then(async (data)=>{
   //If users db didn't fine username: "system", create one
-  if(data.length===0){
-    new User({
+  if(!data){
+    await new User({
       username: "system",
       nickname: "System Message"
-    }).save();
+    }).save().then(user => {ai= user._id})
+
+    // Create channels between system and users. 
+    //These channels are used to save system messages.
+    allUsers.forEach(user=>{
+      new channel({
+        channelname: user + "system",
+        open: true,
+        group: false,
+      }).save().then((c)=>{
+        User.findOneAndUpdate(
+          { _id: user},
+          { $push: { channel: c._id}}
+          ).catch(err=>{
+            throw err;
+          });
+        User.findOneAndUpdate(
+          {_id: ai},
+          {$push: { channel: c._id}}
+        ).catch(err=>{
+          throw err;
+        });
+      }).catch(err=> {throw err})
+    })
+
+  }
+  else{
+    ai = data._id;
   }
 })
