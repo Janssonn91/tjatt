@@ -87,7 +87,7 @@ import './Signup.scss';
           this.props.history.push(`/${this.props.userStore.user.username}`);
           this.usernameExist = false;
           this.sendWelcomeMail(username, useremail);
-          socket.emit('sign up', this.user);
+          socket.emit('sign up', res.user);
         } else {
           if(res.userResult){
             this.usernameExist = true;

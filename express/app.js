@@ -85,7 +85,11 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
- 
+  
+  channel.findOne({channelname: user._id + "system"}).then(data=>{
+    const systemChannel = data._id;
+  })
+  
 
   socket.on('online', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
@@ -102,6 +106,25 @@ io.on('connection', (socket) => {
   socket.on('sign up', (user) => {
     console.log("sign up", user)
     socket.username = user;
+    new channel({
+      channelname: user._id + "system",
+      open: true,
+      group: false,
+    }).save().then((c)=>{
+      User.findOneAndUpdate(
+        { _id: user._id},
+        { $push: { channel: c._id}}
+        ).catch(err=>{
+          throw err;
+        });
+      User.findOneAndUpdate(
+        {_id: ai},
+        {$push: { channel: c._id}}
+      ).catch(err=>{
+        throw err;
+      });
+    }).catch(err=> {throw err});
+    
     socket.broadcast.emit('sign up', {
       username: socket.username
     });
