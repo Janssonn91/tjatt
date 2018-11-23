@@ -5,14 +5,20 @@ import ScrollableFeed from 'react-scrollable-feed';
 export default class AddDeleteMemberModal extends Component {
 
   @observable showConfirmation = false;
+  @observable addedSuccess = false;
+  @observable removedSuccess = false;
+
+  closeAlert() {
+    this.addedSuccess = false;
+    this.removedSuccess = false;
+  }
 
   async closeModal() {
     await sleep(1500);
-    if (this.props.channelStore.addedSuccess && this.props.channelStore.removedSuccess) {
+    if (this.addedSuccess && this.removedSuccess) {
       this.props.toggle();
       this.props.channelStore.getChannelList();
-      //this.props.channelStore.getChannels();
-      this.props.channelStore.closeAlert();
+      this.closeAlert();
       this.showConfirmation = false;
     }
   }
@@ -20,6 +26,63 @@ export default class AddDeleteMemberModal extends Component {
   searchCandidates = (e) => {
     const regex = new RegExp(e.target.value, 'i');
     this.props.channelStore.searchCandidates(regex);
+  }
+
+  updateUserChannel(channelId, newMemberIds, previousMemberIds) {
+    const wasMember = user => previousMemberIds.some(id => id === user);
+    const isMember = user => newMemberIds.some(id => id === user);
+    const addedUser = newMemberIds.filter(user => !wasMember(user));
+    const removedUser = previousMemberIds.filter(user => !isMember(user));
+
+    if (addedUser.length > 0) {
+      addedUser.forEach(id => {
+        fetch(`/api/users/${id}/add`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            channel: channelId
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (result.succes) {
+              this.addedSuccess = true;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.addedSuccess = false;
+          })
+      });
+    }
+    this.addedSuccess = true;
+
+    if (removedUser.length > 0) {
+      removedUser.forEach(id => {
+        fetch(`/api/users/${id}/remove`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            channel: channelId
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (result.succes) {
+              this.removedSuccess = true;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.removedSuccess = false;
+          })
+      });
+    }
+    this.removedSuccess = true;
   }
 
   async reallyUpdateGroup() {
@@ -43,7 +106,7 @@ export default class AddDeleteMemberModal extends Component {
       .then(res => res.json())
       .then(result => {
         if (result.success) {
-          channelStore.updateUserChannel(_id, newMemberIds, previousMemberIds);
+          this.updateUserChannel(_id, newMemberIds, previousMemberIds);
         }
       })
       .catch(err => {

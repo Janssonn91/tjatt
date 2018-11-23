@@ -16,9 +16,6 @@ class ChannelStore {
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable searchedGroupCandidates = [];
-  @observable groupAdminId = "";
-  @observable addedSuccess = false;
-  @observable removedSuccess = false;
   @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
@@ -148,7 +145,6 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
-      this.groupAdminId = channel.admin[0];
     }
   }
 
@@ -256,71 +252,6 @@ class ChannelStore {
 
     // Add user also to searchedGroupCandidates
     this.searchedGroupCandidates.push(user);
-  }
-
-  updateUserChannel(channelId, newMemberIds, previousMemberIds) {
-    const wasMember = user => previousMemberIds.some(id => id === user);
-    const isMember = user => newMemberIds.some(id => id === user);
-    const addedUser = newMemberIds.filter(user => !wasMember(user));
-    const removedUser = previousMemberIds.filter(user => !isMember(user));
-
-    if (addedUser.length > 0) {
-      addedUser.forEach(id => {
-        fetch(`/api/users/${id}/add`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            channel: channelId
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (result.succes) {
-              this.addedSuccess = true;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            this.addedSuccess = false;
-          })
-      });
-    }
-    this.addedSuccess = true;
-
-    if (removedUser.length > 0) {
-      removedUser.forEach(id => {
-        fetch(`/api/users/${id}/remove`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            channel: channelId
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (result.succes) {
-              this.removedSuccess = true;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            this.removedSuccess = false;
-          })
-      });
-    }
-    this.removedSuccess = true;
-
-  }
-
- 
-
-  @action closeAlert() {
-    this.addedSuccess = false;
-    this.removedSuccess = false;
   }
 
   @action resetCurrentChannel() {

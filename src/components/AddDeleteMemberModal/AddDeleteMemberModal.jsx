@@ -86,8 +86,8 @@
         </Row>
       </Form>
       {this.showConfirmation && < Alert className="text-center alert" color="warning">Really ok to change your group?</Alert>}
-      {this.props.channelStore.addedSuccess &&
-        this.props.channelStore.removedSuccess &&
+      {this.addedSuccess &&
+        this.removedSuccess &&
         < Alert className="text-center alert" color="success">Saved successfully!</Alert>
       }
     </ModalBody>
