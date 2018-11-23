@@ -79,13 +79,16 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
+let systemChannel = "";
+let ai = "";
+
 let onlineUsers = [];
 
 io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  let systemChannel = "";
+ 
   
   
 
@@ -276,9 +279,13 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/hello', (req, res) => {
-  res.send('hello')
+app.get('/system', (req, res)=>{
+  res.json({systemChannel: systemChannel, systemUserId: ai})
 })
+
+// app.get('/hello', (req, res) => {
+//   res.send('hello')
+// })
 
 app.post('/pwcheck', (req, res) => {
   const hash = hasha(
@@ -666,7 +673,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 const Repo = require('./classes/Repo.class');
 new Repo(app);
 // Create a system user to send system message.
-var ai="";
 var allUsers=[];
  User.find().then(users=>{
    users.forEach(u=>{

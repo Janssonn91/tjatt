@@ -30,6 +30,7 @@ class ChannelStore {
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
   @observable unreadSystemMessage = {};
+  
 
   
   //TODO: as a new user, introduction page shows instead of chat page
@@ -75,30 +76,39 @@ class ChannelStore {
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels = [];
+
+  
+  
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
-    
+  
     this.myChannels.map(async (c) => {
       let messages = await Message.find({channel: c._id});
       let count=0;
       messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
         count++;
       }})
-      if (c.group) {
-        this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
-        this.groupChannels.push(this.channelDict[c._id]);
-      } else {
-        let name = this.getContactName(c.members);
-        // TODO: "name" become sometimes undefined (Till Hui från Nana)
-        if (name !== undefined) {
-          this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
-          this.contactChannels.push(this.channelDict[c._id]);
+      if(c._id !== this.systemChannel){
+        if (c.group) {
+          this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+          this.groupChannels.push(this.channelDict[c._id]);
+        } else {
+          let name = this.getContactName(c.members);
+          // TODO: "name" become sometimes undefined (Till Hui från Nana)
+          if (name !== undefined) {
+            this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+            this.contactChannels.push(this.channelDict[c._id]);
+          }
+          // let n = c.members.filter(id=>{ return id!== userStore.user._id});
+          // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+          // this.contactChannels.push(this.channelDict[c._id])
         }
-        // let n = c.members.filter(id=>{ return id!== userStore.user._id});
-        // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
-        // this.contactChannels.push(this.channelDict[c._id])
+       
       }
+      
 
-    })
+    });
+
+
   }
 
 

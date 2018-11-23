@@ -5,6 +5,8 @@ class ApplicationStateStore {
   @observable onLineUsers = [];
   @observable systemMessage = {};
   @observable confirmInvite = "";
+  @observable systemId = "";
+  @observable systemChannel = "";
 
 
   @action checkIfLoggedIn() {
@@ -15,7 +17,12 @@ class ApplicationStateStore {
       .then(res => {
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          userStore.fetchContact();
+          fetch('/api/system').then(res => res.json()).then(data=>{
+            this.systemChannel = data.systemChannel;
+            this.systemId = data.systemUserId;
+            userStore.fetchContact();
+          })
+          
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
 
