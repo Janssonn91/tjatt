@@ -71,13 +71,13 @@ class UserStore {
 
   @action selectOneForGroup(user) {
     this.selectedGroupMember.push(user);
-    const addedUser = this.groupCandidates.find(u => u._id === user._id);
-    const index = this.groupCandidates.indexOf(addedUser);
-    this.groupCandidates.splice(index, 1);
+    // const addedUser = this.groupCandidates.find(u => u._id === user._id);
+    // const index = this.groupCandidates.indexOf(addedUser);
+    // this.groupCandidates.splice(index, 0);
+
   }
 
   @action removeFromSelect(user) {
-    this.groupCandidates.push(user);
     const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
     const index = this.selectedGroupMember.indexOf(addedUser);
     this.selectedGroupMember.splice(index, 1);
