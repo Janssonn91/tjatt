@@ -18,6 +18,15 @@ export default class AddDeleteMemberModal extends Component {
     }
     return false;
   }
+
+  checkboxHandler = (e) => {
+    if (e.target.checked) {
+      this.searchedGroupCandidates = this.props.channelStore.currentGroupCandidates;
+    } else {
+      this.searchedGroupCandidates = [];
+    }
+  }
+
   closeAlert() {
     this.addedSuccess = false;
     this.removedSuccess = false;
