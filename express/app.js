@@ -210,30 +210,30 @@ io.on('connection', (socket) => {
 // confirm: invitation is confirmed channel render for both users
 // decline: decline invitation, channel will not render
 // kicked out: kicked out from group
-// socket.on('invitation', async (data)=>{
-//   // socket.join(data.newChannel._id, ()=>{
-//   //   console.log("socket room", socket.rooms)
-//   // });
+socket.on('invitation', async (data)=>{
+  // socket.join(data.newChannel._id, ()=>{
+  //   console.log("socket room", socket.rooms)
+  // });
 
-//   //sender: "system", channel: "system channel", text: "inviter's id" 
-//     let systemMessage = new ChatMessage({
-//       sender: ai,
-//       text: data.inviter + "&toJoin&" + data.newChannel._id,
-//       textType: "invitation",
-//       unread: true,
-//       channel: systemChannel,
-//     });
+  //sender: "system", channel: "system channel", text: "inviter's id" 
+    let systemMessage = new ChatMessage({
+      sender: ai,
+      text: data.inviter + "&toJoin&" + data.newChannel._id,
+      textType: "invitation",
+      unread: true,
+      channel: systemChannel,
+    });
 
-//     await systemMessage.save();
+    await systemMessage.save();
     
-//     io.to(systemChannel).emit('system message', [{
-//       sender: systemMessage.sender,
-//       text: systemMessage.text,
-//       textType: systemMessage.textType,
-//       unread: systemMessage.unread,
-//       channel: systemMessage.channel,
-//     }] );
-//   });
+    io.to(systemChannel).emit('system message', [{
+      sender: systemMessage.sender,
+      text: systemMessage.text,
+      textType: systemMessage.textType,
+      unread: systemMessage.unread,
+      channel: systemMessage.channel,
+    }] );
+  });
 
 
 

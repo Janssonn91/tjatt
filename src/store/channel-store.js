@@ -94,7 +94,6 @@ class ChannelStore {
           this.groupChannels.push(this.channelDict[c._id]);
         } else {
           let name = this.getContactName(c.members);
-          // TODO: "name" become sometimes undefined (Till Hui från Nana)
           if (name !== undefined) {
             this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
             this.contactChannels.push(this.channelDict[c._id]);
