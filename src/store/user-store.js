@@ -52,7 +52,8 @@ class UserStore {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.user._id);
+        let withoutMe = users.filter(user => user._id !== this.user._id);
+        withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
 
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);

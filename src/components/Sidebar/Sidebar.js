@@ -87,7 +87,7 @@ export const imgPath = '/images/placeholder.png';
     socket.on('system', async (data)=>{
       if(data.invitee){
         if(data.invitee === userStore.user._id){
-         // socket.emit('invitation', data);
+         socket.emit('invitation', data);
         }
       }
 
@@ -99,6 +99,7 @@ export const imgPath = '/images/placeholder.png';
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
+              socket.emit('newChannel', data.newChannel);
               console.log(channelStore.groupChannels)
             }
           //   else{
@@ -108,7 +109,7 @@ export const imgPath = '/images/placeholder.png';
           //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
           // } 
           //   }
-            socket.emit('newChannel', data.newChannel);
+          
           }
         }
       }
