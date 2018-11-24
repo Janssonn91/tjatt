@@ -86,7 +86,6 @@
           </Col>
         </Row>
       </Form>
-      {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
     </ModalBody>
     <ModalFooter className="p-2">
       <Button className="btn btn-cancel" onClick={e => this.props.toggle()}>Cancel</Button>&nbsp;
