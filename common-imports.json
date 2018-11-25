@@ -28,6 +28,7 @@
   "  GitApps": "components/GitApps/GitApps",
   "  Spinner": "components/Spinner/Spinner",
   "  Loading": "components/Loading/Loading",
+  "  SystemMessagesModal" :"components/SystemMessagesModal/SystemMessagesModal",
 
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",

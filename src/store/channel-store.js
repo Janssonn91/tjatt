@@ -4,7 +4,9 @@ import {
 import {
   renderReporter
 } from 'mobx-react';
-import { applicationStateStore } from './application-state-store';
+import {
+  applicationStateStore
+} from './application-state-store';
 class ChannelStore {
   //@observable newChannel = [];
   @observable myChannels = [];
@@ -25,20 +27,48 @@ class ChannelStore {
   @observable adminLeavingError = false;
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
-  @observable unreadSystemMessage = {};
-  
+  //@observable unreadSystemMessages = [];
+  // hard code!
+  @observable unreadSystemMessages = [
+    {
+      textType: "invitation",
+      initiator: "pika",
+      targetChannel: "channel._id",
+      unread: true,
+    }
+    ,
+    {
+      textType: "decline",
+      initiator: "c",
+      targetChannel: "channel._id",
+      unread: true,
+    },
+    {
+      textType: "addedToGroup",
+      initiator: "Eevee",
+      targetChannel: "channelName",
+      unread: true,
+    }
+
+  ];
+  @observable unreadSystemMessageNum = "";
+
 
 
   //TODO: as a new user, introduction page shows instead of chat page
 
   getContactName(ids) {
-    let n = ids.filter(id => { return id !== userStore.user._id });
+    let n = ids.filter(id => {
+      return id !== userStore.user._id
+    });
     let u = this.userDict[n[0]];
     return u;
   }
 
   async getContactUrl(ids) {
-    let n = ids.filter(id => { return id !== userStore.user._id });
+    let n = ids.filter(id => {
+      return id !== userStore.user._id
+    });
     let contact = {};
     if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
@@ -53,7 +83,11 @@ class ChannelStore {
     let res = await fetch('/api/users');
     let user = await res.json();
     user.map((u) => {
-      return this.userDict[u._id] = { name: u.nickname, img: u.image, status: false };
+      return this.userDict[u._id] = {
+        name: u.nickname,
+        img: u.image,
+        status: false
+      };
     });
   }
 
@@ -72,33 +106,58 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
 
-  
-  
-    this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
+
+
+    this.myChannels = await Channel.find({
+      _id: userStore.user.channel,
+    }); // TODO: Added contact doesn't exist yet
 
     this.myChannels.map(async (c) => {
-      let messages = await Message.find({channel: c._id});
-      let count=0;
-      messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
-        count++;
-      }})
-      if(c._id !== applicationStateStore.systemChannel){
+      let messages = await Message.find({
+        channel: c._id
+      });
+      let count = 0;
+      messages.forEach(message => {
+        if (message.sender !== userStore.user._id && message.unread) {
+          count++;
+        }
+      })
+      if (c._id !== applicationStateStore.systemChannel) {
         if (c.group) {
-          this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+          this.channelDict[c._id] = {
+            _id: c._id,
+            channelname: c.channelname,
+            members: c.members,
+            admin: c.admin,
+            favorite: c.favorite,
+            group: c.group,
+            open: c.open,
+            messageNum: count
+          }
           this.groupChannels.push(this.channelDict[c._id]);
         } else {
           let name = this.getContactName(c.members);
           if (name !== undefined) {
-            this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+            this.channelDict[c._id] = {
+              _id: c._id,
+              channelname: name.name,
+              image: name.img,
+              members: c.members,
+              admin: c.admin,
+              favorite: c.favorite,
+              group: c.group,
+              open: c.open,
+              messageNum: count
+            }
             this.contactChannels.push(this.channelDict[c._id]);
           }
           // let n = c.members.filter(id=>{ return id!== userStore.user._id});
           // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
           // this.contactChannels.push(this.channelDict[c._id])
         }
-       
+
       }
-      
+
 
     });
 
@@ -165,7 +224,9 @@ class ChannelStore {
           body: JSON.stringify({
             unread: false
           }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }).then(res => res.json())
       }
     })
@@ -238,5 +299,3 @@ class ChannelStore {
 
 const channelStore = new ChannelStore();
 export default channelStore;
-
-

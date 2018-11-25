@@ -26,6 +26,12 @@ export const imgPath = '/images/placeholder.png';
     channel: this.openModalDeleteContact.bind(this),
   }
 
+  @observable systemMessagesModalOpen = {
+    isOpen: true,
+    keyboard:true,
+    toggle:this.openSystemMessageModal.bind(this),
+  }
+
   @observable collapseOpen = false;
   @observable contactsOpen = false;
   @observable groupsOpen = false;
@@ -72,6 +78,10 @@ export const imgPath = '/images/placeholder.png';
     this.deleteContactModalOpen.channel = channel;
   }
 
+  openSystemMessageModal(){
+    this.systemMessagesModalOpen.isOpen = !this.systemMessagesModalOpen.isOpen;
+  }
+
   logout() {
     fetch('/api/logout').then(() => {
       this.props.channelStore.resetCurrentChannel();
@@ -115,6 +125,8 @@ export const imgPath = '/images/placeholder.png';
       }
 
     });
+
+    
 
     socket.off('system message');
     socket.on('system message', message => {
