@@ -48,6 +48,24 @@ class ChannelStore {
       initiator: "Eevee",
       targetChannel: "channelName",
       unread: true,
+    },
+    {
+      textType: "removedFromGroup",
+      initiator: "d",
+      targetChannel: "channelName",
+      unread: true,
+    },
+    {
+      textType: "removeContact",
+      initiator: "e",
+      targetChannel: "channelName",
+      unread: true,
+    },
+    {
+      textType: "makeAdmin",
+      initiator: "f",
+      targetChannel: "channelName",
+      unread: true,
     }
 
   ];

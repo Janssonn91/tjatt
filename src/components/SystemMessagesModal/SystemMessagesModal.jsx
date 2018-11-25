@@ -9,24 +9,36 @@
       {toJS(this.props.channelStore.unreadSystemMessages).length>0 ?
       
       toJS(this.props.channelStore.unreadSystemMessages).map((message, i)=>
-      message.unread ?
+      <ListGroup key = {i}>
+      {message.unread ?
         message.textType==="invitation" ?
-        <div key={i} className="pr-0">
+        <ListGroupItem key={i} className="pr-0">
             <span>{message.initiator} wants to add you as a contact</span>  
             <span>
               <ButtonGroup size="sm">
-                <Button>No!</Button>
+                <Button>Decline</Button>
                 <Button>Confirm</Button>
               </ButtonGroup>
             </span>
-          </div>
+          </ListGroupItem>
           : message.textType==="decline" ?
-          <div key={i*10}>{message.initiator} has rejected your invitation</div>:
-          <div key={-i*10}></div>
-
-          
+          <ListGroupItem key={i}>
+          <span>{message.initiator} has rejected your invitation</span>
+          <span><Button size="sm">x</Button></span>
+          </ListGroupItem>
+          : message.textType === "addedToGroup" ?
+          <ListGroupItem key={i}>{message.initiator} has added you as a group member of {message.targetChannel}</ListGroupItem>
+          : message.textTyep === "removedFromGroup" ?
+          <ListGroupItem key={i}>{message.initiator} has removed you from group {message.targetChannel}</ListGroupItem>
+          : message.textType === "removeContact" ?
+          <ListGroupItem key={i}>You are nolonger contact with {message.initiator}</ListGroupItem>
+          : message.textType === "makeAdmin" ?
+          <ListGroupItem key={i}>You are now admin of {message.targetChannel}</ListGroupItem>
+          :
+          <div key={i}></div>
           : 
-          <div></div>
+          <div></div>}
+         </ListGroup> 
       
       )
    
