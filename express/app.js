@@ -79,13 +79,16 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
+let systemChannel = "";
+let ai = "";
+
 let onlineUsers = [];
 
 io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  let systemChannel = "";
+ 
   
   
 
@@ -207,30 +210,30 @@ io.on('connection', (socket) => {
 // confirm: invitation is confirmed channel render for both users
 // decline: decline invitation, channel will not render
 // kicked out: kicked out from group
-// socket.on('invitation', async (data)=>{
-//   // socket.join(data.newChannel._id, ()=>{
-//   //   console.log("socket room", socket.rooms)
-//   // });
+socket.on('invitation', async (data)=>{
+  // socket.join(data.newChannel._id, ()=>{
+  //   console.log("socket room", socket.rooms)
+  // });
 
-//   //sender: "system", channel: "system channel", text: "inviter's id" 
-//     let systemMessage = new ChatMessage({
-//       sender: ai,
-//       text: data.inviter + "&toJoin&" + data.newChannel._id,
-//       textType: "invitation",
-//       unread: true,
-//       channel: systemChannel,
-//     });
+  //sender: "system", channel: "system channel", text: "inviter's id" 
+    let systemMessage = new ChatMessage({
+      sender: ai,
+      text: data.inviter + "&toJoin&" + data.newChannel._id,
+      textType: "invitation",
+      unread: true,
+      channel: systemChannel,
+    });
 
-//     await systemMessage.save();
+    await systemMessage.save();
     
-//     io.to(systemChannel).emit('system message', [{
-//       sender: systemMessage.sender,
-//       text: systemMessage.text,
-//       textType: systemMessage.textType,
-//       unread: systemMessage.unread,
-//       channel: systemMessage.channel,
-//     }] );
-//   });
+    io.to(systemChannel).emit('system message', [{
+      sender: systemMessage.sender,
+      text: systemMessage.text,
+      textType: systemMessage.textType,
+      unread: systemMessage.unread,
+      channel: systemMessage.channel,
+    }] );
+  });
 
 
 
@@ -276,9 +279,13 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/hello', (req, res) => {
-  res.send('hello')
+app.get('/system', (req, res)=>{
+  res.json({systemChannel: systemChannel, systemUserId: ai})
 })
+
+// app.get('/hello', (req, res) => {
+//   res.send('hello')
+// })
 
 app.post('/pwcheck', (req, res) => {
   const hash = hasha(
@@ -666,7 +673,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 const Repo = require('./classes/Repo.class');
 new Repo(app);
 // Create a system user to send system message.
-var ai="";
 var allUsers=[];
  User.find().then(users=>{
    users.forEach(u=>{
