@@ -141,7 +141,7 @@
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">
-        <Col sm="12" className="chat-about pl-3 pl-md-4">
+        <Col className="chat-about pl-3 col-12 d-md-none">
           <Button
             className="mobil-menu d-inline-block d-md-none"
             onClick={e => this.props.channelStore.showMenu()}>
@@ -150,9 +150,7 @@
         </Col>
       </Row>
       <Row>
-        <Col sm="12">
-          <h1><img src="/images/tja@Logo.png" alt="" className="logo default" /></h1>
-        </Col>
+        <Infopage/>
       </Row>
     </Fragment>
   }
