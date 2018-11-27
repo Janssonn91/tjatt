@@ -23,6 +23,8 @@
       .catch(err => {
         console.log(err);
       });
+      window.history.pushState(null, null, '/' + this.props.userStore.user.username);
+      this.props.toggle();
   };
 
 
