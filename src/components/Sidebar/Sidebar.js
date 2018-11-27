@@ -70,39 +70,42 @@ export const imgPath = '/images/placeholder.png';
   openModalDeleteContact(channel) {
     this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
     this.deleteContactModalOpen.channel = channel;
+    this.deleteContactModalOpen.members = channel.members;
+    this.deleteContactModalOpen.channelId = channel._id;
   }
 
-  removeContact(members, channelId){
-    // console.log(toJS(members));
-    // console.log('kanalen är: ', channelId)
-    // console.log('jag är: ', this.props.userStore.user._id);
-    const userId = this.props.userStore.user._id;
-    const contId = members.filter(id => id!== this.props.userStore.user._id);
-    // console.log('vill ta bort: ', contId);
-    // console.log(toJS(this.props.channelStore.contactChannels));
-    this.props.userStore.moveContactToCandidates(contId);
-    this.props.channelStore.spliceChannel(channelId);
-    // this.props.history.push(`/${this.props.userStore.user.username}`);
+  // removeContact(members, channelId){
+  //   // getting channel.members, channel._id from jsx
+  //   // console.log(toJS(members));
+  //   // console.log('kanalen är: ', channelId)
+  //   // console.log('jag är: ', this.props.userStore.user._id);
+  //   const userId = this.props.userStore.user._id;
+  //   const contId = members.filter(id => id!== this.props.userStore.user._id);
+  //   // console.log('vill ta bort: ', contId);
+  //   // console.log(toJS(this.props.channelStore.contactChannels));
+  //   this.props.userStore.moveContactToCandidates(contId);
+  //   this.props.channelStore.spliceChannel(channelId);
+  //   // this.props.history.push(`/${this.props.userStore.user.username}`);
  
-    fetch(`/api/removeContact/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        contId: contId,
-        channelId: channelId
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json();
-      }).then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  //   fetch(`/api/removeContact/${userId}`, {
+  //     method: 'PUT',
+  //     body: JSON.stringify({
+  //       contId: contId,
+  //       channelId: channelId
+  //     }),
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //     .then(res => {
+  //       return res.json();
+  //     }).then(res => {
+  //       console.log(res)
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
   logout() {
     fetch('/api/logout').then(() => {
