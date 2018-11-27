@@ -7,8 +7,8 @@ const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  // socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -120,6 +120,18 @@ services:
       console.log(stdout || stderr);
     });
   }
+
+    static stop_container(payload) {
+      exec(`docker stop ${payload.name}_app`,(err, stdout, stderr) => {
+        if (err) {
+          throw (err);
+        }
+        let response = Object.assign({}, payload, {res: null})
+        payload.res.json(response);
+        console.log(stdout || stderr);
+      });
+    }
+  
 
   // static docker_rebuild_image(payload) {
   //   exec(`docker-compose build`, {

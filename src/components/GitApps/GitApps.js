@@ -122,7 +122,7 @@ import './GitApps.scss';
         this.openApp = {}
     }
 
-    async runningAppHandler(appId){
+    async startAppHandler(appId){
         const app = this.importedApps.find(app=> app._id === appId);
         //this changes the running status
         app.running = !app.running;
@@ -133,6 +133,13 @@ import './GitApps.scss';
         this.runningApps = this.importedApps.filter(app=>app.running===true);
         //this closes the open app if the running process is stoped
         this.openApp._id === appId ? this.openApp = {} : null;
+
+        const appToStart = this.importedApps.find(app => app._id === appId); console.log(appToStart)
+        fetch('/api/startGitApp', { 
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({name: appToStart.name, appRunning: appToStart.running}), // data can be `string` or {object}!
+            method: 'POST' // or 'PUT'
+          })
     }
 
     onSubmit(){

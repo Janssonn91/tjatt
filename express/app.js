@@ -31,6 +31,8 @@ require('./routes/addRepo')(app);
 // add additional requires in the same style as the previous line here
 require('./routes/updateRepo')(app);
 require('./routes/getBranch')(app);
+require('./routes/startGitApp')(app);
+
 
 const sharedsession = require("express-socket.io-session");
 const session = expressSession({

@@ -107,7 +107,7 @@
                                             <button
                                                 data-tip data-for={`start-${app._id}`}
                                                 id={`run-${app._id}`}
-                                                onClick={()=>this.runningAppHandler(app._id)}   
+                                                onClick={()=>this.startAppHandler(app._id)}   
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
                                                 {!app.running ? <i className="fas fa-play"></i> : <i className="fas fa-stop"></i>}
                                                 
