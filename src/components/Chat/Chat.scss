@@ -129,12 +129,11 @@ $fontSm: 12px;
             padding: 4px;
         }
         .chat-with {
+            padding-top: 5px;
             font-size: $fontLg;
-            vertical-align: middle;
             text-align: left;
             font-weight: bold;
             color:  darken($gray, 20%);
-            letter-spacing: 2px;
         }
         .dialog-icon {
             float: right;
@@ -149,7 +148,7 @@ $fontSm: 12px;
       }
     }
     .chat-history {
-        height: 69.5vh;
+        height: 69vh;
         overflow-y: auto;
         position: relative;
         ul {
@@ -158,6 +157,54 @@ $fontSm: 12px;
             padding: 0px;
             li {
                 width: 98%;
+                &:nth-last-child(2) {
+                    .message {
+                      margin-bottom: 5px!important;
+                    }
+                }
+                .message {
+                    word-break: break-word;
+                    text-align:left;
+                    color: $text;
+                    padding: 8px 15px;
+                    line-height: 26px;
+                    font-size: $fontMd;
+                    border-radius: 6px;
+                    margin-bottom: 25px;
+                    position: relative;
+                    &:after {
+                        bottom: 100%;
+                        border: solid transparent;
+                        content: " ";
+                        height: 0;
+                        width: 0;
+                        position: absolute;
+                        pointer-events: none;
+                        border-bottom-color: $green;
+                        border-width: 10px;
+                        margin-left: -10px;
+                    }
+                }
+                .other-message {
+                    background-color: lighten($gray, 30%);
+                    color: $text;
+                    &:after {
+                        border-bottom-color: lighten($gray, 30%);
+                        left:40px;
+                    }
+                }
+        
+                .my-message {
+                    margin-left: 20px;
+                    color: #fff;
+                    background: lighten($blue, 8%);
+                    float: left;
+                    min-width: 30px;
+                    &:after {
+                        border-bottom-color: lighten($blue, 8%);
+                        left:15px;
+                    }
+                }
             }
         }
         .message-data {
@@ -189,49 +236,7 @@ $fontSm: 12px;
             color: $blue;
             vertical-align: middle;
         }
-        .message {
-            word-break: break-word;
-            text-align:left;
-            color: $text;
-            padding: 8px 15px;
-            line-height: 26px;
-            font-size: $fontMd;
-            border-radius: 6px;
-            margin-bottom: 30px;
-            position: relative;
-            &:after {
-                bottom: 100%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-                border-bottom-color: $green;
-                border-width: 10px;
-                margin-left: -10px;
-            }
-        }
-        .other-message {
-            background-color: lighten($gray, 30%);
-            color: $text;
-            &:after {
-                border-bottom-color: lighten($gray, 30%);
-                left:40px;
-            }
-        }
-
-        .my-message {
-            margin-left: 20px;
-            color: #fff;
-            background: lighten($blue, 8%);
-            float: left;
-            min-width: 30px;
-            &:after {
-                border-bottom-color: lighten($blue, 8%);
-                left:15px;
-            }
-        }
+        
     }
     .formRow {
       position: absolute;

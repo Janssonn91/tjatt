@@ -34,7 +34,7 @@ $text:#434651;
     .user-holder {
       padding-bottom: 0.5rem;
       .username {
-        letter-spacing: 2px;
+        font-size: 18px;
       }
     }
     .dropdown {
@@ -131,6 +131,13 @@ $text:#434651;
             color: white;
           }
         }
+      }
+      span.delete {
+        padding: 5px 5px 0 0!important;
+      }
+      span {
+        font-size: 14px!important;
+        vertical-align: middle;
       }
     }
 

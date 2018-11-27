@@ -41,8 +41,8 @@
                 key={i}
                 onClick={() => this.props.channelStore.changeChannel(channel)}
               >
-                <div className="nav-link pl-5 pl-md-3 contacts">
-                  <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
+                <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
+                  <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                   <span className="d-inline-block">{channel.channelname}</span>
                   {channel.messageNum > 0 ? <span className="message-number">
                     <Badge color="danger">{channel.messageNum}</Badge>
@@ -72,8 +72,8 @@
                 key={i}
                 onClick={() => this.props.channelStore.changeChannel(channel)}
               >
-                <div className="nav-link pl-5 pl-md-3 contacts">
-                  <CardImg className="mr-3 d-inline-block" src={channel.image || "/images/placeholder.png"} />
+                <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
+                  <CardImg className="mr-1 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                   <span className="d-inline-block">{channel.channelname}</span>
                   {channel.messageNum > 0 ?
                     <span className="message-number">
@@ -81,9 +81,9 @@
                     </span>
                     :
                     <span
-                      className="d-inline-block float-right"
+                      className="d-inline-block float-right delete"
                       onClick={() => this.openModalDeleteContact(channel)} >
-                      <i className="far fa-times-circle align-middle"></i>
+                      <i className="far fa-times-circle"></i>
                     </span>}
                 </div>
               </Link>
@@ -107,7 +107,7 @@
                   key={i}
                   onClick={() => this.props.channelStore.changeChannel(channel)}
                 >
-                  <div className="nav-link pl-5 pl-md-3 contacts">
+                  <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ? <span className="message-number">
                       <Badge color="danger">{channel.messageNum}</Badge>
