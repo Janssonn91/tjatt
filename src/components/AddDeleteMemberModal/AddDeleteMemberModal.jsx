@@ -60,7 +60,7 @@
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
             <h5 className="d-inline-block">Group member</h5>
             <span className="note d-inline-block"><i className="fas fa-circle admin note"></i>Admin</span>
-            <FormGroup className="m-0 pl-1 overflow-y-auto">
+            <FormGroup className="m-0 pl-1 overflow-y-auto group-member">
               {this.groupMembers.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
