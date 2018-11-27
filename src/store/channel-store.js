@@ -26,7 +26,7 @@ class ChannelStore {
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
   @observable unreadSystemMessage = {};
-  
+
 
 
   //TODO: as a new user, introduction page shows instead of chat page
@@ -72,17 +72,17 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
 
-  
-  
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
 
     this.myChannels.map(async (c) => {
-      let messages = await Message.find({channel: c._id});
-      let count=0;
-      messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
-        count++;
-      }})
-      if(c._id !== applicationStateStore.systemChannel){
+      let messages = await Message.find({ channel: c._id });
+      let count = 0;
+      messages.forEach(message => {
+        if (message.sender !== userStore.user._id && message.unread) {
+          count++;
+        }
+      })
+      if (c._id !== applicationStateStore.systemChannel) {
         if (c.group) {
           this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
           this.groupChannels.push(this.channelDict[c._id]);
@@ -96,13 +96,9 @@ class ChannelStore {
           // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
           // this.contactChannels.push(this.channelDict[c._id])
         }
-       
+        this.sortListByMessageNum()
       }
-      
-
     });
-
-
   }
 
   getGroupMembersData(memberIds) {
@@ -233,6 +229,10 @@ class ChannelStore {
     this.currentChannel = "";
   }
 
+  @action sortListByMessageNum() {
+    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
+    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
+  }
 }
 
 
