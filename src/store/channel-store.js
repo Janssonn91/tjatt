@@ -27,48 +27,48 @@ class ChannelStore {
   @observable adminLeavingError = false;
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
-  //@observable unreadSystemMessages = [];
+  @observable unreadSystemMessages = [];
   // hard code!
-  @observable unreadSystemMessages = [
-    {
-      textType: "invitation",
-      initiator: "pika",
-      targetChannel: "channel._id",
-      unread: true,
-    }
-    ,
-    {
-      textType: "decline",
-      initiator: "c",
-      targetChannel: "channel._id",
-      unread: true,
-    },
-    {
-      textType: "addedToGroup",
-      initiator: "Eevee",
-      targetChannel: "channelName",
-      unread: true,
-    },
-    {
-      textType: "removedFromGroup",
-      initiator: "d",
-      targetChannel: "channelName",
-      unread: true,
-    },
-    {
-      textType: "removeContact",
-      initiator: "e",
-      targetChannel: "channelName",
-      unread: true,
-    },
-    {
-      textType: "makeAdmin",
-      initiator: "f",
-      targetChannel: "channelName",
-      unread: true,
-    }
+  // @observable unreadSystemMessages = [
+  //   {
+  //     textType: "invitation",
+  //     initiator: "pika",
+  //     targetChannel: "channel._id",
+  //     unread: true,
+  //   }
+  //   ,
+  //   {
+  //     textType: "decline",
+  //     initiator: "c",
+  //     targetChannel: "channel._id",
+  //     unread: true,
+  //   },
+  //   {
+  //     textType: "addedToGroup",
+  //     initiator: "Eevee",
+  //     targetChannel: "channelName",
+  //     unread: true,
+  //   },
+  //   {
+  //     textType: "removedFromGroup",
+  //     initiator: "d",
+  //     targetChannel: "channelName",
+  //     unread: true,
+  //   },
+  //   {
+  //     textType: "removeContact",
+  //     initiator: "e",
+  //     targetChannel: "channelName",
+  //     unread: true,
+  //   },
+  //   {
+  //     textType: "makeAdmin",
+  //     initiator: "f",
+  //     targetChannel: "channelName",
+  //     unread: true,
+  //   }
 
-  ];
+  //];
   @observable unreadSystemMessageNum = "";
 
 

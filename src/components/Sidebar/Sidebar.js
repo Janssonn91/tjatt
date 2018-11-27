@@ -27,7 +27,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   @observable systemMessagesModalOpen = {
-    isOpen: true,
+    isOpen: false,
     keyboard:true,
     toggle:this.openSystemMessageModal.bind(this),
   }
