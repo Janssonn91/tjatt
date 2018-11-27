@@ -56,12 +56,12 @@
           }
         </Col>
       </Row>
-      <hr className="mt-0 mb-2" />
+
       <Row>
         <Col className="pr-0">
           <div className="chat-history pl-2 mr-1">
             <ScrollableFeed forceScroll={true}>
-              <ul ref="messageList" onScroll={this.onScroll}>
+              <ul ref="messageList pt-2" onScroll={this.onScroll}>
                 {/* <div id="chatHistory"></div>  */}
                 <ChatMessage />
                 <li ref={(el) => {

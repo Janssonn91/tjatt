@@ -14,7 +14,7 @@
             </span>&nbsp;
             {/* <span className="message-data-time">{message.time}</span> */}
           </div>
-          <div className="message my-message">
+          <div className="message my-message clearfix">
             {message.contentType === 'text' && message.text}
             {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
             {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" /></div>}

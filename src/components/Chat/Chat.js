@@ -78,6 +78,7 @@ export default class Chat extends Component {
       .then(message => {
         socket.emit('chat message', message)
       })
+    this.toggle();
   }
 
   scrollToBottom = () => {
