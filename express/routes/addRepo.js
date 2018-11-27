@@ -20,10 +20,10 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-        git.git_branch(payload)
+        // git.git_branch(payload)
 
-        // fs.existsSync(payload.localPath) ?
-        //    del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
+        fs.existsSync(payload.localPath) ?
+           del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
 
     });
 
