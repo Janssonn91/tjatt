@@ -92,16 +92,16 @@
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
-              <DropdownItem>
-                <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-              {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
-                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
-              }
+                <DropdownItem>
+                  <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+                <DropdownItem>
+                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                <DropdownItem>
+                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
+                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
+                }
               </DropdownMenu>
             </ButtonDropdown>
             <FormGroup className="m-0 messageAreaForm">
@@ -121,7 +121,12 @@
               />
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
-                  <i className="far emojiOpener"><span role="img" aria-label="emoji">😃</span></i>
+                  <div
+                    onMouseEnter={() => this.setButtonHovered(true)}
+                    onMouseLeave={() => this.setButtonHovered(false)}
+                  >
+                    {this.buttonIsHovered ? <i className="hover fas fa-grin emojiOpener"></i> : <i className="far fa-smile emojiOpener"></i>}
+                  </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
@@ -150,7 +155,7 @@
         </Col>
       </Row>
       <Row>
-        <Infopage/>
+        <Infopage />
       </Row>
     </Fragment>
   }

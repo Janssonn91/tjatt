@@ -34,6 +34,7 @@ export default class Chat extends Component {
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
   @observable openSideDrawer = false;
+  @observable buttonIsHovered = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -244,8 +245,10 @@ export default class Chat extends Component {
       return result;
     }
     // var d = new Date();
+  }
 
-
+  setButtonHovered(boolean) {
+    this.buttonIsHovered = boolean;
   }
 
 }
