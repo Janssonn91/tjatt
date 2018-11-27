@@ -35,7 +35,11 @@ $fontSm: 12px;
 
 .infopage {
   .introduction {
-    h2 {
+    h4 {
+      @media only screen and(max-width: 767.5px){
+        padding-top: 0px!important;
+      }
+      padding-top: calc(1.5rem + 5px)!important;
       color: $gray;
       height: 77px;
       vertical-align: middle;
@@ -43,19 +47,19 @@ $fontSm: 12px;
       @media only screen and(max-width: 767.5px){
         margin-top: -50px!important;
         padding-left: 75px;
-        height: unset;
+        height: 35px;
       }
     }
   }
   .main-info {
     overflow: auto!important;
-    max-height: 84vh !important;
+    max-height: 83vh !important;
     @include scrollbar;
     .chat-management {
       margin-bottom: 1rem!important;
     }
     .row.settings-info, .row.sidebar-info, .chat-management, .group-management {
-      h4 {
+      h6 {
         color: $gray;
       }
       img {

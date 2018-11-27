@@ -2,14 +2,14 @@
   <Row className="infopage">
     <Col className="col-12 px-0">
       <div className="introduction">
-        <h2 className="m-0 pt-0 pt-md-4">Introduction</h2>
+        <h4 className="m-0">Introduction</h4>
       </div>
       <hr className="mt-2 mb-4"/>
     </Col>
     <Col className="col-12 main-info">
       <Row className="settings-info">
         <Col className="col-12">
-          <h4 className="text-center mb-3">User settings</h4>
+          <h6 className="text-center mb-3">User settings</h6>
         </Col>
         <Col className="col-6">
           <img src={"/images/settings-dropdown-menu.PNG"} className="img-fluid d-block mb-2" alt="Settings dropdown menu for user"/>
@@ -29,7 +29,7 @@
       <hr className="my-4"/>
       <Row className="sidebar-info">
         <Col className="col-12">
-          <h4 className="text-center mb-3">Find contacts & create groups</h4>
+          <h6 className="text-center mb-3">Find contacts & create groups</h6>
         </Col>
         <Col className="col-6">
           <img src={"/images/search-contacts.PNG"} className="img-fluid d-block mb-2" alt="Window opened for searching for new contacts"/>
@@ -53,7 +53,7 @@
       <hr className="my-4" />
       <Row className="group-management">
         <Col className="col-12">
-          <h4 className="text-center mb-3">Group management</h4>
+          <h6 className="text-center mb-3">Group management</h6>
         </Col>
         <Col className="col-6">
           <img src={"/images/group-dropdown-menu.PNG"} className="img-fluid d-block mb-2" alt="Group management dropdown menu"/>
@@ -75,7 +75,7 @@
       <hr className="my-4" />
       <Row className="chat-management">
         <Col className="col-12">
-          <h4 className="text-center mb-3">Chat management</h4>
+          <h6 className="text-center mb-3">Chat management</h6>
         </Col>
         <Col className="col-6">
           <img src={"/images/chat-menu.PNG"} className="img-fluid d-block mb-2" alt="Menu open to upload things to the chat"/>
