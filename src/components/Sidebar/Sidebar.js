@@ -69,7 +69,11 @@ export const imgPath = '/images/placeholder.png';
 
   openModalDeleteContact(channel) {
     this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
-    this.deleteContactModalOpen.channel = channel;
+    if(this.deleteContactModalOpen.isOpen){
+      this.deleteContactModalOpen.channel = channel;
+      this.deleteContactModalOpen.members = channel.members;
+      this.deleteContactModalOpen.channelId = channel._id;
+    }
   }
 
   logout() {
