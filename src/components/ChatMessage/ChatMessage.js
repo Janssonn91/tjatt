@@ -8,13 +8,19 @@ export default class ChatMessage extends Component {
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable deleteMessageModal = false;
-
+  @observable chatImageModal = false;
+  @observable currentImage = '';
+  @observable originalName = '';
   @observable sendToDeleteMessageModal = {
     isOpen: false,
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
   async start() { }
+
+  toggleChatModal = () => {
+    this.chatImageModal = !this.chatImageModal;
+  }
 
   toggle() {
     this.isOpen = !this.isOpen;
@@ -27,5 +33,4 @@ export default class ChatMessage extends Component {
   deleteMessageModalToggle() {
     this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
   }
-
 }

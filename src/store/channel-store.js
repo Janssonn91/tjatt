@@ -30,6 +30,7 @@ class ChannelStore {
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
 
+
   // constructor() {
   // this.listenToPopState();
   // }
@@ -329,7 +330,7 @@ class ChannelStore {
             console.log(err);
           })
       })
-      socket.emit('system message', {newChannel: channel[0]})
+      socket.emit('system message', { newChannel: channel[0] })
       //socket.emit('newChannel', channel[0]._id)
 
       //this.updateGroupChannel(channel[0]);
