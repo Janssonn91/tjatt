@@ -121,28 +121,28 @@ services:
     });
   }
 
-  static docker_rebuild_image(payload) {
-    exec(`docker-compose build`, {
-      cwd: payload.localPath
-    }, (err, stdout, stderr) => {
-      if (err) {
-        throw (err);
-      }
-      //let response = Object.assign({}, payload, {res: null})
-      //payload.res.json(response);
-      console.log(stdout || stderr);
-      this.start_containers_composer(payload)
-    });
-  }
+  // static docker_rebuild_image(payload) {
+  //   exec(`docker-compose build`, {
+  //     cwd: payload.localPath
+  //   }, (err, stdout, stderr) => {
+  //     if (err) {
+  //       throw (err);
+  //     }
+  //     //let response = Object.assign({}, payload, {res: null})
+  //     //payload.res.json(response);
+  //     console.log(stdout || stderr);
+  //     this.start_containers_composer(payload)
+  //   });
+  // }
 
-  static restart_docker_container(payload) {
-    docker.container.list()
-      .then(containers => {
-        let containerToRestart = containers.map(containers => {
-          console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
-          //get correct container by name or id?
-        })
-      });
-  }
+  // static restart_docker_container(payload) {
+  //   docker.container.list()
+  //     .then(containers => {
+  //       let containerToRestart = containers.map(containers => {
+  //         console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
+  //         //get correct container by name or id?
+  //       })
+  //     });
+  // }
 
 }

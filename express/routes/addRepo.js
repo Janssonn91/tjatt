@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.post('/addRepo', async (req, res) => {
         let dockerPort = await vms.select_docker_port();
         let uniqueProjectName = req.body.url.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '') + dockerPort;
-       
+       console.log(dockerPort, 'dockerPort');
         let payload = {
             gitUrl: req.body.url.toLowerCase(),
             projectName: req.body.projectName,
@@ -20,7 +20,6 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-        // git.git_branch(payload)
 
         fs.existsSync(payload.localPath) ?
            del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);

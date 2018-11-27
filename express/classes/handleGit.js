@@ -16,27 +16,28 @@ const docker = new Docker({
 
 module.exports = class handleGit {
 
-static git_branch(payload) {
-    if(fs.existsSync(payload.localPath)){
-      simplegit(payload.localPath)
-        .branch(function (err, branchSummary) {
-          payload.res.json({branches: (branchSummary.all)})
-      })
-    }else{
-      simplegitPromise()
-      .silent(true)
-      .clone(payload.gitUrl, payload.localPath)
-      .then(err => {
-        simplegit(payload.localPath)
-        .branch(function (err, branchSummary) {
-          payload.res.json({branches: (branchSummary.all)})
-      })
-      })
-      .catch(err => { console.log("error", err); payload.res.json('err'); });
-    }
-  }
+// static git_branch(payload) {
+//     if(fs.existsSync(payload.localPath)){
+//       simplegit(payload.localPath)
+//         .branch(function (err, branchSummary) {
+//           payload.res.json({branches: (branchSummary.all)})
+//       })
+//     }else{
+//       simplegitPromise()
+//       .silent(true)
+//       .clone(payload.gitUrl, payload.localPath)
+//       .then(err => {
+//         simplegit(payload.localPath)
+//         .branch(function (err, branchSummary) {
+//           payload.res.json({branches: (branchSummary.all)})
+//       })
+//       })
+//       .catch(err => { console.log("error", err); payload.res.json('err'); });
+//     }
+//   }
   
   static git_clone(payload) {
+    console.log('git clone');
     simplegitPromise()
       .silent(true)
       .clone(payload.gitUrl, payload.localPath)
