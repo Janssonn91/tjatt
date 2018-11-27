@@ -34,7 +34,7 @@ $text:#434651;
     .user-holder {
       padding-bottom: 0.5rem;
       .username {
-        letter-spacing: 2px;
+        font-size: 18px;
       }
     }
     .dropdown {
@@ -132,6 +132,13 @@ $text:#434651;
           }
         }
       }
+      span.delete {
+        padding: 5px 5px 0 0!important;
+      }
+      span {
+        font-size: 14px!important;
+        vertical-align: middle;
+      }
     }
 
     img {
@@ -145,6 +152,7 @@ $text:#434651;
     }
 
     .message-number{
+      padding: 5px 5px 0 0!important;
       float: right;
     }
 
@@ -166,6 +174,7 @@ $text:#434651;
     }
 
     .fa-times-circle {
+      font-size: 20px;
       color: $backgroundColor;
     }
   }

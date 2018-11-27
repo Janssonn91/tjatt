@@ -6,7 +6,7 @@
       </div>
     </Col>
      {/* {if(this.props.channelStore.currentChannel)} */}
-    <Col xs="12" md="9" className={this.props.channelStore.hideChat === true ? "hide-chat" : "pr-0 pl-0"}>
+    <Col xs="12" md="9" className={this.props.channelStore.hideChat === true ? "hide-chat main-view" : "pr-0 pl-0 main-view"}>
       <div className="dialog">
         <Chat />
       </div>

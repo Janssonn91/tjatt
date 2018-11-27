@@ -451,6 +451,17 @@ app.get('/users/:_id', (req, res) => {
 
 })
 
+app.put('/removeContact/:_id', async (req, res) => {
+  const contactId = req.body.contId.toString();
+  const channelId = req.body.channelId.toString();
+  let resultContact = await User.update(
+    { _id: req.params._id },
+    { $pull: { contact: contactId, channel: req.body.channelId } }
+  )
+  .catch((err) => console.log("err", err));
+  res.json({ resultContact });
+});
+
 app.get('/logout', (req, res) => {
   delete req.session.userId;
   res.json({ success: 'Successfully logged out' })

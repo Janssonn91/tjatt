@@ -72,7 +72,6 @@ class ChannelStore {
   @observable unreadSystemMessageNum = "";
 
 
-
   //TODO: as a new user, introduction page shows instead of chat page
 
   getContactName(ids) {
@@ -197,13 +196,9 @@ class ChannelStore {
           // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
           // this.contactChannels.push(this.channelDict[c._id])
         }
-
+        this.sortListByMessageNum()
       }
-
-
     });
-
-
   }
 
   setSystemMessages(){
@@ -351,8 +346,23 @@ class ChannelStore {
   }
 
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(i) {
-    this.groupChannels.splice(i, 1);
+  @action spliceChannel(channelId
+  ) {
+    let index = 0;
+    for(let channel of this.contactChannels){
+      if(channel._id === channelId){
+        this.contactChannels.splice(index, 1);
+      }
+      index ++;
+    };
+    let myChannelIndex = 0;
+    for(let channel of this.myChannels){
+      if(channel._id === channelId){
+        this.myChannels.splice(myChannelIndex,1)
+      }
+      myChannelIndex++;
+    }
+ 
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
@@ -367,6 +377,10 @@ class ChannelStore {
     this.currentChannel = "";
   }
 
+  @action sortListByMessageNum() {
+    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
+    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
+  }
 }
 
 
