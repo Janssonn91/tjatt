@@ -104,6 +104,8 @@ $fontSm: 12px;
             padding: 5px 10px 0 10px;
             height: 66px;
             .mobil-menu{
+                z-index: 9999;
+                margin-bottom: 9px;
                 border: none;
                 background-color: lighten($gray, 35%) !important;
                 color:$gray;

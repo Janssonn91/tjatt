@@ -41,7 +41,7 @@
                 key={i}
                 onClick={() => this.props.channelStore.changeChannel(channel)}
               >
-                <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
+                <div className="nav-link plpy-1 pr-0 contacts">
                   <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                   <span className="d-inline-block">{channel.channelname}</span>
                   {channel.messageNum > 0 ? <span className="message-number">
@@ -72,7 +72,7 @@
                 key={i}
                 onClick={() => this.props.channelStore.changeChannel(channel)}
               >
-                <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
+                <div className="nav-link pl-3 py-1 pr-0 contacts">
                   <CardImg className="mr-1 d-inline-block" src={channel.image || "/images/placeholder.png"} />
                   <span className="d-inline-block">{channel.channelname}</span>
                   {channel.messageNum > 0 ?
@@ -107,7 +107,7 @@
                   key={i}
                   onClick={() => this.props.channelStore.changeChannel(channel)}
                 >
-                  <div className="nav-link pl-5 pl-md-3 py-1 pr-0 contacts">
+                  <div className="nav-link pl-3 py-1 pr-0 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ? <span className="message-number">
                       <Badge color="danger">{channel.messageNum}</Badge>
