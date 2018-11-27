@@ -294,7 +294,6 @@ socket.on('invitation', async (data)=>{
         text: data.rejecter +"&decline&" + data.rejectee,
         textType: "decline",
         unread: true,
-        channel: c._id,
       })
       await systemMessage.save();
     
@@ -678,6 +677,15 @@ app.put('/message/:id',(req, res)=>{
     throw err;
   });
 });
+
+app.put('/messages/:_id/read', (req,res)=>{
+  ChatMessage.findOneAndUpdate(
+    {_id: req.params._id},
+    {$set:{unread:false}}
+  ).then(message=>{
+    res.josn(message)
+  }).catch(err=>{throw err; })
+})
 
 app.post('/upload', upload.single('file'), (req, res) => {
   User.findById(req.session.userId)

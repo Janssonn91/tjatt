@@ -16,7 +16,7 @@
             <span>{message.initiator} wants to add you as a contact</span>   
             <span>
               <ButtonGroup size="sm">
-                <Button onClick={()=>this.invitationDeclined(message.sender)}>Decline</Button>
+                <Button onClick={()=>this.invitationDeclined(message.id, i)}>Decline</Button>
                 <Button>Confirm</Button>
               </ButtonGroup>
             </span>

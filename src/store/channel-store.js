@@ -204,13 +204,16 @@ class ChannelStore {
   setSystemMessages(){
     //console.log(applicationStateStore.systemChannel)
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
+         
               { console.log(data)
+                this.unreadSystemMessageNum = data.length;
                 data.forEach(d=>{
-                  console.log("d", d)
-                  if(d.textType==="invitation"){
+                  if(d.textType.toString()==="invitation"){
+                    console.log(d._id)
                     let j = d.text.toString().split("&ask&");
                   let i = j[1].split("&toJoin&");
                   let message={}
+                message.id = d._id;
                 message.targetChannel= i[1];
                 message.textType = d.textType;
                 message.initiator = toJS(this.userDict[j[0]]).name; //sender's name
@@ -218,18 +221,36 @@ class ChannelStore {
                 message.sender = j[0]; //sender's id 
                 this.unreadSystemMessages.push(message);
                   }
-                  // if(d.textType==="decline"){
-                  //   console.log("decline")
-                  // }
+                  if(d.textType.toString()==="decline"){
+                    let i = d.text.toString().split("&decline&");
+                    let message={};
+                    message.id= d._id;
+                    message.initiator = toJS(this.userDict[i[0]]).name;
+                    message.unread= d.unread;
+                    message.textType = d.textType.toString();
+                    message.sender = i[0];
+                    this.unreadSystemMessages.push(message);
+                  }
                   
-
-
               })
              
                this.unreadSystemMessageNum = data.length;
               console.log(this.unreadSystemMessages, this.unreadSystemMessageNum);
           }
             );
+  }
+
+  readSystemMessage(id, i){
+    let c = toJS(this.unreadSystemMessages)
+    c.splice(i, 1);
+    this.unreadSystemMessages= c;
+    this.unreadSystemMessageNum--;
+    console.log(id)
+    fetch(`/api/messages/${id}/read`,{
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }
+    })
+   
   }
 
   getGroupMembersData(memberIds) {
