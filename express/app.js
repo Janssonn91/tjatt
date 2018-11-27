@@ -32,6 +32,8 @@ require('./routes/addRepo')(app);
 require('./routes/updateRepo')(app);
 require('./routes/getBranch')(app);
 require('./routes/startGitApp')(app);
+require('./routes/deleteGitApp')(app);
+
 
 
 const sharedsession = require("express-socket.io-session");

@@ -131,6 +131,19 @@ services:
         console.log(stdout || stderr);
       });
     }
+
+    static async remove_container(payload) {
+      await this.stop_container(payload);
+
+      exec(`docker rm ${payload.name}_app`, (err, stdout, stderr) => {
+        if (err) {
+          throw (err);
+        }
+        let response = Object.assign({}, payload, {res: null})
+        payload.res.json(response);
+        console.log(stdout || stderr);
+      });
+    }
   
 
   // static docker_rebuild_image(payload) {
