@@ -13,10 +13,10 @@
       {message.unread ?
         message.textType==="invitation" ?
         <ListGroupItem key={i} className="pr-0">
-            <span>{message.initiator} wants to add you as a contact</span>  
+            <span>{message.initiator} wants to add you as a contact</span>   
             <span>
               <ButtonGroup size="sm">
-                <Button>Decline</Button>
+                <Button onClick={()=>this.invitationDeclined(message.sender)}>Decline</Button>
                 <Button>Confirm</Button>
               </ButtonGroup>
             </span>

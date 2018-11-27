@@ -17,17 +17,22 @@ class ApplicationStateStore {
       .then(res => {
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+         
           fetch('/api/system').then(res => res.json()).then(data=>{
             this.systemChannel = data.systemChannel;
+            console.log("systemChannel",data.systemChannel)
+            
             this.systemId = data.systemUserId;
-            userStore.fetchContact();
+            console.log("systemId", this.systemId)
+            channelStore.setSystemMessages();
+            //userStore.fetchContact();
           })
           
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
 
           socket.on('online', message => {
-            console.log('online', message)
+           // console.log('online', message)
             this.onLineUsers = message.loginUser;
             channelStore.getLoginStatus();
           });

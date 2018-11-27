@@ -185,10 +185,42 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('system', data);
 
     //join group channel 
-    if(!data.invitee){
+    if(!data.invitee && data.newChannel){
       socket.join(data.newChannel._id, ()=>{
-        console.log("socket room", socket.rooms)
+        console.log("socket room", socket.rooms);
       });
+    }
+
+    //contact channel invitation
+    console.log(data)
+    if(data.type==="inviation"){
+      // bug here!!!!!
+      socket.emit('invitation', data);
+      let c= await channel.findOne({channelname: data.invitee + "system"});
+      console.log("systemChannel", c)
+     let systemMessage = new ChatMessage({
+        sender: data.invitee,
+        text: data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id,
+        textType: "invitation",
+        unread: true,
+        channel: c._id,
+      });
+  
+      await systemMessage.save();
+      
+      io.to(systemChannel).emit('system message', [{
+        sender: systemMessage.sender,
+        text: systemMessage.text,
+        textType: systemMessage.textType,
+        unread: systemMessage.unread,
+        channel: systemMessage.channel,
+      }] );
+    }
+
+    if(data.textType=== 'decline'){
+     if(data.rejectee === userStore.user._id){
+       channelStore.unread
+     }
     }
     
     //  if(data.invitee){
@@ -203,6 +235,8 @@ io.on('connection', (socket) => {
     // }
   });
 
+  // socket.
+
  
     
 // system textType: 
@@ -211,28 +245,13 @@ io.on('connection', (socket) => {
 // decline: decline invitation, channel will not render
 // kicked out: kicked out from group
 socket.on('invitation', async (data)=>{
+  console.log("invitation",data)
   // socket.join(data.newChannel._id, ()=>{
   //   console.log("socket room", socket.rooms)
   // });
 
-  //sender: "system", channel: "system channel", text: "inviter's id" 
-    let systemMessage = new ChatMessage({
-      sender: ai,
-      text: data.inviter + "&toJoin&" + data.newChannel._id,
-      textType: "invitation",
-      unread: true,
-      channel: systemChannel,
-    });
-
-    await systemMessage.save();
-    
-    io.to(systemChannel).emit('system message', [{
-      sender: systemMessage.sender,
-      text: systemMessage.text,
-      textType: systemMessage.textType,
-      unread: systemMessage.unread,
-      channel: systemMessage.channel,
-    }] );
+   //sender: "system", channel: "invitee's system channel", text: "inviter's id" 
+ 
   });
 
 
@@ -263,6 +282,24 @@ socket.on('invitation', async (data)=>{
       time: message.time,
     }]);
   });
+
+  socket.on('decline', async (data)=>{
+      data.textType= 'decline';
+      socket.broadcast.emit('system', data);
+      let c = await channel.findOne({
+        channelname: data.rejectee + "system"
+      });
+      let systemMessage= new ChatMessage({
+        sender: data.rejecter,
+        text: data.rejecter +"&decline&" + data.rejectee,
+        textType: "decline",
+        unread: true,
+        channel: c._id,
+      })
+      await systemMessage.save();
+    
+    
+  })
 
 
   socket.on('disconnect', () => {

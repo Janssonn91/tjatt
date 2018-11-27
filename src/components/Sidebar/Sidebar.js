@@ -37,7 +37,7 @@ export const imgPath = '/images/placeholder.png';
   @observable groupsOpen = false;
 
   start() {
-    console.log(this.props.match.params.id)
+    // console.log(this.props.match.params.id)
     this.setupSystemMessage();
     // this.props.channelStore.getChannels();
   }
@@ -95,11 +95,11 @@ export const imgPath = '/images/placeholder.png';
     const {userStore, channelStore} = this.props;
     socket.off('system');
     socket.on('system', async (data)=>{
-      if(data.invitee){
-        if(data.invitee === userStore.user._id){
-         socket.emit('invitation', data);
-        }
-      }
+      // if(data.invitee){
+      //   if(data.invitee === userStore.user._id){
+      //    socket.emit('invitation', data);
+      //   }
+      // }
 
       // group channel
       if(data.newChannel){
@@ -124,7 +124,46 @@ export const imgPath = '/images/placeholder.png';
         }
       }
 
+      if(data.invitee===userStore.user._id){
+        let message= {
+          sender: data.inviter,
+          initiator: channelStore.userDict[data.inviter].name,
+          targetChannel: data.newChannel,
+          unread: true,
+        }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+      }
+
+      if(data.textType==='decline'){
+        console.log(data)
+        if(data.rejectee === userStore.user._id){
+          let message = {
+            textType: 'decline',
+            initiator:  toJS(channelStore.userDict[data.rejecter]).name,
+            unread:true,
+            sender: data.rejecter,
+          }
+          channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+        
+        }
+      }
+
     });
+
+    socket.off('invitation');
+    socket.on('invitation', data=>{
+      console.log("invitation", data)
+      let message= {
+        textType:"invitation",
+        initiator: data.invitee,
+        targetChannel: data.newChannel._id,
+        unread: true
+      }
+      channelStore.unreadSystemMessages.push(message)
+     
+    })
 
     
 

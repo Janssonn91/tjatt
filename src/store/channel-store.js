@@ -32,20 +32,20 @@ class ChannelStore {
   // @observable unreadSystemMessages = [
   //   {
   //     textType: "invitation",
-  //     initiator: "pika",
+  //     initiator: message.sender,
   //     targetChannel: "channel._id",
   //     unread: true,
   //   }
   //   ,
   //   {
   //     textType: "decline",
-  //     initiator: "c",
+  //     initiator: this.userDict["5bf7ec7d890ad02500b77746"],
   //     targetChannel: "channel._id",
   //     unread: true,
   //   },
   //   {
   //     textType: "addedToGroup",
-  //     initiator: "Eevee",
+  //     initiator: this.userDict["5bf8082a67e74429da439f5c"],
   //     targetChannel: "channelName",
   //     unread: true,
   //   },
@@ -57,18 +57,18 @@ class ChannelStore {
   //   },
   //   {
   //     textType: "removeContact",
-  //     initiator: "e",
+  //     initiator: "5bf8082a67e74429da439f5c",
   //     targetChannel: "channelName",
   //     unread: true,
   //   },
   //   {
   //     textType: "makeAdmin",
-  //     initiator: "f",
+  //     initiator: "5bf8082a67e74429da439f5c",
   //     targetChannel: "channelName",
   //     unread: true,
   //   }
 
-  //];
+  // ];
   @observable unreadSystemMessageNum = "";
 
 
@@ -124,7 +124,31 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
 
-
+    // this.unreadSystemMessageNum=0;
+    // this.unreadSystemMessages=[];
+    // fetch('/api/system').then(res => res.json()).then(data=>{
+    //   applicationStateStore.systemChannel = data.systemChannel;
+    //   console.log("systemChannel",applicationStateStore.systemChannel )
+    //   Message.find({channel: applicationStateStore.systemChannel}).then(data=>
+    //     { console.log(data)
+    //       data.forEach(d=>{
+    //         console.log(d.text)
+    //         let j = d.text.toString().split("&ask&");
+    //         console.log(j)
+    //         let i = j[1].split("&toJoin&");
+    //         let message={}
+    //       message.targetChannel= i[1];
+    //       message.textType = d.textType;
+    //       message.initiator = toJS(channelStore.userDict[j[0]]).name; //sender's name
+    //       message.unread = d.unread;
+    //       message.sender = j[0]; //sender's id 
+    //       channelStore.unreadSystemMessages.push(message);
+    //     })
+       
+    //      channelStore.unreadSystemMessageNum = data.length;
+    //     console.log(channelStore.unreadSystemMessages, channelStore.unreadSystemMessageNum);}
+    //   );
+    //this.setSystemMessages();
 
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
@@ -180,6 +204,37 @@ class ChannelStore {
     });
 
 
+  }
+
+  setSystemMessages(){
+    //console.log(applicationStateStore.systemChannel)
+        Message.find({channel: applicationStateStore.systemChannel}).then(data=>
+              { 
+                data.forEach(d=>{
+                  
+                  if(d.textType==="invitation"){
+                    let j = d.text.toString().split("&ask&");
+                  let i = j[1].split("&toJoin&");
+                  let message={}
+                message.targetChannel= i[1];
+                message.textType = d.textType;
+                message.initiator = toJS(this.userDict[j[0]]).name; //sender's name
+                message.unread = d.unread;
+                message.sender = j[0]; //sender's id 
+                this.unreadSystemMessages.push(message);
+                  }
+                  // if(d.textType==="decline"){
+                  //   console.log("decline")
+                  // }
+                  
+
+
+              })
+             
+               this.unreadSystemMessageNum = data.length;
+              console.log(this.unreadSystemMessages, this.unreadSystemMessageNum);
+          }
+            );
   }
 
   getGroupMembersData(memberIds) {

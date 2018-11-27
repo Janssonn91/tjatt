@@ -52,6 +52,7 @@ class UserStore {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
+        console.log("fetchContact",users)
         let withoutMe = users.filter(user => user._id !== this.user._id);
         withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
 
