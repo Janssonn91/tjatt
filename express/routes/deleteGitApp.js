@@ -13,11 +13,7 @@ module.exports = function (app) {
             name: req.body.name,
             res: res
         };
-        console.log(payload.localPath)
-
-        // await vms.stop_container(payload);
-        await vms.remove_container(payload); 
-
-
+        await vms.stop_container(payload, true);
+        await vms.remove_container(payload);
     }); 
 };

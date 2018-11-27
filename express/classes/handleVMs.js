@@ -4,11 +4,15 @@ const path = require('path');
 const del = require("del");
 const simplegitPromise = require("simple-git/promise");
 const simplegit = require('simple-git');
-const { Docker } = require('node-docker-api');
-const { exec } = require('child_process');
+const {
+  Docker
+} = require('node-docker-api');
+const {
+  exec
+} = require('child_process');
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -51,7 +55,7 @@ module.exports = class HandleVMs {
 
   static create_docker_dockerfile(payload) {
     let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
-    return new Promise((promiseResult) =>{
+    return new Promise((promiseResult) => {
       fs.writeFile(path, '', {
         flag: 'wx'
       }, function (err) {
@@ -77,9 +81,9 @@ module.exports = class HandleVMs {
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
 
-// DO NOT INDENT THESE LINES
+    // DO NOT INDENT THESE LINES
     let data =
-`version: "2"
+      `version: "2"
 services:
   web:
     build: "../${payload.uniqueProjectName}"
@@ -93,7 +97,7 @@ services:
     expose:
     - "27017"
     container_name: "${payload.uniqueProjectName}_db"`;
-// NOW YOU CAN INDENT AGAIN!
+    // NOW YOU CAN INDENT AGAIN!
 
     fs.writeFile(path, '', {
       flag: 'wx'
@@ -107,67 +111,82 @@ services:
     });
   }
 
-  
+
   static start_containers_composer(payload) {
-    exec(`docker-compose up -d`, {
+    return new Promise((resolve, reject) => {
+      exec(`docker-compose up -d`, {
+        cwd: payload.localPath
+      }, (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        let response = Object.assign({}, payload, {
+          res: null
+        })
+        payload.res.json(response);
+        console.log(stdout || stderr);
+        resolve();
+      });
+    });
+  }
+
+  static stop_container(payload, toBeRemoved = false) {
+    return new Promise((resolve, reject) => {
+      exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        let response = Object.assign({}, payload, {
+          res: null
+        })
+        if(!toBeRemoved){
+          payload.res.json(response);
+        }
+        console.log(stdout || stderr);
+        resolve();
+      });
+    });
+  }
+
+  static async remove_container(payload) {
+    return new Promise((resolve, reject) => {
+      exec(`docker rm ${payload.name}_app`, (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        let response = Object.assign({}, payload, {
+          res: null
+        })
+        payload.res.json(response);
+        console.log(stdout || stderr);
+        resolve();
+      });
+    });
+  }
+
+
+  static docker_rebuild_image(payload) {
+    exec(`docker-compose build`, {
       cwd: payload.localPath
     }, (err, stdout, stderr) => {
       if (err) {
         throw (err);
       }
-      let response = Object.assign({}, payload, {res: null})
-      payload.res.json(response);
+      //let response = Object.assign({}, payload, {res: null})
+      //payload.res.json(response);
       console.log(stdout || stderr);
+      this.start_containers_composer(payload)
     });
   }
 
-    static stop_container(payload) {
-      exec(`docker stop ${payload.name}_app`,(err, stdout, stderr) => {
-        if (err) {
-          throw (err);
-        }
-        let response = Object.assign({}, payload, {res: null})
-        payload.res.json(response);
-        console.log(stdout || stderr);
+  static restart_docker_container(payload) {
+    docker.container.list()
+      .then(containers => {
+        let containerToRestart = containers.map(containers => {
+          console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
+          //get correct container by name or id?
+        })
       });
-    }
-
-    static async remove_container(payload) {
-      await this.stop_container(payload);
-
-      exec(`docker rm ${payload.name}_app`, (err, stdout, stderr) => {
-        if (err) {
-          throw (err);
-        }
-        let response = Object.assign({}, payload, {res: null})
-        payload.res.json(response);
-        console.log(stdout || stderr);
-      });
-    }
-  
-
-  // static docker_rebuild_image(payload) {
-  //   exec(`docker-compose build`, {
-  //     cwd: payload.localPath
-  //   }, (err, stdout, stderr) => {
-  //     if (err) {
-  //       throw (err);
-  //     }
-  //     //let response = Object.assign({}, payload, {res: null})
-  //     //payload.res.json(response);
-  //     console.log(stdout || stderr);
-  //     this.start_containers_composer(payload)
-  //   });
-  // }
-
-  // static restart_docker_container(payload) {
-  //   docker.container.list()
-  //     .then(containers => {
-  //       let containerToRestart = containers.map(containers => {
-  //         console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
-  //         //get correct container by name or id?
-  //       })
-  //     });
-  // }
+  }
 
 }

@@ -9,8 +9,8 @@ const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const vms = require('./handleVMs');
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 

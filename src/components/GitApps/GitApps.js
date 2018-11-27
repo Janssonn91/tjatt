@@ -31,7 +31,7 @@ import './GitApps.scss';
             url: `http://localhost:${port}/`,
             gitUrl: url,
             port: port,
-            running: false
+            running: true
         })
         .then(response=>{
             this.importingRepo = false;
