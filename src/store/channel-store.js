@@ -209,9 +209,9 @@ class ChannelStore {
   setSystemMessages(){
     //console.log(applicationStateStore.systemChannel)
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
-              { 
+              { console.log(data)
                 data.forEach(d=>{
-                  
+                  console.log("d", d)
                   if(d.textType==="invitation"){
                     let j = d.text.toString().split("&ask&");
                   let i = j[1].split("&toJoin&");
