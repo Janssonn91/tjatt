@@ -249,7 +249,7 @@ socket.on('invitation', async (data)=>{
     let message = new ChatMessage({
       ...messageFromClient,
     });
-    console.log("message", message)
+    // console.log("message", message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -485,20 +485,24 @@ app.put('/updateAdmin/:_id', async (req, res) => {
     });
 })
 
-app.put('/users/:_id', (req, res) => {
-  //console.log("user", req.body);
+app.put('/users/:_id', async (req, res) => {
   if (req.body.contact) {
-    User.findOneAndUpdate(
-      { _id: req.params._id },
-      { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
-    )
-      .then(() => {
-        res.json({ success: true })
-      })
-      .catch(err => {
-        throw err;
-      });
-  }
+    const userToCheck = await User.findOne( 
+      {_id: req.params._id, contact: req.body.contact}
+    );
+    if(!userToCheck){
+      User.findOneAndUpdate(
+        { _id: req.params._id },
+        { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+      )
+        .then(() => {
+          res.json({ success: true })
+        })
+        .catch(err => {
+          throw err;
+        });
+    };
+  };
   if (!req.body.contact) {
     User.findOneAndUpdate(
       { _id: req.params._id },
@@ -510,8 +514,7 @@ app.put('/users/:_id', (req, res) => {
       .catch(err => {
         throw err;
       });
-  }
-
+  };
 });
 
 app.put('/channel/:_id', (req, res) => {
