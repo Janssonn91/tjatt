@@ -47,8 +47,8 @@ import './GitApps.scss';
         const appToDelete = this.importedApps.find(app => app._id === appId); console.log(appToDelete)
         fetch('/api/deleteGitApp', { 
             headers:{'Content-Type': 'application/json'},
-            body: JSON.stringify({name: appToDelete.name, appRunning: appToDelete.running, uniqueProjectName: appToDelete.uniqueProjectName}), // data can be `string` or {object}!
-            method: 'POST' // or 'PUT'
+            body: JSON.stringify({name: appToDelete.name, appRunning: appToDelete.running}), // data can be `string` or {object}!
+            method: 'POST' // or 'PUT' 
           })
 
         await this.importedApps.find(app => app._id === appId).delete()

@@ -160,13 +160,25 @@ services:
     });
   };
 
-  static remove_docker_directory(payload){
-    let path = `./docker/${payload.uniqueProjectName}`;
-      fs.rmdir(path, function(err, data) {
-        flag: 'wx'
-        if(err) console.log('error', err)
-      })
-  }
+  static async remove_docker_directory(payload, toBeRemoved = false) {
+      return new Promise((resolve, reject) => {
+        exec(`rm -r ./docker/${payload.name}`, (err, stdout, stderr) => { 
+          if (err) {
+            reject(err);
+          }
+          let response = Object.assign({}, payload, {
+            res: null
+          })
+          if(!toBeRemoved){
+            payload.res.json(response);
+          }
+          console.log(stdout || stderr);
+          resolve();
+
+          console.log('Directory removed!')
+        });
+      });
+    };
 
 
   static docker_rebuild_image(payload) {

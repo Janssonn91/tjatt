@@ -16,6 +16,6 @@ module.exports = function (app) {
         };
         await vms.stop_container(payload, true);
         await vms.remove_container(payload);
-        await vms.remove_docker_directory(payload);
+        await vms.remove_docker_directory(payload, true);
     }); 
 };
