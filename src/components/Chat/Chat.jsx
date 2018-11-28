@@ -14,43 +14,44 @@
           {/* <span id="channelName"></span>  */}
           <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span>
           {this.props.channelStore.currentChannel.group
-            ? <span className="dialog-icon p-0">
-
-              <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-                <DropdownToggle
-                  tag="span"
-                  data-toggle="dropdown"
-                  aria-expanded={this.dropdownOpen}
-                >
-                  <i className="fas fa-users"></i>
-                </DropdownToggle>
-                <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
-                  <DropdownItem className="m-0" divider />
-                  <div className="channel-manage">
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .addDeleteMemberModalToggle
-                        .bind(this)}>
-                      Add/Delete members
-                  </DropdownItem>
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .viewMembersModalToggle
-                        .bind(this)}>
-                      View members
-                  </DropdownItem>
-                    {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
-                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
-                    }
-                  </div>
-                  <DropdownItem className="m-0" divider />
-                  <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </span>
+            ? <Button className="group-menu">
+                <span className="dialog-icon p-0">
+                <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
+                  <DropdownToggle
+                    tag="span"
+                    data-toggle="dropdown"
+                    aria-expanded={this.dropdownOpen}
+                  >
+                    <i className="fas fa-users"></i>
+                  </DropdownToggle>
+                  <DropdownMenu className="channel-management">
+                    <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
+                    <DropdownItem className="m-0" divider />
+                    <div className="channel-manage">
+                      <DropdownItem
+                        className="py-2 px-3"
+                        onClick={this
+                          .addDeleteMemberModalToggle
+                          .bind(this)}>
+                        Add/Delete members
+                    </DropdownItem>
+                      <DropdownItem
+                        className="py-2 px-3"
+                        onClick={this
+                          .viewMembersModalToggle
+                          .bind(this)}>
+                        View members
+                    </DropdownItem>
+                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
+                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                      }
+                    </div>
+                    <DropdownItem className="m-0" divider />
+                    <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </span>
+            </Button>
             :
             <span style={{ width: 30 }}>{null}</span>
           }
