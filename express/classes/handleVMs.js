@@ -4,15 +4,11 @@ const path = require('path');
 const del = require("del");
 const simplegitPromise = require("simple-git/promise");
 const simplegit = require('simple-git');
-const {
-  Docker
-} = require('node-docker-api');
-const {
-  exec
-} = require('child_process');
+const { Docker } = require('node-docker-api');
+const { exec } = require('child_process');
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  // socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -162,6 +158,14 @@ services:
         resolve();
       });
     });
+  };
+
+  static remove_docker_directory(payload){
+    let path = `./docker/${payload.uniqueProjectName}`;
+      fs.rmdir(path, function(err, data) {
+        flag: 'wx'
+        if(err) console.log('error', err)
+      })
   }
 
 
