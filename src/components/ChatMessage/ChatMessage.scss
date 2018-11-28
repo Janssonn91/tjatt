@@ -17,142 +17,162 @@ $fontSm: 12px;
 
 li {
   width: 98%;
-}
-.message-data {
-margin-bottom: 15px;
-text-align: left;
-margin-right: 5px;
-}
-.online {
-color: $lightblue;
-}
-.offline {
-color: $gray;
-}
-.circle {
-vertical-align: middle;
-}
-.me {
-text-align: left !important;
-margin-bottom: 15px;
-margin-left: 15px;
-}
-.message-data-time {
-color: lighten($gray, 8%);
-padding-left: 6px;
-}
-.circle-icon {
-color: $blue;
-vertical-align: middle;
-}
-.message {
-text-align:left;
-color: $text;
-padding: 8px 15px;
-line-height: 26px;
-border-radius: 6px;
-margin-bottom: 30px;
-position: relative;
-&:after {
-  bottom: 100%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-bottom-color: $green;
-  border-width: 10px;
-  margin-left: -10px;
-}
-}
-.other-message {
-background: white;
-color: $text;
-&:after {
-  border-bottom-color: white;
-  left:40px;
-}
-}
-
-.my-message {
-margin-left: 20px;
-color: #fff;
-background: lighten($blue, 8%);
-float: left;
-min-width: 40px;
-max-width: 630px;
-@media (max-width: 767.5px) {
-  .btn-group, .btn-group:hover {
-    display: inline-block!important;
-    position: absolute;
-    top: -8px;
-    right: 15px;
-
-  }
-}
-&:hover {
-  .btn-group {
-    display: inline-block!important;
-    position: absolute;
-    top: -8px;
-    right: 15px;
-  }
-}
-i.fa-pen {
-  color: white;
-  position: absolute;
-  background-color: $backgroundColor;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  border: $backgroundColor 1px solid;
-  padding: 5px 0 0 5px;
-  font-size: 9px;
-  &:hover, &:focus, &:active {
-    color: darken(white, 10%);
-    background-color: darken($backgroundColor, 10%);
-    border-color: darken($backgroundColor, 10%);
-    cursor: pointer;
-  }
-}
-.dropdown-menu {
-  position: absolute;
-  transform: none!important;
-  will-change: unset!important;
-  border-radius: 5px;
-  top: -30px!important;
-  margin-top: 0;
-  height: auto;
-  padding: 0;
-    .dropdown-header {
-        color: $gray;
-        font-weight: bold;
-        &:hover {
-          cursor: unset !important;
+  // Last message on page has less margin
+  &:nth-last-child(2) {
+      .message {
+        margin-bottom: 5px!important;
       }
-    }
-    .dropdown-item {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: $blue;
-      line-height: normal;
-      &:hover, &:active {
-        cursor: pointer;
-        background-color: lighten($gray, 35%);
-      }
-      &.delete-message {
-        color: $darkred;
-        &:hover, &:focus, &:active {
-          border-radius: 5px;
-          background-color: $darkred;
-          color: white;
+  }
+  //My data on messages
+  .me {
+    text-align: left !important;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    .message.my-message {
+      margin-left: 20px;
+      color: #fff;
+      background: lighten($blue, 8%);
+      float: left;
+      min-width: 40px;
+      max-width: 630px;
+      @media (max-width: 767.5px) {
+        .btn-group, .btn-group:hover {
+          display: inline-block!important;
+          position: absolute;
+          top: -8px;
+          right: 15px;
         }
       }
+      &:hover {
+        .btn-group {
+          display: inline-block!important;
+          position: absolute;
+          top: -8px;
+          right: 15px;
+        }
+      }
+      i.fa-pen {
+        color: white;
+        position: absolute;
+        background-color: $backgroundColor;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        border: $backgroundColor 1px solid;
+        padding: 5px 0 0 5px;
+        font-size: 9px;
+        &:hover, &:focus, &:active {
+          color: darken(white, 10%);
+          background-color: darken($backgroundColor, 10%);
+          border-color: darken($backgroundColor, 10%);
+          cursor: pointer;
+        }
+      }
+      .dropdown-menu {
+        position: absolute;
+        transform: none!important;
+        will-change: unset!important;
+        border-radius: 5px;
+        top: -30px!important;
+        margin-top: 0;
+        height: auto;
+        padding: 0;
+          .dropdown-header {
+              color: $gray;
+              font-weight: bold;
+              &:hover {
+                cursor: unset !important;
+            }
+          }
+          .dropdown-item {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $blue;
+            line-height: normal;
+            &:hover, &:active {
+              cursor: pointer;
+              background-color: lighten($gray, 35%);
+            }
+            &.delete-message {
+              color: $darkred;
+              &:hover, &:focus, &:active {
+                border-radius: 5px;
+                background-color: $darkred;
+                color: white;
+              }
+            }
+          }
+        }
+      &:after {
+        border-bottom-color: lighten($blue, 8%);
+        left:15px;
+      }
     }
   }
-&:after {
-  border-bottom-color: lighten($blue, 8%);
-  left:15px;
+  //Other users data on messages
+  .message-data {
+    margin-bottom: 15px;
+    text-align: left;
+    margin-right: 5px;
+    .circles {
+      .online {
+        color: #28a745!important;
+        font-size: 8px;
+      }
+      .offline {
+        color: darken(#dc3545, 15%)!important;
+        font-size: 8px;
+      }
+    }
+    .message-data-time {
+      color: lighten($gray, 8%);
+      padding-left: 6px;
+    }
+  }
+  //All messages
+  .message {
+    word-break: break-word;
+    text-align:left;
+    color: $text;
+    padding: 8px 15px;
+    line-height: 26px;
+    font-size: $fontMd;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    position: relative;
+    &:after {
+      bottom: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-bottom-color: $green;
+      border-width: 10px;
+      margin-left: -10px;
+    }
+  }
+  // My messages
+  .message.my-message {
+    margin-left: 20px;
+    color: #fff;
+    background: lighten($blue, 8%);
+    float: left;
+    min-width: 30px;
+    &:after {
+      border-bottom-color: lighten($blue, 8%);
+      left:15px;
+    }
+  }
+  // Other users messages
+  .other-message {
+    background-color: lighten($gray, 30%);
+    color: $text;
+    &:after {
+      border-bottom-color: lighten($gray, 30%);
+      left:40px;
+    }
+  }
 }
-}
+

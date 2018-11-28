@@ -34,11 +34,11 @@
           <div className="message-data">
             {
               this.props.channelStore.userDict[message.sender].status ?
-                <span className="online circle">
-                  <i className="fas fa-circle"></i>
+                <span className="circles">
+                  <i className="fas fa-circle online"></i>
                 </span> :
-                <span className="offline circle">
-                  <i className="fas fa-circle"></i>
+                <span className="circles">
+                  <i className="fas fa-circle offline"></i>
                 </span>
             }&nbsp; &nbsp;
             <span>
