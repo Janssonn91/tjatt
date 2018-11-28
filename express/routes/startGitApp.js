@@ -14,8 +14,10 @@ module.exports = function (app) {
             res: res
         };
         console.log(payload.localPath)
+        console.log(payload.appRunning)
 
-        payload.appRunning ? vms.stop_container(payload) : vms.start_containers_composer(payload); 
+
+        !payload.appRunning ? vms.stop_container(payload) : vms.start_containers_composer(payload); 
 
     }); 
 };
