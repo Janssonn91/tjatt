@@ -43,22 +43,22 @@ import './GitApps.scss';
         );
     }
 
-    async deleteRepo(appId){
-        // await this.importedApps.find(app=>app._id === appId).delete()
-        // .then(response=>{
-        //     console.log('removed', response)
-        // })
-        // .catch(
-        //     error=>console.log(error)
-        // );
-        // this.fetchRepos();
-            
+    async deleteRepo(appId){           
         const appToDelete = this.importedApps.find(app => app._id === appId); console.log(appToDelete)
         fetch('/api/deleteGitApp', { 
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({name: appToDelete.name, appRunning: appToDelete.running}), // data can be `string` or {object}!
             method: 'POST' // or 'PUT'
           })
+          
+          await this.importedApps.find(app=>app._id === appId).delete()
+          .then(response=>{
+              console.log('removed', response)
+          })
+          .catch(
+              error=>console.log(error)
+          );
+          this.fetchRepos();
 
     }
 
