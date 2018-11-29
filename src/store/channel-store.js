@@ -96,9 +96,10 @@ class ChannelStore {
           // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
           // this.contactChannels.push(this.channelDict[c._id])
         }
-        this.sortListByMessageNum()
       }
     });
+    await sleep(100);
+    this.sortListByMessageNum();
   }
 
   @action getGroupMembersData(memberIds) {
