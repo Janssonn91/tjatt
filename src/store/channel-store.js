@@ -99,6 +99,7 @@ class ChannelStore {
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
+    this.setSystemMessages();
     user.map((u) => {
       return this.userDict[u._id] = {
         name: u.nickname,
@@ -202,54 +203,67 @@ class ChannelStore {
   }
 
   setSystemMessages(){
+    this.unreadSystemMessages=[];
+    this.unreadSystemMessageNum=0;
     //console.log(applicationStateStore.systemChannel)
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
          
               { console.log(data)
-                this.unreadSystemMessageNum = data.length;
+                // this.unreadSystemMessageNum = data.length;
                 data.forEach(d=>{
-                  if(d.textType.toString()==="invitation"){
-                    console.log(d._id)
-                    let j = d.text.toString().split("&ask&");
-                  let i = j[1].split("&toJoin&");
-                  let message={}
-                message.id = d._id;
-                message.targetChannel= i[1];
-                message.textType = d.textType;
-                message.initiator = toJS(this.userDict[j[0]]).name; //sender's name
-                message.unread = d.unread;
-                message.sender = j[0]; //sender's id 
-                this.unreadSystemMessages.push(message);
+                  if(d.unread){
+                    if(d.textType.toString()==="invitation"){
+                      console.log(d._id)
+                      let j = d.text.toString().split("&ask&");
+                    let i = j[1].split("&toJoin&");
+                    let message={}
+                  message.id = d._id;
+                  message.targetChannel= i[1];
+                  message.textType = d.textType;
+                  message.initiator = toJS(this.userDict[j[0]]).name; //sender's name
+                  message.unread = d.unread;
+                  message.sender = j[0]; //sender's id 
+                  this.unreadSystemMessages.push(message);
+                 this.unreadSystemMessageNum++;
+                    }
+                    if(d.textType.toString()==="decline"){
+                      let i = d.text.toString().split("&decline&");
+                      let message={};
+                      message.id= d._id;
+                      message.initiator = toJS(this.userDict[i[0]]).name;
+                      message.unread= d.unread;
+                      message.textType = d.textType.toString();
+                      message.sender = i[0];
+                      this.unreadSystemMessages.push(message);
+                      this.unreadSystemMessageNum++;
+                    }
                   }
-                  if(d.textType.toString()==="decline"){
-                    let i = d.text.toString().split("&decline&");
-                    let message={};
-                    message.id= d._id;
-                    message.initiator = toJS(this.userDict[i[0]]).name;
-                    message.unread= d.unread;
-                    message.textType = d.textType.toString();
-                    message.sender = i[0];
-                    this.unreadSystemMessages.push(message);
-                  }
+                 
                   
               })
-             
-               this.unreadSystemMessageNum = data.length;
-              console.log(this.unreadSystemMessages, this.unreadSystemMessageNum);
           }
             );
   }
 
   readSystemMessage(id, i){
+    console.log(id,i)
     let c = toJS(this.unreadSystemMessages)
     c.splice(i, 1);
     this.unreadSystemMessages= c;
     this.unreadSystemMessageNum--;
-    console.log(id)
-    fetch(`/api/messages/${id}/read`,{
+    id=id.toString();
+
+    fetch(`/api/message/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' }
-    })
+      body: JSON.stringify({
+        unread: false
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+
+
    
   }
 

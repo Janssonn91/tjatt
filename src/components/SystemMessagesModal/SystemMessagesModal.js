@@ -11,11 +11,12 @@ import './SystemMessagesModal.scss';
     socket.emit('decline', data);
 
     this.props.channelStore.readSystemMessage(id,i);
-    // let data = {
-    //   initiator: this.userStore.user,
-    //   decline: id,
-    // }
-
-   //socket.emit('decline', data);
+    
   }
+  
+  closeSystemMessage(id,i){
+    console.log(id, i)
+    this.props.channelStore.readSystemMessage(id, i);
+  }
+
 }

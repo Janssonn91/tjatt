@@ -127,17 +127,19 @@ export const imgPath = '/images/placeholder.png';
           }
         }
       }
-
-      if(data.invitee===userStore.user._id){
-        let message= {
-          sender: data.inviter,
-          initiator: channelStore.userDict[data.inviter].name,
-          targetChannel: data.newChannel,
-          unread: true,
+      if(data.textType==='invitation'){
+        if(data.invitee===userStore.user._id){
+          let message= {
+            sender: data.inviter,
+            initiator: channelStore.userDict[data.inviter].name,
+            targetChannel: data.newChannel,
+            unread: true,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
         }
-        channelStore.unreadSystemMessages.push(message);
-        channelStore.unreadSystemMessageNum++;
       }
+      
 
       if(data.textType==='decline'){
         console.log(data)
@@ -150,6 +152,7 @@ export const imgPath = '/images/placeholder.png';
           }
           channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
+        socket.emit('decline', message);
         
         }
       }
@@ -157,15 +160,11 @@ export const imgPath = '/images/placeholder.png';
     });
 
     socket.off('invitation');
-    socket.on('invitation', data=>{
-      console.log("invitation", data)
-      let message= {
-        textType:"invitation",
-        initiator: data.invitee,
-        targetChannel: data.newChannel._id,
-        unread: true
-      }
-      channelStore.unreadSystemMessages.push(message)
+    socket.on('invitation', message=>{
+      console.log("invitation", message)
+    
+      // channelStore.unreadSystemMessages.push(message);
+      // channelStore.unreadSystemMessageNum++;
      
     })
 

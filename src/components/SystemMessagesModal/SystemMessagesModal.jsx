@@ -24,7 +24,7 @@
           : message.textType==="decline" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has rejected your invitation</span>
-          <span><Button size="sm">x</Button></span>
+          <span><Button size="sm"onClick={()=>this.closeSystemMessage(message.id, i)}>x</Button></span>
           </ListGroupItem>
           : message.textType === "addedToGroup" ?
           <ListGroupItem key={i}>{message.initiator} has added you as a group member of {message.targetChannel}</ListGroupItem>

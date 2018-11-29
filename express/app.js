@@ -133,16 +133,13 @@ io.on('connection', (socket) => {
 
 
   socket.on('login', (userId) => {
-    console.log("login", userId)
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
-    console.log("onlineuser after login", onlineUsers)
     channel.findOne({channelname: userId + "system"}).then(data=>{
       systemChannel = data._id;
     })
     User.findOne({_id: userId}).then(u=> {
       let channels = u.channel;
-      console.log("length", channels.length, u.nickname)
       for(let channel of channels){
         if(channel){
           channel = channel.toString();
@@ -151,19 +148,11 @@ io.on('connection', (socket) => {
             io.to(channel).emit(userId + "has joined in channel" + channel);
           });
         }
-       
-
     }
     socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })
-    }
-    
-      )
-      
-    
-
-
+    })
   })
 
   socket.on('newChannel', (channel) => {
@@ -192,10 +181,7 @@ io.on('connection', (socket) => {
     }
 
     //contact channel invitation
-    console.log(data)
-    if(data.type==="inviation"){
-      // bug here!!!!!
-      socket.emit('invitation', data);
+ 
       let c= await channel.findOne({channelname: data.invitee + "system"});
       console.log("systemChannel", c)
      let systemMessage = new ChatMessage({
@@ -205,37 +191,39 @@ io.on('connection', (socket) => {
         unread: true,
         channel: c._id,
       });
-  
-      await systemMessage.save();
+      let m="";
+      await systemMessage.save().then(message=>{
+        m=message._id})
+    
+      if(data.type==="inviation"){
+        let message= {
+          textType: "invitation",
+          initiator: data.inviter,
+          targetChannel: data.newChannel._id,
+          unread: true,
+          id: m,
+        }
       
-      io.to(systemChannel).emit('system message', [{
-        sender: systemMessage.sender,
-        text: systemMessage.text,
-        textType: systemMessage.textType,
-        unread: systemMessage.unread,
-        channel: systemMessage.channel,
-      }] );
+      io.to(systemChannel).emit('invitation', message);
     }
 
     if(data.textType=== 'decline'){
+      console.log("decline", data)
      if(data.rejectee === userStore.user._id){
        channelStore.unread
      }
     }
-    
-    //  if(data.invitee){
-    //    let s=""
-    //   await User.findOne({username: "system"}).then(user=>s=user._id);
-    //   let systemMessage={
-    //     receiver: data.invitee,
-    //     sender: s,
-    //     text: 
-    //   }
-    //   socket.emit('chat message', )
-    // }
+  
   });
 
   // socket.
+   // [{
+      //   sender: systemMessage.sender,
+      //   text: systemMessage.text,
+      //   textType: systemMessage.textType,
+      //   unread: systemMessage.unread,
+      //   channel: systemMessage.channel,
+      // }]
 
  
     
@@ -484,6 +472,7 @@ app.post('/check-mail', async (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+  console.log(req)
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
@@ -493,7 +482,7 @@ app.post('/login', (req, res) => {
           req.body.password + global.passwordSalt,
           { encoding: 'base64', algorithm: 'sha512' }
         );
-        //console.log(hash, user.password);
+        console.log(hash, user.password);
         if (user.password === hash) {
           req.session.userId = user._id;
           req.session.loggedInUser = user;
@@ -667,25 +656,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.put('/message/:id',(req, res)=>{
-  console.log("change message status", req.body, req.params)
+ 
   ChatMessage.findOneAndUpdate(
     {_id: req.params.id},
     {$set: { unread: false}}
-  ).then(()=>{
-    res.json({success: true})
-  }).catch(err=>{
+  ).then(()=>
+    res.json({success: true}
+  )).catch(err=>{
     throw err;
-  });
+  })
 });
 
-app.put('/messages/:_id/read', (req,res)=>{
-  ChatMessage.findOneAndUpdate(
-    {_id: req.params._id},
-    {$set:{unread:false}}
-  ).then(message=>{
-    res.josn(message)
-  }).catch(err=>{throw err; })
-})
 
 app.post('/upload', upload.single('file'), (req, res) => {
   User.findById(req.session.userId)
