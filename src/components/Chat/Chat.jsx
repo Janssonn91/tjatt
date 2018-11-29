@@ -14,43 +14,44 @@
           {/* <span id="channelName"></span>  */}
           <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span>
           {this.props.channelStore.currentChannel.group
-            ? <span className="dialog-icon p-0">
-
-              <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
-                <DropdownToggle
-                  tag="span"
-                  data-toggle="dropdown"
-                  aria-expanded={this.dropdownOpen}
-                >
-                  <i className="fas fa-users"></i>
-                </DropdownToggle>
-                <DropdownMenu className="channel-management">
-                  <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
-                  <DropdownItem className="m-0" divider />
-                  <div className="channel-manage">
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .addDeleteMemberModalToggle
-                        .bind(this)}>
-                      Add/Delete members
-                  </DropdownItem>
-                    <DropdownItem
-                      className="py-2 px-3"
-                      onClick={this
-                        .viewMembersModalToggle
-                        .bind(this)}>
-                      View members
-                  </DropdownItem>
-                    {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
-                      <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
-                    }
-                  </div>
-                  <DropdownItem className="m-0" divider />
-                  <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </span>
+            ? <Button className="group-menu">
+                <span className="dialog-icon p-0">
+                <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
+                  <DropdownToggle
+                    tag="span"
+                    data-toggle="dropdown"
+                    aria-expanded={this.dropdownOpen}
+                  >
+                    <i className="fas fa-users"></i>
+                  </DropdownToggle>
+                  <DropdownMenu className="channel-management">
+                    <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
+                    <DropdownItem className="m-0" divider />
+                    <div className="channel-manage">
+                      <DropdownItem
+                        className="py-2 px-3"
+                        onClick={this
+                          .addDeleteMemberModalToggle
+                          .bind(this)}>
+                        Add/Delete members
+                    </DropdownItem>
+                      <DropdownItem
+                        className="py-2 px-3"
+                        onClick={this
+                          .viewMembersModalToggle
+                          .bind(this)}>
+                        View members
+                    </DropdownItem>
+                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
+                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                      }
+                    </div>
+                    <DropdownItem className="m-0" divider />
+                    <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </span>
+            </Button>
             :
             <span style={{ width: 30 }}>{null}</span>
           }
@@ -92,16 +93,16 @@
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
-              <DropdownItem>
-                <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-              <DropdownItem>
-                <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-              {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
-                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
-              }
+                <DropdownItem>
+                  <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+                <DropdownItem>
+                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                <DropdownItem>
+                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
+                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
+                }
               </DropdownMenu>
             </ButtonDropdown>
             <FormGroup className="m-0 messageAreaForm">
@@ -121,7 +122,12 @@
               />
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
-                  <i className="far emojiOpener"><span role="img" aria-label="emoji">😃</span></i>
+                  <div
+                    onMouseEnter={() => this.setButtonHovered(true)}
+                    onMouseLeave={() => this.setButtonHovered(false)}
+                  >
+                    {this.buttonIsHovered ? <i className="hover fas fa-grin emojiOpener"></i> : <i className="far fa-smile emojiOpener"></i>}
+                  </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
@@ -150,7 +156,7 @@
         </Col>
       </Row>
       <Row>
-        <Infopage/>
+        <Infopage />
       </Row>
     </Fragment>
   }

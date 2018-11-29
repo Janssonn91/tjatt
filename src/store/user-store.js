@@ -45,8 +45,6 @@ class UserStore {
     let res = await fetch(`/api/users/${id}`);
     let user = await res.json();
     this.candidates.push(user);
-    this.groupCandidates.push(user);
-    // måste komma åt searchedContacts som nu ligger i AddUserModal.js??
   }
 
   @action updateProfile(key, val) {

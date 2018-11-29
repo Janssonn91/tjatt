@@ -121,7 +121,10 @@ $text:#434651;
             color: $gray;
           }
           .form-group {
-            max-height: 157px;
+            max-height: 160px;
+          }
+          .form-group.group-member {
+            max-height: 200px;
           }
         }
         .list-group-item {

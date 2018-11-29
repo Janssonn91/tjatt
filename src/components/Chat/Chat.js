@@ -34,6 +34,7 @@ export default class Chat extends Component {
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
   @observable openSideDrawer = false;
+  @observable buttonIsHovered = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -170,6 +171,10 @@ export default class Chat extends Component {
         for (let message of messages) {
           let time = new Date(message.time);
           console.log(time)
+
+          // When you get a message, move the channel to the top of the list
+          channelStore.moveLatestChannelToTop(message.channel);
+
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
               channel: message.channel,
@@ -205,7 +210,6 @@ export default class Chat extends Component {
                 }
               }
             })
-            channelStore.sortListByMessageNum();
           }
         }
       })
@@ -244,8 +248,10 @@ export default class Chat extends Component {
       return result;
     }
     // var d = new Date();
+  }
 
-
+  setButtonHovered(boolean) {
+    this.buttonIsHovered = boolean;
   }
 
 }

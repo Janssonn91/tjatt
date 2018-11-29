@@ -197,9 +197,10 @@ class ChannelStore {
           // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
           // this.contactChannels.push(this.channelDict[c._id])
         }
-        this.sortListByMessageNum()
       }
     });
+    await sleep(100);
+    this.sortListByMessageNum();
   }
 
   setSystemMessages(){
@@ -412,9 +413,27 @@ class ChannelStore {
     this.currentChannel = "";
   }
 
+  // TODO: This function has warning (Nana)
   @action sortListByMessageNum() {
     this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
     this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
+  }
+
+  @action moveLatestChannelToTop(channelID) {
+    // For contact list
+    const targetChannel = this.contactChannels.find(channel => channelID === channel._id);
+    const index = this.contactChannels.indexOf(targetChannel);
+    if (index > 0) {
+      this.contactChannels.splice(index, 1);
+      this.contactChannels.unshift(targetChannel);
+    }
+    // For group list
+    const targetGroupChannel = this.groupChannels.find(channel => channelID === channel._id);
+    const groupindex = this.groupChannels.indexOf(targetGroupChannel);
+    if (groupindex > 0) {
+      this.groupChannels.splice(groupindex, 1);
+      this.groupChannels.unshift(targetGroupChannel);
+    }
   }
 }
 

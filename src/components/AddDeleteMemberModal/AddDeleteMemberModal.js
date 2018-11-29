@@ -11,9 +11,14 @@ export default class AddDeleteMemberModal extends Component {
   @observable groupMembers = [];
 
 
+  // "currentGroupMembers" is empty until user select one channel
+  // That's why we cannot set the value start(), but we can get value if we use shouldComponentUpdate()
   shouldComponentUpdate(nextProps) {
     if (nextProps !== this.props) {
-      this.groupMembers = nextProps.channelStore.currentGroupMembers;
+      // copy members because "currentGroupMembers" is used in ViewMembersModal
+      this.groupMembers = [...nextProps.channelStore.currentGroupMembers];
+      // copy candidates because we need to reset with "currentGroupCandidates" in store when we close the modal or
+      this.searchedGroupCandidates = [...this.props.channelStore.currentGroupCandidates];
       return true;
     }
     return false;
@@ -21,7 +26,7 @@ export default class AddDeleteMemberModal extends Component {
 
   checkboxHandler = (e) => {
     if (e.target.checked) {
-      this.searchedGroupCandidates = this.props.channelStore.currentGroupCandidates;
+      this.searchedGroupCandidates = [...this.props.channelStore.currentGroupCandidates];
     } else {
       this.searchedGroupCandidates = [];
     }
@@ -54,6 +59,8 @@ export default class AddDeleteMemberModal extends Component {
     const isMember = user => newMemberIds.some(id => id === user);
     const addedUser = newMemberIds.filter(user => !wasMember(user));
     const removedUser = previousMemberIds.filter(user => !isMember(user));
+    // Update view
+    this.props.channelStore.getGroupMembersData(newMemberIds);
 
     if (addedUser.length > 0) {
       addedUser.forEach(id => {
