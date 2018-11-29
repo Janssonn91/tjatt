@@ -230,7 +230,7 @@ $fontSm: 12px;
             float: left;
             min-width: 30px;
             &:after {
-                border-bottom-color: lighten($blue, 8%);
+                border-bottom-color: lighten($gray, 10%);
                 left:15px;
             }
         }
@@ -392,6 +392,10 @@ $fontSm: 12px;
 aside.emoji-picker{
     width: fit-content;
     min-width: 280px;
+}
+
+.document-file{
+    color:#919192;
 }
 
 

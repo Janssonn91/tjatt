@@ -92,16 +92,16 @@
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
-                <div className="dropdown-item">
+                <div className="dropdown-item d-flex">
                   <input
                     type="file"
                     id="file"
-                    className="file"
+                    className="file d-none"
                     name="file"
                     onChange={this.textfileHandler}
                   />
-                  <label htmlFor="file">
-                    <i className="fas fa-file"></i>&nbsp; &nbsp; Document
+                  <label htmlFor="file" className="document-file float-left py-auto align-self-center">
+                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document
                   </label>
                 </div>
                 <DropdownItem>

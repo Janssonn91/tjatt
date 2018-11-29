@@ -16,7 +16,7 @@ export default class ChatMessage extends Component {
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
-  async start() { }
+  start() { }
 
   toggleChatModal = () => {
     this.chatImageModal = !this.chatImageModal;
@@ -33,4 +33,6 @@ export default class ChatMessage extends Component {
   deleteMessageModalToggle() {
     this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
   }
+
+
 }
