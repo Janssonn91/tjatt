@@ -99,34 +99,9 @@ export const imgPath = '/images/placeholder.png';
     const {userStore, channelStore} = this.props;
     socket.off('system');
     socket.on('system', async (data)=>{
-      // if(data.invitee){
-      //   if(data.invitee === userStore.user._id){
-      //    socket.emit('invitation', data);
-      //   }
-      // }
+     
 
-      // group channel
-      if(data.newChannel){
-        let c= data.newChannel;
-        let id= userStore.user._id.toString();
-        for(let i of c.members) {
-          if(i.toString()===id ){
-            if(c.group){
-              channelStore.groupChannels.push(c);
-              socket.emit('newChannel', data.newChannel);
-              console.log(channelStore.groupChannels)
-            }
-          //   else{
-          //     let name = await channelStore.getContactName(c.members);
-          //     if (name !== undefined) {
-          //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
-          //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
-          // } 
-          //   }
-          
-          }
-        }
-      }
+      
       if(data.textType==='invitation'){
         if(data.invitee===userStore.user._id){
           let message= {
@@ -141,23 +116,62 @@ export const imgPath = '/images/placeholder.png';
       }
       
 
-      if(data.textType==='decline'){
+      if(data.textType==='rejection'){
         console.log(data)
         if(data.rejectee === userStore.user._id){
           let message = {
-            textType: 'decline',
+            textType: 'rejection',
             initiator:  toJS(channelStore.userDict[data.rejecter]).name,
             unread:true,
             sender: data.rejecter,
           }
           channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
-        socket.emit('decline', message);
+        socket.emit('rejection', message);
         
         }
       }
 
     });
+
+    socket.off('group');
+    socket.on('group', message=>{
+      if(message.type === "create group"){
+        let c= message.newChannel;
+        let id= userStore.user._id.toString();
+        for(let i of c.members) {
+          if(i.toString()===id ){
+            if(c.group){
+              channelStore.groupChannels.push(c);
+              socket.emit('newChannel', message.newChannel);
+              console.log(channelStore.groupChannels)
+            }
+      }
+    }
+  }
+      // group channel
+      // if(data.newChannel){
+      //   let c= data.newChannel;
+      //   let id= userStore.user._id.toString();
+      //   for(let i of c.members) {
+      //     if(i.toString()===id ){
+      //       if(c.group){
+      //         channelStore.groupChannels.push(c);
+      //         socket.emit('newChannel', data.newChannel);
+      //         console.log(channelStore.groupChannels)
+      //       }
+      //     //   else{
+      //     //     let name = await channelStore.getContactName(c.members);
+      //     //     if (name !== undefined) {
+      //     //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
+      //     //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+      //     // } 
+      //     //   }
+          
+      //     }
+      //   }
+      // }
+    })
 
     socket.off('invitation');
     socket.on('invitation', message=>{

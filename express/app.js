@@ -171,31 +171,34 @@ io.on('connection', (socket) => {
   })
   
   socket.on('system', async (data) => {
-    socket.broadcast.emit('system', data);
 
-    //join group channel 
+    //create group channel 
+    // data: {newChannel: whole channel info includes id
     if(!data.invitee && data.newChannel){
       socket.join(data.newChannel._id, ()=>{
         console.log("socket room", socket.rooms);
       });
+      data.type="create group";
+      //socket.emit('group', data);
+      socket.broadcast.emit('group', data);
     }
 
     //contact channel invitation
- 
-      let c= await channel.findOne({channelname: data.invitee + "system"});
-      console.log("systemChannel", c)
-     let systemMessage = new ChatMessage({
-        sender: data.invitee,
-        text: data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id,
-        textType: "invitation",
-        unread: true,
-        channel: c._id,
-      });
-      let m="";
-      await systemMessage.save().then(message=>{
-        m=message._id})
+  
     
       if(data.type==="inviation"){
+          // data:  {newChannel: id, invitee: userId, inviter: user._id, type:"inviation"}
+      let c= await channel.findOne({channelname: data.invitee + "system"});
+      let systemMessage = new ChatMessage({
+         sender: data.invitee,
+         text: data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id,
+         textType: "invitation",
+         unread: true,
+         channel: c._id,
+       });
+       let m="";
+       await systemMessage.save().then(message=>{
+         m=message._id;})
         let message= {
           textType: "invitation",
           initiator: data.inviter,
@@ -203,18 +206,36 @@ io.on('connection', (socket) => {
           unread: true,
           id: m,
         }
-      
-      io.to(systemChannel).emit('invitation', message);
+
+      socket.broadcast.emit('invitation', message);
     }
 
-    if(data.textType=== 'decline'){
-      console.log("decline", data)
+    if(data.textType=== 'rejection'){
+      console.log("decline", data);
+      // data: {rejecter: id, rejectee: id, type:"decline"}
+      // rejecter emit decline
+      let systemMessage = new ChatMessage({
+        sender: data.rejecter,
+        text: data.rejecter +"&decline&" + data.rejectee,
+        textType: "decline",
+        unread:true,
+      })
+      let m="";
+      await systemMessage.save().then(message=>{
+        m= message._id;
+      })
+
+
+
+
      if(data.rejectee === userStore.user._id){
        channelStore.unread
      }
     }
   
   });
+
+
 
   // socket.
    // [{
@@ -271,8 +292,8 @@ socket.on('invitation', async (data)=>{
     }]);
   });
 
-  socket.on('decline', async (data)=>{
-      data.textType= 'decline';
+  socket.on('rejection', async (data)=>{
+      data.textType= 'rejection';
       socket.broadcast.emit('system', data);
       let c = await channel.findOne({
         channelname: data.rejectee + "system"

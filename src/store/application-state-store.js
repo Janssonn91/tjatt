@@ -19,6 +19,8 @@ class ApplicationStateStore {
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
          
+          channelStore.unreadSystemMessages=[];
+          channelStore.unreadSystemMessageNum=0;
           fetch('/api/system').then(res => res.json()).then(data=>{
             this.systemChannel = data.systemChannel;
             console.log("systemChannel",data.systemChannel)

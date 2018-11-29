@@ -99,7 +99,7 @@ class ChannelStore {
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
-    this.setSystemMessages();
+    this.setSystemMessagesFromDB();
     user.map((u) => {
       return this.userDict[u._id] = {
         name: u.nickname,
@@ -123,32 +123,6 @@ class ChannelStore {
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels = [];
-
-    // this.unreadSystemMessageNum=0;
-    // this.unreadSystemMessages=[];
-    // fetch('/api/system').then(res => res.json()).then(data=>{
-    //   applicationStateStore.systemChannel = data.systemChannel;
-    //   console.log("systemChannel",applicationStateStore.systemChannel )
-    //   Message.find({channel: applicationStateStore.systemChannel}).then(data=>
-    //     { console.log(data)
-    //       data.forEach(d=>{
-    //         console.log(d.text)
-    //         let j = d.text.toString().split("&ask&");
-    //         console.log(j)
-    //         let i = j[1].split("&toJoin&");
-    //         let message={}
-    //       message.targetChannel= i[1];
-    //       message.textType = d.textType;
-    //       message.initiator = toJS(channelStore.userDict[j[0]]).name; //sender's name
-    //       message.unread = d.unread;
-    //       message.sender = j[0]; //sender's id 
-    //       channelStore.unreadSystemMessages.push(message);
-    //     })
-       
-    //      channelStore.unreadSystemMessageNum = data.length;
-    //     console.log(channelStore.unreadSystemMessages, channelStore.unreadSystemMessageNum);}
-    //   );
-    //this.setSystemMessages();
 
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
@@ -203,40 +177,27 @@ class ChannelStore {
     this.sortListByMessageNum();
   }
 
-  setSystemMessages(){
+  setSystemMessagesFromDB(){
     this.unreadSystemMessages=[];
     this.unreadSystemMessageNum=0;
-    //console.log(applicationStateStore.systemChannel)
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
          
               { console.log(data)
-                // this.unreadSystemMessageNum = data.length;
                 data.forEach(d=>{
                   if(d.unread){
                     if(d.textType.toString()==="invitation"){
                       console.log(d._id)
                       let j = d.text.toString().split("&ask&");
                     let i = j[1].split("&toJoin&");
-                    let message={}
-                  message.id = d._id;
-                  message.targetChannel= i[1];
-                  message.textType = d.textType;
-                  message.initiator = toJS(this.userDict[j[0]]).name; //sender's name
-                  message.unread = d.unread;
-                  message.sender = j[0]; //sender's id 
-                  this.unreadSystemMessages.push(message);
-                 this.unreadSystemMessageNum++;
+                    let initiator = toJS(this.userDict[j[0]]).name; //sender's name
+                    this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+               
                     }
                     if(d.textType.toString()==="decline"){
                       let i = d.text.toString().split("&decline&");
-                      let message={};
-                      message.id= d._id;
-                      message.initiator = toJS(this.userDict[i[0]]).name;
-                      message.unread= d.unread;
-                      message.textType = d.textType.toString();
-                      message.sender = i[0];
-                      this.unreadSystemMessages.push(message);
-                      this.unreadSystemMessageNum++;
+                      let initiator= toJS(this.userDict[i[0]]).name;
+                    
+                      this.setSystemMessageFromDB(initiator, i[0], "", d);
                     }
                   }
                  
@@ -244,6 +205,19 @@ class ChannelStore {
               })
           }
             );
+  }
+
+  setSystemMessageFromDB(initiator, sender, targetChannel, d){
+    let message={}
+    message.id = d._id;
+    message.targetChannel= targetChannel;
+    message.textType = d.textType;
+    message.initiator = initiator; //sender's name
+    message.unread = true;
+    message.sender = sender; //sender's id 
+    this.unreadSystemMessages.push(message);
+   this.unreadSystemMessageNum++;
+
   }
 
   readSystemMessage(id, i){
