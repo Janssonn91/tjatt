@@ -102,35 +102,35 @@ export const imgPath = '/images/placeholder.png';
      
 
       
-      if(data.textType==='invitation'){
-        if(data.invitee===userStore.user._id){
-          let message= {
-            sender: data.inviter,
-            initiator: channelStore.userDict[data.inviter].name,
-            targetChannel: data.newChannel,
-            unread: true,
-          }
-          channelStore.unreadSystemMessages.push(message);
-          channelStore.unreadSystemMessageNum++;
-        }
-      }
+      // if(data.textType==='invitation'){
+      //   if(data.invitee===userStore.user._id){
+      //     let message= {
+      //       sender: data.inviter,
+      //       initiator: channelStore.userDict[data.inviter].name,
+      //       targetChannel: data.newChannel,
+      //       unread: true,
+      //     }
+      //     channelStore.unreadSystemMessages.push(message);
+      //     channelStore.unreadSystemMessageNum++;
+      //   }
+      // }
       
 
-      if(data.textType==='rejection'){
-        console.log(data)
-        if(data.rejectee === userStore.user._id){
-          let message = {
-            textType: 'rejection',
-            initiator:  toJS(channelStore.userDict[data.rejecter]).name,
-            unread:true,
-            sender: data.rejecter,
-          }
-          channelStore.unreadSystemMessages.push(message);
-        channelStore.unreadSystemMessageNum++;
-        socket.emit('rejection', message);
+      // if(data.textType==='rejection'){
+      //   console.log(data)
+      //   if(data.rejectee === userStore.user._id){
+      //     let message = {
+      //       textType: 'rejection',
+      //       initiator:  toJS(channelStore.userDict[data.rejecter]).name,
+      //       unread:true,
+      //       sender: data.rejecter,
+      //     }
+      //     channelStore.unreadSystemMessages.push(message);
+      //   channelStore.unreadSystemMessageNum++;
+      //   socket.emit('rejection', message);
         
-        }
-      }
+      //   }
+      // }
 
     });
 
@@ -149,17 +149,7 @@ export const imgPath = '/images/placeholder.png';
       }
     }
   }
-      // group channel
-      // if(data.newChannel){
-      //   let c= data.newChannel;
-      //   let id= userStore.user._id.toString();
-      //   for(let i of c.members) {
-      //     if(i.toString()===id ){
-      //       if(c.group){
-      //         channelStore.groupChannels.push(c);
-      //         socket.emit('newChannel', data.newChannel);
-      //         console.log(channelStore.groupChannels)
-      //       }
+      
       //     //   else{
       //     //     let name = await channelStore.getContactName(c.members);
       //     //     if (name !== undefined) {
@@ -174,11 +164,22 @@ export const imgPath = '/images/placeholder.png';
     })
 
     socket.off('invitation');
-    socket.on('invitation', message=>{
-      console.log("invitation", message)
+    socket.on('invitation', data=>{
+          if(data.invitee===userStore.user._id){
+            console.log("invitation")
+          let message= {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            targetChannel: data.targetChannel,
+            unread: true,
+            textType: data.textType,
+            id:data.id,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
+        }
     
-      // channelStore.unreadSystemMessages.push(message);
-      // channelStore.unreadSystemMessageNum++;
      
     })
 

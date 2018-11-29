@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
- 
+  
   
   
 
@@ -135,9 +135,7 @@ io.on('connection', (socket) => {
   socket.on('login', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
-    channel.findOne({channelname: userId + "system"}).then(data=>{
-      systemChannel = data._id;
-    })
+   
     User.findOne({_id: userId}).then(u=> {
       let channels = u.channel;
       for(let channel of channels){
@@ -179,7 +177,6 @@ io.on('connection', (socket) => {
         console.log("socket room", socket.rooms);
       });
       data.type="create group";
-      //socket.emit('group', data);
       socket.broadcast.emit('group', data);
     }
 
@@ -203,6 +200,7 @@ io.on('connection', (socket) => {
           textType: "invitation",
           initiator: data.inviter,
           targetChannel: data.newChannel._id,
+          invitee: data.invitee,
           unread: true,
           id: m,
         }
@@ -325,7 +323,8 @@ socket.on('invitation', async (data)=>{
 });
 
 app.get('/system', (req, res)=>{
-  res.json({systemChannel: systemChannel, systemUserId: ai})
+res.json({systemChannel: systemChannel, systemUserId: ai})
+  
 })
 
 // app.get('/hello', (req, res) => {
@@ -479,7 +478,10 @@ app.get('/login', (req, res) => {
   User.findById(req.session.userId)
     .then(user => {
       if (user) {
-        res.json({ loggedIn: true, user: user })
+        channel.findOne({channelname: user._id + "system"}).then(data=>{
+          systemChannel = data._id;})
+        res.json({ loggedIn: true, user: user });
+       
       } else {
         res.json({ loggedIn: false })
       }

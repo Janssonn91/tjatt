@@ -27,7 +27,6 @@ class UserStore {
     const { user, isLoggedIn } = userdata;
     this.user = user;
     this.isLoggedIn = isLoggedIn;
-    console.log("setuserandIsloggedin", this.user, this.isLoggedIn)
   }
 
   @action checkState() {
@@ -53,6 +52,7 @@ class UserStore {
 
   @action logout() {
     this.isLoggedIn = false;
+
   }
 
   @action fetchContact() {

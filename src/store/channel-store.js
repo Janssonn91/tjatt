@@ -28,47 +28,6 @@ class ChannelStore {
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
   @observable unreadSystemMessages = [];
-  // hard code!
-  // @observable unreadSystemMessages = [
-  //   {
-  //     textType: "invitation",
-  //     initiator: message.sender,
-  //     targetChannel: "channel._id",
-  //     unread: true,
-  //   }
-  //   ,
-  //   {
-  //     textType: "decline",
-  //     initiator: this.userDict["5bf7ec7d890ad02500b77746"],
-  //     targetChannel: "channel._id",
-  //     unread: true,
-  //   },
-  //   {
-  //     textType: "addedToGroup",
-  //     initiator: this.userDict["5bf8082a67e74429da439f5c"],
-  //     targetChannel: "channelName",
-  //     unread: true,
-  //   },
-  //   {
-  //     textType: "removedFromGroup",
-  //     initiator: "d",
-  //     targetChannel: "channelName",
-  //     unread: true,
-  //   },
-  //   {
-  //     textType: "removeContact",
-  //     initiator: "5bf8082a67e74429da439f5c",
-  //     targetChannel: "channelName",
-  //     unread: true,
-  //   },
-  //   {
-  //     textType: "makeAdmin",
-  //     initiator: "5bf8082a67e74429da439f5c",
-  //     targetChannel: "channelName",
-  //     unread: true,
-  //   }
-
-  // ];
   @observable unreadSystemMessageNum = "";
 
 
@@ -177,12 +136,18 @@ class ChannelStore {
     this.sortListByMessageNum();
   }
 
-  setSystemMessagesFromDB(){
+  @action cleanUpOldSystemMessages(){
     this.unreadSystemMessages=[];
     this.unreadSystemMessageNum=0;
+  }
+
+  setSystemMessagesFromDB(){
+    this.cleanUpOldSystemMessages();
+    console.log("systemChannel",applicationStateStore.systemChannel )
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
          
-              { console.log(data)
+              { 
+                
                 data.forEach(d=>{
                   if(d.unread){
                     if(d.textType.toString()==="invitation"){
@@ -204,6 +169,7 @@ class ChannelStore {
                   
               })
           }
+         
             );
   }
 

@@ -15,18 +15,20 @@ class ApplicationStateStore {
     })
       .then(res => res.json())
       .then(res => {
+        //BUG: logout and login again res will not change user
         console.log(res)
+        this.systemChannel="";
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
+          
          
-          channelStore.unreadSystemMessages=[];
-          channelStore.unreadSystemMessageNum=0;
           fetch('/api/system').then(res => res.json()).then(data=>{
             this.systemChannel = data.systemChannel;
             console.log("systemChannel",data.systemChannel)
             
             this.systemId = data.systemUserId;
-            console.log("systemId", this.systemId)
+            console.log("systemId", this.systemId);
+            channelStore.getUserList();
           }).catch(err=>console.log(err))
           
           socket.emit('login', userStore.user._id);
