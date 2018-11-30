@@ -75,7 +75,9 @@ class ChannelStore {
 
     this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
 
-    this.myChannels.map(async (c) => {
+    for (let i = 0; i < this.myChannels.length; i++) {
+      const c = this.myChannels[i];
+
       let messages = await Message.find({ channel: c._id });
       let count = 0;
       messages.forEach(message => {
@@ -98,8 +100,7 @@ class ChannelStore {
           // this.contactChannels.push(this.channelDict[c._id])
         }
       }
-    });
-    await sleep(100);
+    }
     this.sortListByMessageNum();
     this.hasLoadedChannels = true;
   }
