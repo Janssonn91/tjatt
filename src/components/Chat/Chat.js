@@ -35,6 +35,7 @@ export default class Chat extends Component {
   @observable emojiDropdownOpen = false;
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
+  @observable snippetModal = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -68,7 +69,13 @@ export default class Chat extends Component {
     //     console.log("observing login")
     //   }
     // })
+    console.log(this.snippetModal);
 
+  }
+
+  toggleSnippet = () => {
+    console.log('asda')
+    this.snippetModal = !this.snippetModal;
   }
 
   textfileHandler = (e) => {

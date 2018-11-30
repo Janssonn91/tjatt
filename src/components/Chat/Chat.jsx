@@ -2,6 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
+  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -107,8 +108,9 @@
                 </div>
                 <DropdownItem>
                   <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                <DropdownItem onClick={() => this.toggleSnippet()}>
+                  <i className="fas fa-code"></i>&nbsp; Code or text snippet
+                  </DropdownItem>
                 {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
                   <DropdownItem onClick={() => this.openSideDrawerHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>

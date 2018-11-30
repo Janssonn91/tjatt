@@ -8,7 +8,6 @@ export default class ChatMessage extends Component {
   @observable isOpen = false;
   @observable dropdownOpen = false;
   @observable deleteMessageModal = false;
-
   @observable chatImageModal = false;
   @observable currentImage = '';
   @observable originalName = '';
@@ -18,6 +17,8 @@ export default class ChatMessage extends Component {
   }
 
   async start() { }
+
+
 
   toggleChatModal = () => {
     this.chatImageModal = !this.chatImageModal;
