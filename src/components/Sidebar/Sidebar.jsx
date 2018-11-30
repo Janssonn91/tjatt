@@ -70,7 +70,7 @@
               <Link
                 to={`/${this.props.userStore.user.username}/${channel.channelname}`}
                 key={i}
-                onClick={() => this.props.channelStore.changeChannel(channel)}
+                onClick={() => setTimeout(this.loadChannelFromUrl.bind(this), 10)}
               >
                 <div className="nav-link pl-3 py-1 pr-1 contacts">
                   <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} />
@@ -105,7 +105,7 @@
                 <Link
                   to={`/${this.props.userStore.user.username}/${channel.channelname}`}
                   key={i}
-                  onClick={() => this.props.channelStore.changeChannel(channel)}
+                  onClick={() => setTimeout(this.loadChannelFromUrl.bind(this), 10)}
                 >
                   <div className="nav-link pl-3 py-1 pr-1 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>

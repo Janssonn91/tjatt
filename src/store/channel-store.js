@@ -14,6 +14,7 @@ class ChannelStore {
   //@observable currentChannelGroup = false; // never used, removable ??
   @observable contactChannels = [];
   @observable groupChannels = [];
+  @observable hasLoadedChannels = false;
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable hideMenu = true;
@@ -100,6 +101,7 @@ class ChannelStore {
     });
     await sleep(100);
     this.sortListByMessageNum();
+    this.hasLoadedChannels = true;
   }
 
   @action getGroupMembersData(memberIds) {
