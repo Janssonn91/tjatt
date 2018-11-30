@@ -1,4 +1,5 @@
 <Fragment>
+  <ChatImgModal toggleVal={this.chatImageModal} toggleModal={this.toggleChatModal} imgPath={this.currentImage} title={this.originalName} />
   <DeleteMessageModal {...this.sendToDeleteMessageModal} />
   {this.props.channelStore.channelChatHistory.map((message, i) => {
     // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
@@ -12,10 +13,12 @@
             <span className="message-data-name">
               {this.props.userStore.user.nickname}
             </span>&nbsp;
-             <span className="message-data-time">{this.formattedTime(message.time)}</span> 
+             <span className="message-data-time">{this.formattedTime(message.time)}</span>
           </div>
-          <div className="message my-message">
-            {message.text}
+          <div className={`message my-message clearfix ${message.contentType === 'image' ? 'removeBG' : ''}`}>
+            {message.contentType === 'text' && message.text}
+            {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
+            {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" alt="chat-img" onClick={() => { this.toggleChatModal(); this.currentImage = message.filePath; this.originalName = message.originalName }} /></div>}
             <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
               <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
                 <i className="fas fa-pen"></i>
@@ -45,10 +48,12 @@
               <img alt="user-img" src={this.props.channelStore.userDict[message.sender].img || "/images/placeholder.png"} />
             </span>&nbsp; &nbsp;
               <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
-             <span className="message-data-time">{this.formattedTime(message.time)}</span> 
+            <span className="message-data-time">{this.formattedTime(message.time)}</span>
           </div>
           <div className="message other-message">
-            {message.text}
+            {message.contentType === 'text' && message.text}
+            {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
+            {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" /></div>}
           </div>
         </li>
     )

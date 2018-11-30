@@ -9,12 +9,19 @@ export default class ChatMessage extends Component {
   @observable dropdownOpen = false;
   @observable deleteMessageModal = false;
 
+  @observable chatImageModal = false;
+  @observable currentImage = '';
+  @observable originalName = '';
   @observable sendToDeleteMessageModal = {
     isOpen: false,
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
   async start() { }
+
+  toggleChatModal = () => {
+    this.chatImageModal = !this.chatImageModal;
+  }
 
   toggle() {
     this.isOpen = !this.isOpen;
@@ -28,7 +35,7 @@ export default class ChatMessage extends Component {
     this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
   }
 
-  formattedTime(t){
+  formattedTime(t) {
     t = new Date(t);
     let result = "";
     let today = new Date();
@@ -36,17 +43,17 @@ export default class ChatMessage extends Component {
     let min = t.getMinutes();
     let ampm = hour >= 12 ? "AM" : "PM";
     hour = hour % 12;
-    hour = hour ? hour: 12;
-    if(today.setHours(0,0,0,0)===t.setHours(0,0,0,0)){
+    hour = hour ? hour : 12;
+    if (today.setHours(0, 0, 0, 0) === t.setHours(0, 0, 0, 0)) {
       result += hour + ":" + min + " " + ampm + " Today";
-      return result; 
-    }else{
-      result += t.getFullYear() + "/" + (t.getMonth() + 1) + "/" + t.getDate() 
-      + " " + hour + ":" + min + " " + ampm;
+      return result;
+    } else {
+      result += t.getFullYear() + "/" + (t.getMonth() + 1) + "/" + t.getDate()
+        + " " + hour + ":" + min + " " + ampm;
       return result;
     }
 
- 
+
   }
 
 }

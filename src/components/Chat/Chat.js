@@ -71,6 +71,25 @@ export default class Chat extends Component {
 
   }
 
+  textfileHandler = (e) => {
+    e.stopPropagation();
+    let formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    formData.append('type', 'file');
+    formData.append('type', 'image');
+
+    fetch(`/api/fileupload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(message => {
+        socket.emit('chat message', message)
+      })
+    this.toggle();
+  }
+
+
   scrollToBottom = () => {
     if (this.messagesEnd) {
       this.messagesEnd.scrollIntoView({ behavior: "smooth" })
@@ -140,6 +159,7 @@ export default class Chat extends Component {
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
+      contentType: 'text',
       star: false,
       unread: true,
     }
@@ -168,6 +188,7 @@ export default class Chat extends Component {
     socket.on(
       'chat message',
       (messages) => {
+        console.log(messages);
         for (let message of messages) {
           let time = new Date(message.time);
           console.log(time)
@@ -182,6 +203,9 @@ export default class Chat extends Component {
               star: false,
               text: message.text,
               textType: message.textType,
+              contentType: message.contentType,
+              filePath: message.filePath,
+              originalName: message.originalName,
               time: message.time,
               unread: true,
             };
