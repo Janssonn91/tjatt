@@ -417,12 +417,23 @@ app.get('/users/:_id', (req, res) => {
 app.put('/removeContact/:_id', async (req, res) => {
   const contactId = req.body.contId.toString();
   const channelId = req.body.channelId.toString();
-  let resultContact = await User.update(
+  let resultContact = await User.updateOne(
     { _id: req.params._id },
     { $pull: { contact: contactId, channel: req.body.channelId } }
   )
   .catch((err) => console.log("err", err));
   res.json({ resultContact });
+  const checkIfIExistOnMyContact = await User.findOne(
+    { _id: contactId, contact: req.params._id }
+  );
+  if(!checkIfIExistOnMyContact){
+    const deleteChannelResult = await channel.deleteOne(
+      { _id: channelId }
+    )
+    const deleteMessagesResult = await ChatMessage.deleteMany(
+      { channel: channelId }
+    )
+  };
 });
 
 app.get('/checkChannel/:_id', async (req, res) => {

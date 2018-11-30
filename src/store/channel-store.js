@@ -178,10 +178,13 @@ class ChannelStore {
       group: group
     }
     // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
-    if(!group){
-    //const checkIfChannelExits = await fetch(`api/checkChannel/${members}`) 
-      let res = await fetch(`api/checkChannel/${members}`);
-    }
+
+    // res = 
+    // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
+    //  if(!group){
+    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
+    //   console.log(checkIfChannelExits);
+    // }
     Channel.create(newChannel);
   }
 
