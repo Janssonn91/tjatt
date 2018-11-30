@@ -4,9 +4,7 @@ export default class SnippetModal extends Component {
 
   @observable textFile = false;
 
-  start() {
-    console.log('modal pleaaaase')
-  }
+  start() { }
 
   switchTextFile = () => {
 

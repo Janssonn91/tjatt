@@ -74,7 +74,6 @@ export default class Chat extends Component {
   }
 
   toggleSnippet = () => {
-    console.log('asda')
     this.snippetModal = !this.snippetModal;
   }
 
