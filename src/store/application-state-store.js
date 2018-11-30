@@ -15,8 +15,6 @@ class ApplicationStateStore {
     })
       .then(res => res.json())
       .then(res => {
-        //BUG: logout and login again res will not change user
-        console.log(res)
         this.systemChannel="";
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });

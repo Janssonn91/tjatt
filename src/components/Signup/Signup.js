@@ -88,6 +88,15 @@ import './Signup.scss';
           this.usernameExist = false;
           this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', res.user);
+
+          fetch('/api/system').then(res => res.json()).then(data=>{
+            this.props.applicationStateStore.systemChannel = data.systemChannel;
+            console.log("systemChannel",this.props.applicationStateStore.systemChannel)
+            
+            this.props.applicationStateStore.systemId = data.systemUserId;
+            console.log("systemId", this.props.applicationStateStore.systemId);
+            this.props.channelStore.getUserList();
+          })
         } else {
           if(res.userResult){
             this.usernameExist = true;

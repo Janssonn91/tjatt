@@ -317,7 +317,8 @@ socket.on('invitation', async (data)=>{
 });
 
 app.get('/system', (req, res)=>{
-res.json({systemChannel: systemChannel, systemUserId: ai})
+  console.log("!!!!!!!!!!!", systemChannel)
+  res.json({systemChannel: systemChannel, systemUserId: ai})
   
 })
 
@@ -471,6 +472,8 @@ app.get('/logout', (req, res) => {
 app.get('/login', (req, res) => {
   User.findById(req.session.userId)
     .then(user => {
+  console.log("*****", req.session.userId)
+  console.log("**********", user)
       if (user) {
         channel.findOne({channelname: user._id + "system"}).then(data=>{
           systemChannel = data._id;})
@@ -489,12 +492,15 @@ app.post('/check-mail', async (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  console.log(req)
+
   User.findOne({ username: req.body.username })
     .then(user => {
+      console.log("login",user)
       if (!user) {
         res.json({ success: false })
       } else {
+        channel.findOne({channelname: user._id + "system"}).then(data=>{
+          systemChannel = data._id;})
         const hash = hasha(
           req.body.password + global.passwordSalt,
           { encoding: 'base64', algorithm: 'sha512' }

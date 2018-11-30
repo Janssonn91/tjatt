@@ -142,11 +142,11 @@ class ChannelStore {
   }
 
   setSystemMessagesFromDB(){
-    this.cleanUpOldSystemMessages();
     console.log("systemChannel",applicationStateStore.systemChannel )
+    this.cleanUpOldSystemMessages();
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
          
-              { 
+              { console.log(data)
                 
                 data.forEach(d=>{
                   if(d.unread){
@@ -168,6 +168,7 @@ class ChannelStore {
                  
                   
               })
+              console.log(this.unreadSystemMessages, this.unreadSystemMessageNum)
           }
          
             );
