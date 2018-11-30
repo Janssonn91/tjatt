@@ -7,8 +7,8 @@ const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -85,14 +85,7 @@ services:
     build: "../${payload.uniqueProjectName}"
     ports:
     - "${payload.dockerPort}:${payload.webPort}"
-    depends_on:
-    - mongo
-    container_name: "${payload.uniqueProjectName}_app"
-  mongo:
-    image: mvertes/alpine-mongo
-    expose:
-    - "27017"
-    container_name: "${payload.uniqueProjectName}_db"`;
+    container_name: "${payload.uniqueProjectName}_app"`;
     // NOW YOU CAN INDENT AGAIN!
 
     fs.writeFile(path, '', {
