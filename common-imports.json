@@ -29,6 +29,7 @@
   "  Loading": "components/Loading/Loading",
   "  Infopage": "components/Infopage/Infopage",
   "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
+  "  SnippetModal": "components/SnippetModal/SnippetModal",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
