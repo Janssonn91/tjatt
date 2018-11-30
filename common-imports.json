@@ -26,6 +26,7 @@
   "  Spinner": "components/Spinner/Spinner",
   "  Loading": "components/Loading/Loading",
   "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
+  "  CodesnippetModal": "components/CodesnippetModal/CodesnippetModal",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",

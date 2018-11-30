@@ -9,6 +9,7 @@ export default class ChatMessage extends Component {
   @observable dropdownOpen = false;
   @observable deleteMessageModal = false;
   @observable chatImageModal = false;
+  @observable codeModal = false;
   @observable currentImage = '';
   @observable originalName = '';
   @observable sendToDeleteMessageModal = {
@@ -20,6 +21,10 @@ export default class ChatMessage extends Component {
 
   toggleChatModal = () => {
     this.chatImageModal = !this.chatImageModal;
+  }
+
+  toggleCodeModal = () => {
+    this.codeModal = !this.codeModal;
   }
 
   toggle() {

@@ -1,5 +1,6 @@
 <Fragment>
   <ChatImgModal toggleVal={this.chatImageModal} toggleModal={this.toggleChatModal} imgPath={this.currentImage} title={this.originalName} />
+  <CodesnippetModal openModal={this.toggleCodeModal} />
   <DeleteMessageModal {...this.sendToDeleteMessageModal} />
   {this.props.channelStore.channelChatHistory.map((message, i) => {
     // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
