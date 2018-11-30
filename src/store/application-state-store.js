@@ -26,7 +26,7 @@ class ApplicationStateStore {
           socket.on(
             'chat message',
             (messages) => {
-              console.log(messages)
+              console.log('messages', messages)
               for (let message of messages) {
                 let date = new Date();
                 if (message.channel === channelStore.currentChannel._id) {
