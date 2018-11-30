@@ -27,8 +27,8 @@ export const imgPath = '/images/placeholder.png';
   }
 
   @observable collapseOpen = false;
-  @observable contactsOpen = false;
-  @observable groupsOpen = false;
+  @observable contactsOpen = true;
+  @observable groupsOpen = true;
 
   start() {
     console.log(this.props.match.params.id)
