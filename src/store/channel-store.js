@@ -4,6 +4,7 @@ import {
 import {
   renderReporter
 } from 'mobx-react';
+import { applicationStateStore } from './application-state-store';
 class ChannelStore {
   //@observable newChannel = [];
   @observable myChannels = [];
@@ -13,13 +14,9 @@ class ChannelStore {
   //@observable currentChannelGroup = false; // never used, removable ??
   @observable contactChannels = [];
   @observable groupChannels = [];
+  @observable hasLoadedChannels = false;
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
-  @observable searchedGroupCandidates = [];
-  @observable groupAdminId = "";
-  @observable addedSuccess = false;
-  @observable removedSuccess = false;
-  @observable viewMembers = [];
   @observable hideMenu = true;
   @observable hideChat = false;
   @observable channelChatHistory = [];
@@ -31,7 +28,8 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessage = {};
 
-  
+
+
   //TODO: as a new user, introduction page shows instead of chat page
 
   getContactName(ids) {
@@ -70,40 +68,44 @@ class ChannelStore {
     }
   }
 
-
   @action async getChannelList() {
     this.groupChannels = [];
     this.contactChannels = [];
     this.myChannels = [];
-    this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
-    
-    this.myChannels.map(async (c) => {
-      let messages = await Message.find({channel: c._id});
-      let count=0;
-      messages.forEach(message=>{if(message.sender!== userStore.user._id && message.unread){
-        count++;
-      }})
-      if (c.group) {
-        this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
-        this.groupChannels.push(this.channelDict[c._id]);
-      } else {
-        let name = this.getContactName(c.members);
-        // TODO: "name" become sometimes undefined (Till Hui från Nana)
-        if (name !== undefined) {
-          this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
-          this.contactChannels.push(this.channelDict[c._id]);
-        }
-        // let n = c.members.filter(id=>{ return id!== userStore.user._id});
-        // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
-        // this.contactChannels.push(this.channelDict[c._id])
-      }
 
-    })
+    this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
+
+    for (let i = 0; i < this.myChannels.length; i++) {
+      const c = this.myChannels[i];
+
+      let messages = await Message.find({ channel: c._id });
+      let count = 0;
+      messages.forEach(message => {
+        if (message.sender !== userStore.user._id && message.unread) {
+          count++;
+        }
+      })
+      if (c._id !== applicationStateStore.systemChannel) {
+        if (c.group) {
+          this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+          this.groupChannels.push(this.channelDict[c._id]);
+        } else {
+          let name = this.getContactName(c.members);
+          if (name !== undefined) {
+            this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+            this.contactChannels.push(this.channelDict[c._id]);
+          }
+          // let n = c.members.filter(id=>{ return id!== userStore.user._id});
+          // this.channelDict[c._id] = {_id:c._id, channelname: this.userDict[n].name, image: this.userDict[n].image, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open }
+          // this.contactChannels.push(this.channelDict[c._id])
+        }
+      }
+    }
+    this.sortListByMessageNum();
+    this.hasLoadedChannels = true;
   }
 
-
-
-  getGroupMembersData(memberIds) {
+  @action getGroupMembersData(memberIds) {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
@@ -116,7 +118,6 @@ class ChannelStore {
         this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
         const nonMembers = users.filter(user => !isGroupMember(user._id));
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
-        this.viewMembers = [...this.currentGroupMembers]; // Copy members for viewMembersModal
       });
   }
 
@@ -148,7 +149,6 @@ class ChannelStore {
     } else {
       this.getGroupMembersData(channel.members);
       this.channelName = channel.channelname;
-      this.groupAdminId = channel.admin[0];
     }
   }
 
@@ -158,20 +158,20 @@ class ChannelStore {
     this.channelChatHistory = await Message.find({
       channel: id
     });
-    this.channelChatHistory.forEach(message=>{
-      if(message.unread){
-        fetch(`/api/message/${message._id}`,{
+    this.channelChatHistory.forEach(message => {
+      if (message.unread) {
+        fetch(`/api/message/${message._id}`, {
           method: 'PUT',
           body: JSON.stringify({
             unread: false
           }),
-          headers:{'Content-Type': 'application/json'}
-        }).then(res=>res.json())
+          headers: { 'Content-Type': 'application/json' }
+        }).then(res => res.json())
       }
     })
   }
 
-  createChannel(channelname, admin, members, group, open) {
+  async createChannel(channelname, admin, members, group, open) {
     let newChannel = {
       channelname: channelname,
       admin: admin,
@@ -180,13 +180,19 @@ class ChannelStore {
       open: open,
       group: group
     }
+    // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
+
+    // res = 
+    // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
+    //  if(!group){
+    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
+    //   console.log(checkIfChannelExits);
+    // }
     Channel.create(newChannel);
   }
 
-
-
   updateContactChannels(channel) {
-     // channel.channelname is "id and id", so we need to get name
+    // channel.channelname is "id and id", so we need to get name
     let user = this.getContactName(channel.members);
     channel.channelname = user.name;
     channel.image = user.img;
@@ -219,8 +225,23 @@ class ChannelStore {
   }
 
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(i) {
-    this.groupChannels.splice(i, 1);
+  @action spliceChannel(channelId
+  ) {
+    let index = 0;
+    for(let channel of this.contactChannels){
+      if(channel._id === channelId){
+        this.contactChannels.splice(index, 1);
+      }
+      index ++;
+    };
+    let myChannelIndex = 0;
+    for(let channel of this.myChannels){
+      if(channel._id === channelId){
+        this.myChannels.splice(myChannelIndex,1)
+      }
+      myChannelIndex++;
+    }
+ 
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
@@ -231,102 +252,32 @@ class ChannelStore {
     this.currentChannelAdmins.splice(i, 1);
   }
 
-  @action searchCandidates(regex) {
-    this.searchedGroupCandidates = this.currentGroupCandidates.filter(user => {
-      return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)
-    })
-  }
-
-  @action selectOneForGroup(user) {
-    this.currentGroupMembers.push(user);
-    const addedUser = this.currentGroupCandidates.find(u => u._id === user._id);
-    const index = this.currentGroupCandidates.indexOf(addedUser);
-    this.currentGroupCandidates.splice(index, 1);
-
-    // Remove user also from searchedGroupCandidates
-    const i = this.searchedGroupCandidates.indexOf(addedUser);
-    this.searchedGroupCandidates.splice(i, 1);
-  }
-
-  @action removeFromSelect(user) {
-    this.currentGroupCandidates.push(user);
-    const addedUser = this.currentGroupMembers.find(u => u._id === user._id);
-    const index = this.currentGroupMembers.indexOf(addedUser);
-    this.currentGroupMembers.splice(index, 1);
-
-    // Add user also to searchedGroupCandidates
-    this.searchedGroupCandidates.push(user);
-  }
-
-  updateUserChannel(channelId, newMemberIds, previousMemberIds) {
-    const wasMember = user => previousMemberIds.some(id => id === user);
-    const isMember = user => newMemberIds.some(id => id === user);
-    const addedUser = newMemberIds.filter(user => !wasMember(user));
-    const removedUser = previousMemberIds.filter(user => !isMember(user));
-
-    if (addedUser.length > 0) {
-      addedUser.forEach(id => {
-        fetch(`/api/users/${id}/add`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            channel: channelId
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (result.succes) {
-              this.addedSuccess = true;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            this.addedSuccess = false;
-          })
-      });
-    }
-    this.addedSuccess = true;
-
-    if (removedUser.length > 0) {
-      removedUser.forEach(id => {
-        fetch(`/api/users/${id}/remove`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            channel: channelId
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (result.succes) {
-              this.removedSuccess = true;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            this.removedSuccess = false;
-          })
-      });
-    }
-    this.removedSuccess = true;
-
-  }
-
- 
-
-  @action closeAlert() {
-    this.addedSuccess = false;
-    this.removedSuccess = false;
-  }
-
   @action resetCurrentChannel() {
     this.currentChannel = "";
   }
 
+  // TODO: This function has warning (Nana)
+  @action sortListByMessageNum() {
+    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
+    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
+  }
+
+  @action moveLatestChannelToTop(channelID) {
+    // For contact list
+    const targetChannel = this.contactChannels.find(channel => channelID === channel._id);
+    const index = this.contactChannels.indexOf(targetChannel);
+    if (index > 0) {
+      this.contactChannels.splice(index, 1);
+      this.contactChannels.unshift(targetChannel);
+    }
+    // For group list
+    const targetGroupChannel = this.groupChannels.find(channel => channelID === channel._id);
+    const groupindex = this.groupChannels.indexOf(targetGroupChannel);
+    if (groupindex > 0) {
+      this.groupChannels.splice(groupindex, 1);
+      this.groupChannels.unshift(targetGroupChannel);
+    }
+  }
 }
 
 

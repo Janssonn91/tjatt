@@ -5,7 +5,6 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   @observable groupName = '';
   @observable myAttr = 'd-none';
-  @observable error = false;
   @observable check = 'false';
   @observable searchContact = this.props.userStore.groupCandidates;
 
@@ -56,7 +55,7 @@ import ScrollableFeed from 'react-scrollable-feed';
   }
 
   async createGroup(e) {
-    const {userStore, channelStore} = this.props;
+    const { userStore, channelStore } = this.props;
     //check Before Submit;
     if (!this.groupName) {
       this.myAttr = 'show text-danger w-100 d-block mb-3';
@@ -64,12 +63,6 @@ import ScrollableFeed from 'react-scrollable-feed';
     } else {
       this.myAttr = 'd-none';
     }
-    //check if groupMember.length is large than 2
-    // if (this.props.userStore.selectedGroupMember.length < 2) {
-    //   this.error = true;
-    //   return;
-    // }
-    //await this.props.channelStore.createGroup(this.groupName);
 
     const admin = userStore.user._id;
     const members = userStore.selectedGroupMember.map(user => user._id);
@@ -97,7 +90,7 @@ import ScrollableFeed from 'react-scrollable-feed';
             console.log(err);
           })
       })
-      socket.emit('system', {newChannel: channel[0]})
+      socket.emit('system', { newChannel: channel[0] })
       //socket.emit('newChannel', channel[0]._id)
 
       //this.updateGroupChannel(channel[0]);
@@ -106,7 +99,6 @@ import ScrollableFeed from 'react-scrollable-feed';
 
     this.props.userStore.cleanUpGroupModal();
     this.groupName = "";
-    this.error = false;
     this.props.toggle();
   }
 

@@ -1,3 +1,5 @@
+import './Tjatt.scss';
+
 @inject('userStore', 'channelStore') @withRouter @observer
 export default class Tjatt extends Component {
   @observable hideMenu = true;

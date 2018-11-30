@@ -27,13 +27,29 @@ export const imgPath = '/images/placeholder.png';
   }
 
   @observable collapseOpen = false;
-  @observable contactsOpen = false;
-  @observable groupsOpen = false;
+  @observable contactsOpen = true;
+  @observable groupsOpen = true;
 
   start() {
-    console.log(this.props.match.params.id)
     this.setupSystemMessage();
     // this.props.channelStore.getChannels();
+  }
+
+  loadChannelFromUrl() {
+    const allChannels = this.props.channelStore.contactChannels.concat(this.props.channelStore.groupChannels);
+
+    const matchingChannel = allChannels.find((contactChannel) => {
+      return contactChannel.channelname === this.props.match.params.id;
+    });
+
+    if (matchingChannel) {
+      this.props.channelStore.changeChannel(matchingChannel);
+    }
+  }
+
+  componentDidMount() {
+    observe(this.props.channelStore, "hasLoadedChannels", this.loadChannelFromUrl.bind(this));
+    this.props.history.listen(this.loadChannelFromUrl.bind(this));
   }
 
 
@@ -69,7 +85,11 @@ export const imgPath = '/images/placeholder.png';
 
   openModalDeleteContact(channel) {
     this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
-    this.deleteContactModalOpen.channel = channel;
+    if(this.deleteContactModalOpen.isOpen){
+      this.deleteContactModalOpen.channel = channel;
+      this.deleteContactModalOpen.members = channel.members;
+      this.deleteContactModalOpen.channelId = channel._id;
+    }
   }
 
   logout() {
@@ -87,7 +107,7 @@ export const imgPath = '/images/placeholder.png';
     socket.on('system', async (data)=>{
       if(data.invitee){
         if(data.invitee === userStore.user._id){
-          socket.emit('invitation', data);
+         socket.emit('invitation', data);
         }
       }
 
@@ -99,6 +119,7 @@ export const imgPath = '/images/placeholder.png';
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
+              socket.emit('newChannel', data.newChannel);
               console.log(channelStore.groupChannels)
             }
           //   else{
@@ -108,7 +129,7 @@ export const imgPath = '/images/placeholder.png';
           //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
           // } 
           //   }
-            socket.emit('newChannel', data.newChannel);
+          
           }
         }
       }

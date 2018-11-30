@@ -40,6 +40,12 @@ class UserStore {
     this.groupCandidates.push(addedUser);
   }
 
+  @action async moveContactToCandidates(id){
+    let res = await fetch(`/api/users/${id}`);
+    let user = await res.json();
+    this.candidates.push(user);
+  }
+
   @action updateProfile(key, val) {
     this.user = { ...this.user, [key]: val };
   }
@@ -52,7 +58,8 @@ class UserStore {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        const withoutMe = users.filter(user => user._id !== this.user._id);
+        let withoutMe = users.filter(user => user._id !== this.user._id);
+        withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
 
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);

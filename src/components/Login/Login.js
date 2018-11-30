@@ -36,7 +36,7 @@ import './Login.scss';
         if (res.success) {
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           this.props.userStore.fetchContact();
-          this.props.history.push(`/${this.props.userStore.user.username}`);
+          this.props.history.push(`/${this.props.userStore.user.username}/info`);
           socket.emit("login", this.props.userStore.user._id);
         }
         else {

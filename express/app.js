@@ -79,13 +79,16 @@ const channelManager = new ChannelManager(app, ChannelREST, Message);
 const channel = new ChannelREST(app).myModel;
 const ChatMessage = new Message(app).myModel;
 
+let systemChannel = "";
+let ai = "";
+
 let onlineUsers = [];
 
 io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
-  
+ 
   
   
 
@@ -135,7 +138,7 @@ io.on('connection', (socket) => {
     onlineUsers.push(userId)
     console.log("onlineuser after login", onlineUsers)
     channel.findOne({channelname: userId + "system"}).then(data=>{
-      const systemChannel = data._id;
+      systemChannel = data._id;
     })
     User.findOne({_id: userId}).then(u=> {
       let channels = u.channel;
@@ -246,7 +249,7 @@ socket.on('invitation', async (data)=>{
     let message = new ChatMessage({
       ...messageFromClient,
     });
-    console.log("message", message)
+    // console.log("message", message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -276,9 +279,13 @@ socket.on('invitation', async (data)=>{
   });
 });
 
-app.get('/hello', (req, res) => {
-  res.send('hello')
+app.get('/system', (req, res)=>{
+  res.json({systemChannel: systemChannel, systemUserId: ai})
 })
+
+// app.get('/hello', (req, res) => {
+//   res.send('hello')
+// })
 
 app.post('/pwcheck', (req, res) => {
   const hash = hasha(
@@ -303,71 +310,95 @@ app.post('/pwhash', (req, res) => {
   res.json({ success: true, hash: hash });
 })
 
-const mailer = require('./classes/Sendmail.class');
-app.post('/send-mail', mailer)
-
 const nodemailer = require('nodemailer');
 app.post('/mail-password', async function(req, res, next) {
-  const password = [...Array(10)].map(_=>(Math.random()*36|0).toString(36)).join``;
-  console.log('new password = ', password);
-  const hash = await hasha(
-  password + global.passwordSalt,
-      { encoding: 'base64', algorithm: 'sha512' }
-  );
-  let updateResult = await User.findOneAndUpdate(
-      { email: req.body.email},
-      { $set: { password: hash } }
-    )
-  nodemailer.createTestAccount((err, account) => {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',    //Using ethereal mailservice because i dont want to show my mail user/pass in plain text
-      //in this exercise. To check mail go to generated mailadress that shows in terminalwindow Copy/paste adress to webbrowser. GL :)
-      port: 587,
-      secure: false, // true for 465, false for other ports 
-      auth: {
-        user: account.user, // generated ethereal user 
-        pass: account.pass // generated ethereal password 
-      },
-      tls:{
-        rejectUnauthorized: false
-      }
-    });
+ const password = [...Array(10)].map(_=>(Math.random()*36|0).toString(36)).join``;
+ console.log('new password = ', password);
+ const hash = await hasha(
+ password + global.passwordSalt,
+     { encoding: 'base64', algorithm: 'sha512' }
+ );
+ let updateResult = await User.findOneAndUpdate(
+     { email: req.body.email},
+     { $set: { password: hash } }
+   )
 
-    let mailOptions = {
-      from: '"Tj@ support"<noreply@tjat.net', // sender address 
-      to: `${req.body.email}`, // list of receivers 
-      subject: 'Tj@ reset password', // Subject line  
-      html: ''
-    };
+ const transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+     user: 'tjatt.info@gmail.com',
+     pass: 'tj@tt@WUMA17'
+   },
+   tls:{
+     rejectUnauthorized: false
+   }
+ });
 
-    let message = {
-      // Comma separated list of recipients
-      to: `${req.body.email}`,
-      // Subject of the message
-      subject: `Tj@ reset password`,
+ let mailOptions = {
+   from: '"Tj@ support"<noreply@tjat.net', // sender address
+   to: `${req.body.email}`, // list of receivers
+   subject: 'Tj@ reset password', // Subject line
+   html: `
+     <h2>Your password is resetted</h2>
+     <P>Your new password is ${password}</p>
+     <p>For your safety please take a moment and change this password to something else in your settings!</p>
+     `
+ };
 
-      // HTML body
-      html:`
-          <h2>Your password is resetted</h2>
-          <P>Your new password is ${password}</p>
-          <p>For your safety please take a moment and change this password to something else in your settings!</p>
-          `,
-
-      attachments: [
-        {
-        }
-      ]
-    };
-
-    // send mail with defined transport object 
-    transporter.sendMail(message, (error, info, res) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    });
-  })
+ transporter.sendMail(mailOptions, (error, info, res) => {
+   if (error) {
+       return console.log(error);
+   }
+   console.log('password changed to ', password);
+   // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+ });
 })
+
+app.post('/users', async (req, res) => {
+ const userResult = await User.findOne({ username: req.body.username });
+ const emailResult = await User.findOne({ email: req.body.useremail });
+ if (!userResult && !emailResult) {
+   new User({
+     username: req.body.username,
+     email: req.body.useremail,
+     password: req.body.password,
+     nickname: req.body.username
+   }).save().then(user => {
+     req.session.userId = user._id;
+     res.json({ success: true, user: user })
+       const transporter = nodemailer.createTransport({
+         service: 'gmail',
+         auth: {
+           user: 'tjatt.info@gmail.com',
+           pass: 'tj@tt@WUMA17'
+         },
+         tls:{
+           rejectUnauthorized: false
+         }
+       });
+
+       let mailOptions = {
+         from: 'tjatt.info@gmail.com', // sender address
+         to: `${req.body.useremail}`, // list of receivers
+         subject: 'Welcome to tj@!', // Subject line
+         html: `
+         <h2>Welcome to tj@!</h2>
+         <P>Dear ${req.body.username}, we are so happy to have you as a member in our tj@-community!</p>
+         <p>Please take a moment and discover the power of tj@. Explore how to chat and share node-applications in groups.</p>
+         `
+       };
+
+       transporter.sendMail(mailOptions, (error, info, res) => {
+         if (error) {
+             return console.log(error);
+         }
+         //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+       });
+   })
+ } else {
+   res.json({ success: false, userResult: userResult, emailResult: emailResult });
+ }
+});
 
 app.post('/users', async (req, res) => {
   const userResult = await User.findOne({ username: req.body.username });
@@ -406,6 +437,37 @@ app.get('/users/:_id', (req, res) => {
     )
 
 })
+
+app.put('/removeContact/:_id', async (req, res) => {
+  const contactId = req.body.contId.toString();
+  const channelId = req.body.channelId.toString();
+  let resultContact = await User.updateOne(
+    { _id: req.params._id },
+    { $pull: { contact: contactId, channel: req.body.channelId } }
+  )
+  .catch((err) => console.log("err", err));
+  res.json({ resultContact });
+  const checkIfIExistOnMyContact = await User.findOne(
+    { _id: contactId, contact: req.params._id }
+  );
+  if(!checkIfIExistOnMyContact){
+    const deleteChannelResult = await channel.deleteOne(
+      { _id: channelId }
+    )
+    const deleteMessagesResult = await ChatMessage.deleteMany(
+      { channel: channelId }
+    )
+  };
+});
+
+app.get('/checkChannel/:_id', async (req, res) => {
+  console.log(req.params._id);
+  const checkChannelResult = await channel.findOne(
+    { members: req.params._id}
+  )
+    .catch((err) => console.log("err", err));
+    res.json({ checkChannelResult });
+}) 
 
 app.get('/logout', (req, res) => {
   delete req.session.userId;
@@ -467,20 +529,24 @@ app.put('/updateAdmin/:_id', async (req, res) => {
     });
 })
 
-app.put('/users/:_id', (req, res) => {
-  //console.log("user", req.body);
+app.put('/users/:_id', async (req, res) => {
   if (req.body.contact) {
-    User.findOneAndUpdate(
-      { _id: req.params._id },
-      { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
-    )
-      .then(() => {
-        res.json({ success: true })
-      })
-      .catch(err => {
-        throw err;
-      });
-  }
+    const userToCheck = await User.findOne( 
+      {_id: req.params._id, contact: req.body.contact}
+    );
+    if(!userToCheck){
+      User.findOneAndUpdate(
+        { _id: req.params._id },
+        { $push: { contact: req.body.contact, channel: req.body.channel, group: req.body.group } }
+      )
+        .then(() => {
+          res.json({ success: true })
+        })
+        .catch(err => {
+          throw err;
+        });
+    };
+  };
   if (!req.body.contact) {
     User.findOneAndUpdate(
       { _id: req.params._id },
@@ -492,8 +558,7 @@ app.put('/users/:_id', (req, res) => {
       .catch(err => {
         throw err;
       });
-  }
-
+  };
 });
 
 app.put('/channel/:_id', (req, res) => {
@@ -666,7 +731,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
 const Repo = require('./classes/Repo.class');
 new Repo(app);
 // Create a system user to send system message.
-var ai="";
 var allUsers=[];
  User.find().then(users=>{
    users.forEach(u=>{

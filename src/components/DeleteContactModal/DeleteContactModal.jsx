@@ -5,6 +5,6 @@
   </ModalBody>
   <ModalFooter>
     <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
-    <Button className="btn btn-leave-group">Delete</Button>
+    <Button className="btn btn-leave-group" onClick={() => this.removeContact()}>Delete</Button>
   </ModalFooter>
 </Modal>

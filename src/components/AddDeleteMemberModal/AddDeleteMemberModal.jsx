@@ -5,35 +5,33 @@
       Add/Delete members: <span className="group-name">{this.props.channelStore.channelName}</span>
     </ModalHeader>
     <ModalBody>
-      {this.props.channelStore.currentGroupMembers.length > 0 &&
-        <div className="selected-members d-md-none d-inline-block">
-          <ScrollableFeed forceScroll={true}>
-            {this.props.channelStore.currentGroupMembers.map((user, i) =>
-              <div key={i} className="nav-link pl-0 d-inline-block">
-                <div className="wrapper d-block">
-                  {user._id !== this.props.userStore.user._id &&
-                    user._id !== this.props.channelStore.groupAdminId &&
-                    <i className="fas fa-times-circle icon" onClick={() => this.props.channelStore.removeFromSelect(user)}></i>
-                  }
-                  {user._id === this.props.channelStore.groupAdminId && <i className="fas fa-circle admin"></i>}
-                  <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
-                </div>
-                <div className="profile">
-                  <p className="text-muted m-0">
-                    <small className="font-weight-bold">{user.nickname}</small>
-                  </p>
-                </div>
-                <div
-                  ref={(el) => {
-                    this.selectedMemberEnd = el;
-                  }}>
-                </div>
+      <div className="selected-members d-md-none d-inline-block">
+        <span className="note d-inline-block"><i className="fas fa-circle admin note"></i>Admin</span>
+        <ScrollableFeed forceScroll={true}>
+          {this.groupMembers.map((user, i) =>
+            <div key={i} className="nav-link pl-0 d-inline-block">
+              <div className="wrapper d-block">
+                {user._id !== this.props.userStore.user._id &&
+                  !this.props.channelStore.currentChannelAdmins.includes(user._id) &&
+                  <i className="fas fa-times-circle icon" onClick={() => this.removeFromSelect(user)}></i>
+                }
+                {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
+                <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
               </div>
-            )}
-          </ScrollableFeed>
-        </div>
-      }
-
+              <div className="profile">
+                <p className="text-muted m-0">
+                  <small className="font-weight-bold">{user.nickname}</small>
+                </p>
+              </div>
+              <div
+                ref={(el) => {
+                  this.selectedMemberEnd = el;
+                }}>
+              </div>
+            </div>
+          )}
+        </ScrollableFeed>
+      </div>
       <Form className="m-0">
         <FormGroup>
           <Label for="searchContacts" className="d-none" >Find members by searching here:</Label>
@@ -43,8 +41,9 @@
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched user</h5>
+            <p className="group-modal-text">View all users <input type="checkbox" onChange={this.checkboxHandler}></input></p>
             <FormGroup className="m-0 overflow-y-auto">
-              {this.props.channelStore.searchedGroupCandidates.map((user, i) =>
+              {this.searchedGroupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
@@ -53,7 +52,7 @@
                       <small>{user.nickname}</small>
                     </p>
                   </div>
-                  <Button className="btn btn-add-user border-0" onClick={() => this.props.channelStore.selectOneForGroup(user)}>Add user</Button>
+                  <Button className="btn btn-add-user border-0" onClick={() => this.selectOneForGroup(user)}>Add user</Button>
                 </ListGroupItem>
               )}
             </FormGroup>
@@ -61,8 +60,8 @@
           <Col sm="12" md="6" className="pl-0 pr-1 big-screen d-none d-md-block">
             <h5 className="d-inline-block">Group member</h5>
             <span className="note d-inline-block"><i className="fas fa-circle admin note"></i>Admin</span>
-            <FormGroup className="m-0 pl-1 overflow-y-auto">
-              {this.props.channelStore.currentGroupMembers.map((user, i) =>
+            <FormGroup className="m-0 pl-1 overflow-y-auto group-member">
+              {this.groupMembers.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
                   <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
                   <div className="profile d-inline-block">
@@ -75,7 +74,7 @@
                     !this.props.channelStore.currentChannelAdmins.includes(user._id) &&
                     <Button
                       className="btn btn-remove-user border-0 p-0 mr-2"
-                      onClick={() => this.props.channelStore.removeFromSelect(user)}
+                      onClick={() => this.removeFromSelect(user)}
                     >Remove user</Button>
                   }
                   {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
@@ -85,10 +84,9 @@
           </Col>
         </Row>
       </Form>
-      {this.error && < Alert className="text-center alert" color="danger">A group needs at least 3 members!</Alert>}
       {this.showConfirmation && < Alert className="text-center alert" color="warning">Really ok to change your group?</Alert>}
-      {this.props.channelStore.addedSuccess &&
-        this.props.channelStore.removedSuccess &&
+      {this.addedSuccess &&
+        this.removedSuccess &&
         < Alert className="text-center alert" color="success">Saved successfully!</Alert>
       }
     </ModalBody>

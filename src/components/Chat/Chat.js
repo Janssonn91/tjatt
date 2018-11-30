@@ -34,6 +34,7 @@ export default class Chat extends Component {
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
   @observable openSideDrawer = false;
+  @observable buttonIsHovered = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -46,7 +47,7 @@ export default class Chat extends Component {
     toggle: this.viewMembersModalToggle.bind(this)
   }
 
- 
+
 
   @observable sendToLeaveModal = {
     isOpen: false,
@@ -60,7 +61,7 @@ export default class Chat extends Component {
 
   start() {
     this.setupMessageListener();
-   
+
     // observe(this.props.userStore, "isLoggedIn", ()=>{
     //   if(this.props.userStore.isLoggedIn){
     //     this.setupMessageListener();
@@ -90,7 +91,7 @@ export default class Chat extends Component {
 
   viewMembersModalToggle() {
     this.sendToViewMembersModal.isOpen = !this.sendToViewMembersModal.isOpen;
-    if(!this.sendToViewMembersModal.isOpen){
+    if (!this.sendToViewMembersModal.isOpen) {
       this.props.channelStore.hideAdminLeaveError();
     }
   }
@@ -154,15 +155,15 @@ export default class Chat extends Component {
     }
     await sleep(10);
 
-    
+
 
 
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
 
-  setupMessageListener(){
-    const {channelStore} = this.props;
+  setupMessageListener() {
+    const { channelStore } = this.props;
     socket.off('chat message');
     socket.on(
       'chat message',
@@ -170,8 +171,12 @@ export default class Chat extends Component {
         for (let message of messages) {
           let time = new Date(message.time);
           console.log(time)
+
+          // When you get a message, move the channel to the top of the list
+          channelStore.moveLatestChannelToTop(message.channel);
+
           if (message.channel === channelStore.currentChannel._id) {
-            let m=  {
+            let m = {
               channel: message.channel,
               sender: message.sender,
               star: false,
@@ -243,8 +248,10 @@ export default class Chat extends Component {
       return result;
     }
     // var d = new Date();
+  }
 
-
+  setButtonHovered(boolean) {
+    this.buttonIsHovered = boolean;
   }
 
 }
