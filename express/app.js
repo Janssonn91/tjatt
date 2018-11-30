@@ -464,6 +464,15 @@ app.put('/removeContact/:_id', async (req, res) => {
   res.json({ resultContact });
 });
 
+app.get('/checkChannel/:_id', async (req, res) => {
+  console.log(req.params._id);
+  const checkChannelResult = await channel.findOne(
+    { members: req.params._id}
+  )
+    .catch((err) => console.log("err", err));
+    res.json({ checkChannelResult });
+}) 
+
 app.get('/logout', (req, res) => {
   delete req.session.userId;
   res.json({ success: 'Successfully logged out' })

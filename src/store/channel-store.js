@@ -277,7 +277,7 @@ class ChannelStore {
     })
   }
 
-  createChannel(channelname, admin, members, group, open) {
+  async createChannel(channelname, admin, members, group, open) {
     let newChannel = {
       channelname: channelname,
       admin: admin,
@@ -285,6 +285,11 @@ class ChannelStore {
       favorite: false,
       open: open,
       group: group
+    }
+    // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
+    if(!group){
+    //const checkIfChannelExits = await fetch(`api/checkChannel/${members}`) 
+      let res = await fetch(`api/checkChannel/${members}`);
     }
     Channel.create(newChannel);
   }
