@@ -207,44 +207,38 @@ io.on('connection', (socket) => {
 
       socket.broadcast.emit('invitation', message);
     }
-
-    if(data.textType=== 'rejection'){
-      console.log("decline", data);
-      // data: {rejecter: id, rejectee: id, type:"decline"}
+// ToDO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if(data.type=== 'rejection'){
+      console.log("rejection", data);
+      // data: {rejecter: id, rejectee: id, type:'rejection'}
       // rejecter emit decline
+      let c= await channel.findOne({channelname: data.rejectee.toString() + "system"});
+      console.log("!!!!!", c)
       let systemMessage = new ChatMessage({
         sender: data.rejecter,
-        text: data.rejecter +"&decline&" + data.rejectee,
-        textType: "decline",
+        text: data.rejecter +"&reject&" + data.rejectee,
+        textType: "rejection",
         unread:true,
+        channel:c._id,
       })
       let m="";
       await systemMessage.save().then(message=>{
         m= message._id;
       })
+      let message= {
+        textType: "rejection",
+        initiator: data.rejecter,
+        rejectee: data.rejectee,
+        unread: true,
+        id: m,
+      }
 
+    socket.broadcast.emit('rejection', message);
 
-
-
-     if(data.rejectee === userStore.user._id){
-       channelStore.unread
-     }
     }
   
   });
 
-
-
-  // socket.
-   // [{
-      //   sender: systemMessage.sender,
-      //   text: systemMessage.text,
-      //   textType: systemMessage.textType,
-      //   unread: systemMessage.unread,
-      //   channel: systemMessage.channel,
-      // }]
-
- 
     
 // system textType: 
 // invitation--system send invitation

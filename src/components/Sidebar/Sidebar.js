@@ -99,38 +99,8 @@ export const imgPath = '/images/placeholder.png';
     const {userStore, channelStore} = this.props;
     socket.off('system');
     socket.on('system', async (data)=>{
-     
 
-      
-      // if(data.textType==='invitation'){
-      //   if(data.invitee===userStore.user._id){
-      //     let message= {
-      //       sender: data.inviter,
-      //       initiator: channelStore.userDict[data.inviter].name,
-      //       targetChannel: data.newChannel,
-      //       unread: true,
-      //     }
-      //     channelStore.unreadSystemMessages.push(message);
-      //     channelStore.unreadSystemMessageNum++;
-      //   }
-      // }
-      
 
-      // if(data.textType==='rejection'){
-      //   console.log(data)
-      //   if(data.rejectee === userStore.user._id){
-      //     let message = {
-      //       textType: 'rejection',
-      //       initiator:  toJS(channelStore.userDict[data.rejecter]).name,
-      //       unread:true,
-      //       sender: data.rejecter,
-      //     }
-      //     channelStore.unreadSystemMessages.push(message);
-      //   channelStore.unreadSystemMessageNum++;
-      //   socket.emit('rejection', message);
-        
-      //   }
-      // }
 
     });
 
@@ -179,9 +149,26 @@ export const imgPath = '/images/placeholder.png';
           channelStore.unreadSystemMessageNum++;
           console.log(toJS(channelStore.unreadSystemMessages))
         }
-    
-     
     })
+
+    socket.off('rejection');
+    socket.on('rejection', data=>{
+      console.log(data)
+          if(data.rejectee===userStore.user._id){
+            console.log("rejection")
+          let message= {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            unread: true,
+            textType: data.textType,
+            id:data.id,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
+        }
+    })
+
 
     
 

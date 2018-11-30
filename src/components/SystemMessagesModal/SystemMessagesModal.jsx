@@ -16,12 +16,12 @@
             <span>{message.initiator} wants to add you as a contact</span>   
             <span>
               <ButtonGroup size="sm">
-                <Button onClick={()=>this.invitationDeclined(message.id, i)}>Decline</Button>
+                <Button onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
                 <Button>Confirm</Button>
               </ButtonGroup>
             </span>
           </ListGroupItem>
-          : message.textType==="decline" ?
+          : message.textType==="rejection" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has rejected your invitation</span>
           <span><Button size="sm"onClick={()=>this.closeSystemMessage(message.id, i)}>x</Button></span>

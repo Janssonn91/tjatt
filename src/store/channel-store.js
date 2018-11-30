@@ -158,8 +158,8 @@ class ChannelStore {
                     this.setSystemMessageFromDB(initiator, j[0], i[1], d);
                
                     }
-                    if(d.textType.toString()==="decline"){
-                      let i = d.text.toString().split("&decline&");
+                    if(d.textType.toString()==="rejection"){
+                      let i = d.text.toString().split("&reject&");
                       let initiator= toJS(this.userDict[i[0]]).name;
                     
                       this.setSystemMessageFromDB(initiator, i[0], "", d);
