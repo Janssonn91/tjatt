@@ -1,5 +1,7 @@
 import './ChatMessage.scss';
 import Highlight from 'react-highlight';
+import ScrollableFeed from 'react-scrollable-feed';
+import 'highlight.js/styles/vs2015.css';
 @inject('userStore', 'channelStore') @observer
 export default class ChatMessage extends Component {
 
@@ -11,6 +13,7 @@ export default class ChatMessage extends Component {
   @observable chatImageModal = false;
   @observable currentImage = '';
   @observable originalName = '';
+  @observable fullHeightSnippet = [];
   @observable sendToDeleteMessageModal = {
     isOpen: false,
     toggle: this.deleteMessageModalToggle.bind(this)
@@ -19,6 +22,14 @@ export default class ChatMessage extends Component {
   async start() { }
 
 
+  toggleSnippetHeight = (index) => {
+    if (this.fullHeightSnippet.includes(index)) {
+      this.fullHeightSnippet = this.fullHeightSnippet.filter(x => x !== index);
+    } else {
+      this.fullHeightSnippet.push(index);
+    }
+    console.log(this.fullHeightSnippet);
+  }
 
   toggleChatModal = () => {
     this.chatImageModal = !this.chatImageModal;

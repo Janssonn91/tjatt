@@ -14,7 +14,6 @@
                 className="codefile d-none"
                 name="codefile"
                 id="codefile"
-                onChange={this.props.codeFileMethod}
               />
               <label htmlFor="codefile" className="text-dark codefile">
                 <i name="codefile" className="fas fa-file codefile"></i>&nbsp; Choose codefile
@@ -28,7 +27,7 @@
       </Row>
     </ModalBody>
     <ModalFooter>
-      <Button color="success">Send snippet</Button>{' '}
+      <Button color="success" onClick={() => { this.props.codeFileMethod(); this.props.snippetToggle() }}>Send snippet</Button>{' '}
       <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
     </ModalFooter>
   </Modal>

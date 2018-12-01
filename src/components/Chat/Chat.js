@@ -73,6 +73,10 @@ export default class Chat extends Component {
 
   }
 
+  componentDidUpdate() {
+    console.log('I update')
+  }
+
   toggleSnippet = () => {
     this.snippetModal = !this.snippetModal;
   }
@@ -95,10 +99,10 @@ export default class Chat extends Component {
     this.toggle();
   }
 
-  codefileHandler = (e) => {
-    e.stopPropagation();
+  codefileHandler = () => {
+    const file = document.querySelector('#codefile').files[0];
     let formData = new FormData();
-    formData.append('file', e.target.files[0]);
+    formData.append('file', file);
 
     fetch(`/api/codeUpload/${this.props.channelStore.currentChannel._id}`, {
       method: 'POST',
@@ -110,22 +114,6 @@ export default class Chat extends Component {
         socket.emit('chat message', message)
       })
   }
-
-
-  scrollToBottom = () => {
-    if (this.messagesEnd) {
-      this.messagesEnd.scrollIntoView({ behavior: "smooth" })
-    }
-  };
-
-  componentDidMount() {
-    this.scrollToBottom();
-  }
-
-  compontentDidUpdate() {
-    this.scrollToBottom();
-  }
-
   addDeleteMemberModalToggle() {
     this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
   }
@@ -188,8 +176,6 @@ export default class Chat extends Component {
     if (this.inputMessage.length > 0) {
 
       socket.emit('chat message', newMessage);
-
-      this.scrollToBottom();
 
 
     } else {

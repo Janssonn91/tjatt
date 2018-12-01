@@ -61,25 +61,9 @@
       <hr className="mt-0 mb-2" />
       <Row>
         <Col className="pr-0">
-          <div className="chat-history pl-2 mr-1">
-            <ScrollableFeed forceScroll={true}>
-              <ul ref="messageList pt-2" onScroll={this.onScroll}>
-                {/* <div id="chatHistory"></div>  */}
-                <ChatMessage />
-                <li ref={(el) => {
-                  this.messagesEnd = el;
-                }}></li>
-              </ul >
-              {/* <div
-                style={{
-                  float: "left",
-                  clear: "both"
-                }}
-                ref={(el) => {
-                  this.messagesEnd = el;
-                }}></div> */}
-            </ScrollableFeed>
-          </div>
+          <ul className="chat-history pl-2 mr-1">
+            <ChatMessage />
+          </ul>
         </Col>
       </Row>
       <Row className="formRow">
