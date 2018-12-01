@@ -129,8 +129,11 @@ export const imgPath = '/images/placeholder.png';
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
-              socket.emit('newChannel', message.newChannel);
-              console.log(channelStore.groupChannels)
+              let m = {
+                newChannel: message.newChannel,
+                creater: message.creater
+              }
+              socket.emit('newChannel', m);
             }
       }
     }

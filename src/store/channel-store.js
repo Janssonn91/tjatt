@@ -147,7 +147,7 @@ class ChannelStore {
     this.cleanUpOldSystemMessages();
         Message.find({channel: applicationStateStore.systemChannel}).then(data=>
          
-              { console.log(data)
+              { 
                 
                 data.forEach(d=>{
                   if(d.unread){
@@ -170,6 +170,11 @@ class ChannelStore {
                       let i = j[1].split("&toJoin&");
                       let initiator = toJS(this.userDict[j[0]]).name;
                       this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+                    }
+                    if(d.textType.toString()==="addedToGroup"){
+                      let i = d.text.toString().split("&inviteYouToChannel&");
+                      let initiator = toJS(this.userDict[i[0]]).name;
+                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
                     }
                   }
                  

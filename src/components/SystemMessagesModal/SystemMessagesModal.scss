@@ -1,0 +1,45 @@
+/* color */
+$gray: #919192;
+$green: #70C1B3;
+$blue: #1976D1;
+$lightblue: #63A4FF;
+$darkblue: #004B9F;
+$red: #FF3C00;
+$darkred: #bb1e2d;
+$orange: #E38968;
+$text:#434651;
+
+.system-messages-modal {
+  width: 75%;
+  margin: 1.75rem auto;
+  .modal-header {
+    h4 {
+      color: $gray;
+    }
+  }
+
+  .modal-body {
+   .btn{
+    border: none;
+    border-radius: 30px !important;
+    padding: 0.275rem 0.65rem;
+    font-size: 0.9rem;
+     &.btn-save {
+      background-color: $blue;
+      &:hover {
+        background-color: $darkblue;
+      }
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      }
+    }
+
+    &.btn-cancel {
+      background-color: $darkred;
+      &:hover {
+        background-color: darken($darkred, 10%);
+      }
+    }
+   }
+  }
+}

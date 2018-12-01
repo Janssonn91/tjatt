@@ -208,12 +208,31 @@ io.on('connection', (socket) => {
   socket.on('system', async (data) => {
 
     //create group channel 
-    // data: {newChannel: whole channel info includes id
+    // data: {newChannel: whole channel info includes id, creater:userId}
     if(!data.invitee && data.newChannel){
       socket.join(data.newChannel._id, ()=>{
         console.log("socket room", socket.rooms);
       });
       data.type="create group";
+      for(let member of data.newChannel.members){
+        if(member!==user._id){
+          let c = await channel.findOne({
+            channelname: member + "system"
+          });
+          let systemMessage = new ChatMessage({
+            sender: data.creater,
+            text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
+            textType: "addedToGroup",
+            unread: true,
+            channel: c._id,
+          });
+          let m= "";
+          await systemMessage.save().then(message=>{
+            m=message._id;})
+        }
+        }
+       
+      
       socket.broadcast.emit('group', data);
     }
 
