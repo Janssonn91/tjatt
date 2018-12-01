@@ -39,6 +39,7 @@ class ApplicationStateStore {
           });
           socket.on('sign up', message => {
             channelStore.getUserList();
+            userStore.fetchContact();
           });
           socket.on('login', message => {
             this.onLineUsers = message.loginUser;
