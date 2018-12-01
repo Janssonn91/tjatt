@@ -15,10 +15,11 @@
             </span>&nbsp;
              <span className="message-data-time">{this.formattedTime(message.time)}</span>
           </div>
-          <div className={`message my-message clearfix ${message.contentType === 'image' ? 'removeBG' : ''}`}>
+          <div className={`message my-message clearfix ${message.contentType === 'image' ? 'removeBG' : ''} ${message.contentType === 'code' ? 'code-snippet' : ''}`}>
             {message.contentType === 'text' && message.text}
             {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
             {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" alt="chat-img" onClick={() => { this.toggleChatModal(); this.currentImage = message.filePath; this.originalName = message.originalName }} /></div>}
+            {message.contentType === 'code' && <Highlight>{message.text}</Highlight>}
             <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
               <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
                 <i className="fas fa-pen"></i>
@@ -50,10 +51,12 @@
               <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
             <span className="message-data-time">{this.formattedTime(message.time)}</span>
           </div>
-          <div className="message other-message">
+          <div className={`message other-message ${message.contentType === 'image' ? 'removeBG' : ''} ${message.contentType === 'code' ? 'code-snippet' : ''}`}>
             {message.contentType === 'text' && message.text}
             {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
-            {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" /></div>}
+            {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath}
+              className="upload-image" /></div>}
+            {message.contentType === 'code' && <Highlight>{message.text}</Highlight>}
           </div>
         </li>
     )

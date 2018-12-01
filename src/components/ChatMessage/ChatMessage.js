@@ -1,5 +1,5 @@
 import './ChatMessage.scss';
-
+import Highlight from 'react-highlight';
 @inject('userStore', 'channelStore') @observer
 export default class ChatMessage extends Component {
 

@@ -2,7 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
-  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} />
+  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -100,7 +100,7 @@
                     id="file"
                     className="file d-none"
                     name="file"
-                    onChange={this.textfileHandler}
+                    onChange={e => this.textfileHandler()}
                   />
                   <label htmlFor="file" className="document-file float-left py-auto align-self-center">
                     <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document

@@ -7,13 +7,28 @@
       </Row>
       <Row>
         <Col lg="12" md="12">
-          {!this.textFile ? <textarea className="w-100" rows="8"></textarea> : <input type="file"></input>}
-
+          {!this.textFile ? <textarea className="w-100" rows="8"></textarea> :
+            <div>
+              <input
+                type="file"
+                className="codefile d-none"
+                name="codefile"
+                id="codefile"
+                onChange={this.props.codeFileMethod}
+              />
+              <label htmlFor="codefile" className="text-dark codefile">
+                <i name="codefile" className="fas fa-file codefile"></i>&nbsp; Choose codefile
+              </label>
+            </div>
+          }
+          {this.props.channelStore.channelChatHistory.map((message, i) => {
+            message.contentType === 'code'
+          })}
         </Col>
       </Row>
     </ModalBody>
     <ModalFooter>
-      <Button color="success" onClick={this.toggle}>Send snippet</Button>{' '}
+      <Button color="success">Send snippet</Button>{' '}
       <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
     </ModalFooter>
   </Modal>

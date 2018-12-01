@@ -95,6 +95,22 @@ export default class Chat extends Component {
     this.toggle();
   }
 
+  codefileHandler = (e) => {
+    e.stopPropagation();
+    let formData = new FormData();
+    formData.append('file', e.target.files[0]);
+
+    fetch(`/api/codeUpload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(message => {
+        console.log(message)
+        socket.emit('chat message', message)
+      })
+  }
+
 
   scrollToBottom = () => {
     if (this.messagesEnd) {

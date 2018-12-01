@@ -4,10 +4,12 @@ export default class SnippetModal extends Component {
 
   @observable textFile = false;
 
-  start() { }
+  start() {
+    console.log('hej')
+    console.log('chat history', toJS(this.props.channelStore.channelChatHistory));
+  }
 
   switchTextFile = () => {
-
     this.textFile = !this.textFile;
     console.log(this.textFile);
   }

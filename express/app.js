@@ -762,10 +762,38 @@ app.post('/fileUpload/:id', fileUpload.single('file'), async (req, res) => {
   })
   await message.save()
   res.json(message);
-
-
 })
 
+const codeUpload = multer({
+  fileFilter: (req, file, cb) => {
+    const approved = file.originalname.match(/\.(js|py|html|css|scss|sass|less|php|json|xml)$/)
+    if (!approved) {
+      console.log('File is not a codefile')
+      return cb(null, false)
+    }
+    cb(null, true)
+  }
+});
+
+app.post('/codeUpload/:id', codeUpload.single('file'), async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(403)
+  }
+  if (!req.file) {
+    return res.status(400)
+  }
+
+  let message = new ChatMessage({
+    sender: req.session.userId,
+    contentType: 'code',
+    channel: req.params.id,
+    originalName: req.file.originalname,
+    text: req.file.buffer
+  });
+  console.log('Success')
+  await message.save();
+  res.json(message);
+});
 
 
 const Repo = require('./classes/Repo.class');

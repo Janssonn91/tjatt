@@ -199,5 +199,23 @@ li {
 .removeBG {
   background-color: unset !important;
   padding: 0!important;
-  box-shadow: 1px 1px 2px 2px rgba(0,0,0,0.2);
+  box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.2);
+}
+
+.removeBG pre, .code-snippet pre{
+  margin: 0!important;
+}
+
+.code-snippet {
+  background-color: unset !important;
+  padding: 0!important;
+  box-shadow: 3px 3px 3px 2px rgba(136, 136, 136, 0.3);
+  border: 3px solid black;
+  width: 90%;
+  margin-left: 5px;
+  
+}
+
+.hljs{
+  padding: 15px;
 }
