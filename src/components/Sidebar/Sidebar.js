@@ -26,6 +26,12 @@ export const imgPath = '/images/placeholder.png';
     channel: this.openModalDeleteContact.bind(this),
   }
 
+  @observable systemMessagesModalOpen = {
+    isOpen: false,
+    keyboard:true,
+    toggle:this.openSystemMessageModal.bind(this),
+  }
+
   @observable collapseOpen = false;
   @observable contactsOpen = true;
   @observable groupsOpen = true;
@@ -92,6 +98,10 @@ export const imgPath = '/images/placeholder.png';
     }
   }
 
+  openSystemMessageModal(){
+    this.systemMessagesModalOpen.isOpen = !this.systemMessagesModalOpen.isOpen;
+  }
+
   logout() {
     fetch('/api/logout').then(() => {
       this.props.channelStore.resetCurrentChannel();
@@ -105,36 +115,98 @@ export const imgPath = '/images/placeholder.png';
     const {userStore, channelStore} = this.props;
     socket.off('system');
     socket.on('system', async (data)=>{
-      if(data.invitee){
-        if(data.invitee === userStore.user._id){
-         socket.emit('invitation', data);
-        }
-      }
 
-      // group channel
-      if(data.newChannel){
-        let c= data.newChannel;
+
+
+    });
+
+    socket.off('group');
+    socket.on('group', message=>{
+      if(message.type === "create group"){
+        let c= message.newChannel;
         let id= userStore.user._id.toString();
         for(let i of c.members) {
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
-              socket.emit('newChannel', data.newChannel);
+              socket.emit('newChannel', message.newChannel);
               console.log(channelStore.groupChannels)
             }
-          //   else{
-          //     let name = await channelStore.getContactName(c.members);
-          //     if (name !== undefined) {
-          //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
-          //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
-          // } 
-          //   }
+      }
+    }
+  }
+      
+      //     //   else{
+      //     //     let name = await channelStore.getContactName(c.members);
+      //     //     if (name !== undefined) {
+      //     //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
+      //     //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
+      //     // } 
+      //     //   }
           
+      //     }
+      //   }
+      // }
+    })
+
+
+    socket.off('invitation');
+    socket.on('invitation', data=>{
+          if(data.invitee===userStore.user._id){
+            console.log("invitation")
+          let message= {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            targetChannel: data.targetChannel,
+            unread: true,
+            textType: data.textType,
+            id:data.id,
           }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
         }
+    })
+
+    socket.off('rejection');
+    socket.on('rejection', data=>{
+      console.log(data)
+          if(data.rejectee===userStore.user._id){
+            console.log("rejection")
+          let message= {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            unread: true,
+            textType: data.textType,
+            id:data.id,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
+        }
+    })
+
+    socket.off('acceptance');
+    socket.on('acceptance', data=>{
+      console.log(data)
+      if(data.acceptee === userStore.user._id){
+        let message={
+          sender: data.sender,
+          initiator: this.props.channelStore.userDict[data.sender].name,
+          unread: true,
+          textType: data.textType,
+          targetChannel: data.targetChannel,
+          id: data.id,
+        }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
       }
 
-    });
+       this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
+    })
+
+
+    
 
     socket.off('system message');
     socket.on('system message', message => {

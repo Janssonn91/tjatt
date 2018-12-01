@@ -9,7 +9,8 @@ export default class Tjatt extends Component {
 
   async start() {
     this.props.channelStore.getChannelList();
-    this.props.channelStore.getUserList();
+    //this.props.channelStore.getUserList();
+    this.props.userStore.fetchContact();
     await sleep(60);
   }
 

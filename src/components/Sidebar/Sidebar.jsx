@@ -20,7 +20,13 @@
       {/* <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
         <NavItem className="pl-1">Starred</NavItem>
       </NavLink> */}
-
+      {this.props.channelStore.unreadSystemMessages.length > 0 ?
+      <NavLink className = "pt-0 pr-0">
+        <NavItem onClick={this.openSystemMessageModal.bind(this)}> <span className="d-inline-block">System Message</span>
+        <span className="message-number"> <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge></span>
+      </NavItem>
+      </NavLink>
+       : <span className="d-none"> 0</span>}
 
       <NavLink className="pl-2 pt-0 pr-0">
         <NavItem onClick={this.openContacts}>My Contacts {!this.contactsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
@@ -66,7 +72,7 @@
               : <h6 className="text-secondary pl-3 pt-1">Add a contact on the <strong className="plus-text">+</strong></h6>
             }
             {this.props.channelStore.contactChannels.map((channel, i) =>
-              // channel.open ?
+              channel.open ?
               <Link
                 to={`/${this.props.userStore.user.username}/${channel.channelname}`}
                 key={i}
@@ -87,8 +93,8 @@
                     </span>}
                 </div>
               </Link>
-              // :
-              // <div key={i}></div>
+               :
+              <div key={i}></div>
             )}
           </CardBody>
         </Card>
@@ -127,4 +133,5 @@
   <AddUserModal {...this.addUserModalOpen} />
   <CreateGroupModal {...this.createGroupModalOpen} />
   <DeleteContactModal {...this.deleteContactModalOpen} />
+  <SystemMessagesModal {...this.systemMessagesModalOpen} />
 </Fragment >

@@ -84,11 +84,48 @@ let ai = "";
 
 let onlineUsers = [];
 
+// setSystemMessageToDB(data){
+//   let id = "";
+//   let messageText = "";
+//   switch(data.type) {
+//     case "invitation":
+//         id = data.invitee.toString();
+//         messageText = data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id;
+//         break;
+//     case "acceptance":
+//         id = data.acceptee.toString();
+//         messageText = data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel;
+//         break;
+//     case "rejection":
+//         id = data.rejectee.toString();
+//         messageText = data.rejecter +"&reject&" + data.rejectee;
+//         break;
+//     default: 
+//     break;
+//   };
+
+//   let c = await channel.findOne({
+//     channelname: id + "system"
+//   });
+
+//   let systemMessage = new ChatMessage({
+//     sender: id,
+//     text: messageText,
+//     textType: data.type,
+//     unread: true,
+//     channel: c._id,
+//   });
+  
+//   await systemMessage.save().then(message=>{
+//     return message._id;
+//   })
+// }
+
 io.on('connection', (socket) => {
 
 
   let user = socket.handshake.session.loggedInUser;
- 
+  
   
   
 
@@ -133,16 +170,11 @@ io.on('connection', (socket) => {
 
 
   socket.on('login', (userId) => {
-    console.log("login", userId)
     onlineUsers = onlineUsers.filter(id => id !== userId);
     onlineUsers.push(userId)
-    console.log("onlineuser after login", onlineUsers)
-    channel.findOne({channelname: userId + "system"}).then(data=>{
-      systemChannel = data._id;
-    })
+   
     User.findOne({_id: userId}).then(u=> {
       let channels = u.channel;
-      console.log("length", channels.length, u.nickname)
       for(let channel of channels){
         if(channel){
           channel = channel.toString();
@@ -151,19 +183,11 @@ io.on('connection', (socket) => {
             io.to(channel).emit(userId + "has joined in channel" + channel);
           });
         }
-       
-
     }
     socket.broadcast.emit('login', {
       loginUser: onlineUsers
     })
-    }
-    
-      )
-      
-    
-
-
+    })
   })
 
   socket.on('newChannel', (channel) => {
@@ -182,59 +206,114 @@ io.on('connection', (socket) => {
   })
   
   socket.on('system', async (data) => {
-    socket.broadcast.emit('system', data);
 
-    //join group channel 
-    if(!data.invitee){
+    //create group channel 
+    // data: {newChannel: whole channel info includes id
+    if(!data.invitee && data.newChannel){
       socket.join(data.newChannel._id, ()=>{
-        console.log("socket room", socket.rooms)
+        console.log("socket room", socket.rooms);
       });
+      data.type="create group";
+      socket.broadcast.emit('group', data);
     }
+
+    //contact channel invitation
+  
     
-    //  if(data.invitee){
-    //    let s=""
-    //   await User.findOne({username: "system"}).then(user=>s=user._id);
-    //   let systemMessage={
-    //     receiver: data.invitee,
-    //     sender: s,
-    //     text: 
-    //   }
-    //   socket.emit('chat message', )
-    // }
+      if(data.type==="inviation"){
+          // data:  {newChannel: id, invitee: userId, inviter: user._id, type:"inviation"}
+      let c= await channel.findOne({channelname: data.invitee + "system"});
+      let systemMessage = new ChatMessage({
+         sender: data.invitee,
+         text: data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id,
+         textType: "invitation",
+         unread: true,
+         channel: c._id,
+       });
+       let m="";
+       await systemMessage.save().then(message=>{
+         m=message._id;})
+      //let m = setSystemMessageToDB(data);
+        let message= {
+          textType: "invitation",
+          initiator: data.inviter,
+          targetChannel: data.newChannel._id,
+          invitee: data.invitee,
+          unread: true,
+          id: m,
+        }
+
+      socket.broadcast.emit('invitation', message);
+    }
+
+   
+
+    if(data.type === 'acceptance'){
+      console.log('acceptance', data);
+       //data: {accepter: id, acceptee: id, targetChannel: channelId, type:"acceptance" }
+       let c = await channel.findOne({channelname: data.acceptee.toString() + "system"});
+       let systemMessage = new ChatMessage({
+         sender: data.accepter,
+         text: data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel,
+         textType: 'acceptance',
+         unread: true,
+         channel: c._id,
+       })
+       let m="";
+       await systemMessage.save().then(message=>{
+         m = message._id;
+       })
+
+       let message = {
+        textType: "acceptance",
+        sender: data.accepter,
+        targetChannel: data.targetChannel,
+        acceptee: data.acceptee,
+        unread: true,
+        id: m,
+       }
+
+       channel.update(
+         {_id: data.targetChannel},
+         {$set: {open: true}}
+          ).then((data) => {
+           console.log(data)} )
+          .catch(err => {
+            throw err;
+          });
+
+       socket.broadcast.emit('acceptance', message);
+    }
+
+    if(data.type=== 'rejection'){
+      console.log("rejection", data);
+      // data: {rejecter: id, rejectee: id, type:'rejection'}
+      // rejecter emit rejection
+      let c= await channel.findOne({channelname: data.rejectee.toString() + "system"});
+      let systemMessage = new ChatMessage({
+        sender: data.rejecter,
+        text: data.rejecter +"&reject&" + data.rejectee,
+        textType: "rejection",
+        unread:true,
+        channel:c._id,
+      })
+      let m="";
+      await systemMessage.save().then(message=>{
+        m= message._id;
+      })
+      let message= {
+        textType: "rejection",
+        initiator: data.rejecter,
+        rejectee: data.rejectee,
+        unread: true,
+        id: m,
+      }
+
+    socket.broadcast.emit('rejection', message);
+
+    }
+  
   });
-
- 
-    
-// system textType: 
-// invitation--system send invitation
-// confirm: invitation is confirmed channel render for both users
-// decline: decline invitation, channel will not render
-// kicked out: kicked out from group
-socket.on('invitation', async (data)=>{
-  // socket.join(data.newChannel._id, ()=>{
-  //   console.log("socket room", socket.rooms)
-  // });
-
-  //sender: "system", channel: "system channel", text: "inviter's id" 
-    let systemMessage = new ChatMessage({
-      sender: ai,
-      text: data.inviter + "&toJoin&" + data.newChannel._id,
-      textType: "invitation",
-      unread: true,
-      channel: systemChannel,
-    });
-
-    await systemMessage.save();
-    
-    io.to(systemChannel).emit('system message', [{
-      sender: systemMessage.sender,
-      text: systemMessage.text,
-      textType: systemMessage.textType,
-      unread: systemMessage.unread,
-      channel: systemMessage.channel,
-    }] );
-  });
-
 
 
 
@@ -249,7 +328,6 @@ socket.on('invitation', async (data)=>{
     let message = new ChatMessage({
       ...messageFromClient,
     });
-    // console.log("message", message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -263,6 +341,23 @@ socket.on('invitation', async (data)=>{
       time: message.time,
     }]);
   });
+
+  
+
+  socket.on('rejection', async (data)=>{
+      data.textType= 'rejection';
+      socket.broadcast.emit('system', data);
+      let c = await channel.findOne({
+        channelname: data.rejectee + "system"
+      });
+      let systemMessage= new ChatMessage({
+        sender: data.rejecter,
+        text: data.rejecter +"&decline&" + data.rejectee,
+        textType: "decline",
+        unread: true,
+      })
+      await systemMessage.save();
+  })
 
 
   socket.on('disconnect', () => {
@@ -281,6 +376,7 @@ socket.on('invitation', async (data)=>{
 
 app.get('/system', (req, res)=>{
   res.json({systemChannel: systemChannel, systemUserId: ai})
+  
 })
 
 // app.get('/hello', (req, res) => {
@@ -461,11 +557,11 @@ app.put('/removeContact/:_id', async (req, res) => {
 });
 
 app.get('/checkChannel/:_id', async (req, res) => {
-  console.log(req.params._id);
+  console.log("checkt member id!!!!!!!!", req.params._id);
   const checkChannelResult = await channel.findOne(
     { members: req.params._id}
   )
-    .catch((err) => console.log("err", err));
+    .catch((err) => console.log("check channel member err", err));
     res.json({ checkChannelResult });
 }) 
 
@@ -478,7 +574,10 @@ app.get('/login', (req, res) => {
   User.findById(req.session.userId)
     .then(user => {
       if (user) {
-        res.json({ loggedIn: true, user: user })
+        res.json({ loggedIn: true, user: user });
+        channel.findOne({channelname: user._id + "system"}).then(data=>{
+          systemChannel = data._id;})
+       
       } else {
         res.json({ loggedIn: false })
       }
@@ -492,16 +591,19 @@ app.post('/check-mail', async (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+
   User.findOne({ username: req.body.username })
     .then(user => {
       if (!user) {
         res.json({ success: false })
       } else {
+        channel.findOne({channelname: user._id + "system"}).then(data=>{
+          systemChannel = data._id;})
         const hash = hasha(
           req.body.password + global.passwordSalt,
           { encoding: 'base64', algorithm: 'sha512' }
         );
-        //console.log(hash, user.password);
+        console.log(hash, user.password);
         if (user.password === hash) {
           req.session.userId = user._id;
           req.session.loggedInUser = user;
@@ -573,6 +675,19 @@ app.put('/channel/:_id', (req, res) => {
       throw err;
     });
 });
+
+app.get('/channel/:_id', (req, res)=>{
+  channel.findById(req.params._id).then(data=>{
+    res.json(data)
+  }).catch(err=>console.log(err))
+})
+
+
+
+
+
+
+
 
 app.put('/users/:_id/add', (req, res) => {
   User.findOneAndUpdate(
@@ -678,16 +793,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.put('/message/:id',(req, res)=>{
-  console.log("change message status", req.body, req.params)
+ 
   ChatMessage.findOneAndUpdate(
     {_id: req.params.id},
     {$set: { unread: false}}
-  ).then(()=>{
-    res.json({success: true})
-  }).catch(err=>{
+  ).then(()=>
+    res.json({success: true}
+  )).catch(err=>{
     throw err;
-  });
+  })
 });
+
 
 app.post('/upload', upload.single('file'), (req, res) => {
   User.findById(req.session.userId)
