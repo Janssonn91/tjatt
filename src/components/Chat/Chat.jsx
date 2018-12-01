@@ -15,7 +15,7 @@
           <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span>
           {this.props.channelStore.currentChannel.group
             ? <div className="btn group-menu">
-                <span className="dialog-icon p-0">
+              <span className="dialog-icon p-0">
                 <Dropdown isOpen={this.dropdownOpen} toggle={this.dropdownToggle}>
                   <DropdownToggle
                     tag="span"
@@ -53,7 +53,7 @@
               </span>
             </div>
             :
-            <span btn style={{ width: 30 }}>{null}</span>
+            <span style={{ width: 30 }}>{null}</span>
           }
         </Col>
       </Row>

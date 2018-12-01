@@ -16,6 +16,7 @@ class ChannelStore {
   //@observable currentChannelGroup = false; // never used, removable ??
   @observable contactChannels = [];
   @observable groupChannels = [];
+  @observable hasLoadedChannels = false;
   @observable currentGroupMembers = [];
   @observable currentGroupCandidates = [];
   @observable hideMenu = true;
@@ -87,10 +88,10 @@ class ChannelStore {
       _id: userStore.user.channel,
     }); // TODO: Added contact doesn't exist yet
 
-    this.myChannels.map(async (c) => {
-      let messages = await Message.find({
-        channel: c._id
-      });
+    for (let i = 0; i < this.myChannels.length; i++) {
+      const c = this.myChannels[i];
+
+      let messages = await Message.find({ channel: c._id });
       let count = 0;
       messages.forEach(message => {
         if (message.sender !== userStore.user._id && message.unread) {
@@ -131,9 +132,9 @@ class ChannelStore {
           // this.contactChannels.push(this.channelDict[c._id])
         }
       }
-    });
-    await sleep(100);
+    }
     this.sortListByMessageNum();
+    this.hasLoadedChannels = true;
   }
 
   @action cleanUpOldSystemMessages(){
@@ -293,10 +294,13 @@ class ChannelStore {
       group: group
     }
     // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
-    if(!group){
-    //const checkIfChannelExits = await fetch(`api/checkChannel/${members}`) 
-      let res = await fetch(`api/checkChannel/${members}`);
-    }
+
+    // res = 
+    // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
+    //  if(!group){
+    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
+    //   console.log(checkIfChannelExits);
+    // }
     Channel.create(newChannel);
   }
 

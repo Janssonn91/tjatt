@@ -37,7 +37,7 @@ import './Login.scss';
           console.log("login user", res)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           this.props.userStore.fetchContact();
-          this.props.history.push(`/${this.props.userStore.user.username}`);
+          this.props.history.push(`/${this.props.userStore.user.username}/info`);
           socket.emit("login", this.props.userStore.user._id);
 
           fetch('/api/system').then(res => res.json()).then(data=>{

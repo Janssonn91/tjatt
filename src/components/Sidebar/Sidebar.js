@@ -37,9 +37,25 @@ export const imgPath = '/images/placeholder.png';
   @observable groupsOpen = true;
 
   start() {
-    // console.log(this.props.match.params.id)
     this.setupSystemMessage();
     // this.props.channelStore.getChannels();
+  }
+
+  loadChannelFromUrl() {
+    const allChannels = this.props.channelStore.contactChannels.concat(this.props.channelStore.groupChannels);
+
+    const matchingChannel = allChannels.find((contactChannel) => {
+      return contactChannel.channelname === this.props.match.params.id;
+    });
+
+    if (matchingChannel) {
+      this.props.channelStore.changeChannel(matchingChannel);
+    }
+  }
+
+  componentDidMount() {
+    observe(this.props.channelStore, "hasLoadedChannels", this.loadChannelFromUrl.bind(this));
+    this.props.history.listen(this.loadChannelFromUrl.bind(this));
   }
 
 

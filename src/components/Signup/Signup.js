@@ -52,23 +52,6 @@ import './Signup.scss';
     this.usernameExist = false;
   }
 
-  sendWelcomeMail(username, email) {
-    fetch('/api/send-mail', {
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify({ username, email }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          console.log('mail skickat')
-        }
-      }).catch(err => {
-        console.log("err", err)
-      })
-  }
-
   signUp(username, password, useremail) {
     fetch('/api/users',
       {
@@ -84,9 +67,8 @@ import './Signup.scss';
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
           this.props.userStore.fetchContact();
-          this.props.history.push(`/${this.props.userStore.user.username}`);
+          this.props.history.push(`/${this.props.userStore.user.username}/info`);
           this.usernameExist = false;
-          this.sendWelcomeMail(username, useremail);
           socket.emit('sign up', res.user);
         } else {
           if(res.userResult){
