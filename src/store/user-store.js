@@ -59,7 +59,6 @@ class UserStore {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
-        console.log("fetchContact",users)
         let withoutMe = users.filter(user => user._id !== this.user._id);
         withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
 
@@ -68,8 +67,10 @@ class UserStore {
         }
         this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
+        console.log("groupCandidates", this.groupCandidates);
       });
   }
+
 
   @action cleanUpGroupModal() {
     this.selectedGroupMember.forEach((data) => {

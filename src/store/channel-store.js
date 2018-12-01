@@ -305,7 +305,6 @@ class ChannelStore {
   }
 
   @action async updateContactChannels(c, id) {
-   //let channel= await fetch(`/api/channel/${c}`);
    let channel={};
    let user = this.userDict[id];
    fetch(`/api/channel/${c}`).then(res=>res.json()).then(data=>{
@@ -313,6 +312,7 @@ class ChannelStore {
      channel.channelname = user.name;
      channel.image = user.img;
      this.contactChannels.push(channel);
+     
   })
 
    
