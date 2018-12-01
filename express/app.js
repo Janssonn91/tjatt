@@ -229,11 +229,23 @@ io.on('connection', (socket) => {
           let m= "";
           await systemMessage.save().then(message=>{
             m=message._id;})
+
+            let message= {
+              textType: "addedToGroup",
+              initiator: data.creater,
+              targetChannel: data.newChannel,
+              unread: true,
+              id: m,
+            }
+    
+            socket.broadcast.emit('group', message);
         }
+      
         }
        
       
-      socket.broadcast.emit('group', data);
+       
+ 
     }
 
     //contact channel invitation
@@ -252,7 +264,6 @@ io.on('connection', (socket) => {
        let m="";
        await systemMessage.save().then(message=>{
          m=message._id;})
-      //let m = setSystemMessageToDB(data);
         let message= {
           textType: "invitation",
           initiator: data.inviter,
