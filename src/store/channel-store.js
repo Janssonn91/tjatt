@@ -164,6 +164,12 @@ class ChannelStore {
                     
                       this.setSystemMessageFromDB(initiator, i[0], "", d);
                     }
+                    if(d.textType.toString()==="acceptance"){
+                      let j = d.text.toString().split("&accept&");
+                      let i = j[1].split("&toJoin&");
+                      let initiator = toJS(this.userDict[j[0]]).name;
+                      this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+                    }
                   }
                  
                   
@@ -294,13 +300,20 @@ class ChannelStore {
     Channel.create(newChannel);
   }
 
-  updateContactChannels(channel) {
-    // channel.channelname is "id and id", so we need to get name
-    let user = this.getContactName(channel.members);
-    channel.channelname = user.name;
-    channel.image = user.img;
-    this.contactChannels.push(channel);
-    this.changeChannel(channel);
+  @action async updateContactChannels(c, id) {
+   //let channel= await fetch(`/api/channel/${c}`);
+   let channel={};
+   let user = this.userDict[id];
+   fetch(`/api/channel/${c}`).then(res=>res.json()).then(data=>{
+     channel= data;
+     channel.channelname = user.name;
+     channel.image = user.img;
+     this.contactChannels.push(channel);
+  })
+
+   
+    
+    //this.changeChannel(channel);
   }
 
   @action showMenu() {

@@ -17,7 +17,7 @@
             <span>
               <ButtonGroup size="sm">
                 <Button onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
-                <Button>Confirm</Button>
+                <Button onClick={()=>this.invitationAccepted(message.sender, message.targetChannel, message.id, i)}>Accept</Button>
               </ButtonGroup>
             </span>
           </ListGroupItem>
@@ -34,8 +34,10 @@
           <ListGroupItem key={i}>You are nolonger contact with {message.initiator}</ListGroupItem>
           : message.textType === "makeAdmin" ?
           <ListGroupItem key={i}>You are now admin of {message.targetChannel}</ListGroupItem>
+          : message.textType === "acceptance" ?
+          <ListGroupItem key={i}>You are now contact of {message.initiator} <Button  size="sm"onClick={()=>this.closeSystemMessage(message.id, i)}>x</Button></ListGroupItem>
           :
-          <div key={i}></div>
+           <div key={i}></div>
           : 
           <div></div>}
          </ListGroup> 

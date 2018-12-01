@@ -84,6 +84,43 @@ let ai = "";
 
 let onlineUsers = [];
 
+// setSystemMessageToDB(data){
+//   let id = "";
+//   let messageText = "";
+//   switch(data.type) {
+//     case "invitation":
+//         id = data.invitee.toString();
+//         messageText = data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id;
+//         break;
+//     case "acceptance":
+//         id = data.acceptee.toString();
+//         messageText = data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel;
+//         break;
+//     case "rejection":
+//         id = data.rejectee.toString();
+//         messageText = data.rejecter +"&reject&" + data.rejectee;
+//         break;
+//     default: 
+//     break;
+//   };
+
+//   let c = await channel.findOne({
+//     channelname: id + "system"
+//   });
+
+//   let systemMessage = new ChatMessage({
+//     sender: id,
+//     text: messageText,
+//     textType: data.type,
+//     unread: true,
+//     channel: c._id,
+//   });
+  
+//   await systemMessage.save().then(message=>{
+//     return message._id;
+//   })
+// }
+
 io.on('connection', (socket) => {
 
 
@@ -196,6 +233,7 @@ io.on('connection', (socket) => {
        let m="";
        await systemMessage.save().then(message=>{
          m=message._id;})
+      //let m = setSystemMessageToDB(data);
         let message= {
           textType: "invitation",
           initiator: data.inviter,
@@ -207,13 +245,51 @@ io.on('connection', (socket) => {
 
       socket.broadcast.emit('invitation', message);
     }
-// ToDO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+   
+
+    if(data.type === 'acceptance'){
+      console.log('acceptance', data);
+       //data: {accepter: id, acceptee: id, targetChannel: channelId, type:"acceptance" }
+       let c = await channel.findOne({channelname: data.acceptee.toString() + "system"});
+       let systemMessage = new ChatMessage({
+         sender: data.accepter,
+         text: data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel,
+         textType: 'acceptance',
+         unread: true,
+         channel: c._id,
+       })
+       let m="";
+       await systemMessage.save().then(message=>{
+         m = message._id;
+       })
+
+       let message = {
+        textType: "acceptance",
+        sender: data.accepter,
+        targetChannel: data.targetChannel,
+        acceptee: data.acceptee,
+        unread: true,
+        id: m,
+       }
+
+       channel.update(
+         {_id: data.targetChannel},
+         {$set: {open: true}}
+          ).then((data) => {
+           console.log(data)} )
+          .catch(err => {
+            throw err;
+          });
+
+       socket.broadcast.emit('acceptance', message);
+    }
+
     if(data.type=== 'rejection'){
       console.log("rejection", data);
       // data: {rejecter: id, rejectee: id, type:'rejection'}
-      // rejecter emit decline
+      // rejecter emit rejection
       let c= await channel.findOne({channelname: data.rejectee.toString() + "system"});
-      console.log("!!!!!", c)
       let systemMessage = new ChatMessage({
         sender: data.rejecter,
         text: data.rejecter +"&reject&" + data.rejectee,
@@ -239,23 +315,6 @@ io.on('connection', (socket) => {
   
   });
 
-    
-// system textType: 
-// invitation--system send invitation
-// confirm: invitation is confirmed channel render for both users
-// decline: decline invitation, channel will not render
-// kicked out: kicked out from group
-socket.on('invitation', async (data)=>{
-  console.log("invitation",data)
-  // socket.join(data.newChannel._id, ()=>{
-  //   console.log("socket room", socket.rooms)
-  // });
-
-   //sender: "system", channel: "invitee's system channel", text: "inviter's id" 
- 
-  });
-
-
 
 
   socket.on('chat message', async (messageFromClient) => {
@@ -269,7 +328,6 @@ socket.on('invitation', async (data)=>{
     let message = new ChatMessage({
       ...messageFromClient,
     });
-    // console.log("message", message)
     await message.save();
 
     // Send the message to all the sockets in the channel
@@ -284,6 +342,8 @@ socket.on('invitation', async (data)=>{
     }]);
   });
 
+  
+
   socket.on('rejection', async (data)=>{
       data.textType= 'rejection';
       socket.broadcast.emit('system', data);
@@ -297,8 +357,6 @@ socket.on('invitation', async (data)=>{
         unread: true,
       })
       await systemMessage.save();
-    
-    
   })
 
 
@@ -317,7 +375,6 @@ socket.on('invitation', async (data)=>{
 });
 
 app.get('/system', (req, res)=>{
-  console.log("!!!!!!!!!!!", systemChannel)
   res.json({systemChannel: systemChannel, systemUserId: ai})
   
 })
@@ -465,11 +522,11 @@ app.put('/removeContact/:_id', async (req, res) => {
 });
 
 app.get('/checkChannel/:_id', async (req, res) => {
-  console.log(req.params._id);
+  console.log("checkt member id!!!!!!!!", req.params._id);
   const checkChannelResult = await channel.findOne(
     { members: req.params._id}
   )
-    .catch((err) => console.log("err", err));
+    .catch((err) => console.log("check channel member err", err));
     res.json({ checkChannelResult });
 }) 
 
@@ -481,12 +538,10 @@ app.get('/logout', (req, res) => {
 app.get('/login', (req, res) => {
   User.findById(req.session.userId)
     .then(user => {
-  console.log("*****", req.session.userId)
-  console.log("**********", user)
       if (user) {
+        res.json({ loggedIn: true, user: user });
         channel.findOne({channelname: user._id + "system"}).then(data=>{
           systemChannel = data._id;})
-        res.json({ loggedIn: true, user: user });
        
       } else {
         res.json({ loggedIn: false })
@@ -504,7 +559,6 @@ app.post('/login', (req, res) => {
 
   User.findOne({ username: req.body.username })
     .then(user => {
-      console.log("login",user)
       if (!user) {
         res.json({ success: false })
       } else {
@@ -586,6 +640,19 @@ app.put('/channel/:_id', (req, res) => {
       throw err;
     });
 });
+
+app.get('/channel/:_id', (req, res)=>{
+  channel.findById(req.params._id).then(data=>{
+    res.json(data)
+  }).catch(err=>console.log(err))
+})
+
+
+
+
+
+
+
 
 app.put('/users/:_id/add', (req, res) => {
   User.findOneAndUpdate(

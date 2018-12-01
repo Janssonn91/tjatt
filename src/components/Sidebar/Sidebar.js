@@ -133,6 +133,7 @@ export const imgPath = '/images/placeholder.png';
       // }
     })
 
+
     socket.off('invitation');
     socket.on('invitation', data=>{
           if(data.invitee===userStore.user._id){
@@ -167,6 +168,25 @@ export const imgPath = '/images/placeholder.png';
           channelStore.unreadSystemMessageNum++;
           console.log(toJS(channelStore.unreadSystemMessages))
         }
+    })
+
+    socket.off('acceptance');
+    socket.on('acceptance', data=>{
+      console.log(data)
+      if(data.acceptee === userStore.user._id){
+        let message={
+          sender: data.sender,
+          initiator: this.props.channelStore.userDict[data.sender].name,
+          unread: true,
+          textType: data.textType,
+          targetChannel: data.targetChannel,
+          id: data.id,
+        }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+      }
+
+       this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
     })
 
 
