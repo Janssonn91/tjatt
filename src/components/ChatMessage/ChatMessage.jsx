@@ -1,7 +1,7 @@
 <Fragment>
   <ChatImgModal toggleVal={this.chatImageModal} toggleModal={this.toggleChatModal} imgPath={this.currentImage} title={this.originalName} />
   <DeleteMessageModal {...this.sendToDeleteMessageModal} />
-  <ScrollableFeed forceScroll={true}>
+  <ScrollableFeed>
     {this.props.channelStore.channelChatHistory.map((message, i) => {
       // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
       return (
