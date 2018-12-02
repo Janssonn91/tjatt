@@ -2,7 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
-  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} />
+  <SnippetModal uploadError={this.fileUploadError} snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} fileValueMethod={this.getFileValue} fileValue={this.codefileValue} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">

@@ -997,7 +997,7 @@ app.post('/codeUpload/:id', codeUpload.single('file'), async (req, res) => {
     return res.status(403)
   }
   if (!req.file) {
-    return res.status(400)
+    return res.status(400).json({ message: 'Fail' })
   }
 
   let message = new ChatMessage({

@@ -14,12 +14,17 @@
                 className="codefile d-none"
                 name="codefile"
                 id="codefile"
-                onChange={this.getFileValue}
+                onChange={this.props.fileValueMethod}
               />
               <label htmlFor="codefile" className="text-dark codefile">
                 <i name="codefile" className="fas fa-file codefile upload-btn">&nbsp; Choose codefile</i>
               </label>
-              <span className="file-value pl-5">File: {this.codefileValue}</span>
+              <span className="file-value pl-5">File: {this.props.fileValue}</span>
+              {this.props.uploadError &&
+                <Alert className="alert-danger">
+                  {this.props.fileValue} is not a code file
+                </Alert>
+              }
             </div>
           }
           {this.props.channelStore.channelChatHistory.map((message, i) => {
@@ -29,7 +34,7 @@
       </Row>
     </ModalBody>
     <ModalFooter>
-      <Button color="success" onClick={() => { this.props.codeFileMethod(); this.props.snippetToggle() }}>Send snippet</Button>{' '}
+      <Button color="success" onClick={() => { this.props.codeFileMethod(); }}>Send snippet</Button>{' '}
       <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
     </ModalFooter>
   </Modal>

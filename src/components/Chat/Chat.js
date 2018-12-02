@@ -36,6 +36,8 @@ export default class Chat extends Component {
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
   @observable snippetModal = false;
+  @observable fileUploadError = false;
+  @observable codefileValue = '';
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -72,7 +74,10 @@ export default class Chat extends Component {
 
   }
 
-
+  getFileValue = () => {
+    let fileValue = document.querySelector('#codefile').files[0].name;
+    this.codefileValue = fileValue;
+  }
 
   toggleSnippet = () => {
     this.snippetModal = !this.snippetModal;
@@ -106,11 +111,26 @@ export default class Chat extends Component {
       method: 'POST',
       body: formData,
       credentials: 'include'
-    }).then(res => res.json())
+    }).then(res => {
+      if (res.status === 400) {
+        this.fileUploadError = true;
+        setTimeout(() => {
+          this.fileUploadError = false;
+        }, 3000)
+        throw new Error();
+      }
+      return res.json()
+    })
       .then(message => {
         console.log(message)
         socket.emit('chat message', message)
+        this.fileUploadError = false;
+        this.toggleSnippet();
+        let resetFile = document.querySelector('#codefile');
+        resetFile.value = "";
+        this.codefileValue = "";
       })
+      .catch(err => err);
   }
   addDeleteMemberModalToggle() {
     this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
@@ -241,6 +261,10 @@ export default class Chat extends Component {
               }
             })
           }
+        }
+        let scroll = document.querySelector('._scrollable-div_1dj6m_1');
+        if (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200)) {
+          scroll.scrollTop = scroll.scrollHeight;
         }
       })
   }

@@ -3,7 +3,6 @@ import './SnippetModal.scss';
 export default class SnippetModal extends Component {
 
   @observable textFile = false;
-  @observable codefileValue = '';
 
   start() {
     console.log('hej')
@@ -11,11 +10,7 @@ export default class SnippetModal extends Component {
 
   }
 
-  getFileValue = () => {
-    console.log(document.querySelector('#codefile').files[0].name);
-    let fileValue = document.querySelector('#codefile').files[0].name;
-    this.codefileValue = fileValue;
-  }
+
 
   switchTextFile = () => {
     this.textFile = !this.textFile;
