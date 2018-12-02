@@ -19,14 +19,21 @@ export default class ChatMessage extends Component {
     toggle: this.deleteMessageModalToggle.bind(this)
   }
 
-  async start() { }
+  async start() {
 
+  }
 
   toggleSnippetHeight = (index) => {
-    if (this.fullHeightSnippet.includes(index)) {
-      this.fullHeightSnippet = this.fullHeightSnippet.filter(x => x !== index);
+    if (this.fullHeightSnippet.some(obj => obj.index === index)) {
+      let scroll = document.querySelector('._scrollable-div_1dj6m_1');
+      let objIndex = this.fullHeightSnippet.findIndex(obj => obj.index === index);
+      scroll.scrollTop = this.fullHeightSnippet[objIndex].scroll;
+      this.fullHeightSnippet = this.fullHeightSnippet.filter(x => x.index !== index);
+
     } else {
-      this.fullHeightSnippet.push(index);
+      let scroll = document.querySelector('._scrollable-div_1dj6m_1').scrollTop;
+      console.log(scroll, { index, scroll })
+      this.fullHeightSnippet.push({ index, scroll });
     }
     console.log(this.fullHeightSnippet);
   }
