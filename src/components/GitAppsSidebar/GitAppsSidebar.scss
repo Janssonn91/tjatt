@@ -1,18 +1,3 @@
-.gitApps-app-frame{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-}
-
-.gitApps-app-launcher{
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    color: #D35635;
-    transition: all 0.2s;
-}
-
 .gitApps-app-launcher-show{
     top: 0;
     transition: all 0.5s;
@@ -24,15 +9,14 @@
     top: 0;
     right: -500px;
     height: 100vh;
-    width: 0;
+    width: 500px;
     transition: all 0.5s;
     overflow-y: scroll;
+    z-index: 10;
 }
 
 .gitApps-sideDrawer-open{
     right: 0;
-    width: 500px;
-    max-width: 100%;
 }
 
 .gitApps-sideDrawer-close-button{

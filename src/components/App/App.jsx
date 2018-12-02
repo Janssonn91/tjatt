@@ -19,7 +19,7 @@
           <Route exact path="/" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/server" component={Server} />
-          <Route path="/git" component={GitApps} />
+          <Route path="/git-app" component={GitApp} />
           {this.props.loginStore.user &&
             <PrivateRoute path={`/${this.props.loginStore.user.username}`} component={Tjatt} />
           }

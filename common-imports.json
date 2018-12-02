@@ -23,7 +23,8 @@
   "  Server": "components/Server/Server",
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
-  "  GitApps": "components/GitApps/GitApps",
+  "  GitAppsSidebar": "components/GitAppsSidebar/GitAppsSidebar",
+  "  GitApp": "components/GitApp/GitApp",
   "  Spinner": "components/Spinner/Spinner",
 
 

@@ -138,7 +138,7 @@
           </Form>
         </Col>
       </Row>
-      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()}/>
+      <GitAppsSidebar open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()}/>
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">

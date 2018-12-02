@@ -1,5 +1,5 @@
-import './GitApps.scss';
-@observer export default class GitApps extends Component{
+import './GitAppsSidebar.scss';
+@observer export default class GitAppsSidebar extends Component{
 
 @observable urlToSet = '';
 @observable portToSet = '';
@@ -125,6 +125,7 @@ import './GitApps.scss';
 
     openAppHandler(app){
         this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+        this.props.onOpenApp(app)
     }
     closeAppHandler(){
         this.openApp = {}

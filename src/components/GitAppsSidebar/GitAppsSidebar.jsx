@@ -1,22 +1,5 @@
 <Fragment>
-{Object.keys(this.openApp).length ?
-    <div
-        style={{width:'100%'}} >
-            <div>
-                <Button
-                    style={{position: 'absolute', top: '20px', left: '20px', zIndex: '1'}} 
-                    onClick={()=>this.closeAppHandler()}>
-                        <i className="fas fa-times"></i>
-                    </Button>
-                <Iframe url={this.openApp.url}
-                    className="gitApps-app-frame"
-                    display="initial"
-                    allowFullScreen/> 
-            </div>
-    </div>
-    :null}
-    
-    <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.showSidedrawer ? 'open' : null}`}>
+    <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.props.open ? 'open' : null}`}>
         <Button
             onClick={()=> this.sideDrawerHandler()} 
             className="gitApps-sideDrawer-close-button">
