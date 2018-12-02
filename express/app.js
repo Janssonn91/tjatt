@@ -344,31 +344,63 @@ io.on('connection', (socket) => {
         // addedMembers: addedUser,
         // removedMembers: removedUser,
         // type: "editMembersInGroup"}
-        let messageDict={};
-        for(let m of data.addedMembers){
-          let c= await channel.findOne({channelname: m.toString() + "system"});
-          let systemMessage = new ChatMessage({
-            sender: data.initiator,
-            text: data.initiator + "&inviteYouToChannel&" + data.targetChannel.channelname,
+        if(data.addedMembers.length>0){
+          let messageDict={};
+          for(let m of data.addedMembers){
+            let c= await channel.findOne({channelname: m.toString() + "system"});
+            let systemMessage = new ChatMessage({
+              sender: data.initiator,
+              text: data.initiator + "&inviteYouToChannel&" + data.targetChannel.channelname,
+              textType: "addedToGroup",
+              unread:true,
+              channel:c._id,
+            });
+            let mes="";
+            await systemMessage.save().then(message=>{
+              mes= message._id;
+              messageDict[m]= mes;
+            })
+          }
+          let message= {
             textType: "addedToGroup",
-            unread:true,
-            channel:c._id,
-          });
-          let mes="";
-          await systemMessage.save().then(message=>{
-            mes= message._id;
-            messageDict[m]= mes;
-          })
+            initiator: data.initiator,
+            targetChannel: data.targetChannel,
+            unread: true,
+            addedMembers: data.addedMembers,
+            messageDict: messageDict,
+          }
+          socket.broadcast.emit('group', message);
         }
-        let message= {
-          textType: "addedToGroup",
-          initiator: data.initiator,
-          targetChannel: data.targetChannel,
-          unread: true,
-          addedMembers: data.addedMembers,
-          messageDict: messageDict,
+
+        if(data.removedMembers.length>0){
+          let messageDict={};
+          for(let m of data.removedMembers){
+            let c= await channel.findOne({channelname: m.toString() + "system"});
+            let systemMessage = new ChatMessage({
+              sender: data.initiator,
+              text: data.initiator + "&hasRemovedYouFromChannel&" + data.targetChannel.channelname,
+              textType: "removeFromGroup",
+              unread:true,
+              channel:c._id,
+            });
+            let mes="";
+            await systemMessage.save().then(message=>{
+              mes= message._id;
+              messageDict[m]= mes;
+            })
+          }
+          let message= {
+            textType: "removeFromGroup",
+            initiator: data.initiator,
+            targetChannel: data.targetChannel,
+            unread: true,
+            removedMembers: data.removedMembers,
+            messageDict: messageDict,
+          }
+          socket.broadcast.emit('group', message);
         }
-        socket.broadcast.emit('group', message);
+        
+        
         
     }
   

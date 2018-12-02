@@ -146,22 +146,49 @@ export const imgPath = '/images/placeholder.png';
                 textType: message.textType,
                 id: message.messageDict[id],
               }
-
-              
-
               if(channelStore.unreadSystemMessages.includes(m)){
                 return;
               }else{
                 channelStore.unreadSystemMessages.push(m);
                 channelStore.unreadSystemMessageNum++;
               }
-                  
-               
-            
-              
-             
             }
       }
+    }
+
+    if(message.textType === "removeFromGroup"){
+      // message data structuer: {
+      //   textType: "removeFromGroup",
+      //   initiator: userId
+      //   targetChannel: data.newChannel.channelname,
+      //   unread: true,
+      //   addedMembers: data.newChannel.members, || data.addedMembers
+      // }
+     
+      let c= message.targetChannel;
+      let id= userStore.user._id.toString();
+
+    for(let i of message.removedMembers) {
+      if(i.toString()===id ){
+        if(c.group){
+          channelStore.groupChannels.push(c);
+          let m = {
+            sender: message.initiator,
+            initiator: channelStore.userDict[message.initiator].name,
+            targetChannel: message.targetChannel.channelname,
+            unread: true,
+            textType: message.textType,
+            id: message.messageDict[id],
+          }
+          if(channelStore.unreadSystemMessages.includes(m)){
+            return;
+          }else{
+            channelStore.unreadSystemMessages.push(m);
+            channelStore.unreadSystemMessageNum++;
+          }
+        }
+  }
+}
     }
   }
 
