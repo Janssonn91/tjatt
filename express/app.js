@@ -344,6 +344,7 @@ io.on('connection', (socket) => {
         // addedMembers: addedUser,
         // removedMembers: removedUser,
         // type: "editMembersInGroup"}
+        let messageDict={};
         for(let m of data.addedMembers){
           let c= await channel.findOne({channelname: m.toString() + "system"});
           let systemMessage = new ChatMessage({
@@ -353,7 +354,11 @@ io.on('connection', (socket) => {
             unread:true,
             channel:c._id,
           });
-          await systemMessage.save();
+          let mes="";
+          await systemMessage.save().then(message=>{
+            mes= message._id;
+            messageDict[m]= mes;
+          })
         }
         let message= {
           textType: "addedToGroup",
@@ -361,6 +366,7 @@ io.on('connection', (socket) => {
           targetChannel: data.targetChannel,
           unread: true,
           addedMembers: data.addedMembers,
+          messageDict: messageDict,
         }
         socket.broadcast.emit('group', message);
         

@@ -144,7 +144,9 @@ export const imgPath = '/images/placeholder.png';
                 targetChannel: message.targetChannel.channelname,
                 unread: true,
                 textType: message.textType,
+                id: message.messageDict[id],
               }
+
               
 
               if(channelStore.unreadSystemMessages.includes(m)){
