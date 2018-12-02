@@ -39,8 +39,6 @@
           : message.textType === "removeContact" ?
           <ListGroupItem key={i}>You are nolonger contact with {message.initiator}</ListGroupItem>
           : message.textType === "makeAdmin" ?
-          <ListGroupItem key={i}>You are now admin of {message.targetChannel}</ListGroupItem>
-          : message.textType === "acceptance" ?
           <ListGroupItem key={i}>
           <span>You are now contact of {message.initiator}</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
