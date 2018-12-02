@@ -35,6 +35,7 @@ export default class Chat extends Component {
   @observable emojiDropdownOpen = false;
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
+  @observable snippetModal = false;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -71,20 +72,46 @@ export default class Chat extends Component {
 
   }
 
-  scrollToBottom = () => {
-    if (this.messagesEnd) {
-      this.messagesEnd.scrollIntoView({ behavior: "smooth" })
-    }
-  };
 
-  componentDidMount() {
-    this.scrollToBottom();
+
+  toggleSnippet = () => {
+    this.snippetModal = !this.snippetModal;
   }
 
-  compontentDidUpdate() {
-    this.scrollToBottom();
+  textfileHandler = (e) => {
+    e.stopPropagation();
+    let formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    formData.append('type', 'file');
+    formData.append('type', 'image');
+
+    fetch(`/api/fileupload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(message => {
+        socket.emit('chat message', message)
+      })
+    this.toggle();
   }
 
+  codefileHandler = () => {
+    const file = document.querySelector('#codefile').files[0];
+    console.log(file)
+    let formData = new FormData();
+    formData.append('file', file);
+
+    fetch(`/api/codeUpload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    }).then(res => res.json())
+      .then(message => {
+        console.log(message)
+        socket.emit('chat message', message)
+      })
+  }
   addDeleteMemberModalToggle() {
     this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
   }
@@ -140,14 +167,13 @@ export default class Chat extends Component {
       text: this.inputMessage,
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
+      contentType: 'text',
       star: false,
       unread: true,
     }
     if (this.inputMessage.length > 0) {
 
       socket.emit('chat message', newMessage);
-
-      this.scrollToBottom();
 
 
     } else {
@@ -168,6 +194,7 @@ export default class Chat extends Component {
     socket.on(
       'chat message',
       (messages) => {
+        console.log(messages);
         for (let message of messages) {
           let time = new Date(message.time);
           console.log(time)
@@ -182,6 +209,9 @@ export default class Chat extends Component {
               star: false,
               text: message.text,
               textType: message.textType,
+              contentType: message.contentType,
+              filePath: message.filePath,
+              originalName: message.originalName,
               time: message.time,
               unread: true,
             };

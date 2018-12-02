@@ -2,6 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
+  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -60,31 +61,15 @@
       <hr className="mt-0 mb-2" />
       <Row>
         <Col className="pr-0">
-          <div className="chat-history pl-2 mr-1">
-            <ScrollableFeed forceScroll={true}>
-              <ul ref="messageList" onScroll={this.onScroll}>
-                {/* <div id="chatHistory"></div>  */}
-                <ChatMessage />
-                <li ref={(el) => {
-                  this.messagesEnd = el;
-                }}></li>
-              </ul >
-              {/* <div
-                style={{
-                  float: "left",
-                  clear: "both"
-                }}
-                ref={(el) => {
-                  this.messagesEnd = el;
-                }}></div> */}
-            </ScrollableFeed>
-          </div>
+          <ul className="chat-history pl-2 mr-1">
+            <ChatMessage />
+          </ul>
         </Col>
       </Row>
       <Row className="formRow">
         <Col className="p-0">
           <Form inline className="chat-message py-2 clearfix">
-            <ButtonDropdown
+            <Dropdown
               direction="up"
               isOpen={this.isOpen}
               toggle={e => this.toggle()}
@@ -93,18 +78,29 @@
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>
-                  <i className="fas fa-file"></i>&nbsp; &nbsp; Document</DropdownItem>
+                <div className="dropdown-item d-flex">
+                  <input
+                    type="file"
+                    id="file"
+                    className="file d-none"
+                    name="file"
+                    onChange={e => this.textfileHandler(e)}
+                  />
+                  <label htmlFor="file" className="document-file float-left py-auto align-self-center">
+                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document
+                  </label>
+                </div>
                 <DropdownItem>
                   <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
-                <DropdownItem>
-                  <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
+                <DropdownItem onClick={() => this.toggleSnippet()}>
+                  <i className="fas fa-code"></i>&nbsp; Code or text snippet
+                  </DropdownItem>
                 {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
                   <DropdownItem onClick={() => this.openSideDrawerHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
                 }
               </DropdownMenu>
-            </ButtonDropdown>
+            </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
               <Label for="messageArea" className="d-none">Message</Label>
               <Textarea
