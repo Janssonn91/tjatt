@@ -35,7 +35,7 @@ li {
     background: lighten($blue, 8%);
     float: left;
     min-width: 40px;
-    max-width: 630px;
+    max-width: 90%;
     @media (max-width: 767.5px) {
       .btn-group, .btn-group:hover {
         display: inline-block!important;
@@ -170,6 +170,8 @@ li {
   .other-message {
     background-color: lighten($gray, 30%);
     color: $text;
+    min-width: 30px;
+    float:left;
     &:after {
       border-bottom-color: lighten($gray, 30%);
       left:40px;
@@ -177,3 +179,69 @@ li {
   }
 }
 
+.files {
+  text-decoration: underline;
+}
+
+.upload-image {
+  width: 100% !important;
+  height: 100%!important;
+}
+
+.img-upload-holder {
+  max-width: 200px;
+  max-height: 200px;
+  background-color:white;
+  box-shadow: rbga(0,0,0,0.5);
+  padding: 0!important;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.removeBG {
+  background-color: unset !important;
+  padding: 0!important;
+  box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.2);
+}
+
+.removeBG pre, .code-snippet pre{
+  margin: 0!important;
+}
+
+.code-snippet {
+  background-color: unset !important;
+  padding: 0!important;
+  box-shadow: 3px 3px 3px 2px rgba(136, 136, 136, 0.3);
+  border: 3px solid black;
+  width: 90%;
+  margin-left: 5px;
+  position: relative;
+}
+
+.hljs{
+  padding: 15px;
+}
+
+.full-height-btn{
+  position: absolute;
+  bottom: 0;
+  background-color: gray;
+  left: 50%;
+  transform:translateX(-50%);
+}
+
+.highlight-small {
+  background-color: rgb(42, 42, 46);
+  height: 20vh;
+  overflow-y: hidden;
+}
+
+.highlight-big {
+  background-color: rgb(42, 42, 46);
+  padding: 0!important;
+  box-shadow: 3px 3px 3px 2px rgba(136, 136, 136, 0.3);
+  border: 3px solid black;
+  width: 90%;
+  height: 100%;
+  width: 100%;
+}
