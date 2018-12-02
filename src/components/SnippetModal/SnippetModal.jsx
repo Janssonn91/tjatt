@@ -1,9 +1,9 @@
 <div className="snippet-modal">
-  <Modal isOpen={this.props.snippetVal} toggle={this.props.snippetToggle} className={this.props.className}>
+  <Modal isOpen={this.props.snippetVal} toggle={this.props.snippetToggle} className="snippet-modal">
     <ModalHeader>Write code or upload file</ModalHeader>
     <ModalBody>
       <Row className="justify-content-center pb-4">
-        <Button onClick={this.switchTextFile} color="secondary">{this.textFile ? 'Upload file' : 'Paste/type code'} <i className="fas fa-sync"></i></Button>
+        <Button onClick={this.switchTextFile} color="secondary">{this.textFile ? 'Switch to textinput' : 'Switch to fileupload'} <i className="fas fa-sync"></i></Button>
       </Row>
       <Row>
         <Col lg="12" md="12">
@@ -14,10 +14,12 @@
                 className="codefile d-none"
                 name="codefile"
                 id="codefile"
+                onChange={this.getFileValue}
               />
               <label htmlFor="codefile" className="text-dark codefile">
-                <i name="codefile" className="fas fa-file codefile"></i>&nbsp; Choose codefile
+                <i name="codefile" className="fas fa-file codefile upload-btn">&nbsp; Choose codefile</i>
               </label>
+              <span className="file-value pl-5">File: {this.codefileValue}</span>
             </div>
           }
           {this.props.channelStore.channelChatHistory.map((message, i) => {

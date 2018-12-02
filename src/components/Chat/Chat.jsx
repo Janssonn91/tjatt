@@ -84,7 +84,7 @@
                     id="file"
                     className="file d-none"
                     name="file"
-                    onChange={e => this.textfileHandler()}
+                    onChange={e => this.textfileHandler(e)}
                   />
                   <label htmlFor="file" className="document-file float-left py-auto align-self-center">
                     <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document

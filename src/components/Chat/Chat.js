@@ -69,13 +69,10 @@ export default class Chat extends Component {
     //     console.log("observing login")
     //   }
     // })
-    console.log(this.snippetModal);
 
   }
 
-  componentDidUpdate() {
-    console.log('I update')
-  }
+
 
   toggleSnippet = () => {
     this.snippetModal = !this.snippetModal;
@@ -101,6 +98,7 @@ export default class Chat extends Component {
 
   codefileHandler = () => {
     const file = document.querySelector('#codefile').files[0];
+    console.log(file)
     let formData = new FormData();
     formData.append('file', file);
 
