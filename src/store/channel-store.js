@@ -176,11 +176,16 @@ class ChannelStore {
                       let initiator = toJS(this.userDict[i[0]]).name;
                       this.setSystemMessageFromDB(initiator, i[0], i[1], d);
                     }
+                    if(d.textType.toString()==="removeFromGroup"){
+                      let i = d.text.toString().split("&hasRemovedYouFromChannel&");
+                      let initiator = toJS(this.userDict[i[0]]).name;
+                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+                    }
                   }
                  
                   
               })
-              console.log(this.unreadSystemMessages, this.unreadSystemMessageNum)
+              console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
           }
          
             );

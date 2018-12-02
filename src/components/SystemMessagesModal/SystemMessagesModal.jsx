@@ -31,8 +31,11 @@
           <span>{message.initiator} has added you as a group member of {message.targetChannel}</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
-          : message.textTyep === "removedFromGroup" ?
-          <ListGroupItem key={i}>{message.initiator} has removed you from group {message.targetChannel}</ListGroupItem>
+          : message.textType === "removeFromGroup" ?
+          <ListGroupItem key={i}>
+          <span>{message.initiator} has removed you from group {message.targetChannel}</span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
           : message.textType === "removeContact" ?
           <ListGroupItem key={i}>You are nolonger contact with {message.initiator}</ListGroupItem>
           : message.textType === "makeAdmin" ?
