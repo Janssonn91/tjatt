@@ -214,35 +214,41 @@ io.on('connection', (socket) => {
     // data: {newChannel: whole channel info includes id, creater:userId}
     socket.join(data.newChannel._id, async () => {
       console.log("socket room", socket.rooms);
-      if (!data.invitee && data.newChannel) {
-      };
-      data.type = "create group";
-      for (let member of data.newChannel.members) {
-        if (member !== user._id) {
-          let c = await channel.findOne({
-            channelname: member + "system"
-          });
-          let systemMessage = new ChatMessage({
-            sender: data.creater,
-            text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
-            textType: "addedToGroup",
-            unread: true,
-            channel: c._id,
-          });
-
-          await systemMessage.save();
+      
+      if(data.type === "create group"){
+        let messageDict = {};
+        for (let member of data.newChannel.members) {
+          if (member !== user._id) {
+            let c = await channel.findOne({
+              channelname: member + "system"
+            });
+            let systemMessage = new ChatMessage({
+              sender: data.creater,
+              text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
+              textType: "addedToGroup",
+              unread: true,
+              channel: c._id,
+            });
+            let mes = "";
+            await systemMessage.save().then(message => {
+              mes = message._id;
+              messageDict[member] = mes;
+            })
+          }
         }
+  
+        let message = {
+          textType: "addedToGroup",
+          initiator: data.creater,
+          targetChannel: data.newChannel,
+          unread: true,
+          addedMembers: data.newChannel.members,
+          messageDict: messageDict,
+        }
+  
+        socket.broadcast.emit('group', message);
       }
-
-      let message = {
-        textType: "addedToGroup",
-        initiator: data.creater,
-        targetChannel: data.newChannel,
-        unread: true,
-        addedMembers: data.newChannel.members,
-      }
-
-      socket.broadcast.emit('group', message);
+      
     })
 
     //contact channel invitation
