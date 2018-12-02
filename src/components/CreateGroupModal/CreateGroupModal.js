@@ -90,10 +90,8 @@ import ScrollableFeed from 'react-scrollable-feed';
             console.log(err);
           })
       })
-      socket.emit('system', { newChannel: channel[0] })
-      //socket.emit('newChannel', channel[0]._id)
-
-      //this.updateGroupChannel(channel[0]);
+      socket.emit('system', { newChannel: channel[0], creater: userStore.user._id})
+   
     })
 
 

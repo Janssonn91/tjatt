@@ -27,6 +27,7 @@
   "  GitApps": "components/GitApps/GitApps",
   "  Spinner": "components/Spinner/Spinner",
   "  Loading": "components/Loading/Loading",
+  "  SystemMessagesModal" :"components/SystemMessagesModal/SystemMessagesModal",
   "  Infopage": "components/Infopage/Infopage",
   "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
   "  SnippetModal": "components/SnippetModal/SnippetModal",

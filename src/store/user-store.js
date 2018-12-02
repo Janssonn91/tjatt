@@ -52,6 +52,7 @@ class UserStore {
 
   @action logout() {
     this.isLoggedIn = false;
+
   }
 
   @action fetchContact() {
@@ -66,8 +67,10 @@ class UserStore {
         }
         this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
+        console.log("groupCandidates", this.groupCandidates);
       });
   }
+
 
   @action cleanUpGroupModal() {
     this.selectedGroupMember.forEach((data) => {

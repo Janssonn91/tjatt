@@ -4,7 +4,9 @@ import {
 import {
   renderReporter
 } from 'mobx-react';
-import { applicationStateStore } from './application-state-store';
+import {
+  applicationStateStore
+} from './application-state-store';
 class ChannelStore {
   //@observable newChannel = [];
   @observable myChannels = [];
@@ -26,20 +28,24 @@ class ChannelStore {
   @observable adminLeavingError = false;
   @observable currentChannelAdmins = []; // holds all the admins of the current group
   @observable channelDict = {};
-  @observable unreadSystemMessage = {};
-
+  @observable unreadSystemMessages = [];
+  @observable unreadSystemMessageNum = "";
 
 
   //TODO: as a new user, introduction page shows instead of chat page
 
   getContactName(ids) {
-    let n = ids.filter(id => { return id !== userStore.user._id });
+    let n = ids.filter(id => {
+      return id !== userStore.user._id
+    });
     let u = this.userDict[n[0]];
     return u;
   }
 
   async getContactUrl(ids) {
-    let n = ids.filter(id => { return id !== userStore.user._id });
+    let n = ids.filter(id => {
+      return id !== userStore.user._id
+    });
     let contact = {};
     if (n[0]) {
       let res = await fetch(`/api/users/${n}`);
@@ -53,8 +59,13 @@ class ChannelStore {
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
+    this.setSystemMessagesFromDB();
     user.map((u) => {
-      return this.userDict[u._id] = { name: u.nickname, img: u.image, status: false };
+      return this.userDict[u._id] = {
+        name: u.nickname,
+        img: u.image,
+        status: false
+      };
     });
   }
 
@@ -73,7 +84,9 @@ class ChannelStore {
     this.contactChannels = [];
     this.myChannels = [];
 
-    this.myChannels = await Channel.find({ _id: userStore.user.channel, });// TODO: Added contact doesn't exist yet
+    this.myChannels = await Channel.find({
+      _id: userStore.user.channel,
+    }); // TODO: Added contact doesn't exist yet
 
     for (let i = 0; i < this.myChannels.length; i++) {
       const c = this.myChannels[i];
@@ -87,12 +100,31 @@ class ChannelStore {
       })
       if (c._id !== applicationStateStore.systemChannel) {
         if (c.group) {
-          this.channelDict[c._id] = { _id: c._id, channelname: c.channelname, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+          this.channelDict[c._id] = {
+            _id: c._id,
+            channelname: c.channelname,
+            members: c.members,
+            admin: c.admin,
+            favorite: c.favorite,
+            group: c.group,
+            open: c.open,
+            messageNum: count
+          }
           this.groupChannels.push(this.channelDict[c._id]);
         } else {
           let name = this.getContactName(c.members);
           if (name !== undefined) {
-            this.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: count }
+            this.channelDict[c._id] = {
+              _id: c._id,
+              channelname: name.name,
+              image: name.img,
+              members: c.members,
+              admin: c.admin,
+              favorite: c.favorite,
+              group: c.group,
+              open: c.open,
+              messageNum: count
+            }
             this.contactChannels.push(this.channelDict[c._id]);
           }
           // let n = c.members.filter(id=>{ return id!== userStore.user._id});
@@ -105,7 +137,99 @@ class ChannelStore {
     this.hasLoadedChannels = true;
   }
 
-  @action getGroupMembersData(memberIds) {
+  @action cleanUpOldSystemMessages(){
+    this.unreadSystemMessages=[];
+    this.unreadSystemMessageNum=0;
+  }
+
+  setSystemMessagesFromDB(){
+    console.log("systemChannel",applicationStateStore.systemChannel )
+    this.cleanUpOldSystemMessages();
+        Message.find({channel: applicationStateStore.systemChannel}).then(data=>
+         
+              { 
+                
+                data.forEach(d=>{
+                  if(d.unread){
+                    if(d.textType.toString()==="invitation"){
+                      console.log(d._id)
+                      let j = d.text.toString().split("&ask&");
+                    let i = j[1].split("&toJoin&");
+                    let initiator = toJS(this.userDict[j[0]]).name; //sender's name
+                    this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+               
+                    }
+                    if(d.textType.toString()==="rejection"){
+                      let i = d.text.toString().split("&reject&");
+                      let initiator= toJS(this.userDict[i[0]]).name;
+                    
+                      this.setSystemMessageFromDB(initiator, i[0], "", d);
+                    }
+                    if(d.textType.toString()==="acceptance"){
+                      let j = d.text.toString().split("&accept&");
+                      let i = j[1].split("&toJoin&");
+                      let initiator = toJS(this.userDict[j[0]]).name;
+                      this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+                    }
+                    if(d.textType.toString()==="addedToGroup"){
+                      let i = d.text.toString().split("&inviteYouToChannel&");
+                      let initiator = toJS(this.userDict[i[0]]).name;
+                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+                    }
+                    if(d.textType.toString()==="removeFromGroup"){
+                      let i = d.text.toString().split("&hasRemovedYouFromChannel&");
+                      let initiator = toJS(this.userDict[i[0]]).name;
+                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+                    }
+                  }
+                 
+                  
+              })
+              console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+          }
+         
+            );
+  }
+
+  setSystemMessageFromDB(initiator, sender, targetChannel, d){
+    let message={}
+    message.id = d._id;
+    message.targetChannel= targetChannel;
+    message.textType = d.textType;
+    message.initiator = initiator; //sender's name
+    message.unread = true;
+    message.sender = sender; //sender's id 
+    this.unreadSystemMessages.push(message);
+   this.unreadSystemMessageNum++;
+
+  }
+
+  readSystemMessage(id, i){
+    console.log(id,i)
+    let c = toJS(this.unreadSystemMessages)
+    c.splice(i, 1);
+    this.unreadSystemMessages= c;
+    this.unreadSystemMessageNum--;
+    if(id){
+      id=id.toString();
+
+      fetch(`/api/message/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          unread: false
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+    }
+    
+
+
+   
+  }
+
+  getGroupMembersData(memberIds) {
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
@@ -165,7 +289,9 @@ class ChannelStore {
           body: JSON.stringify({
             unread: false
           }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }).then(res => res.json())
       }
     })
@@ -191,13 +317,20 @@ class ChannelStore {
     Channel.create(newChannel);
   }
 
-  updateContactChannels(channel) {
-    // channel.channelname is "id and id", so we need to get name
-    let user = this.getContactName(channel.members);
-    channel.channelname = user.name;
-    channel.image = user.img;
-    this.contactChannels.push(channel);
-    this.changeChannel(channel);
+  @action async updateContactChannels(c, id) {
+   let channel={};
+   let user = this.userDict[id];
+   fetch(`/api/channel/${c}`).then(res=>res.json()).then(data=>{
+     channel= data;
+     channel.channelname = user.name;
+     channel.image = user.img;
+     this.contactChannels.push(channel);
+     
+  })
+
+   
+    
+    //this.changeChannel(channel);
   }
 
   @action showMenu() {
@@ -283,5 +416,3 @@ class ChannelStore {
 
 const channelStore = new ChannelStore();
 export default channelStore;
-
-
