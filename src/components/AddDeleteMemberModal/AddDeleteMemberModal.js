@@ -62,6 +62,21 @@ export default class AddDeleteMemberModal extends Component {
     // Update view
     this.props.channelStore.getGroupMembersData(newMemberIds);
 
+    if(addedUser.length>0 || removedUser.length>0){
+      let m={
+        targetChannel: this.props.channelStore.currentChannel,
+        initiator: this.props.userStore.user._id,
+        addedMembers: addedUser,
+        removedMembers: removedUser,
+        type: "editMembersInGroup"
+      }
+      socket.emit('system',m);
+    }
+
+    
+
+
+
     if (addedUser.length > 0) {
       addedUser.forEach(id => {
         fetch(`/api/users/${id}/add`, {
@@ -86,6 +101,7 @@ export default class AddDeleteMemberModal extends Component {
       });
     }
     this.addedSuccess = true;
+   
 
     if (removedUser.length > 0) {
       removedUser.forEach(id => {

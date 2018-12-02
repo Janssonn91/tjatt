@@ -226,25 +226,20 @@ io.on('connection', (socket) => {
             unread: true,
             channel: c._id,
           });
-          let m= "";
-          await systemMessage.save().then(message=>{
-            m=message._id;})
-
-         
-        }
-      
+          
+          await systemMessage.save();
+        }  
         }
        
         let message= {
           textType: "addedToGroup",
           initiator: data.creater,
           targetChannel: data.newChannel,
-          unread: true
+          unread: true,
+          addedMembers: data.newChannel.members,
         }
 
         socket.broadcast.emit('group', message);
-       
- 
     }
 
     //contact channel invitation
@@ -341,8 +336,39 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('rejection', message);
 
     }
+
+    if(data.type==="editMembersInGroup"){
+      console.log("edit", data);
+      //data:  { targetChannel: whole channel info
+        // initiator: this.props.userStore.user._id,
+        // addedMembers: addedUser,
+        // removedMembers: removedUser,
+        // type: "editMembersInGroup"}
+        for(let m of data.addedMembers){
+          let c= await channel.findOne({channelname: m.toString() + "system"});
+          let systemMessage = new ChatMessage({
+            sender: data.initiator,
+            text: data.initiator + "&inviteYouToChannel&" + data.targetChannel.channelname,
+            textType: "addedToGroup",
+            unread:true,
+            channel:c._id,
+          });
+          await systemMessage.save();
+        }
+        let message= {
+          textType: "addedToGroup",
+          initiator: data.initiator,
+          targetChannel: data.targetChannel,
+          unread: true,
+          addedMembers: data.addedMembers,
+        }
+        socket.broadcast.emit('group', message);
+        
+    }
   
   });
+
+
 
 
 

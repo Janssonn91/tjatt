@@ -205,17 +205,20 @@ class ChannelStore {
     c.splice(i, 1);
     this.unreadSystemMessages= c;
     this.unreadSystemMessageNum--;
-    id=id.toString();
+    if(id){
+      id=id.toString();
 
-    fetch(`/api/message/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        unread: false
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
+      fetch(`/api/message/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          unread: false
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+    }
+    
 
 
    

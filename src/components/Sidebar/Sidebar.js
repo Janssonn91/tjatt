@@ -129,12 +129,12 @@ export const imgPath = '/images/placeholder.png';
         //   initiator: userId
         //   targetChannel: data.newChannel.channelname,
         //   unread: true,
-        //   id: message._id
+        //   addedMembers: data.newChannel.members, || data.addedMembers
         // }
        
         let c= message.targetChannel;
         let id= userStore.user._id.toString();
-        for(let i of c.members) {
+        for(let i of message.addedMembers) {
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
@@ -144,8 +144,8 @@ export const imgPath = '/images/placeholder.png';
                 targetChannel: message.targetChannel.channelname,
                 unread: true,
                 textType: message.textType,
-                id: message.id,
               }
+              
 
               if(channelStore.unreadSystemMessages.includes(m)){
                 return;
