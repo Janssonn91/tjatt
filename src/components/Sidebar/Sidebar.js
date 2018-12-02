@@ -131,7 +131,7 @@ export const imgPath = '/images/placeholder.png';
         //   unread: true,
         //   id: message._id
         // }
-        
+       
         let c= message.targetChannel;
         let id= userStore.user._id.toString();
         for(let i of c.members) {
@@ -146,8 +146,17 @@ export const imgPath = '/images/placeholder.png';
                 textType: message.textType,
                 id: message.id,
               }
-              channelStore.unreadSystemMessages.push(m);
-              channelStore.unreadSystemMessageNum++;
+
+              if(channelStore.unreadSystemMessages.includes(m)){
+                return;
+              }else{
+                channelStore.unreadSystemMessages.push(m);
+                channelStore.unreadSystemMessageNum++;
+              }
+                  
+               
+            
+              
              
             }
       }
@@ -242,5 +251,6 @@ export const imgPath = '/images/placeholder.png';
   changeLogStatus() {
     return false;
   }
+
 
 }

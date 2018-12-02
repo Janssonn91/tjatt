@@ -230,20 +230,19 @@ io.on('connection', (socket) => {
           await systemMessage.save().then(message=>{
             m=message._id;})
 
-            let message= {
-              textType: "addedToGroup",
-              initiator: data.creater,
-              targetChannel: data.newChannel,
-              unread: true,
-              id: m,
-            }
-    
-            socket.broadcast.emit('group', message);
+         
         }
       
         }
        
-      
+        let message= {
+          textType: "addedToGroup",
+          initiator: data.creater,
+          targetChannel: data.newChannel,
+          unread: true
+        }
+
+        socket.broadcast.emit('group', message);
        
  
     }
