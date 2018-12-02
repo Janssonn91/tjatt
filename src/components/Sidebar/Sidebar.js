@@ -122,19 +122,50 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('group');
     socket.on('group', message=>{
-      if(message.type === "create group"){
-        let c= message.newChannel;
+      
+      if(message.textType === "addedToGroup"){
+        // message data structuer: {
+        //   textType: "addedToGroup",
+        //   initiator: userId
+        //   targetChannel: data.newChannel.channelname,
+        //   unread: true,
+        //   addedMembers: data.newChannel.members, || data.addedMembers
+        // }
+       
+        let c= message.targetChannel;
         let id= userStore.user._id.toString();
-        for(let i of c.members) {
+        for(let i of message.addedMembers) {
           if(i.toString()===id ){
             if(c.group){
               channelStore.groupChannels.push(c);
-              socket.emit('newChannel', message.newChannel);
-              console.log(channelStore.groupChannels)
+              let m = {
+                sender: message.initiator,
+                initiator: channelStore.userDict[message.initiator].name,
+                targetChannel: message.targetChannel.channelname,
+                unread: true,
+                textType: message.textType,
+                id: message.messageDict[id],
+              }
+
+              
+
+              if(channelStore.unreadSystemMessages.includes(m)){
+                return;
+              }else{
+                channelStore.unreadSystemMessages.push(m);
+                channelStore.unreadSystemMessageNum++;
+              }
+                  
+               
+            
+              
+             
             }
       }
     }
   }
+
+  // 42["group",{"newChannel":{"admin":["5c0303f292bf3a93f4ad76a5"],"members":["5bfd0b7a6f5fcb45754369ad","5c03032792bf3a93f4ad76a3","5c0303f292bf3a93f4ad76a5"],"content":[],"_id":"5c0313a3957b2d93f4c875bd","channelname":"9o9o9o","favorite":false,"open":true,"group":true,"__v":0,"messageNum":0},"creater":"5c0303f292bf3a93f4ad76a5","type":"create group"}]	1543705507.4872022
       
       //     //   else{
       //     //     let name = await channelStore.getContactName(c.members);
@@ -222,5 +253,6 @@ export const imgPath = '/images/placeholder.png';
   changeLogStatus() {
     return false;
   }
+
 
 }

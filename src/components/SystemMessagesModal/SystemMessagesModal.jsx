@@ -1,5 +1,5 @@
 <Fragment>
-  <Modal className="addUserModal" isOpen={this.props.isOpen} toggle={this.props.toggle} keyboard={this.props.keyboard} >
+  <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} keyboard={this.props.keyboard} className="system-messages-modal">
     {this.props.children}
     <ModalHeader tag="h4" toggle={e => this.props.toggle()}>
       System messages
@@ -15,19 +15,22 @@
         <ListGroupItem key={i} className="pr-0">
             <span>{message.initiator} wants to add you as a contact</span>   
             <span>
-              <ButtonGroup size="sm">
-                <Button onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
-                <Button onClick={()=>this.invitationAccepted(message.sender, message.targetChannel, message.id, i)}>Accept</Button>
+              <ButtonGroup size="sm" className = "d-inline-block float-right">
+                <Button className="btn btn-cancel mr-2" onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
+                <Button className="btn btn-save mr-2" onClick={()=>this.invitationAccepted(message.sender, message.targetChannel, message.id, i)}>Accept</Button>
               </ButtonGroup>
             </span>
           </ListGroupItem>
           : message.textType==="rejection" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has rejected your invitation</span>
-          <span><Button size="sm"onClick={()=>this.closeSystemMessage(message.id, i)}>x</Button></span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "addedToGroup" ?
-          <ListGroupItem key={i}>{message.initiator} has added you as a group member of {message.targetChannel}</ListGroupItem>
+          <ListGroupItem key={i}>
+          <span>{message.initiator} has added you as a group member of {message.targetChannel}</span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
           : message.textTyep === "removedFromGroup" ?
           <ListGroupItem key={i}>{message.initiator} has removed you from group {message.targetChannel}</ListGroupItem>
           : message.textType === "removeContact" ?
@@ -35,7 +38,10 @@
           : message.textType === "makeAdmin" ?
           <ListGroupItem key={i}>You are now admin of {message.targetChannel}</ListGroupItem>
           : message.textType === "acceptance" ?
-          <ListGroupItem key={i}>You are now contact of {message.initiator} <Button  size="sm"onClick={()=>this.closeSystemMessage(message.id, i)}>x</Button></ListGroupItem>
+          <ListGroupItem key={i}>
+          <span>You are now contact of {message.initiator}</span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
           :
            <div key={i}></div>
           : 
