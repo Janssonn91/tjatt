@@ -41,7 +41,8 @@
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5>Searched user</h5>
-            <p className="group-modal-text">View all users <input type="checkbox" onChange={this.checkboxHandler}></input></p>
+            <Label for="viewAllUsers" className="group-modal-text">View all users</Label>
+            <Input id="viewAllUsers" className="ml-2" type="checkbox" onChange={this.checkboxHandler}></Input>
             <FormGroup className="m-0 overflow-y-auto">
               {this.searchedGroupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">

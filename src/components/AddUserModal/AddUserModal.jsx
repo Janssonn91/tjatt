@@ -8,7 +8,7 @@
       <Form onSubmit={e => e.preventDefault()}>
         <FormGroup className="m-0">
           <Label for="searchNewContacts" className="mb-1" >Find members by searching here:</Label>
-          <Input type="text" name="text" id="searchContacts" placeholder="Search" autoComplete="off" onChange={e => this.searchCandidates(e)} />
+          <Input type="text" name="text" id="searchNewContacts" placeholder="Search" autoComplete="off" onChange={e => this.searchCandidates(e)} />
         </FormGroup>
         <FormGroup className="mt-2 search-result-form-group">
           {this.searchedCandidates.map(user =>
