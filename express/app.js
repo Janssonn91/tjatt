@@ -421,6 +421,19 @@ io.on('connection', (socket) => {
     console.log("c", c)
     socket.join(c);
 
+    if (messageFromClient.isGif) {
+      messageFromClient.originalName = messageFromClient.originalName.split("GIF by")[0];
+      let newMessage = new ChatMessage({
+        sender: messageFromClient.sender,
+        channel: messageFromClient.channel,
+        filePath: messageFromClient.filePath,
+        contentType: messageFromClient.contentType,
+        originalName: messageFromClient.originalName,
+        star: false,
+        unread: true,
+      })
+      await newMessage.save();
+    }
 
     // Create a mongoose ChatMessage and write to the db
     if (messageFromClient.contentType === 'text') {

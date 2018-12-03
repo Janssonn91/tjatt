@@ -63,12 +63,13 @@
         <Col className="pr-0">
           <ul className="chat-history pl-2 mr-1">
             <ChatMessage />
+
           </ul>
         </Col>
       </Row>
       <Row className="formRow">
         <Col className="p-0">
-          <Form inline className="chat-message py-2 clearfix">
+          <Form inline className="chat-message py-2 clearfix" onSubmit={e => e.preventDefault()}>
             <Dropdown
               direction="up"
               isOpen={this.isOpen}
@@ -116,6 +117,7 @@
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
               />
+
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
                   <div
@@ -129,6 +131,8 @@
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
+              <Button onClick={this.gifToggler} type="button">Gif</Button>
+              {this.gifPicker && <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />}
             </FormGroup>
             <Button className="send p-0" onClick={e => this.sendMessage()}>
               <img

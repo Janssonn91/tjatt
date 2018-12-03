@@ -3,6 +3,8 @@ import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 import channelStore from '../../store/channel-store';
 import EmojiPicker from 'emoji-picker-react';
+import GiphySelect from 'react-giphy-select';
+import 'react-giphy-select/lib/styles.css';
 import 'emoji-picker-react/dist/universal/style.scss';
 import JSEMOJI from 'emoji-js';
 import Textarea from 'react-textarea-autosize';
@@ -38,6 +40,7 @@ export default class Chat extends Component {
   @observable snippetModal = false;
   @observable fileUploadError = false;
   @observable codefileValue = '';
+  @observable gifPicker = false;
 
 
   @observable sendToAddDeleteModal = {
@@ -72,6 +75,16 @@ export default class Chat extends Component {
     //   }
     // })
 
+  }
+
+  gifToggler = () => {
+    this.gifPicker = !this.gifPicker;
+  }
+
+  sendGif = (entry) => {
+    const url = entry.images.downsized_large.url;
+    console.log(entry)
+    socket.emit('chat message', { filePath: url, isGif: true, channel: this.props.channelStore.currentChannel._id, sender: this.props.userStore.user._id, contentType: 'image', originalName: entry.title });
   }
 
   getFileValue = () => {
@@ -284,7 +297,7 @@ export default class Chat extends Component {
           }
         }
         let scroll = document.querySelector('._scrollable-div_1dj6m_1');
-        if (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200)) {
+        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {
           scroll.scrollTop = scroll.scrollHeight;
         }
       })
