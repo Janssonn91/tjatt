@@ -39,6 +39,7 @@ export default class Chat extends Component {
   @observable fileUploadError = false;
   @observable codefileValue = '';
 
+
   @observable sendToAddDeleteModal = {
     isOpen: false,
     toggle: this.addDeleteMemberModalToggle.bind(this)
@@ -64,7 +65,6 @@ export default class Chat extends Component {
 
   start() {
     this.setupMessageListener();
-
     // observe(this.props.userStore, "isLoggedIn", ()=>{
     //   if(this.props.userStore.isLoggedIn){
     //     this.setupMessageListener();
@@ -81,6 +81,7 @@ export default class Chat extends Component {
 
   toggleSnippet = () => {
     this.snippetModal = !this.snippetModal;
+    this.codefileValue = '';
   }
 
   textfileHandler = (e) => {
@@ -132,6 +133,26 @@ export default class Chat extends Component {
       })
       .catch(err => err);
   }
+
+  codeTextHandler = (message) => {
+    let formData = new FormData();
+    formData.append('isText', true);
+    formData.append('code', message)
+
+    fetch(`/api/codeUpload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(message => {
+        socket.emit('chat message', message);
+        // this.toggleSnippet();
+      })
+
+
+  }
+
   addDeleteMemberModalToggle() {
     this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
   }

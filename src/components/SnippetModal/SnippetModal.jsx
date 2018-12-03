@@ -7,7 +7,7 @@
       </Row>
       <Row>
         <Col lg="12" md="12">
-          {!this.uploadOrText ? <textarea className="w-100" rows="8"></textarea> :
+          {!this.uploadOrText ? <textarea value={this.codeMessage} onKeyDown={this.tabTextArea} onChange={e => this.codeMessage = e.target.value} className="w-100 text-value" rows="8"></textarea> :
             <div>
               <input
                 type="file"
@@ -19,7 +19,7 @@
               <label htmlFor="codefile" className="text-dark codefile">
                 <i name="codefile" className="fas fa-file codefile upload-btn">&nbsp; Choose codefile</i>
               </label>
-              <span className="file-value pl-5">File: {this.props.fileValue}</span>
+              <span className="file-value pl-5">File: {this.props.fileValue || 'no file chosen'}</span>
               {this.props.uploadError &&
                 <Alert className="alert-danger">
                   {this.props.fileValue} is not a code file
@@ -27,15 +27,21 @@
               }
             </div>
           }
-          {this.props.channelStore.channelChatHistory.map((message, i) => {
-            message.contentType === 'code'
-          })}
+
         </Col>
       </Row>
     </ModalBody>
     <ModalFooter>
-      <Button color="success" onClick={() => { this.props.codeFileMethod(); }}>Send snippet</Button>{' '}
-      <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
+      {this.uploadOrText ?
+        <div className="file-upload">
+          <Button color="success" onClick={() => { this.props.codeFileMethod(); }}>Send snippet</Button>{' '}
+          <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
+        </div> :
+        <div className="text-upload">
+          <Button color="success" onClick={() => { this.props.textMethod(this.codeMessage); this.props.snippetToggle() }}>Send snippet</Button>{' '}
+          <Button color="secondary" onClick={this.props.snippetToggle}>Cancel</Button>
+        </div>
+      }
     </ModalFooter>
   </Modal>
 </div>

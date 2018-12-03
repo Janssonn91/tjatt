@@ -1006,6 +1006,19 @@ app.post('/codeUpload/:id', codeUpload.single('file'), async (req, res) => {
   if (!req.session.userId) {
     return res.status(403)
   }
+
+  if (req.body.isText) {
+
+    let message = new ChatMessage({
+      sender: req.session.userId,
+      contentType: 'code',
+      channel: req.params.id,
+      text: req.body.code
+    });
+    await message.save();
+    return res.json(message);
+  }
+
   if (!req.file) {
     return res.status(400).json({ message: 'Fail' })
   }
