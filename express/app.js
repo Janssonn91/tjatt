@@ -990,14 +990,17 @@ app.put('/removeAdmin/:_id', async (req, res) => {
   res.json({ resultAdmin });
 });
 
-app.delete('/removeGroup/:_id', (req, res) => {
+app.delete('/removeGroup/:_id', async (req, res) => {
+  const deleteMessRes = await ChatMessage.deleteMany(
+    { channel: req.params._id }
+  )
   channel.findOneAndRemove(
     { _id: req.params._id }
   )
     .then(result => {
-      res.json(result)
+      res.json(result)   
     })
-})
+});
 
 app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
