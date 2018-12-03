@@ -181,6 +181,10 @@ class ChannelStore {
                       let initiator = toJS(this.userDict[i[0]]).name;
                       this.setSystemMessageFromDB(initiator, i[0], i[1], d);
                     }
+                    if(d.textType.toString()==="removeContact"){
+                      let initiator = d.text;
+                      this.setSystemMessageFromDB(initiator, initiator, "", d);
+                    }
                   }
                  
                   
@@ -344,9 +348,17 @@ class ChannelStore {
   }
 
   // for setting new admin on frontend
-  @action setAdmin(id) {
+  //channel is the whole channel
+  @action setAdmin(id, channel) {
     this.adminLeavingError = false;
     this.currentChannelAdmins = [...this.currentChannelAdmins, id];
+    let message={
+      sender: userStore.user._id,
+      admin: id,
+      targetChannel: channel,
+      type: "makeAdmin",
+    }
+    socket.emit('system', message);
   }
 
   @action showAdminLeaveError() {

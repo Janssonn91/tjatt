@@ -5,6 +5,15 @@
     {this.props.channelStore.channelChatHistory.map((message, i) => {
       // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
       return (
+        message.textType==="groupInfo" ?
+        <li key={i} className="clearfix">
+         <div className="group message">
+         <span>{message.text}</span>
+         <span> {this.formattedTime(message.time)}</span>
+         </div>
+       
+        </li>
+        :
         message.sender === (this.props.userStore.user._id) ?
           <li key={i} className="clearfix">
             <div className="me">

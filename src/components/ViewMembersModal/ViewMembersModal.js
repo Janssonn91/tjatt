@@ -5,7 +5,8 @@ import './ViewMembersModal.scss';
   
   setNewAdmin(e, userId){
     // set new admin on frontend
-    this.props.channelStore.setAdmin(userId);
+    this.props.channelStore.setAdmin(userId, this.props.channelStore.currentChannel);
+    
     // set new admin on backend
     fetch(`/api/updateAdmin/${this.props.channelStore.currentChannel._id}`, {
       method: 'PUT',
