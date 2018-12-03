@@ -8,7 +8,8 @@
         message.textType==="groupInfo" ?
         <li key={i} className="clearfix">
          <div className="group message">
-         {message.text}
+         <span>{message.text}</span>
+         <span> {this.formattedTime(message.time)}</span>
          </div>
        
         </li>

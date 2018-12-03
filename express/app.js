@@ -467,6 +467,69 @@ io.on('connection', (socket) => {
 
     }
 
+    if(data.type==="makeAdmin"){
+      // data: targetChannel: whole channel, admin: id, sender:id, type:makeAdmin
+      let c= data.targetChannel._id;
+      socket.join(c);
+      let m=[];
+      User.findById(data.admin).then(user=>{
+        let groupMessage=new ChatMessage({
+          sender: data.sender,
+          text: user.nickname + " is now admin.",
+          textType: "groupInfo",
+          channel: c,
+          time: data.time,
+        })
+        groupMessage.save();
+        m.push(groupMessage);
+
+        io.to(c).emit('chat message', m);
+      })
+    }
+
+    if(data.type==="removeAdmin"){
+      let c = data.channel._id;
+      socket.join(c);
+      let m=[];
+      User.findById(data.admin).then(user=>{
+        let groupMessage=new ChatMessage({
+          sender: data.sender,
+          text: user.nickname + " is no longer group admin.",
+          textType: "groupInfo",
+          channel: c,
+          time: data.time,
+        })
+        groupMessage.save();
+        m.push(groupMessage);
+
+        io.to(c).emit('chat message', m);
+    });
+  
+  }
+
+  if(data.type==="leaveGroup"){
+    let c = data.channel._id;
+    socket.join(c);
+    let m=[];
+    User.findById(data.sender).then(user=>{
+      let groupMessage=new ChatMessage({
+        sender: data.sender,
+        text: user.nickname + " has left group",
+        textType: "groupInfo",
+        channel: c,
+        time: data.time,
+      })
+      groupMessage.save();
+      m.push(groupMessage);
+
+      io.to(c).emit('chat message', m);
+  });
+
+}
+  
+  
+  
+  
   });
 
 
