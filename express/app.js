@@ -461,12 +461,20 @@ app.put('/removeContact/:_id', async (req, res) => {
 });
 
 app.get('/checkChannel/:_id', async (req, res) => {
-  console.log(req.params._id);
-  const checkChannelResult = await channel.findOne(
-    { members: req.params._id}
+  //db.collection.find({"users":{"$not":{"$elemMatch":{"user":{$nin:[1,5,7]}}}}})
+  let first = req.params._id.slice(0,24);
+  let second = req.params._id.slice(25,49);
+  // console.log(req.params._id, ' + ', first, ' + ', second)
+  // { $pull: { members: mongoose.Types.ObjectId(req.body.userid) } },
+  const checkMembers = [];
+  checkMembers.push(first, second);
+  console.log('checkMembers: ', checkMembers);
+  const checkResult = await channel.findOne(
+    { members :{ $all: [mongoose.Types.ObjectId(checkMembers[0]), mongoose.Types.ObjectId(checkMembers[1]) ] }}
   )
     .catch((err) => console.log("err", err));
-    res.json({ checkChannelResult });
+    res.json({ checkResult });
+    console.log('checkChannelResult: ', checkResult);
 }) 
 
 app.get('/logout', (req, res) => {

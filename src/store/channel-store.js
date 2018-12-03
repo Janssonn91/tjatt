@@ -181,16 +181,36 @@ class ChannelStore {
 
     // res = 
     // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
-    //  if(!group){
-    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
-    //   console.log(checkIfChannelExits);
-    // }
-    Channel.create(newChannel);
-  }
+    // let user = await res.json();
+      
+      if(!group){
+        fetch(`api/checkChannel/${members}`)
+        .then(res => {
+          return res.json();
+        })
+        .then(res => {
+          console.log(res.checkResult)
+          if(!res.checkResult){
+            Channel.create(newChannel);
+            console.log('kanal skapad');
+          }
+          else{
+            console.log('ingen ny kanal skapad');
+          }
+        })
+      //const checkIfChannelExits = await fetch(`api/checkChannel/${members}`)
+      // console.log(checkIfChannelExits);
+      //   if(checkIfChannelExits.url.length === 88){
+      //     console.log(checkIfChannelExits.url.length, ', ', checkIfChannelExits.json());
+           
+      //   };
+    };
+    // Channel.create(newChannel);
+  };
 
-  updateContactChannels(channel) {
+  async updateContactChannels(channel) {
     // channel.channelname is "id and id", so we need to get name
-    let user = this.getContactName(channel.members);
+    let user = await this.getContactName(channel.members);
     channel.channelname = user.name;
     channel.image = user.img;
     this.contactChannels.push(channel);
