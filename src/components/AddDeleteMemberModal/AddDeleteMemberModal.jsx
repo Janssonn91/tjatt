@@ -16,7 +16,7 @@
                   <i className="fas fa-times-circle icon" onClick={() => this.removeFromSelect(user)}></i>
                 }
                 {this.props.channelStore.currentChannelAdmins.includes(user._id) && <i className="fas fa-circle admin"></i>}
-                <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
+                <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
               </div>
               <div className="profile">
                 <p className="text-muted m-0">
@@ -45,7 +45,7 @@
             <FormGroup className="m-0 overflow-y-auto">
               {this.searchedGroupCandidates.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
-                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
                     <p className="text-muted m-0">
@@ -63,7 +63,7 @@
             <FormGroup className="m-0 pl-1 overflow-y-auto group-member">
               {this.groupMembers.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
-                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
                   <div className="profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
                     <p className="text-muted m-0">
