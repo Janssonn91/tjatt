@@ -83,8 +83,8 @@ export default class Chat extends Component {
 
   sendGif = (entry) => {
     const url = entry.images.downsized_large.url;
-    console.log(entry)
     socket.emit('chat message', { filePath: url, isGif: true, channel: this.props.channelStore.currentChannel._id, sender: this.props.userStore.user._id, contentType: 'image', originalName: entry.title });
+    this.gifToggler();
   }
 
   getFileValue = () => {

@@ -131,7 +131,7 @@
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
-              <Button onClick={this.gifToggler} type="button">Gif</Button>
+              <img src="/images/gif.logo.jpg" className="gif-opener" onClick={this.gifToggler} />
               {this.gifPicker && <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />}
             </FormGroup>
             <Button className="send p-0" onClick={e => this.sendMessage()}>
