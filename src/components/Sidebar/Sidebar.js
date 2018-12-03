@@ -191,20 +191,6 @@ export const imgPath = '/images/placeholder.png';
 }
     }
   }
-
-  // 42["group",{"newChannel":{"admin":["5c0303f292bf3a93f4ad76a5"],"members":["5bfd0b7a6f5fcb45754369ad","5c03032792bf3a93f4ad76a3","5c0303f292bf3a93f4ad76a5"],"content":[],"_id":"5c0313a3957b2d93f4c875bd","channelname":"9o9o9o","favorite":false,"open":true,"group":true,"__v":0,"messageNum":0},"creater":"5c0303f292bf3a93f4ad76a5","type":"create group"}]	1543705507.4872022
-      
-      //     //   else{
-      //     //     let name = await channelStore.getContactName(c.members);
-      //     //     if (name !== undefined) {
-      //     //     channelStore.channelDict[c._id] = { _id: c._id, channelname: name.name, image: name.img, members: c.members, admin: c.admin, favorite: c.favorite, group: c.group, open: c.open, messageNum: c.messageNum }
-      //     //   channelStore.contactChannels.push(channelStore.channelDict[c._id]);
-      //     // } 
-      //     //   }
-          
-      //     }
-      //   }
-      // }
     })
 
 
@@ -264,17 +250,32 @@ export const imgPath = '/images/placeholder.png';
        this.props.userStore.updateMyContact(data.sender);
     })
 
+    socket.off('removeContact');
+    socket.on('removeContact', data=>{
+      if(data.target[0]=== userStore.user._id){
+        let message={
+          sender: data.sender,
+          initiator: data.initiator,
+          unread: true,
+          textType: data.textType,
+          id: data.id,
+        }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+      }
+    })
+
 
     
 
-    socket.off('system message');
-    socket.on('system message', message => {
-      console.log('Message from server ', message);
-    });
-    socket.off('newChannel');
-    socket.on('newChannel', (data)=>{
+    // socket.off('system message');
+    // socket.on('system message', message => {
+    //   console.log('Message from server ', message);
+    // });
+    // socket.off('newChannel');
+    // socket.on('newChannel', (data)=>{
         
-    });
+    // });
   }
 
   changeLogStatus() {

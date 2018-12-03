@@ -181,6 +181,10 @@ class ChannelStore {
                       let initiator = toJS(this.userDict[i[0]]).name;
                       this.setSystemMessageFromDB(initiator, i[0], i[1], d);
                     }
+                    if(d.textType.toString()==="removeContact"){
+                      let initiator = d.text;
+                      this.setSystemMessageFromDB(initiator, initiator, "", d);
+                    }
                   }
                  
                   

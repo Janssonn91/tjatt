@@ -524,8 +524,33 @@ io.on('connection', (socket) => {
 
       io.to(c).emit('chat message', m);
   });
-
 }
+
+  if(data.type==="removeContact"){
+    let c = await channel.findOne({channelname: data.target + "system"});
+    let user = await User.findById(data.sender);
+    let systemMessage= new ChatMessage({
+      sender: data.sender,
+      text: user.nickname,
+      textType: "removeContact",
+      unread: true,
+      channel:c._id,
+    });
+    let m = await systemMessage.save();
+    let message= {
+      textType: "removeContact",
+      sender: data.sender,
+      initiator: user.nickname,
+      target: data.target,
+      unread: true,
+      id: m._id,
+    }
+
+    socket.broadcast.emit('removeContact', message);
+  
+  }
+
+
   
   
   

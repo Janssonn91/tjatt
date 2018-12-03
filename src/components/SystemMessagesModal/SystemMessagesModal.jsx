@@ -21,6 +21,11 @@
               </ButtonGroup>
             </span>
           </ListGroupItem>
+          : message.textType==="acceptance" ?
+          <ListGroupItem key={i}>
+          <span>{message.initiator} has accepted your contact invitation</span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
           : message.textType==="rejection" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has rejected your invitation</span>
@@ -37,7 +42,10 @@
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "removeContact" ?
-          <ListGroupItem key={i}>You are nolonger contact with {message.initiator}</ListGroupItem>
+          <ListGroupItem key={i}>
+          <span>You are nolonger contact with {message.initiator}</span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
           : message.textType === "makeAdmin" ?
           <ListGroupItem key={i}>
           <span>You are now contact of {message.initiator}</span>

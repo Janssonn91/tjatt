@@ -1,8 +1,19 @@
+
+
 @inject('userStore', 'channelStore') @observer export default class DeleteContactModal extends Component {
 
   removeContact(){
     const userId = this.props.userStore.user._id;
     const contId = this.props.members.filter(id => id!== this.props.userStore.user._id);
+    let message={
+      sender: userId,
+      target: contId,
+      targetChannel: this.props.channelId,
+      type: "removeContact",
+    }
+    socket.emit('system', message);
+    
+    
     this.props.userStore.moveContactToCandidates(contId);
     this.props.channelStore.spliceChannel(this.props.channelId); 
     fetch(`/api/removeContact/${userId}`, {
