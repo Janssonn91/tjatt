@@ -20,7 +20,7 @@
               {message.contentType === 'text' && message.text}
               {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
               {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" alt="chat-img" onClick={() => { this.toggleChatModal(); this.currentImage = message.filePath; this.originalName = message.originalName }} /></div>}
-              {message.contentType === 'code' && <div data-index={i} className={`${!this.fullHeightSnippet.some(obj => obj.index === i) ? 'highlight-small' : 'highlight-big'}`}><Highlight>{message.text}</Highlight>
+              {message.contentType === 'code' && <div data-index={i} className={`${!this.fullHeightSnippet.some(obj => obj.index === i) ? 'highlight-small' : 'highlight-big'}`}><SyntaxHighlighter style={vs2015} showLineNumbers={true}>{message.text}</SyntaxHighlighter>
                 <Button onClick={() => this.toggleSnippetHeight(i)} color="secondary" className="full-height-btn"><i className={`fas fa-arrow-${this.fullHeightSnippet.some(obj => obj.index === i) ? 'up' : 'down'}`}></i></Button></div>}
               <ButtonDropdown className="d-none" isOpen={this.dropdownOpen} direction="up" toggle={this.dropdownToggle}>
                 <DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.dropdownOpen}>
@@ -58,7 +58,7 @@
               {message.contentType === 'file' && <a className="text-light files" href={message.filePath} download={message.originalName}>{message.originalName}<i className="far fa-file-alt pl-2"></i></a>}
               {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath}
                 className="upload-image" /></div>}
-              {message.contentType === 'code' && <div data-index={i} className={`${!this.fullHeightSnippet.some(obj => obj.index === i) ? 'highlight-small' : 'highlight-big'}`}><Highlight>{message.text}</Highlight>
+              {message.contentType === 'code' && <div data-index={i} className={`${!this.fullHeightSnippet.some(obj => obj.index === i) ? 'highlight-small' : 'highlight-big'}`}><SyntaxHighlighter style={vs2015} showLineNumbers={true}>{message.text}</SyntaxHighlighter>
                 <Button onClick={() => this.toggleSnippetHeight(i)} color="secondary" className="full-height-btn"><i className={`fas fa-arrow-${this.fullHeightSnippet.some(obj => obj.index === i) ? 'up' : 'down'}`}></i></Button></div>}
             </div>
           </li>

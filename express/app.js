@@ -957,7 +957,14 @@ const fileStorage = multer.diskStorage({
     cb(null, Date.now() + pathTo.extname(file.originalname))
   }
 });
-const fileUpload = multer({ storage: fileStorage });
+const fileUpload = multer(
+  {
+    storage: fileStorage,
+    limits: {
+      // max size of files 10mb
+      fileSize: 10000000
+    }
+  });
 
 app.post('/fileUpload/:id', fileUpload.single('file'), async (req, res) => {
   if (!req.session.userId) {
@@ -982,6 +989,9 @@ app.post('/fileUpload/:id', fileUpload.single('file'), async (req, res) => {
 })
 
 const codeUpload = multer({
+  limits: {
+    fileSize: 2000000
+  },
   fileFilter: (req, file, cb) => {
     const approved = file.originalname.match(/\.(js|py|html|css|scss|sass|less|php|json|xml)$/)
     if (!approved) {

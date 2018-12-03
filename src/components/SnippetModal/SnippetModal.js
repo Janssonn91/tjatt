@@ -2,7 +2,7 @@ import './SnippetModal.scss';
 @inject('userStore', 'channelStore') @observer
 export default class SnippetModal extends Component {
 
-  @observable textFile = false;
+  @observable uploadOrText = false;
 
   start() {
     console.log('hej')
@@ -13,7 +13,7 @@ export default class SnippetModal extends Component {
 
 
   switchTextFile = () => {
-    this.textFile = !this.textFile;
-    console.log(this.textFile);
+    this.uploadOrText = !this.uploadOrText;
+    console.log(this.uploadOrText);
   }
 }

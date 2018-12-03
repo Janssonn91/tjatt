@@ -3,11 +3,11 @@
     <ModalHeader>Write code or upload file</ModalHeader>
     <ModalBody>
       <Row className="justify-content-center pb-4">
-        <Button onClick={this.switchTextFile} color="secondary">{this.textFile ? 'Switch to textinput' : 'Switch to fileupload'} <i className="fas fa-sync"></i></Button>
+        <Button onClick={this.switchTextFile} color="secondary">{this.uploadOrText ? 'Switch to textinput' : 'Switch to fileupload'} <i className="fas fa-sync"></i></Button>
       </Row>
       <Row>
         <Col lg="12" md="12">
-          {!this.textFile ? <textarea className="w-100" rows="8"></textarea> :
+          {!this.uploadOrText ? <textarea className="w-100" rows="8"></textarea> :
             <div>
               <input
                 type="file"
