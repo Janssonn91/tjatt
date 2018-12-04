@@ -265,6 +265,8 @@ export const imgPath = '/images/placeholder.png';
       }
     })
 
+   
+
 
     
 

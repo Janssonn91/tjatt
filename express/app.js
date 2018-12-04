@@ -564,7 +564,6 @@ io.on('connection', (socket) => {
   socket.on('chat message', async (messageFromClient) => {
 
     let c = messageFromClient.channel;
-    console.log("c", c)
     socket.join(c);
 
 
@@ -573,12 +572,9 @@ io.on('connection', (socket) => {
       let message = new ChatMessage({
         ...messageFromClient,
       });
-      console.log("message", message)
-      await message.save();
+     let msg= await message.save();
 
-    }
-
-    // Send the message to all the sockets in the channel
+       // Send the message to all the sockets in the channel
     io.to(c).emit('chat message', [{
       sender: messageFromClient.sender,
       text: messageFromClient.text,
@@ -589,8 +585,12 @@ io.on('connection', (socket) => {
       originalName: messageFromClient.originalName,
       star: messageFromClient.star,
       unread: true,
-      time: messageFromClient.time,
+      time: msg.time,
     }]);
+
+    }
+
+  
   });
 
 
@@ -990,17 +990,14 @@ app.put('/removeAdmin/:_id', async (req, res) => {
   res.json({ resultAdmin });
 });
 
-app.delete('/removeGroup/:_id', async (req, res) => {
-  const deleteMessRes = await ChatMessage.deleteMany(
-    { channel: req.params._id }
-  )
+app.delete('/removeGroup/:_id', (req, res) => {
   channel.findOneAndRemove(
     { _id: req.params._id }
   )
     .then(result => {
-      res.json(result)   
+      res.json(result)
     })
-});
+})
 
 app.put('/users/:_id/setting', (req, res) => {
   User.findOneAndUpdate(
