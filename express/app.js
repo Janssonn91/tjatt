@@ -985,6 +985,21 @@ app.put('/channel/:_id', (req, res) => {
     });
 });
 
+app.put('/channel/:_id/updatetime', (req, res) => {
+  console.log("request", req)
+  channel.update(
+    { _id: req.params._id },
+    { $set: { latestUpdateTime: req.body.time } }
+  )
+    .then(() => {
+      res.json({ success: true })
+      console.log("ooooooo", res)
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 app.get('/channel/:_id', (req, res) => {
   channel.findById(req.params._id).then(data => {
     res.json(data)

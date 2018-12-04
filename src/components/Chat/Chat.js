@@ -254,6 +254,7 @@ export default class Chat extends Component {
 
           // When you get a message, move the channel to the top of the list
           channelStore.moveLatestChannelToTop(message.channel);
+          channelStore.updateChannelLatestTime(message.channel, message.time);
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {

@@ -88,7 +88,7 @@ class ChannelStore {
 
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
-    }); // TODO: Added contact doesn't exist yet
+    });
 
     for (let i = 0; i < this.myChannels.length; i++) {
       const c = this.myChannels[i];
@@ -466,6 +466,23 @@ class ChannelStore {
   @action sortListByMessageNum() {
     this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
     this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
+  }
+
+  updateChannelLatestTime(channelId, time) {
+    console.log(time);
+    fetch(`/api/channel/${channelId}/updatetime`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ time }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated latest time');
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   @action moveLatestChannelToTop(channelID) {
