@@ -21,9 +21,12 @@
         <NavItem className="pl-1">Starred</NavItem>
       </NavLink> */}
       {this.props.channelStore.unreadSystemMessages.length > 0 ?
-        <NavLink className="pt-0 pr-0">
-          <NavItem onClick={this.openSystemMessageModal.bind(this)}> <span className="d-inline-block">System Message</span>
-            <span className="message-number"> <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge></span>
+        <NavLink className="system-message pt-0 pl-2 pr-0">
+          <NavItem onClick={this.openSystemMessageModal.bind(this)}>
+          <span className="system-message-link d-inline-block">System Message</span>
+          <span className="message-number float-right">
+            <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge>
+          </span>
           </NavItem>
         </NavLink>
         : <span className="d-none"> 0</span>}
@@ -69,7 +72,7 @@
           <CardBody className="p-0">
             {this.props.channelStore.contactChannels.length > 0 ?
               <div id="contactsRender"></div>
-              : <h6 className="text-secondary pl-3 pt-1">Add a contact on the <strong className="plus-text">+</strong></h6>
+              : <h6 className="text-secondary pt-1">Add a contact on the <strong className="plus-text">+</strong></h6>
             }
             {this.props.channelStore.contactChannels.map((channel, i) =>
               channel.open ?
@@ -78,7 +81,7 @@
                   key={i}
                   onClick={() => setTimeout(this.loadChannelFromUrl.bind(this), 10)}
                 >
-                  <div className="nav-link pl-3 py-1 pr-1 contacts">
+                  <div className="nav-link py-1 pr-1 contacts">
                     <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ?
@@ -113,7 +116,7 @@
                   key={i}
                   onClick={() => setTimeout(this.loadChannelFromUrl.bind(this), 10)}
                 >
-                  <div className="nav-link pl-3 py-1 pr-1 contacts">
+                  <div className="nav-link py-1 pr-1 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ? <span className="message-number">
                       <Badge color="danger">{channel.messageNum}</Badge>
@@ -121,7 +124,7 @@
                   </div>
                 </Link>
               )
-              : <h6 className="text-secondary pl-3 pt-1">Create group on the <strong className="plus-text">+</strong></h6>
+              : <h6 className="text-secondary pt-1">Create group on the <strong className="plus-text">+</strong></h6>
             }
           </CardBody>
         </Card>
