@@ -39,7 +39,7 @@
                     <FormGroup>
                         <Label className="gitApps-sideDrawer-import-form-label" for="urlText">URL to Git Repository</Label>
                         <Input
-                        id="url-git"
+              id="urlText"
                         type="text"
                         placeholder="URL"
                         value={this.urlToSet}
@@ -50,7 +50,7 @@
                     <FormGroup>
                         <Label className="gitApps-sideDrawer-import-form-label-port" for="PortNo">Web port</Label>
                         <Input
-                        id="port-git"
+              id="PortNo"
                         type="text"
                         placeholder="Web Port"
                         value={this.portToSet}
