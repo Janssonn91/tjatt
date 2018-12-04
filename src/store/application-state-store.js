@@ -15,25 +15,25 @@ class ApplicationStateStore {
     })
       .then(res => res.json())
       .then(res => {
-        this.systemChannel="";
+        this.systemChannel = "";
         if (res.loggedIn) {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          
-         
-          fetch('/api/system').then(res => res.json()).then(data=>{
+
+
+          fetch('/api/system').then(res => res.json()).then(data => {
             this.systemChannel = data.systemChannel;
-            console.log("systemChannel",data.systemChannel)
-            
+            console.log("systemChannel", data.systemChannel)
+
             this.systemId = data.systemUserId;
             console.log("systemId", this.systemId);
             channelStore.getUserList();
-          }).catch(err=>console.log(err))
-          
+          }).catch(err => console.log(err))
+
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
 
           socket.on('online', message => {
-           // console.log('online', message)
+            // console.log('online', message)
             this.onLineUsers = message.loginUser;
             channelStore.getLoginStatus();
           });
@@ -51,10 +51,14 @@ class ApplicationStateStore {
               channelStore.getLoginStatus()
             )
           });
+          socket.on('delete message', message => {
+            console.log(message)
+            channelStore.channelChatHistory = channelStore.channelChatHistory.filter(msg => msg._id !== message)
+          })
           userStore.checkState();
         }
-        else{console.log("login false")}
-        
+        else { console.log("login false") }
+
       }).catch(err => {
         console.log("err", err)
       });

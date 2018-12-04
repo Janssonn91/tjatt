@@ -137,81 +137,79 @@ class ChannelStore {
     this.hasLoadedChannels = true;
   }
 
-  @action cleanUpOldSystemMessages(){
-    this.unreadSystemMessages=[];
-    this.unreadSystemMessageNum=0;
+  @action cleanUpOldSystemMessages() {
+    this.unreadSystemMessages = [];
+    this.unreadSystemMessageNum = 0;
   }
 
-  setSystemMessagesFromDB(){
-    console.log("systemChannel",applicationStateStore.systemChannel )
+  setSystemMessagesFromDB() {
+    console.log("systemChannel", applicationStateStore.systemChannel)
     this.cleanUpOldSystemMessages();
-        Message.find({channel: applicationStateStore.systemChannel}).then(data=>
-         
-              { 
-                
-                data.forEach(d=>{
-                  if(d.unread){
-                    if(d.textType.toString()==="invitation"){
-                      console.log(d._id)
-                      let j = d.text.toString().split("&ask&");
-                    let i = j[1].split("&toJoin&");
-                    let initiator = toJS(this.userDict[j[0]]).name; //sender's name
-                    this.setSystemMessageFromDB(initiator, j[0], i[1], d);
-               
-                    }
-                    if(d.textType.toString()==="rejection"){
-                      let i = d.text.toString().split("&reject&");
-                      let initiator= toJS(this.userDict[i[0]]).name;
-                    
-                      this.setSystemMessageFromDB(initiator, i[0], "", d);
-                    }
-                    if(d.textType.toString()==="acceptance"){
-                      let j = d.text.toString().split("&accept&");
-                      let i = j[1].split("&toJoin&");
-                      let initiator = toJS(this.userDict[j[0]]).name;
-                      this.setSystemMessageFromDB(initiator, j[0], i[1], d);
-                    }
-                    if(d.textType.toString()==="addedToGroup"){
-                      let i = d.text.toString().split("&inviteYouToChannel&");
-                      let initiator = toJS(this.userDict[i[0]]).name;
-                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
-                    }
-                    if(d.textType.toString()==="removeFromGroup"){
-                      let i = d.text.toString().split("&hasRemovedYouFromChannel&");
-                      let initiator = toJS(this.userDict[i[0]]).name;
-                      this.setSystemMessageFromDB(initiator, i[0], i[1], d);
-                    }
-                  }
-                 
-                  
-              })
-              console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+    Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
+
+      data.forEach(d => {
+        if (d.unread) {
+          if (d.textType.toString() === "invitation") {
+            console.log(d._id)
+            let j = d.text.toString().split("&ask&");
+            let i = j[1].split("&toJoin&");
+            let initiator = toJS(this.userDict[j[0]]).name; //sender's name
+            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+
           }
-         
-            );
+          if (d.textType.toString() === "rejection") {
+            let i = d.text.toString().split("&reject&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+
+            this.setSystemMessageFromDB(initiator, i[0], "", d);
+          }
+          if (d.textType.toString() === "acceptance") {
+            let j = d.text.toString().split("&accept&");
+            let i = j[1].split("&toJoin&");
+            let initiator = toJS(this.userDict[j[0]]).name;
+            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+          }
+          if (d.textType.toString() === "addedToGroup") {
+            let i = d.text.toString().split("&inviteYouToChannel&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+          }
+          if (d.textType.toString() === "removeFromGroup") {
+            let i = d.text.toString().split("&hasRemovedYouFromChannel&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+          }
+        }
+
+
+      })
+      console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+    }
+
+    );
   }
 
-  setSystemMessageFromDB(initiator, sender, targetChannel, d){
-    let message={}
+  setSystemMessageFromDB(initiator, sender, targetChannel, d) {
+    let message = {}
     message.id = d._id;
-    message.targetChannel= targetChannel;
+    message.targetChannel = targetChannel;
     message.textType = d.textType;
     message.initiator = initiator; //sender's name
     message.unread = true;
     message.sender = sender; //sender's id 
     this.unreadSystemMessages.push(message);
-   this.unreadSystemMessageNum++;
+    this.unreadSystemMessageNum++;
 
   }
 
-  readSystemMessage(id, i){
-    console.log(id,i)
+  readSystemMessage(id, i) {
+    console.log(id, i)
     let c = toJS(this.unreadSystemMessages)
     c.splice(i, 1);
-    this.unreadSystemMessages= c;
+    this.unreadSystemMessages = c;
     this.unreadSystemMessageNum--;
-    if(id){
-      id=id.toString();
+    if (id) {
+      id = id.toString();
 
       fetch(`/api/message/${id}`, {
         method: 'PUT',
@@ -223,10 +221,10 @@ class ChannelStore {
         }
       }).then(res => res.json())
     }
-    
 
 
-   
+
+
   }
 
   getGroupMembersData(memberIds) {
@@ -276,6 +274,24 @@ class ChannelStore {
     }
   }
 
+  deleteMessage = (message) => {
+    console.log(message)
+    fetch(`/api/deletemessage/${message}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log('OOOODUUUUUUU')
+        if (res.success) {
+          socket.emit('delete message', {
+            channelId: this.currentChannel._id,
+            messageId: message
+          })
+        }
+      })
+  }
+
   async getChannelChatHistory(id) {
     console.log("changeChannel", id)
     this.channelChatHistory = [];
@@ -318,18 +334,18 @@ class ChannelStore {
   }
 
   @action async updateContactChannels(c, id) {
-   let channel={};
-   let user = this.userDict[id];
-   fetch(`/api/channel/${c}`).then(res=>res.json()).then(data=>{
-     channel= data;
-     channel.channelname = user.name;
-     channel.image = user.img;
-     this.contactChannels.push(channel);
-     
-  })
+    let channel = {};
+    let user = this.userDict[id];
+    fetch(`/api/channel/${c}`).then(res => res.json()).then(data => {
+      channel = data;
+      channel.channelname = user.name;
+      channel.image = user.img;
+      this.contactChannels.push(channel);
 
-   
-    
+    })
+
+
+
     //this.changeChannel(channel);
   }
 
@@ -361,20 +377,20 @@ class ChannelStore {
   @action spliceChannel(channelId
   ) {
     let index = 0;
-    for(let channel of this.contactChannels){
-      if(channel._id === channelId){
+    for (let channel of this.contactChannels) {
+      if (channel._id === channelId) {
         this.contactChannels.splice(index, 1);
       }
-      index ++;
+      index++;
     };
     let myChannelIndex = 0;
-    for(let channel of this.myChannels){
-      if(channel._id === channelId){
-        this.myChannels.splice(myChannelIndex,1)
+    for (let channel of this.myChannels) {
+      if (channel._id === channelId) {
+        this.myChannels.splice(myChannelIndex, 1)
       }
       myChannelIndex++;
     }
- 
+
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';

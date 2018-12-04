@@ -6,7 +6,7 @@
       // this.props.channelStore.getSenderName(message.sender).then(data=>console.log(data))
       return (
         message.sender === (this.props.userStore.user._id) ?
-          <li key={i} className="clearfix">
+          <li key={message._id} className="clearfix">
             <div className="me">
               <span>
                 <img alt="user-img" src={this.props.userStore.user.image || "/images/placeholder.png"} />
@@ -29,7 +29,7 @@
                 <DropdownMenu>
                   {/* <DropdownItem header className="py-2 px-3 dropdown-header">Configure message</DropdownItem>
                 <DropdownItem className="m-0"divider/> */}
-                  <DropdownItem className="py-2 px-3 delete-message" onClick={this.deleteMessageModalToggle.bind(this)}>Delete message</DropdownItem>
+                  <DropdownItem className="py-2 px-3 delete-message" onClick={() => this.deleteMessageModalToggle(message._id)}>Delete message</DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
             </div>

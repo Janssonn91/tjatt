@@ -258,6 +258,7 @@ export default class Chat extends Component {
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
+              _id: message._id,
               channel: message.channel,
               sender: message.sender,
               star: false,
@@ -269,6 +270,7 @@ export default class Chat extends Component {
               time: message.time,
               unread: true,
             };
+            console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
             channelStore.channelChatHistory.push(m)
           }

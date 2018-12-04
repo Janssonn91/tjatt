@@ -198,6 +198,9 @@ io.on('connection', (socket) => {
     socket.join(channel._id, () => console.log('received channel', socket.rooms));
   })
 
+  socket.on('delete message', ({ channelId, messageId }) => {
+    io.to(channelId).emit('delete message', messageId)
+  })
 
 
   socket.on('logout', (userId) => {
@@ -417,6 +420,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', async (messageFromClient) => {
 
+    let _id = '';
     let c = messageFromClient.channel;
     console.log("c", c)
     socket.join(c);
@@ -433,6 +437,7 @@ io.on('connection', (socket) => {
         unread: true,
       })
       await newMessage.save();
+      _id = newMessage._id;
     }
 
     // Create a mongoose ChatMessage and write to the db
@@ -442,11 +447,12 @@ io.on('connection', (socket) => {
       });
       console.log("message", message)
       await message.save();
-
+      _id = message._id;
     }
 
     // Send the message to all the sockets in the channel
     io.to(c).emit('chat message', [{
+      _id: _id,
       sender: messageFromClient.sender,
       text: messageFromClient.text,
       channel: messageFromClient.channel,
@@ -923,6 +929,14 @@ app.put('/message/:id', (req, res) => {
       throw err;
     })
 });
+
+app.delete('/deletemessage/:messageId', (req, res) => {
+  console.log(req.params._id);
+  ChatMessage.findOneAndRemove({ _id: req.params.messageId })
+    .then(() => {
+      res.json({ success: true })
+    })
+})
 
 
 app.post('/upload', upload.single('file'), (req, res) => {

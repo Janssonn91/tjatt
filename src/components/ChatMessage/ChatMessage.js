@@ -17,7 +17,8 @@ export default class ChatMessage extends Component {
   @observable fullHeightSnippet = [];
   @observable sendToDeleteMessageModal = {
     isOpen: false,
-    toggle: this.deleteMessageModalToggle.bind(this)
+    toggle: this.deleteMessageModalToggle.bind(this),
+    selectedMessage: ''
   }
 
   async start() {
@@ -51,8 +52,9 @@ export default class ChatMessage extends Component {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  deleteMessageModalToggle() {
+  deleteMessageModalToggle = (id) => {
     this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
+    this.sendToDeleteMessageModal.selectedMessage = id;
   }
 
   formattedTime(t) {
@@ -72,8 +74,8 @@ export default class ChatMessage extends Component {
         + " " + hour + ":" + min + " " + ampm;
       return result;
     }
-
-
   }
+
+
 
 }
