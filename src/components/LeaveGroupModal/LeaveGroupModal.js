@@ -3,7 +3,7 @@ import './LeaveGroupModal.scss';
 @inject('channelStore', 'userStore') export default class LeaveGroupModal extends Component {
 
   leaveChannel(){
-    let channel = this.props.channelStore.currentChannel;
+    const channel = this.props.channelStore.currentChannel;
 
     for (let channelArr of this.props.channelStore.myChannels) {
       if (channelArr._id === channel._id) {
@@ -53,16 +53,15 @@ import './LeaveGroupModal.scss';
       })
     if (this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id)) {
       
-      //BUG: wrong currentChannel, channel shows undefined 
       //send message to group chat
       // if new feature "remove admin"
-    // let message={
-    //   sender: this.props.userStore.user._id,
-    //   admin: this.props.userStore.user._id,
-    //   channel: this.props.channelStore.currentChannel,
-    //   type: "removeAdmin",
-    // }
-    // socket.emit('system', message);
+    let message={
+      sender: this.props.userStore.user._id,
+      admin: this.props.userStore.user._id,
+      channel: channel,
+      type: "removeAdmin",
+    }
+    socket.emit('system', message);
       
       this.removeAdmin(userId, channel);
     }
