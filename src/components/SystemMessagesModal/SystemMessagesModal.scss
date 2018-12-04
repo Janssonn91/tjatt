@@ -19,6 +19,13 @@ $text:#434651;
   }
 
   .modal-body {
+    .list-group-item {
+      span {
+        &:first-of-type {
+          vertical-align: middle;
+        }
+      }
+    }
    .btn{
     border: none;
     border-radius: 30px !important;

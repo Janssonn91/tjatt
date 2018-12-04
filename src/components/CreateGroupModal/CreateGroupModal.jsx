@@ -19,7 +19,7 @@
               <div key={i} className="nav-link pl-0 d-inline-block">
                 <div className="wrapper d-block">
                   <i className="fas fa-times-circle icon" onClick={() => this.props.userStore.removeFromSelect(user)}></i>
-                  <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} />
+                  <CardImg className="mr-3 img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
                 </div>
                 <div className="profile">
                   <p className="text-muted m-0">
@@ -47,11 +47,12 @@
         <Row className="select-area">
           <Col sm="12" md="6" className="pl-0 pr-1 searched-user ">
             <h5 className="group-modal-text">Searched users</h5>
-            <p className="group-modal-text">View all users <input type="checkbox" onChange={this.checkboxHandler}></input></p>
+            <Label for="viewAllUsers" className="group-modal-text">View all users</Label>
+            <Input id="viewAllUsers" className="ml-2" type="checkbox" onChange={this.checkboxHandler}></Input>
             <FormGroup className="m-0 overflow-y-auto">
               {this.searchContact.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1 contacts">
-                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
                   <div className="profile searched-user-big-screen-profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
                     <p className="text-muted m-0">
@@ -70,7 +71,7 @@
             <FormGroup className="m-0 pl-1 overflow-y-auto">
               {this.props.userStore.selectedGroupMember.map((user, i) =>
                 <ListGroupItem key={i} className="nav-link p-0 pl-1">
-                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} />
+                  <CardImg className="mr-2 d-inline-block img" src={user.image || "/images/placeholder.png"} alt="user's photo" />
                   <div className="profile d-inline-block">
                     <p className="m-0 font-weight-bold">{user.username}</p>
                     <p className="text-muted m-0">

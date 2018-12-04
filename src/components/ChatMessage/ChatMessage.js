@@ -63,8 +63,14 @@ export default class ChatMessage extends Component {
     let today = new Date();
     let hour = t.getHours();
     let min = t.getMinutes();
-    let ampm = hour >= 12 ? "AM" : "PM";
+    if(min<10){
+      min= "0"+ min;
+    }
+    let ampm = hour <= 12 ? "AM" : "PM";
     hour = hour % 12;
+    if(hour<10){
+      hour= "0" + hour;
+    }
     hour = hour ? hour : 12;
     if (today.setHours(0, 0, 0, 0) === t.setHours(0, 0, 0, 0)) {
       result += hour + ":" + min + " " + ampm + " Today";

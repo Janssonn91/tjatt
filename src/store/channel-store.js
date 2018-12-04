@@ -179,15 +179,41 @@ class ChannelStore {
             let initiator = toJS(this.userDict[i[0]]).name;
             this.setSystemMessageFromDB(initiator, i[0], i[1], d);
           }
+          if (d.textType.toString() === "removeContact") {
+            let initiator = d.text;
+            this.setSystemMessageFromDB(initiator, initiator, "", d);
+          }
+          if (d.textType.toString() === "rejection") {
+            let i = d.text.toString().split("&reject&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+
+            this.setSystemMessageFromDB(initiator, i[0], "", d);
+          }
+          if (d.textType.toString() === "acceptance") {
+            let j = d.text.toString().split("&accept&");
+            let i = j[1].split("&toJoin&");
+            let initiator = toJS(this.userDict[j[0]]).name;
+            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+          }
+          if (d.textType.toString() === "addedToGroup") {
+            let i = d.text.toString().split("&inviteYouToChannel&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+          }
+          if (d.textType.toString() === "removeFromGroup") {
+            let i = d.text.toString().split("&hasRemovedYouFromChannel&");
+            let initiator = toJS(this.userDict[i[0]]).name;
+            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+          }
         }
-
-
       })
       console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
-    }
+    });
 
-    );
+
+    console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
   }
+
 
   setSystemMessageFromDB(initiator, sender, targetChannel, d) {
     let message = {}
@@ -360,9 +386,17 @@ class ChannelStore {
   }
 
   // for setting new admin on frontend
-  @action setAdmin(id) {
+  //channel is the whole channel
+  @action setAdmin(id, channel) {
     this.adminLeavingError = false;
     this.currentChannelAdmins = [...this.currentChannelAdmins, id];
+    let message = {
+      sender: userStore.user._id,
+      admin: id,
+      targetChannel: channel,
+      type: "makeAdmin",
+    }
+    socket.emit('system', message);
   }
 
   @action showAdminLeaveError() {
@@ -374,8 +408,7 @@ class ChannelStore {
   }
 
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(channelId
-  ) {
+  @action spliceChannel(channelId) {
     let index = 0;
     for (let channel of this.contactChannels) {
       if (channel._id === channelId) {
@@ -390,7 +423,7 @@ class ChannelStore {
       }
       myChannelIndex++;
     }
-
+    this.groupChannels.splice(channelId, 1)
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';

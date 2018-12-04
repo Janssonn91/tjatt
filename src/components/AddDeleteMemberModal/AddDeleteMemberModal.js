@@ -24,14 +24,6 @@ export default class AddDeleteMemberModal extends Component {
     return false;
   }
 
-  checkboxHandler = (e) => {
-    if (e.target.checked) {
-      this.searchedGroupCandidates = [...this.props.channelStore.currentGroupCandidates];
-    } else {
-      this.searchedGroupCandidates = [];
-    }
-  }
-
   closeAlert() {
     this.addedSuccess = false;
     this.removedSuccess = false;
@@ -62,20 +54,16 @@ export default class AddDeleteMemberModal extends Component {
     // Update view
     this.props.channelStore.getGroupMembersData(newMemberIds);
 
-    if(addedUser.length>0 || removedUser.length>0){
-      let m={
+    if (addedUser.length > 0 || removedUser.length > 0) {
+      let m = {
         targetChannel: this.props.channelStore.currentChannel,
         initiator: this.props.userStore.user._id,
         addedMembers: addedUser,
         removedMembers: removedUser,
         type: "editMembersInGroup"
       }
-      socket.emit('system',m);
+      socket.emit('system', m);
     }
-
-    
-
-
 
     if (addedUser.length > 0) {
       addedUser.forEach(id => {
@@ -101,7 +89,7 @@ export default class AddDeleteMemberModal extends Component {
       });
     }
     this.addedSuccess = true;
-   
+
 
     if (removedUser.length > 0) {
       removedUser.forEach(id => {
