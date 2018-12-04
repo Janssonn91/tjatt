@@ -7,8 +7,8 @@ const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -23,6 +23,7 @@ module.exports = class HandleVMs {
     return new Promise((resolve, reject) => {
       docker.container.list().then(containers => {
         let ports = containers.filter(container => {
+          console.log(container.data.Ports);
           if (container.data.Ports.length === 1) {
             return true
           } else {
@@ -32,6 +33,7 @@ module.exports = class HandleVMs {
           let _ports = _container.data.Ports.map(port => {
             return port.PublicPort
           })
+          console.log(_ports);
           return _ports
         });
         resolve([].concat.apply([], ports));

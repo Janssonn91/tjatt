@@ -143,7 +143,7 @@ import './GitAppsSidebar.scss';
         //this closes the open app if the running process is stoped
         this.openApp._id === appId ? this.openApp = {} : null;
 
-        const appToStart = this.importedApps.find(app => app._id === appId); console.log(appToStart)
+        const appToStart = this.importedApps.find(app => app._id === appId);
         fetch('/api/startGitApp', { 
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({name: appToStart.name, appRunning: appToStart.running}), // data can be `string` or {object}!
@@ -187,7 +187,6 @@ import './GitAppsSidebar.scss';
           .then(response => console.log(response))
           .catch(error=>console.log(error));
 
-        console.log(appToupdate)
     }
   
 }

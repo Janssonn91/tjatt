@@ -1,0 +1,26 @@
+.gitAppsChat-sidebar{
+    background-color: #F6F8FA;
+    position: absolute;
+    top: 0;
+    right: -500px;
+    height: 100vh;
+    max-width: 500px;
+    width: 100%;
+    transition: all 0.5s;
+    overflow-y: scroll;
+    z-index: 10;
+}
+
+.gitAppsChat-sidebar-open{
+    right: 0;
+}
+
+.gitAppsChat-sidebar-close-button{
+    z-index: 5;
+    background-color: transparent;
+    color: black;
+    outline: none;
+    border: none;
+    position: absolute;
+    right: 0;
+}   

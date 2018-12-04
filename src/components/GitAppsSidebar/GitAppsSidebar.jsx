@@ -1,12 +1,13 @@
 <Fragment>
     <div className={`gitApps-sideDrawer gitApps-sideDrawer-${this.props.open ? 'open' : null}`}>
-        <Button
-            onClick={()=> this.sideDrawerHandler()} 
-            className="gitApps-sideDrawer-close-button">
-                <i className="fas fa-times"></i>
-        </Button>
-        <div className="gitApps-sideDrawer-header py-4">
-            <h5>Git Apps</h5>
+        
+        <div className="gitApps-sideDrawer-header">
+            <Button
+                onClick={()=> this.sideDrawerHandler()} 
+                className="gitApps-sideDrawer-close-button">
+                    <i className="fas fa-times"></i>
+            </Button>
+            <h5 className='gitApps-sideDrawer-header-title'>Git Apps</h5>
             <i className="fab fa-github fa-3x gitApps-sideDrawer-git-icon py-2"></i>
         </div>
         
@@ -76,12 +77,14 @@
                                         <div className="gitApps-sideDrawer-appsList-app-controls">
                                             {app.running ? 
                                             <Fragment>
-                                                <button
+                                                <Link
+                                                    to={`/git-app/${app.name}`}
                                                     data-tip data-for={`launch-${app._id}`}
-                                                    onClick={() => this.openAppHandler(app)}   
+                                                    // onClick={() => this.openAppHandler(app)} 
+                                                    onClick={() => this.props.onOpenApp(app)}  
                                                     className="gitApps-sideDrawer-appsList-app-controls-button ">
-                                                    <i className={`fas ${this.openApp._id === app._id ? 'fa-times' : 'fa-rocket'}`}></i> 
-                                                </button> 
+                                                    <i className={`fas ${this.props.openApp && this.props.openApp._id === app._id ? 'fa-times' : 'fa-rocket'}`}></i> 
+                                                </Link> 
                                                 <ReactTooltip id={`launch-${app._id}`} effect='solid'>
                                                   <span>{this.openApp._id === app._id ? 'Close' :'Launch'} App</span>
                                                 </ReactTooltip>
@@ -106,6 +109,15 @@
                                             </button>
                                             <ReactTooltip id={`refresh-${app._id}`} effect='solid'>
                                               <span> Pull App</span>
+                                            </ReactTooltip>
+                                            <button
+                                                data-tip data-for={`branch-${app._id}`}
+                                                // onClick={()=>this.onPullApp(app._id)}
+                                                className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                               <i className="fas fa-code-branch"></i>
+                                            </button>
+                                            <ReactTooltip id={`branch-${app._id}`} effect='solid'>
+                                              <span>Open Branches</span>
                                             </ReactTooltip>
                                             <button
                                                 data-tip data-for={`delete-${app._id}`}

@@ -24,6 +24,7 @@
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
   "  GitAppsSidebar": "components/GitAppsSidebar/GitAppsSidebar",
+  "  GitAppsChatSidebar": "components/GitAppsChatSidebar/GitAppsChatSidebar",
   "  GitApp": "components/GitApp/GitApp",
   "  Spinner": "components/Spinner/Spinner",
 

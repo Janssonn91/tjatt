@@ -9,7 +9,8 @@
     top: 0;
     right: -500px;
     height: 100vh;
-    width: 500px;
+    max-width: 500px;
+    width: 100%;
     transition: all 0.5s;
     overflow-y: scroll;
     z-index: 10;
@@ -24,7 +25,8 @@
     background-color: transparent;
     outline: none;
     border: none;
-    position: fixed;
+    position: absolute;
+    right: 0;
 }   
 
 .gitApps-sideDrawer-close-button:hover{
@@ -36,8 +38,8 @@
 .gitApps-sideDrawer-header{
     position: fixed;
     height: 145px;
-    width: 500px;
-    max-width: 100%;
+    max-width: 500px;
+    width: 100%;
     z-index: 4;
     text-align: center;
     display: -ms-flexbox;
@@ -45,6 +47,10 @@
     -ms-flex-direction: column;
     flex-direction: column;
     background-color: #25292C;
+}
+
+.gitApps-sideDrawer-header-title{
+    margin-top: 1.5em;
 }
 
 .gitApps-sideDrawer-git-icon{
@@ -123,6 +129,7 @@
     justify-content: space-between;
     border: none;
     cursor: pointer;
+    flex-wrap: wrap;
 }
 
 .gitApps-sideDrawer-appsList-app:hover{
@@ -133,6 +140,10 @@
 
 .gitApps-sideDrawer-appsList-app-label{
     margin: 0;
+}
+
+.gitApps-sideDrawer-appsList-app-controls{
+    display: inline-flex;
 }
 
 .gitApps-sideDrawer-appsList-app-controls-button{
