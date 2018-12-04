@@ -88,6 +88,14 @@ $text:#434651;
     display: inline-block;
     padding-right: 10px;
     padding-left: 8px;
+    .system-message.nav-link {
+      &:hover {
+        .system-message-link {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
     .nav-link {
       color: lightgray;
       font-weight: bold;
@@ -120,6 +128,7 @@ $text:#434651;
 
     }
     .nav-link.contacts{
+      padding-left: 0.7rem;
       width: 100%;
       &:hover {
         cursor: pointer;
@@ -139,6 +148,9 @@ $text:#434651;
         font-size: 14px!important;
         vertical-align: middle;
       }
+      .badge {
+        padding: 0.4rem;
+      }
     }
 
     img {
@@ -149,11 +161,6 @@ $text:#434651;
 
     .fa-star {
       color: gold;
-    }
-
-    .message-number{
-      padding: 5px 5px 0 0!important;
-      float: right;
     }
 
     .fa-plus {
@@ -188,7 +195,7 @@ hr {
 .dropdown-toggle::after {
   color: white;
   font-size: 20px;
-  vertical-align: middle;
+  vertical-align: baseline;
   margin-left: 10px;
 }
 
@@ -208,6 +215,9 @@ hr {
   .card-body {
     overflow-y: auto;
     @include scrollbar;
+    h6 {
+      padding-left: 0.7rem!important;
+    }
   }
 
   @media (max-width:768px){
