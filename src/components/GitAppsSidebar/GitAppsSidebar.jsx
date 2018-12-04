@@ -88,6 +88,15 @@
                                                 <ReactTooltip id={`launch-${app._id}`} effect='solid'>
                                                   <span>{this.openApp._id === app._id ? 'Close' :'Launch'} App</span>
                                                 </ReactTooltip>
+                                                <button
+                                                    data-tip data-for={`branch-${app._id}`}
+                                                    onClick={()=>this.onOpenBranchesHandler(app)}
+                                                    className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                                   <i className="fas fa-code-branch"></i>
+                                                </button>
+                                                <ReactTooltip id={`branch-${app._id}`} effect='solid'>
+                                                  <span>Get Branches</span>
+                                                </ReactTooltip>
                                             </Fragment>
                                             : null}
                                             <button
@@ -111,15 +120,6 @@
                                               <span> Pull App</span>
                                             </ReactTooltip>
                                             <button
-                                                data-tip data-for={`branch-${app._id}`}
-                                                // onClick={()=>this.onPullApp(app._id)}
-                                                className="gitApps-sideDrawer-appsList-app-controls-button ">
-                                               <i className="fas fa-code-branch"></i>
-                                            </button>
-                                            <ReactTooltip id={`branch-${app._id}`} effect='solid'>
-                                              <span>Open Branches</span>
-                                            </ReactTooltip>
-                                            <button
                                                 data-tip data-for={`delete-${app._id}`}
                                                 onClick={()=>this.deleteRepo(app._id)}
                                                 type="button"
@@ -131,6 +131,10 @@
                                             </ReactTooltip> 
                                         </div>
                                 </div>
+                                {app.branchesCollapseOpen}
+                                <Collapse isOpen={app.branchesCollapseOpen}>
+                                    <p>Woooppp</p>
+                                </Collapse>
                         </li>
                     ))}
                 </ul>

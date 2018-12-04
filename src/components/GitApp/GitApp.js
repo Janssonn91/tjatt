@@ -3,7 +3,7 @@ import './GitApp.scss';
 
 @observable importedApps = [];
 @observable openApp = {};
-@observable openGitAppsSidebar = false;
+@observable openGitAppsSidebar = true;
 @observable chatSidebar = false;
 
     async start(){

@@ -10,6 +10,7 @@ module.exports = function (app) {
         let dockerPort = await vms.select_docker_port();
         let uniqueProjectName = req.body.url.toLowerCase().replace(/(?:https:\/\/)?(?:www\.)?github.com\//, '').replace(/[^a-zA-Z0-9]/g, '') + dockerPort;
        console.log(dockerPort, 'dockerPort');
+       console.log(req.body.url);
         let payload = {
             gitUrl: req.body.url.toLowerCase(),
             projectName: req.body.projectName,
