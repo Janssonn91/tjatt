@@ -451,7 +451,6 @@ io.on('connection', (socket) => {
           
         }
 
-
         let message = {
           textType: "removeFromGroup",
           initiator: data.initiator,
@@ -521,7 +520,7 @@ io.on('connection', (socket) => {
       })
       groupMessage.save();
       m.push(groupMessage);
-
+      socket.broadcast.emit('group', groupMessage);
       io.to(c).emit('chat message', m);
   });
 }

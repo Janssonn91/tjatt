@@ -53,8 +53,8 @@
                     <div className="nav-link pl-2 py-1 pr-0 contacts">
                       <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                       <span className="d-inline-block">{channel.channelname}</span>
-                      {channel.messageNum > 0 ? <span className="message-number">
-                        <Badge color="danger">{channel.messageNum}</Badge>
+                      {this.props.currentChannel.messageNum > 0 ? <span className="message-number">
+                        <Badge color="danger">{this.props.currentChannel.messageNum}</Badge>
                       </span> : <span className="d-inline-block float-right"><i className="far fa-times-circle align-middle"></i></span>}
                     </div>
                   </Link>

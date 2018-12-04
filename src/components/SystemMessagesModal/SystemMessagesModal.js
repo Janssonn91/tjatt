@@ -47,7 +47,6 @@ import './SystemMessagesModal.scss';
 
   
   closeSystemMessage(id,i){
-    console.log(id, i)
     this.props.channelStore.readSystemMessage(id, i);
   }
 

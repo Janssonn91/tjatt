@@ -13,7 +13,7 @@
       {message.unread ?
         message.textType==="invitation" ?
         <ListGroupItem key={i} className="pr-0">
-            <span>{message.initiator} wants to add you as a contact.</span>   
+            <span>{message.initiator} wants to add you as a contact.</span> 
             <span>
               <ButtonGroup size="sm" className = "d-inline-block float-right">
                 <Button className="btn btn-cancel mr-2" onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
