@@ -10,9 +10,11 @@
         <Form className="loginForm" onSubmit={this.onSubmit}>
 
           <FormGroup className="mt-4">
+            <Label for="username" className="sr-only">Username</Label>
             <Input tabIndex="1" type="text" id="username" placeholder="Username" value={this.username} onChange={e => this.usernameChange(e)} />
           </FormGroup>
           <FormGroup>
+            <Label for="password" className="sr-only">Password</Label>
             <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.password} onChange={e => this.passwordChange(e)} />
             <Link tabIndex="-1" to="retrievepassword">
               <p className="small mt-2 text-center retrieve-pw">Can't remember your password?</p>

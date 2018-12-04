@@ -10,6 +10,7 @@
           <Button
             className="mobil-menu d-inline-block d-md-none"
             onClick={e => this.props.channelStore.showMenu()}>
+            <h2 className="sr-only">Show sidebar</h2>
             <i className="fas fa-ellipsis-v"></i>
           </Button>
           {/* <span id="channelName"></span>  */}
@@ -23,6 +24,7 @@
                     data-toggle="dropdown"
                     aria-expanded={this.dropdownOpen}
                   >
+                    <h2 className="sr-only">Group settings</h2>
                     <i className="fas fa-users"></i>
                   </DropdownToggle>
                   <DropdownMenu className="channel-management">
@@ -75,6 +77,7 @@
               toggle={e => this.toggle()}
               className="btn-dropup">
               <DropdownToggle className="p-0" caret>
+                <h2 className="sr-only">More functions</h2>
                 <i className="fas fa-plus"></i>
               </DropdownToggle>
               <DropdownMenu>
@@ -122,6 +125,7 @@
                     onMouseEnter={() => this.setButtonHovered(true)}
                     onMouseLeave={() => this.setButtonHovered(false)}
                   >
+                    <h2 className="sr-only">Emoji</h2>
                     {this.buttonIsHovered ? <i className="hover fas fa-grin emojiOpener"></i> : <i className="far fa-smile emojiOpener"></i>}
                   </div>
                 </DropdownToggle>
@@ -131,6 +135,7 @@
               </Dropdown>
             </FormGroup>
             <Button className="send p-0" onClick={e => this.sendMessage()}>
+              <h2 className="sr-only">Send message</h2>
               <img
                 src="/images/sent-mail.svg"
                 alt="send mail"
@@ -147,6 +152,7 @@
           <Button
             className="mobil-menu d-inline-block d-md-none"
             onClick={e => this.props.channelStore.showMenu()}>
+            <h2 className="sr-only">Show sidebar</h2>
             <i className="fas fa-ellipsis-v"></i>
           </Button>
         </Col>
