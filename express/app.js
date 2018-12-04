@@ -420,7 +420,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', async (messageFromClient) => {
 
-    let _id = '';
+    let _id = messageFromClient._id;
     let c = messageFromClient.channel;
     console.log("c", c)
     socket.join(c);

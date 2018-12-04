@@ -111,6 +111,7 @@ export default class Chat extends Component {
     }).then(res => res.json())
       .then(message => {
         socket.emit('chat message', message)
+        console.log(message);
       })
     this.toggle();
   }
