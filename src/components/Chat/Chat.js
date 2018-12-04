@@ -181,9 +181,6 @@ export default class Chat extends Component {
     }
     await sleep(10);
 
-
-
-
     //  socket.emit('chat message', this.inputMessage);
     this.inputMessage = '';
   }
@@ -196,8 +193,8 @@ export default class Chat extends Component {
       (messages) => {
         console.log(messages);
         for (let message of messages) {
-          let time = new Date(message.time);
-          console.log(time)
+          // let time = new Date(message.time);
+          // console.log(time)
 
           // When you get a message, move the channel to the top of the list
           channelStore.moveLatestChannelToTop(message.channel);
