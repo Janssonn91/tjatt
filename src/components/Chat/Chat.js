@@ -66,7 +66,7 @@ export default class Chat extends Component {
   //start chat
 
 
-  start() {
+  async start() {
     this.setupMessageListener();
     // observe(this.props.userStore, "isLoggedIn", ()=>{
     //   if(this.props.userStore.isLoggedIn){
@@ -74,8 +74,8 @@ export default class Chat extends Component {
     //     console.log("observing login")
     //   }
     // })
-
   }
+
 
   gifToggler = () => {
     this.gifPicker = !this.gifPicker;
@@ -246,7 +246,6 @@ export default class Chat extends Component {
     socket.on(
       'chat message',
       (messages) => {
-        console.log(messages);
         for (let message of messages) {
           // let time = new Date(message.time);
           // console.log(time)

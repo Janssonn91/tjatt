@@ -122,12 +122,16 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('group');
     socket.on('group', message=>{
-      
-      if(message.textType === "addedToGroup"){
+      if(message.textType.toString()==="groupInfo"){
+        if(message.channel.toString()===channelStore.currentChannel._id){
+          channelStore.changeChannel(channelStore.currentChannel);
+        }
+      }
+      if(message.textType.toString() === "addedToGroup"){
         // message data structuer: {
         //   textType: "addedToGroup",
         //   initiator: userId
-        //   targetChannel: data.newChannel.channelname,
+        //   targetChannel: data.newChannel
         //   unread: true,
         //   addedMembers: data.newChannel.members, || data.addedMembers
         // }
@@ -136,6 +140,7 @@ export const imgPath = '/images/placeholder.png';
         let id= userStore.user._id.toString();
         for(let i of message.addedMembers) {
           if(i.toString()===id ){
+            socket.emit('join channel', c._id);
             if(c.group){
               channelStore.groupChannels.push(c);
               let m = {
@@ -156,7 +161,7 @@ export const imgPath = '/images/placeholder.png';
       }
     }
 
-    if(message.textType === "removeFromGroup"){
+    if(message.textType.toString() === "removeFromGroup"){
       // message data structuer: {
       //   textType: "removeFromGroup",
       //   initiator: userId
@@ -169,9 +174,11 @@ export const imgPath = '/images/placeholder.png';
       let id= userStore.user._id.toString();
 
     for(let i of message.removedMembers) {
+      console.log("delete")
       if(i.toString()===id ){
         if(c.group){
-          channelStore.groupChannels.push(c);
+
+          channelStore.deleteGroupChannel(c);
           let m = {
             sender: message.initiator,
             initiator: channelStore.userDict[message.initiator].name,
@@ -190,6 +197,8 @@ export const imgPath = '/images/placeholder.png';
   }
 }
     }
+
+    
   }
     })
 
