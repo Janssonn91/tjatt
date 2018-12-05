@@ -158,5 +158,31 @@
     box-shadow: none;
 }   
 
+.gitApps-sideDrawer-appsList-app-controls-branch-wrapper{
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-branch{
+    width: 45%;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-label-branch{
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: .2rem 0;
+    margin: .2rem 0;
+    border-bottom: 1px solid #366AC8;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button-branch{
+    font-size: 0.75rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    display: block;
+}
+
 
 

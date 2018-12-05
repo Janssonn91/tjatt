@@ -10,7 +10,7 @@ module.exports = class Repo extends ModelAndRoutes {
       gitUrl: String,
       port: String,
       running: Boolean,
-      branchesCollapseOpen: Boolean
+      branches: Array
     }
   }
 }

@@ -18,6 +18,6 @@ module.exports = function (app) {
 
 
         !payload.appRunning ? vms.stop_container(payload) : vms.start_containers_composer(payload); 
-
+        
     }); 
 };

@@ -105,7 +105,6 @@
                                                 onClick={()=>this.startAppHandler(app._id)}   
                                                 className="gitApps-sideDrawer-appsList-app-controls-button">
                                                 {!app.running ? <i className="fas fa-play"></i> : <i className="fas fa-stop"></i>}
-                                                
                                             </button>
                                             <ReactTooltip id={`start-${app._id}`} effect='solid'>
                                               <span>{`${app.running ? 'Stop' : 'Start'}`} App</span>
@@ -131,9 +130,30 @@
                                             </ReactTooltip> 
                                         </div>
                                 </div>
-                                {app.branchesCollapseOpen}
-                                <Collapse isOpen={app.branchesCollapseOpen}>
-                                    <p>Woooppp</p>
+                                <Collapse 
+                                    className="gitApps-sideDrawer-appsList-app-controls-branch-wrapper"
+                                    isOpen={this.openBranches === app._id ? true : false}>
+                                    <div className="gitApps-sideDrawer-appsList-app-controls-branch">
+                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Remote</p>                                        
+                                        {app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
+                                            <button 
+                                                key={index} 
+                                                className="gitApps-sideDrawer-appsList-app-controls-button-branch">
+                                                    {branch.split('origin/')[1]}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="gitApps-sideDrawer-appsList-app-controls-branch">
+                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Local</p>                                        
+                                        {app.branches.filter(item => !item.includes('origin/')).map((branch, index) => (
+                                            <button 
+                                                key={index} 
+                                                className="gitApps-sideDrawer-appsList-app-controls-button-branch">
+                                                    {branch}
+                                            </button>
+                                        ))}
+                                    </div>
+
                                 </Collapse>
                         </li>
                     ))}
