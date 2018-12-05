@@ -377,8 +377,7 @@ class ChannelStore {
   }
 
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(channelId
-  ) {
+  @action spliceChannel(channelId) {
     let index = 0;
     for(let channel of this.contactChannels){
       if(channel._id === channelId){
@@ -393,7 +392,7 @@ class ChannelStore {
       }
       myChannelIndex++;
     }
- 
+    this.groupChannels.splice(channelId,1)
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
