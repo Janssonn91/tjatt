@@ -122,16 +122,16 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('group');
     socket.on('group', message=>{
-      if(message.textType.toString==="groupInfo"){
-        if(message.channel.toString()===channelStore.currentChannel){
-          channelStore.changeChannel(message.channel.toString());
+      if(message.textType.toString()==="groupInfo"){
+        if(message.channel.toString()===channelStore.currentChannel._id){
+          channelStore.changeChannel(channelStore.currentChannel);
         }
       }
       if(message.textType.toString() === "addedToGroup"){
         // message data structuer: {
         //   textType: "addedToGroup",
         //   initiator: userId
-        //   targetChannel: data.newChannel.channelname,
+        //   targetChannel: data.newChannel
         //   unread: true,
         //   addedMembers: data.newChannel.members, || data.addedMembers
         // }
@@ -140,6 +140,7 @@ export const imgPath = '/images/placeholder.png';
         let id= userStore.user._id.toString();
         for(let i of message.addedMembers) {
           if(i.toString()===id ){
+            socket.emit('join channel', c._id);
             if(c.group){
               channelStore.groupChannels.push(c);
               let m = {
@@ -196,6 +197,8 @@ export const imgPath = '/images/placeholder.png';
   }
 }
     }
+
+    
   }
     })
 

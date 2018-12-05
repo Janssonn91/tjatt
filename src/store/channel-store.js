@@ -253,7 +253,6 @@ class ChannelStore {
   }
 
   @action async changeChannel(c) {
-    console.log("tessssssssst")
     this.currentChannel = c;
     this.currentChannel.messageNum=0;
     Channel.find({_id: c._id}).then(data=>{
