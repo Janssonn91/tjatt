@@ -193,10 +193,11 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('newChannel', (channel) => {
-    console.log('new channel', channel._id);
-    socket.join(channel._id, () => console.log('received channel', socket.rooms));
-  })
+ 
+  // socket.on('newChannel', (channel) => {
+  //   console.log('new channel', channel._id);
+  //   socket.join(channel._id, () => console.log('received channel', socket.rooms));
+  // })
 
 
 
@@ -206,6 +207,17 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('logout', {
       loginUser: onlineUsers
     })
+  })
+
+  socket.on('join channel',  channel=>{
+    socket.join(channel, () => console.log('received channel', socket.rooms));})
+
+  socket.on('invitation', data=>{
+    socket.join(data.targetChannel);
+  })
+
+  socket.on('acceptance', data=>{
+    socket.join(data.targetChannel)
   })
 
   socket.on('system', async (data) => {
@@ -451,7 +463,6 @@ io.on('connection', (socket) => {
           
         }
 
-
         let message = {
           textType: "removeFromGroup",
           initiator: data.initiator,
@@ -482,7 +493,7 @@ io.on('connection', (socket) => {
         })
         groupMessage.save();
         m.push(groupMessage);
-
+        socket.broadcast.emit('group', groupMessage);
         io.to(c).emit('chat message', m);
       })
     }
@@ -501,7 +512,7 @@ io.on('connection', (socket) => {
         })
         groupMessage.save();
         m.push(groupMessage);
-
+        socket.broadcast.emit('group', groupMessage);
         io.to(c).emit('chat message', m);
     });
   
@@ -521,7 +532,7 @@ io.on('connection', (socket) => {
       })
       groupMessage.save();
       m.push(groupMessage);
-
+      socket.broadcast.emit('group', groupMessage);
       io.to(c).emit('chat message', m);
   });
 }
@@ -556,6 +567,8 @@ io.on('connection', (socket) => {
   
   
   });
+
+ 
 
 
 

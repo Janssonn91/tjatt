@@ -11,6 +11,7 @@ class ChannelStore {
   //@observable newChannel = [];
   @observable myChannels = [];
   @observable currentChannel = "";
+  @observable sidebarMessageNum = "";
   @observable channelName = "";
   @observable channelImg = "";
   //@observable currentChannelGroup = false; // never used, removable ??
@@ -209,7 +210,6 @@ class ChannelStore {
   }
 
   readSystemMessage(id, i){
-    console.log(id,i)
     let c = toJS(this.unreadSystemMessages)
     c.splice(i, 1);
     this.unreadSystemMessages= c;
@@ -227,10 +227,13 @@ class ChannelStore {
         }
       }).then(res => res.json())
     }
-    
-
-
    
+  }
+
+  //when user is removed from a group frontend only
+  deleteGroupChannel(id){
+    this.groupChannels.filter(id);
+    console.log("removed!!!!!!");
   }
 
   getGroupMembersData(memberIds) {
@@ -243,45 +246,54 @@ class ChannelStore {
         const existInMyContact = (userId) => {
           return userStore.user.contact.some(contactId => userId === contactId);
         }
-        this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
-        const nonMembers = users.filter(user => !isGroupMember(user._id));
+        let nonSystem = users.filter(user=>user.username !=="system");
+        
+        this.currentGroupMembers = nonSystem.filter(user => isGroupMember(user._id));
+        const nonMembers = nonSystem.filter(user => !isGroupMember(user._id) );
+        
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        
+      
+        
       });
   }
 
-  @action async changeChannel(channel) {
-    console.log(channel)
-    this.currentChannel = channel;
-    this.currentChannel.messageNum = 0;
-    console.log("channelname", this.currentChannel)
-
-    this.showChat();
-    this.getChannelChatHistory(this.currentChannel._id);
-    this.getLoginStatus();
-
-    this.currentChannelAdmins = [];
-    this.ChannelChatHistory = [];
-
-    let admin = [];
-    if (typeof (channel.admin) === "string") {
-      admin.push(channel.admin);
-      this.currentChannelAdmins.push(channel.admin);
-    } else {
-      admin = channel.admin;
-      this.currentChannelAdmins = channel.admin;
-    }
-    let element = "";
-    if (!channel.group) {
-      const name = this.getContactName(channel.members);
-      this.channelName = name.contactChannelname;
-    } else {
-      this.getGroupMembersData(channel.members);
-      this.channelName = channel.channelname;
-    }
+  @action async changeChannel(c) {
+    this.currentChannel = c;
+    this.currentChannel.messageNum=0;
+    Channel.find({_id: c._id}).then(data=>{
+     let channel= data[0];
+      this.currentChannel = channel;
+      this.currentChannel.messageNum=0;
+      this.showChat();
+      this.getChannelChatHistory(this.currentChannel._id);
+      this.getLoginStatus();
+  
+      this.currentChannelAdmins = [];
+      this.ChannelChatHistory = [];
+  
+      let admin = [];
+      if (typeof (channel.admin) === "string") {
+        admin.push(channel.admin);
+        this.currentChannelAdmins.push(channel.admin);
+      } else {
+        admin = channel.admin;
+        this.currentChannelAdmins = channel.admin;
+      }
+      let element = "";
+      if (!channel.group) {
+        const name = this.getContactName(channel.members);
+        this.channelName = name.contactChannelname;
+      } else {
+        this.getGroupMembersData(channel.members);
+        this.channelName = channel.channelname;
+      }
+    })
+    
   }
 
   async getChannelChatHistory(id) {
-    console.log("changeChannel", id)
+   // console.log("changeChannel", id)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: id

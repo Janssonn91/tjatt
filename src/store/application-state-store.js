@@ -33,7 +33,6 @@ class ApplicationStateStore {
           socket.emit('online', userStore.user._id);
 
           socket.on('online', message => {
-           // console.log('online', message)
             this.onLineUsers = message.loginUser;
             channelStore.getLoginStatus();
           });

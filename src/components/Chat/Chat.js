@@ -191,7 +191,6 @@ export default class Chat extends Component {
     socket.on(
       'chat message',
       (messages) => {
-        console.log(messages);
         for (let message of messages) {
           // let time = new Date(message.time);
           // console.log(time)

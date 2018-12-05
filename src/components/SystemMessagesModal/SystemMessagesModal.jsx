@@ -13,7 +13,7 @@
       {message.unread ?
         message.textType==="invitation" ?
         <ListGroupItem key={i} className="pr-0">
-            <span>{message.initiator} wants to add you as a contact</span>   
+            <span>{message.initiator} wants to add you as a contact.</span> 
             <span>
               <ButtonGroup size="sm" className = "d-inline-block float-right">
                 <Button className="btn btn-cancel mr-2" onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
@@ -23,32 +23,32 @@
           </ListGroupItem>
           : message.textType==="acceptance" ?
           <ListGroupItem key={i}>
-          <span>{message.initiator} has accepted your contact invitation</span>
+          <span>{message.initiator} has accepted your contact invitation.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType==="rejection" ?
           <ListGroupItem key={i}>
-          <span>{message.initiator} has rejected your invitation</span>
+          <span>{message.initiator} has rejected your invitation.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "addedToGroup" ?
           <ListGroupItem key={i}>
-          <span>{message.initiator} has added you as a group member of {message.targetChannel}</span>
+          <span>{message.initiator} has added you as a group member of {message.targetChannel}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "removeFromGroup" ?
           <ListGroupItem key={i}>
-          <span>{message.initiator} has removed you from group {message.targetChannel}</span>
+          <span>{message.initiator} has removed you from group {message.targetChannel}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "removeContact" ?
           <ListGroupItem key={i}>
-          <span>You are nolonger contact with {message.initiator}</span>
+          <span>You are nolonger contact with {message.initiator}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "makeAdmin" ?
           <ListGroupItem key={i}>
-          <span>You are now contact of {message.initiator}</span>
+          <span>You are now contact of {message.initiator}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           :
