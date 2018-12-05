@@ -246,9 +246,15 @@ class ChannelStore {
         const existInMyContact = (userId) => {
           return userStore.user.contact.some(contactId => userId === contactId);
         }
-        this.currentGroupMembers = users.filter(user => isGroupMember(user._id));
-        const nonMembers = users.filter(user => !isGroupMember(user._id));
+        let nonSystem = users.filter(user=>user.username !=="system");
+        
+        this.currentGroupMembers = nonSystem.filter(user => isGroupMember(user._id));
+        const nonMembers = nonSystem.filter(user => !isGroupMember(user._id) );
+        
         this.currentGroupCandidates = nonMembers.filter(user => existInMyContact(user._id));
+        
+      
+        
       });
   }
 
