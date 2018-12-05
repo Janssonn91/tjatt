@@ -1,9 +1,10 @@
 import './ChatMessage.scss';
-import Highlight from 'react-highlight';
+import { vs2015 } from 'react-syntax-highlighter/dist/styles/hljs';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import ScrollableFeed from 'react-scrollable-feed';
-import 'highlight.js/styles/vs2015.css';
-@inject('userStore', 'channelStore') 
-@observer export default class ChatMessage extends Component {
+
+@inject('userStore', 'channelStore') @observer
+export default class ChatMessage extends Component {
 
   @observable iconShow = false;
   @observable iconDisappear = false;
@@ -16,7 +17,8 @@ import 'highlight.js/styles/vs2015.css';
   @observable fullHeightSnippet = [];
   @observable sendToDeleteMessageModal = {
     isOpen: false,
-    toggle: this.deleteMessageModalToggle.bind(this)
+    toggle: this.deleteMessageModalToggle.bind(this),
+    selectedMessage: ''
   }
 
   async start() {
@@ -50,8 +52,9 @@ import 'highlight.js/styles/vs2015.css';
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  deleteMessageModalToggle() {
+  deleteMessageModalToggle = (id) => {
     this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
+    this.sendToDeleteMessageModal.selectedMessage = id;
   }
 
   formattedTime(t) {
@@ -77,8 +80,8 @@ import 'highlight.js/styles/vs2015.css';
         + " " + hour + ":" + min + " " + ampm;
       return result;
     }
-
-
   }
+
+
 
 }
