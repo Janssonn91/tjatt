@@ -70,6 +70,13 @@ export default class Chat extends Component {
 
 
   async start() {
+    this.setupMessageListener();
+    // observe(this.props.userStore, "isLoggedIn", ()=>{
+    //   if(this.props.userStore.isLoggedIn){
+    //     this.setupMessageListener();
+    //     console.log("observing login")
+    //   }
+    // })
     this.importedApps = await Repo.find();
     const appName = window.location.href.split('/').pop();
     this.openApp === this.importedApps.find(app => app.name === appName);
@@ -79,20 +86,11 @@ export default class Chat extends Component {
     this.chatSidebar ? this.chatSidebar = false : null;
     this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
-  async start() {
-    this.setupMessageListener();
-    // observe(this.props.userStore, "isLoggedIn", ()=>{
-    //   if(this.props.userStore.isLoggedIn){
-    //     this.setupMessageListener();
-    //     console.log("observing login")
-    //   }
-    // })
-  }
 
   openAppHandler(app){
     this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
     this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
-    
+  }
 
   gifToggler = () => {
     this.gifPicker = !this.gifPicker;
@@ -185,7 +183,7 @@ export default class Chat extends Component {
   }
 
   addDeleteMemberModalToggle() {
-    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
+    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen;
   }
 
   viewMembersModalToggle() {
