@@ -14,7 +14,8 @@
             <i className="fas fa-ellipsis-v"></i>
           </Button>
           {/* <span id="channelName"></span>  */}
-          <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span>
+          {/* <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span> */}
+          <span className ="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannel.group
             ? <div className="btn group-menu">
               <span className="dialog-icon p-0">

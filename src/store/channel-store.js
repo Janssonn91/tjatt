@@ -279,6 +279,7 @@ class ChannelStore {
 
   @action async changeChannel(c) {
     this.currentChannel = c;
+    let name = c.channelname;
     this.currentChannel.messageNum = 0;
     Channel.find({ _id: c._id }).then(data => {
       let channel = data[0];
@@ -302,12 +303,12 @@ class ChannelStore {
       let element = "";
       if (!channel.group) {
         const name = this.getContactName(channel.members);
-        this.channelName = name.contactChannelname;
+        this.channelName = name.name;
       } else {
         this.getGroupMembersData(channel.members);
         this.channelName = channel.channelname;
       }
-    })
+   })
 
   }
 
