@@ -33,6 +33,8 @@ require('./routes/updateRepo')(app);
 require('./routes/getBranch')(app);
 require('./routes/startGitApp')(app);
 require('./routes/deleteGitApp')(app);
+require('./routes/changeBranch')(app);
+
 
 
 

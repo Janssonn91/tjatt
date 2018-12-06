@@ -135,6 +135,20 @@ import './GitAppsSidebar.scss';
         return branches;
     }
 
+
+    async changeBranch(branch, app){ console.log(app)
+        await fetch('/api/changeBranch', {
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({branch: branch, app: app}), // data can be `string` or {object}!
+            method: 'POST' // or 'PUT'
+        })
+        .then(response => response.json())
+        .then(response => {
+            return response;
+        })
+        .catch(error=>console.log(error));
+    }
+
     onPullApp(appId){ 
         const appToupdate = this.importedApps.find(app => app._id === appId);
         fetch('/api/updateRepo', { 

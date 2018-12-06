@@ -14,7 +14,7 @@ module.exports = class handleGit {
 
 static git_branch(payload) {
   simplegit(payload.localPath)
-    .branch(function (err, branchSummary) { console.log(branchSummary)
+    .branch(function (err, branchSummary) {
       payload.res.json({branches: (branchSummary.all)})
   })
     // if(fs.existsSync(payload.localPath)){
@@ -35,10 +35,16 @@ static git_branch(payload) {
     //   .catch(err => { console.log("error", err); payload.res.json('err'); });
     // }
   }
-    static git_checkout(payload) {
+    static git_checkout(payload) { console.log(payload.localPath, payload.branch)
       simplegit(payload.localPath) 
-      .checkout('master', function (err, data){
+      .checkout(payload.branch, function (err, data){
+        if (data){ 
+          return data
+        } else {
+          return err
+        }
       })
+     
     }
   
   static git_clone(payload) {
