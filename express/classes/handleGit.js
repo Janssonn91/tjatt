@@ -67,7 +67,7 @@ static git_branch(payload) {
         console.log("Pulled repo from: " + payload.gitUrl);
       })
       .then(vms.docker_rebuild_image(payload))  
-      .catch(err => { console.log("error", err); payload.res.json('err'); })
+      .catch(err => { console.log("error", err); })
   }
 
 }
