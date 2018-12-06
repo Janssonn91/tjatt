@@ -37,8 +37,6 @@ static git_branch(payload) {
   }
   
   static git_clone(payload) {
-    console.log('git clone');
-    console.log(payload.gitUrl, payload.localPath);
     simplegitPromise()
       .silent(true)
       .clone(payload.gitUrl, payload.localPath)

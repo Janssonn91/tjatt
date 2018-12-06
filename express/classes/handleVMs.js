@@ -22,20 +22,19 @@ module.exports = class HandleVMs {
   static async get_used_ports() {
     return new Promise((resolve, reject) => {
       docker.container.list().then(containers => {
+        console.log(containers, 'zzzzzzzzzzzzz');
         let ports = containers.filter(container => {
-          console.log(container.data.Ports);
-          if (container.data.Ports.length === 1) {
-            return true
-          } else {
-            return false
-          }
-        }).map(_container => {
-          let _ports = _container.data.Ports.map(port => {
+          // console.log(container, 'containerrrrrrsssssss');
+          return container.data.Ports.length !== 0
+        }).map(item => {
+          // console.log(item, '____containerrrrrr');
+          let _ports = item.data.Ports.map(port => {
+            console.log(port, 'port inside map container');
             return port.PublicPort
           })
-          console.log(_ports);
-          return _ports
+          return _ports.filter(item=> item !== undefined);
         });
+        // console.log(ports, 'inside get used portssssssss');
         resolve([].concat.apply([], ports));
       });
     })
@@ -45,8 +44,9 @@ module.exports = class HandleVMs {
     let probePort = 49152;
     let found = false;
     let usedPorts = await this.get_used_ports();
+    // console.log(usedPorts, 'useddddddd');
     while (!found) {
-      usedPorts.includes(probePort) ? probePort++ : (found = true);
+      usedPorts.includes(probePort) ? probePort = usedPorts[0] +1  : (found = true);
     }
     return probePort;
   }
@@ -87,14 +87,7 @@ services:
     build: "../${payload.uniqueProjectName}"
     ports:
     - "${payload.dockerPort}:${payload.webPort}"
-    depends_on:
-    - mongo
-    container_name: "${payload.uniqueProjectName}_app"
-  mongo:
-    image: mvertes/alpine-mongo
-    expose:
-    - "27017"
-    container_name: "${payload.uniqueProjectName}_db"`;
+    container_name: "${payload.uniqueProjectName}_app"`;
     // NOW YOU CAN INDENT AGAIN!
 
     fs.writeFile(path, '', {

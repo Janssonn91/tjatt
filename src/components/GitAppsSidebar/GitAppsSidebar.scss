@@ -138,6 +138,13 @@
     box-shadow: none;
 }
 
+.gitApps-sideDrawer-appsList-app-label-wrapper{
+    display: inline-flex;
+}
+.gitApps-sideDrawer-appsList-app-label-spinner{
+    width: 15px;
+    height: 15px;
+}
 .gitApps-sideDrawer-appsList-app-label{
     margin: 0;
 }
@@ -183,6 +190,3 @@
     border: none;
     display: block;
 }
-
-
-

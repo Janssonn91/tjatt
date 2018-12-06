@@ -76,28 +76,28 @@
                                         <p className="gitApps-sideDrawer-appsList-app-label">{app.name}</p>
                                         <div className="gitApps-sideDrawer-appsList-app-controls">
                                             {app.running ? 
-                                            <Fragment>
-                                                <Link
-                                                    to={`/git-app/${app.name}`}
-                                                    data-tip data-for={`launch-${app._id}`}
-                                                    // onClick={() => this.openAppHandler(app)} 
-                                                    onClick={() => this.props.onOpenApp(app)}  
-                                                    className="gitApps-sideDrawer-appsList-app-controls-button ">
-                                                    <i className={`fas ${this.props.openApp && this.props.openApp._id === app._id ? 'fa-times' : 'fa-rocket'}`}></i> 
-                                                </Link> 
-                                                <ReactTooltip id={`launch-${app._id}`} effect='solid'>
-                                                  <span>{this.openApp._id === app._id ? 'Close' :'Launch'} App</span>
-                                                </ReactTooltip>
-                                                <button
-                                                    data-tip data-for={`branch-${app._id}`}
-                                                    onClick={()=>this.onOpenBranchesHandler(app)}
-                                                    className="gitApps-sideDrawer-appsList-app-controls-button ">
-                                                   <i className="fas fa-code-branch"></i>
-                                                </button>
-                                                <ReactTooltip id={`branch-${app._id}`} effect='solid'>
-                                                  <span>Get Branches</span>
-                                                </ReactTooltip>
-                                            </Fragment>
+                                                <Fragment>
+                                                    <Link
+                                                        to={this.props.openApp && this.props.openApp._id === app._id ? '/git-app' :`/git-app/${app.name}`}
+                                                        data-tip data-for={`launch-${app._id}`}
+                                                        // onClick={() => this.openAppHandler(app)} 
+                                                        onClick={() => this.props.onOpenApp(app)}  
+                                                        className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                                        <i className={`fas ${this.props.openApp && this.props.openApp._id === app._id ? 'fa-times' : 'fa-rocket'}`}></i> 
+                                                    </Link> 
+                                                    <ReactTooltip id={`launch-${app._id}`} effect='solid'>
+                                                    <span>{this.openApp._id === app._id ? 'Close' :'Launch'} App</span>
+                                                    </ReactTooltip>
+                                                    <button
+                                                        data-tip data-for={`branch-${app._id}`}
+                                                        onClick={()=>this.onOpenBranchesHandler(app)}
+                                                        className="gitApps-sideDrawer-appsList-app-controls-button ">
+                                                    <i className="fas fa-code-branch"></i>
+                                                    </button>
+                                                    <ReactTooltip id={`branch-${app._id}`} effect='solid'>
+                                                    <span>Get Branches</span>
+                                                    </ReactTooltip>
+                                                </Fragment>
                                             : null}
                                             <button
                                                 data-tip data-for={`start-${app._id}`}
@@ -135,7 +135,7 @@
                                     isOpen={this.openBranches === app._id ? true : false}>
                                     <div className="gitApps-sideDrawer-appsList-app-controls-branch">
                                         <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Remote</p>                                        
-                                        {app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
+                                        {app.branches && app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
                                             <button 
                                                 key={index} 
                                                 className="gitApps-sideDrawer-appsList-app-controls-button-branch">
@@ -145,7 +145,7 @@
                                     </div>
                                     <div className="gitApps-sideDrawer-appsList-app-controls-branch">
                                         <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Local</p>                                        
-                                        {app.branches.filter(item => !item.includes('origin/')).map((branch, index) => (
+                                        {app.branches && app.branches.filter(item => !item.includes('origin/')).map((branch, index) => (
                                             <button 
                                                 key={index} 
                                                 className="gitApps-sideDrawer-appsList-app-controls-button-branch">

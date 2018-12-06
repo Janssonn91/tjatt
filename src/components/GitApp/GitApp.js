@@ -25,8 +25,9 @@ import './GitApp.scss';
     }
 
     openAppHandler(app){
-        this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = false : null;
         this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+        this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
+        
     }
   
 }

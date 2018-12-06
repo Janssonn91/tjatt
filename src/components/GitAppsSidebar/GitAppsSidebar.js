@@ -13,6 +13,7 @@ import './GitAppsSidebar.scss';
 @observable importingRepo = false;
 @observable importingApps = false;
 @observable openBranches = null;
+@observable startingApp = null;
 
     async start(){
         this.importingApps = true;
@@ -105,6 +106,7 @@ import './GitAppsSidebar.scss';
                 response.dockerPort,
                 await this.onGetBranches({name: response.uniqueProjectName, gitUrl: response.gitUrl})
             );
+            await this.fetchRepos();
             this.urlToSet = '';
             this.portToSet = '';
             this.projectToSet = '';
@@ -149,7 +151,10 @@ import './GitAppsSidebar.scss';
         const appToStart = this.importedApps.find(app => app._id === appId);
         const app = this.importedApps.find(app=> app._id === appId);
         app.running = !app.running;
+        !app.running ? window.history.pushState({urlPath:'/git-app'},"",'/git-app') : null;
+        !app.running ? this.props.onOpenApp({}) : null;
         this.openApp._id === appId ? this.openApp = {} : null;
+        this.startingApp = appId;
         fetch('/api/startGitApp', { 
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({name: appToStart.name, appRunning: appToStart.running}), // data can be `string` or {object}!
@@ -161,6 +166,7 @@ import './GitAppsSidebar.scss';
             await this.fetchRepos();
             const appToChange = this.importedApps.find(app => app.name === response.name);
             app.running ? this.onGetBranches(appToChange) : null;
+            this.startingApp = null;
         })
         .catch(error=>console.log(error));
     }
