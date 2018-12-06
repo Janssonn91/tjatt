@@ -14,6 +14,7 @@ module.exports = function (app) {
             res: res
         }
         git.git_checkout(payload);
+    
     });
 
 };
