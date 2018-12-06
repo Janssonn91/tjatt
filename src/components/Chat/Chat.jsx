@@ -99,10 +99,8 @@
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                   </DropdownItem>
-                {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
                   <DropdownItem onClick={() => this.openSideDrawerHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
-                }
               </DropdownMenu>
             </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
