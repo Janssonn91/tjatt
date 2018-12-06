@@ -1,0 +1,192 @@
+.gitApps-app-launcher-show{
+    top: 0;
+    transition: all 0.5s;
+}
+
+.gitApps-sideDrawer{
+    background-color: #F6F8FA;
+    position: absolute;
+    top: 0;
+    right: -500px;
+    height: 100vh;
+    max-width: 500px;
+    width: 100%;
+    transition: all 0.5s;
+    overflow-y: scroll;
+    z-index: 10;
+}
+
+.gitApps-sideDrawer-open{
+    right: 0;
+}
+
+.gitApps-sideDrawer-close-button{
+    z-index: 5;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    position: absolute;
+    right: 0;
+}   
+
+.gitApps-sideDrawer-close-button:hover{
+    background-color: transparent;
+    box-shadow: none !important;
+    color: #366AC8;
+}
+
+.gitApps-sideDrawer-header{
+    position: fixed;
+    height: 145px;
+    max-width: 500px;
+    width: 100%;
+    z-index: 4;
+    text-align: center;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #25292C;
+}
+
+.gitApps-sideDrawer-header-title{
+    margin-top: 1.5em;
+}
+
+.gitApps-sideDrawer-git-icon{
+    color: #fff
+}
+
+.gitApps-sideDrawer-import-form-content{
+    margin-top: 145px;
+}
+
+.gitApps-sideDrawer-import-form-header{
+    border-bottom: 1px solid #366AC8;
+    color: #000;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.gitApps-sideDrawer-import-form-header:hover{
+    color: #366AC8;
+}
+
+.gitApps-sideDrawer-import-form-header-label{
+    margin-bottom: 0;
+}
+
+.gitApps-sideDrawer-import-form{
+    position: relative;
+}
+
+.gitApps-sideDrawer-import-form-label{
+    color: #000;
+}
+
+.gitApps-sideDrawer-import-form-label-port{
+    color: #000;
+}
+
+.gitApps-sideDrawer-submit-button{
+    background-color: transparent;
+    box-shadow: none !important;
+    background-color: #366AC8;
+    color: #fff;
+}
+
+.gitApps-sideDrawer-submit-button:hover{
+    background-color: #366AC885;
+}
+
+.gitApps-sideDrawer-spinner{
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
+    z-index: 3;
+    background: rgb(37,41,44);
+    background: radial-gradient(circle, rgba(37,41,44,0.2) 0%, rgba(250,246,248,1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gitApps-sideDrawer-appsList{
+    list-style-type: none;
+    padding: 0;
+}
+
+.gitApps-sideDrawer-appsList-app{
+    width: 100%;
+    background-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+
+.gitApps-sideDrawer-appsList-app:hover{
+    color: #366AC8;
+    border: none;
+    box-shadow: none;
+}
+
+.gitApps-sideDrawer-appsList-app-label-wrapper{
+    display: inline-flex;
+}
+.gitApps-sideDrawer-appsList-app-label-spinner{
+    width: 15px;
+    height: 15px;
+}
+.gitApps-sideDrawer-appsList-app-label{
+    margin: 0;
+}
+
+.gitApps-sideDrawer-appsList-app-controls{
+    display: inline-flex;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button{
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button:hover{
+    color: #366AC8;
+    border: none;
+    box-shadow: none;
+}   
+
+.gitApps-sideDrawer-appsList-app-controls-branch-wrapper{
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-branch{
+    width: 45%;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-label-branch{
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: .2rem 0;
+    margin: .2rem 0;
+    border-bottom: 1px solid #366AC8;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button-branch{
+    font-size: 0.75rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    display: block;
+}

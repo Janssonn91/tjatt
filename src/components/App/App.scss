@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css?family=Secular+One');
+.App {
+  min-height: 100vh;
+  textarea:hover, 
+  input:hover, 
+  textarea:active, 
+  input:active, 
+  textarea:focus, 
+  input:focus,
+  button:focus,
+  button:active,
+  button:hover,
+  label:focus,
+  .btn:active,
+  .btn.active
+  {
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: inset 0 -1px 0 #ddd;
+  }
+
+.row {
+  margin: 0!important;
+}
+
+  .light-blue-bg {
+    background-color: #cce5ff75;
+  }
+  &.container-fluid {
+    padding: 0 !important;
+  }
+}
+
+.loading-container{
+  height: 100vh;
+  width: 100vw;
+  // background-color:#919192;
+  background-color: rgb(53, 53, 53);
+}
+
+.loading {
+  background: url('/images/spinnerLogo.png');
+  background-repeat: no-repeat;
+  z-index: 1;
+  height: 250px;
+  width: 250px;
+  // border: 20px solid lighten(#919192, 28%);
+  // border-top-color: #919192;
+  // // border-radius: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  // text-align:center;
+  animation: round 2s linear infinite;
+  
+  .letters{
+      color:white;
+      display: inline-block;
+      position:absolute;
+      transform-origin: bottom center;
+      padding-bottom: 55px;
+      top: -23px;
+      // font-weight:bold;
+      font-family: 'Secular One', sans-serif;
+      font-size: 18px;
+  }
+
+  #letterOne{
+      transform: rotate(12deg);
+  }
+  #letterTwo{
+      transform: rotate(20deg);
+  }
+  #letterThree{
+      transform: rotate(32deg);
+  }
+  #letterFour{
+      transform: rotate(0);
+      // padding-top: 0.5px;
+  }
+  #letterFive{
+      transform: rotate(-36deg);
+      // padding-bottom: 5px;
+  }
+  #letterSix{
+      transform: rotate(-24deg);
+  }
+  #letterSeven{
+      transform: rotate(-12deg);
+  }
+}
+
+@keyframes round{
+  from{transform: rotate(0deg)}
+  to{transform: rotate(360deg)}
+}

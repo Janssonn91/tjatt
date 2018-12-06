@@ -1,0 +1,110 @@
+$white: rgb(219, 219, 219);
+
+
+
+.row {
+    margin: 0 !important;
+}
+
+.logo{
+    width: 100px;
+    height:100px;
+}
+
+.login-area {
+
+    background-image: url("./img/pic-of-the-day.jpg");
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+
+    .heading-area{
+        margin: 0;
+    }
+
+    .side-menu{
+        // margin-left:2vw;
+        height:100vh;
+        padding-right:0px;
+        background-color: #F2F5F8;
+        .navbar-toggler {
+            margin-left: 15px;
+            margin-top:15px;
+            margin-bottom: 15px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+        color: white;
+        font-family: 'Chakra Petch', sans-serif;
+    }
+
+    .msg-area {
+        padding: 10px;
+        background: rgba(0, 0, 0, .9);
+        border-radius: 5px;
+        text-align: center;
+        font-family: 'Chakra Petch', sans-serif;
+        color: white;
+    }
+
+    .btn-login, .btn-create-acc, .btn-logout, .overlay {
+        background: rgba(0, 0, 0, .9);
+        border-color: $white;
+    }
+
+    .error-msg {
+        background: rgba(0, 0, 0, .1);
+        color: $white;
+        text-align: center;
+    }
+
+    .retrieve-pw {
+        color: $white;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .loginForm{
+        box-shadow: 2px 2px 2px 100vmax rgba(0,0,0,0.4);
+      }
+
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+.hide-menu{
+    width:25vw;
+    height:100vh;
+    padding:0px !important;
+}
+
+.hide-chat{
+    width:75vw;
+    height:100vh;
+    padding:0px !important;
+}
+@media (max-width: 767.5px) {
+    .hide-menu{
+        display:none;
+    }
+    .hide-chat{
+        display:none;
+    }
+  }
+
+
+
+
+
+
+
+
+  
+
+  
+  

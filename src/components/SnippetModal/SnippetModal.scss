@@ -1,0 +1,30 @@
+.snippet-modal{
+  
+  .codefile:hover{
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .file-value:hover {
+    text-decoration: none!important;
+  }
+
+  .file-value {
+    color:gray;
+    padding: 8px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    word-break: unset;
+  }
+
+  .upload-btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+}
