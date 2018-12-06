@@ -2,7 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
-  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} />
+  <SnippetModal uploadError={this.fileUploadError} snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} fileValueMethod={this.getFileValue} fileValue={this.codefileValue} textMethod={this.codeTextHandler} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -65,12 +65,13 @@
         <Col className="pr-0">
           <ul className="chat-history pl-2 mr-1">
             <ChatMessage />
+
           </ul>
         </Col>
       </Row>
       <Row className="formRow">
         <Col className="p-0">
-          <Form inline className="chat-message py-2 clearfix">
+          <Form inline className="chat-message py-2 clearfix" onSubmit={e => e.preventDefault()}>
             <Dropdown
               direction="up"
               isOpen={this.isOpen}
@@ -119,6 +120,7 @@
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
               />
+
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
                   <div
@@ -131,6 +133,16 @@
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>
+                <DropdownToggle className="gif-container bg-light">
+                  <div>
+                    <img src="/images/gif.logo.jpg" className="gif-opener" />
+                  </div>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-left">
+                  <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />
                 </DropdownMenu>
               </Dropdown>
             </FormGroup>
