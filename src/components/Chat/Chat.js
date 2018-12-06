@@ -33,8 +33,9 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
-  @observable openGitAppsSidebar = false;
+  @observable importedApps = [];
   @observable openApp = {};
+  @observable openGitAppsSidebar = true;
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -62,9 +63,21 @@ export default class Chat extends Component {
   //start chat
 
 
-  start() {
+  async start() {
+    this.importedApps = await Repo.find();
+    const appName = window.location.href.split('/').pop();
+    this.openApp === this.importedApps.find(app => app.name === appName);
+  }
+  
+  openGitAppsSidebarHandler(){
+    this.chatSidebar ? this.chatSidebar = false : null;
+    this.openGitAppsSidebar = !this.openGitAppsSidebar;
+  }
 
-
+  openAppHandler(app){
+    this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+    this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
+    
   }
 
   scrollToBottom = () => {
