@@ -22,19 +22,14 @@ module.exports = class HandleVMs {
   static async get_used_ports() {
     return new Promise((resolve, reject) => {
       docker.container.list().then(containers => {
-        // console.log(containers, 'zzzzzzzzzzzzz');
         let ports = containers.filter(container => {
-          // console.log(container, 'containerrrrrrsssssss');
           return container.data.Ports.length !== 0
         }).map(item => {
-          // console.log(item, '____containerrrrrr');
           let _ports = item.data.Ports.map(port => {
-            // console.log(port, 'port inside map container');
             return port.PublicPort
           })
           return _ports.filter(item=> item !== undefined);
         });
-        // console.log(ports, 'inside get used portssssssss');
         resolve([].concat.apply([], ports));
       });
     })
@@ -44,9 +39,9 @@ module.exports = class HandleVMs {
     let probePort = 49152;
     let found = false;
     let usedPorts = await this.get_used_ports();
-    // console.log(usedPorts, 'useddddddd');
+    // Randomize a port between 49152-65535 (publicly available ports)
     while (!found) {
-      usedPorts.includes(probePort) ? probePort = usedPorts[0] +1  : (found = true);
+      usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
     }
     return probePort;
   }
@@ -116,6 +111,7 @@ services:
         })
         payload.res.json(response);
         console.log(stdout || stderr);
+        docker.container.list().then(containers => containers[0].status());
         resolve();
       });
     });
