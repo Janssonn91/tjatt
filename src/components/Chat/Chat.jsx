@@ -15,7 +15,7 @@
           </Button>
           {/* <span id="channelName"></span>  */}
           {/* <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span> */}
-          <span className ="chat-with">{this.props.channelStore.channelName}</span>
+          <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannel.group
             ? <div className="btn group-menu">
               <span className="dialog-icon p-0">
@@ -157,6 +157,7 @@
           </Form>
         </Col>
       </Row>
+      <GitAppsSidebar open={this.openGitAppsSidebar} openApp={this.openApp} onClose={() => this.openGitAppsSidebarHandler()} onOpenApp={(app) => this.openAppHandler(app)} />
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">
