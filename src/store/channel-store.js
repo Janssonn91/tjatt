@@ -113,8 +113,7 @@ class ChannelStore {
   }
 
   async renderChannelElements(channels, type, anchor) {
-    console.log("anchor", anchor)
-    console.log(document.getElementById(anchor))
+  
     let contact = "";
     let elements = await channels.map(async (channel, i) => {
       let img = "";
@@ -172,7 +171,6 @@ class ChannelStore {
       // return this.userDict[u._id];
     })
 
-    console.log(toJS(this.userDict));
   }
 
   getGroupMembersData(memberIds) {
@@ -207,16 +205,12 @@ class ChannelStore {
     let admin = [];
     if (typeof (channel.admin) === "string") {
       admin.push(channel.admin);
-      console.log(admin)
       this.currentChannelAdmins.push(channel.admin);
-      console.log(this.currentChannelAdmins);
       //this.currentChannel.admin.push(channel.admin);
       //console.log(this.currentChannel.admin);
     } else {
       admin = channel.admin;
       this.currentChannelAdmins = channel.admin;
-      console.log(this.currentChannelAdmins);
-      console.log(admin);
       //this.currentChannel.admin = channel.admin;
     }
     this.amIAdmin = admin.some(a => a === loginStore.user._id);
@@ -234,12 +228,10 @@ class ChannelStore {
   }
 
   async getChannelChatHistory(channel) {
-    console.log(channel)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: channel._id
     });
-    console.log(this.channelChatHistory)
     // this.renderChatMessage();
   }
 

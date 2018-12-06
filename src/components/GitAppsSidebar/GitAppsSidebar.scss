@@ -1,18 +1,3 @@
-.gitApps-app-frame{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-}
-
-.gitApps-app-launcher{
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    color: #D35635;
-    transition: all 0.2s;
-}
-
 .gitApps-app-launcher-show{
     top: 0;
     transition: all 0.5s;
@@ -24,15 +9,15 @@
     top: 0;
     right: -500px;
     height: 100vh;
-    width: 0;
+    max-width: 500px;
+    width: 100%;
     transition: all 0.5s;
     overflow-y: scroll;
+    z-index: 10;
 }
 
 .gitApps-sideDrawer-open{
     right: 0;
-    width: 500px;
-    max-width: 100%;
 }
 
 .gitApps-sideDrawer-close-button{
@@ -40,7 +25,8 @@
     background-color: transparent;
     outline: none;
     border: none;
-    position: fixed;
+    position: absolute;
+    right: 0;
 }   
 
 .gitApps-sideDrawer-close-button:hover{
@@ -52,8 +38,8 @@
 .gitApps-sideDrawer-header{
     position: fixed;
     height: 145px;
-    width: 500px;
-    max-width: 100%;
+    max-width: 500px;
+    width: 100%;
     z-index: 4;
     text-align: center;
     display: -ms-flexbox;
@@ -61,6 +47,10 @@
     -ms-flex-direction: column;
     flex-direction: column;
     background-color: #25292C;
+}
+
+.gitApps-sideDrawer-header-title{
+    margin-top: 1.5em;
 }
 
 .gitApps-sideDrawer-git-icon{
@@ -139,6 +129,7 @@
     justify-content: space-between;
     border: none;
     cursor: pointer;
+    flex-wrap: wrap;
 }
 
 .gitApps-sideDrawer-appsList-app:hover{
@@ -147,8 +138,19 @@
     box-shadow: none;
 }
 
+.gitApps-sideDrawer-appsList-app-label-wrapper{
+    display: inline-flex;
+}
+.gitApps-sideDrawer-appsList-app-label-spinner{
+    width: 15px;
+    height: 15px;
+}
 .gitApps-sideDrawer-appsList-app-label{
     margin: 0;
+}
+
+.gitApps-sideDrawer-appsList-app-controls{
+    display: inline-flex;
 }
 
 .gitApps-sideDrawer-appsList-app-controls-button{
@@ -163,5 +165,28 @@
     box-shadow: none;
 }   
 
+.gitApps-sideDrawer-appsList-app-controls-branch-wrapper{
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+}
 
+.gitApps-sideDrawer-appsList-app-controls-branch{
+    width: 45%;
+}
 
+.gitApps-sideDrawer-appsList-app-controls-label-branch{
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: .2rem 0;
+    margin: .2rem 0;
+    border-bottom: 1px solid #366AC8;
+}
+
+.gitApps-sideDrawer-appsList-app-controls-button-branch{
+    font-size: 0.75rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    display: block;
+}

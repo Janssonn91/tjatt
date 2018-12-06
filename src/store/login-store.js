@@ -23,7 +23,6 @@ class LoginStore {
 
   constructor() {
     this.checkIfLoggedIn();
-    console.log('login-store här?????');
     setTimeout(() => {
       this.isLoading = false;
     }, 500);
