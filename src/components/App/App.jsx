@@ -20,7 +20,7 @@
           <Route path="/signup" component={Signup} />
           <Route path="/retrievepassword" component={RetrievePW} />
           <Route path="/server" component={Server} />
-          <Route path="/git" component={GitApps} />
+          <Route path="/git-app" component={GitApp} />
           {this.props.userStore.checkedLoginState ?
             <PrivateRoute path={`/${this.props.userStore.user.username}/:id?`} component={Tjatt} /> :
             <Route path="/" component={Loading} />

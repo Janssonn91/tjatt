@@ -50,7 +50,8 @@
                       }
                     </div>
                     <DropdownItem className="m-0" divider />
-                    <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group</DropdownItem>
+                    <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group
+                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </span>
@@ -95,12 +96,13 @@
                   </label>
                 </div>
                 <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
+                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image
+                </DropdownItem>
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
-                  </DropdownItem>
-                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                  <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
+                </DropdownItem>
+                <DropdownItem onClick={() => this.openGitAppsSidebarHandler()}>
+                  <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
@@ -154,7 +156,6 @@
           </Form>
         </Col>
       </Row>
-      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()} />
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -171,6 +172,7 @@
         <Infopage />
       </Row>
     </Fragment>
+
   }
 
 </Fragment>
