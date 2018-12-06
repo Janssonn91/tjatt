@@ -100,8 +100,8 @@
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                   </DropdownItem>
-                  <DropdownItem onClick={() => this.openSideDrawerHandler()}>
-                    <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
+                <DropdownItem onClick={() => this.openSideDrawerHandler()}>
+                  <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
@@ -137,7 +137,7 @@
               <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>
                 <DropdownToggle className="gif-container bg-light">
                   <div>
-                    <img src="/images/gif.logo.jpg" className="gif-opener" />
+                    <img src="/images/gif.logo.jpg" className="gif-opener" alt="open-gif" />
                   </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
