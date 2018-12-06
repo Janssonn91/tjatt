@@ -19,7 +19,14 @@ module.exports = class Message extends ModelAndRoutes {
       },
       text: String,
       textType: String,
+      contentType: {
+        type: String,
+        default: 'text'
+      },
+      originalName: String,
+      filePath: String,
       star: Boolean,
+      unread: Boolean,
     }
   }
 }

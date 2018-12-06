@@ -10,21 +10,25 @@
         <Form className="loginForm" onSubmit={this.onSubmit}>
 
           <FormGroup className="mt-4">
+            <Label for="username" className="sr-only">Username</Label>
             <Input tabIndex="1" type="text" id="username" placeholder="Username" value={this.username} onChange={e => this.usernameChange(e)} />
           </FormGroup>
           <FormGroup>
+            <Label for="password" className="sr-only">Password</Label>
             <Input tabIndex="2" type="password" id="password" placeholder="Password" value={this.password} onChange={e => this.passwordChange(e)} />
-            <p className="small mt-2 text-center retrieve-pw d-none"><a onClick={e => this.retrievePassword(e)}>Can't remember your password?</a></p>
+            <Link tabIndex="-1" to="retrievepassword">
+              <p className="small mt-2 text-center retrieve-pw">Can't remember your password?</p>
+            </Link>
           </FormGroup>
           <div className="text-center mb-3">
             <Button tabIndex="3" className="btn-login">Login</Button>{' '}
-            <Link tabIndex="-1" to="signup">
+            <Link tabIndex="5" to="signup">
               <Button tabIndex="4" className="btn-create-acc">Create account</Button>{' '}
             </Link>
           </div>
         </Form>
-        {this.props.loginStore.loginError &&
-          < Alert color="danger" className="my-2">
+        {this.loginError &&
+          < Alert color="danger" className="my-2 text-center">
             Username or password is incorrect
             </Alert>}
       </Col>

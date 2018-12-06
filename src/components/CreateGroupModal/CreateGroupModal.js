@@ -1,47 +1,50 @@
 import "./CreateGroupModal.scss";
 import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('loginStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
+@inject('userStore', 'channelStore') @withRouter @observer export default class CreateGroupModal extends Component {
 
   @observable groupName = '';
   @observable myAttr = 'd-none';
-  @observable error = false;
   @observable check = 'false';
-  @observable searchContact = [];
+  @observable searchContact = this.props.userStore.groupCandidates;
 
-  start() {
-    this.props.loginStore.fetchContact()
-      // Show all contacts from beginning
-      .then(() => {
-        this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
-      })
+  async start() {
+    await sleep(10);
+    // Show all contacts from beginning
+    this.searchContact = [];
   }
 
   searchContacts = (e) => {
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
-      return this.searchContact = this.props.loginStore.groupCandidates.slice(0, 5);
+      console.log(toJS(this.searchContact));
+      // return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
+      return this.searchContact = [];
     }
     let regex = new RegExp(e.target.value, 'i');
-    let result = this.props.loginStore.groupCandidates.filter(user => {
-      if (regex.test(user.nickname || user.username || user.email)) {
-        return this.searchContact.push(user);
-      }
-      return null;
+    this.searchContact = this.props.userStore.groupCandidates.filter(user => {
+      return regex.test(user.nickname || user.username || user.email)
     })
   }
 
+  checkboxHandler = (e) => {
+    if (e.target.checked) {
+      this.searchContact = this.props.userStore.groupCandidates;
+    } else {
+      this.searchContact = [];
+    }
+  }
+
   removeFromSearchedUsers = (user) => {
-    const addedUser = this.searchContact.find(u => u._id === user._id);
-    const index = this.searchContact.indexOf(addedUser);
+    const index = this.searchContact.findIndex(u => u._id.toString() === user._id.toString());
     this.searchContact.splice(index, 1);
   }
 
   removeFromSelectedUser = (user) => {
-    this.searchContact.push(user);
-  }
+    this.searchContact.unshift(user);
 
+  }
 
   groupNameChange(e) {
     this.groupName = e.currentTarget.value;
@@ -49,11 +52,10 @@ import ScrollableFeed from 'react-scrollable-feed';
 
   checkBeforeSubmit() {
     //check if groupName is available
-
-
   }
 
   async createGroup(e) {
+    const { userStore, channelStore } = this.props;
     //check Before Submit;
     if (!this.groupName) {
       this.myAttr = 'show text-danger w-100 d-block mb-3';
@@ -61,17 +63,41 @@ import ScrollableFeed from 'react-scrollable-feed';
     } else {
       this.myAttr = 'd-none';
     }
-    //check if groupMember.length is large than 2
-    if (this.props.loginStore.selectedGroupMember.length < 2) {
-      this.error = true;
-      return;
-    }
-    await this.props.channelStore.createGroup(this.groupName);
-    this.props.loginStore.cleanUpGroupModal();
-    this.groupName = "";
-    this.error = false;
-    this.props.toggle();
 
+    const admin = userStore.user._id;
+    const members = userStore.selectedGroupMember.map(user => user._id);
+    members.push(admin);
+    channelStore.createChannel(this.groupName, admin, members, true, true);
+    await sleep(60);
+    Channel.find({ channelname: this.groupName }).then(channel => {
+      channelStore.changeChannel(channel[0]);
+      channelStore.groupChannels.push(channel[0]);
+      channel[0].members.forEach(member => {
+        console.log("push channel into member", member)
+        fetch(`/api/users/${member}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            _id: member,
+            channel: channel[0]._id
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => {
+            res.json();
+          }).catch(err => {
+            console.log(err);
+          })
+      })
+      socket.emit('system', { newChannel: channel[0], creater: userStore.user._id, type:"create group"})
+   
+    })
+
+
+    this.props.userStore.cleanUpGroupModal();
+    this.groupName = "";
+    this.props.toggle();
   }
 
 
@@ -79,7 +105,5 @@ import ScrollableFeed from 'react-scrollable-feed';
   scrollToBottom = () => {
     this.selectedMemberEnd.scrollIntoView({ behavior: "smooth" })
   };
-
-
 
 }

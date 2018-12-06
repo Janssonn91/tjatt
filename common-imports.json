@@ -1,6 +1,5 @@
 {
   "/*1": "--------- App specific (others code) ---------",
-
   "/*2": "---------------- App specific ----------------",
   "Component": "utilities/Component/Component",
   "  User": "classes/user.class.js",
@@ -8,10 +7,11 @@
   "  Message": "classes/message.class.js",
   "  Repo": "classes/repo.class.js",
   "  Chat": "components/Chat/Chat",
-  "  App" : "components/App/App",
+  "  App": "components/App/App",
   "  Sidebar": "components/Sidebar/Sidebar",
   "  Login": "components/Login/Login",
   "  Signup": "components/Signup/Signup",
+  "  RetrievePW": "components/RetrievePW/RetrievePW",
   "  UpdateSettingModal": "components/UpdateSettingModal/UpdateSettingModal",
   "  AddDeleteMemberModal": "components/AddDeleteMemberModal/AddDeleteMemberModal",
   "  LeaveGroupModal": "components/LeaveGroupModal/LeaveGroupModal",
@@ -20,6 +20,7 @@
   "  PrivateRoute": "components/PrivateRoute/PrivateRoute",
   "  AddUserModal": "components/AddUserModal/AddUserModal",
   "  CreateGroupModal": "components/CreateGroupModal/CreateGroupModal",
+  "  DeleteContactModal": "components/DeleteContactModal/DeleteContactModal",
   "  Server": "components/Server/Server",
   "  ViewMembersModal": "components/ViewMembersModal/ViewMembersModal",
   "  DeleteMessageModal": "components/DeleteMessageModal/DeleteMessageModal",
@@ -27,8 +28,11 @@
   "  GitAppsChatSidebar": "components/GitAppsChatSidebar/GitAppsChatSidebar",
   "  GitApp": "components/GitApp/GitApp",
   "  Spinner": "components/Spinner/Spinner",
-
-
+  "  Loading": "components/Loading/Loading",
+  "  SystemMessagesModal": "components/SystemMessagesModal/SystemMessagesModal",
+  "  Infopage": "components/Infopage/Infopage",
+  "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
+  "  SnippetModal": "components/SnippetModal/SnippetModal",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",
@@ -39,16 +43,13 @@
   "  ElseIf": "utilities/ElseIf/ElseIf",
   "  Else": "utilities/Else/Else",
   "  Loop": "utilities/Loop/Loop",
-
   "/*4.5": "---------  Classes (non-components) --------",
   "  REST": "classes/REST.js",
-
   "/*4": "--------- Utilities (non-components) ---------",
   "!registerServiceWorker": "utilities/registerServiceWorker",
   "!sleep": "utilities/sleep",
   "!fetchJSON": "utilities/fetchJSON",
   "!socket": "utilities/socket",
-
   "/*5": "------------ React core + routing ------------",
   "React": "react",
   "{Component as ReactComponent}": "react",
@@ -62,23 +63,21 @@
   "{withRouter}": "react-router-dom",
   "{Switch}": "react-router-dom",
   "{Redirect}": "react-router-dom",
-
   "/*6": "-------------------- MobX --------------------",
   "{observable}": "mobx",
   "{computed}": "mobx",
   "{autorun}": "mobx",
   "{reaction}": "mobx",
   "{toJS}": "mobx",
+  "{observe}": "mobx",
   "{action}": "mobx",
   "{inject}": "mobx-react",
   "{observer}": "mobx-react",
-
   "/*7": "------------------- jQuery -------------------",
   "jQuery": "jquery",
   "$": "jquery",
-
   "/*8": "---------- Bootstrap + react strap -----------",
-  "bootstrap/dist/css/bootstrap.min.css" : "",
+  "bootstrap/dist/css/bootstrap.min.css": "",
   "bootstrap": "",
   "{Alert}": "reactstrap",
   "{Container}": "reactstrap",
@@ -168,11 +167,8 @@
   "{UncontrolledNavDropdown}": "reactstrap",
   "{UncontrolledTooltip}": "reactstrap",
   "{Util}": "reactstrap",
-
   "/*9": "------------ Syntax highlighting -------------",
-  "SyntaxHighlighter": "react-syntax-highlighter/prism",
   "shstyle": "react-syntax-highlighter/styles/prism/duotone-light",
-
   "Iframe": "react-iframe",
   "ReactTooltip": "react-tooltip"
 }

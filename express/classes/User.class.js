@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
+  systemUser: Boolean,
 });
 
 UserSchema.pre('save', function (next) {
