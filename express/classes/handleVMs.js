@@ -7,8 +7,8 @@ const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  // socketPath: '/var/run/docker.sock'
-  socketPath: '//./pipe/docker_engine'
+  socketPath: '/var/run/docker.sock'
+  // socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -22,14 +22,14 @@ module.exports = class HandleVMs {
   static async get_used_ports() {
     return new Promise((resolve, reject) => {
       docker.container.list().then(containers => {
-        console.log(containers, 'zzzzzzzzzzzzz');
+        // console.log(containers, 'zzzzzzzzzzzzz');
         let ports = containers.filter(container => {
           // console.log(container, 'containerrrrrrsssssss');
           return container.data.Ports.length !== 0
         }).map(item => {
           // console.log(item, '____containerrrrrr');
           let _ports = item.data.Ports.map(port => {
-            console.log(port, 'port inside map container');
+            // console.log(port, 'port inside map container');
             return port.PublicPort
           })
           return _ports.filter(item=> item !== undefined);
