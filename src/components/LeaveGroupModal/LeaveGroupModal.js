@@ -27,6 +27,7 @@ import './LeaveGroupModal.scss';
     for (let channelArr of this.props.channelStore.groupChannels) {
       if (channelArr._id === channel._id) {
         this.props.channelStore.spliceChannel(i);
+        this.props.channelStore.spliceGroupChannel(i);
       }
       i++;
     }

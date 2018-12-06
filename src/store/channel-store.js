@@ -396,11 +396,14 @@ class ChannelStore {
         this.myChannels.splice(myChannelIndex,1)
       }
       myChannelIndex++;
-    }
-    this.groupChannels.splice(channelId,1)
+    } 
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
+  }
+
+  @action spliceGroupChannel(channelId){
+    this.groupChannels.splice(channelId,1)
   }
 
   // for splicing an admin from a group. Needs an index to start from
