@@ -3,6 +3,8 @@ import './Chat.scss';
 import ScrollableFeed from 'react-scrollable-feed';
 import channelStore from '../../store/channel-store';
 import EmojiPicker from 'emoji-picker-react';
+import GiphySelect from 'react-giphy-select';
+import 'react-giphy-select/lib/styles.css';
 import 'emoji-picker-react/dist/universal/style.scss';
 import JSEMOJI from 'emoji-js';
 import Textarea from 'react-textarea-autosize';
@@ -36,6 +38,10 @@ export default class Chat extends Component {
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
   @observable snippetModal = false;
+  @observable fileUploadError = false;
+  @observable codefileValue = '';
+  @observable gifPicker = false;
+
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -60,22 +66,35 @@ export default class Chat extends Component {
   //start chat
 
 
-  start() {
+  async start() {
     this.setupMessageListener();
-
     // observe(this.props.userStore, "isLoggedIn", ()=>{
     //   if(this.props.userStore.isLoggedIn){
     //     this.setupMessageListener();
     //     console.log("observing login")
     //   }
     // })
-
   }
 
 
+  gifToggler = () => {
+    this.gifPicker = !this.gifPicker;
+  }
+
+  sendGif = (entry) => {
+    const url = entry.images.downsized_large.url;
+    socket.emit('chat message', { filePath: url, isGif: true, channel: this.props.channelStore.currentChannel._id, sender: this.props.userStore.user._id, contentType: 'image', originalName: entry.title });
+    this.gifToggler();
+  }
+
+  getFileValue = () => {
+    let fileValue = document.querySelector('#codefile').files[0].name;
+    this.codefileValue = fileValue;
+  }
 
   toggleSnippet = () => {
     this.snippetModal = !this.snippetModal;
+    this.codefileValue = '';
   }
 
   textfileHandler = (e) => {
@@ -92,6 +111,7 @@ export default class Chat extends Component {
     }).then(res => res.json())
       .then(message => {
         socket.emit('chat message', message)
+        console.log(message);
       })
     this.toggle();
   }
@@ -106,12 +126,47 @@ export default class Chat extends Component {
       method: 'POST',
       body: formData,
       credentials: 'include'
-    }).then(res => res.json())
+    }).then(res => {
+      if (res.status === 400) {
+        this.fileUploadError = true;
+        setTimeout(() => {
+          this.fileUploadError = false;
+        }, 3000)
+        throw new Error();
+      }
+      return res.json()
+    })
       .then(message => {
         console.log(message)
         socket.emit('chat message', message)
+        this.fileUploadError = false;
+        this.toggleSnippet();
+        let resetFile = document.querySelector('#codefile');
+        resetFile.value = "";
+        this.codefileValue = "";
       })
+      .catch(err => err);
   }
+
+  codeTextHandler = (message) => {
+    let formData = new FormData();
+    formData.append('isText', true);
+    formData.append('code', message)
+
+    fetch(`/api/codeUpload/${this.props.channelStore.currentChannel._id}`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(message => {
+        socket.emit('chat message', message);
+        // this.toggleSnippet();
+      })
+
+
+  }
+
   addDeleteMemberModalToggle() {
     this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
   }
@@ -200,6 +255,7 @@ export default class Chat extends Component {
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
+              _id: message._id,
               channel: message.channel,
               sender: message.sender,
               star: false,
@@ -211,6 +267,7 @@ export default class Chat extends Component {
               time: message.time,
               unread: true,
             };
+            console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
             channelStore.channelChatHistory.push(m)
           }
@@ -237,6 +294,10 @@ export default class Chat extends Component {
               }
             })
           }
+        }
+        let scroll = document.querySelector('._scrollable-div_1dj6m_1');
+        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {
+          scroll.scrollTop = scroll.scrollHeight;
         }
       })
   }

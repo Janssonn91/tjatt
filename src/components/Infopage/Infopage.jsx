@@ -58,6 +58,7 @@
         <Col className="col-6">
           <img src={"/images/group-dropdown-menu.PNG"} className="img-fluid d-block mb-2" alt="Group management dropdown menu"/>
           <img src={"/images/add-delete-groupmembers.PNG"} className="img-fluid d-block mt-2" alt="Window open for add/delete members of the group"/>
+          <img src={"/images/make-user-admin.PNG"} className="img-fluid d-block mt-2" alt="View all members of group with extra functionality for admins to add new admins for the group."/>
         </Col>
         <Col className="col-6">
           <ol>
@@ -83,8 +84,10 @@
         </Col>
         <Col className="col-6">
           <ol>
-            <li></li>
-            <li></li>
+            <li>To the left of the text-input in each chat you will find this chat-menu where you can send images, GIF's, files/documents and code snippets.</li>
+            <li>This is also where you start your node apps. These apps will run on our server.</li>
+            <li>If you would like to remove messages from the chat, you do that by hovering over the message you want to delete.</li>
+            <li>Click the icon that appears and the option of delete message will appear.</li>
           </ol>
         </Col>
       </Row>

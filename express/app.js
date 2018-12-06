@@ -193,12 +193,15 @@ io.on('connection', (socket) => {
     })
   })
 
- 
+
   // socket.on('newChannel', (channel) => {
   //   console.log('new channel', channel._id);
   //   socket.join(channel._id, () => console.log('received channel', socket.rooms));
   // })
 
+  socket.on('delete message', ({ channelId, messageId }) => {
+    io.to(channelId).emit('delete message', messageId)
+  })
 
 
   socket.on('logout', (userId) => {
@@ -209,14 +212,15 @@ io.on('connection', (socket) => {
     })
   })
 
-  socket.on('join channel',  channel=>{
-    socket.join(channel, () => console.log('received channel', socket.rooms));})
+  socket.on('join channel', channel => {
+    socket.join(channel, () => console.log('received channel', socket.rooms));
+  })
 
-  socket.on('invitation', data=>{
+  socket.on('invitation', data => {
     socket.join(data.targetChannel);
   })
 
-  socket.on('acceptance', data=>{
+  socket.on('acceptance', data => {
     socket.join(data.targetChannel)
   })
 
@@ -226,42 +230,42 @@ io.on('connection', (socket) => {
     // data: {newChannel: whole channel info includes id, creater:userId}
     // socket.join(data.newChannel._id, async () => {
     //   console.log("socket room", socket.rooms);
-      
-      if(data.type === "create group"){
-        let messageDict = {};
-        for (let member of data.newChannel.members) {
-          if (member !== user._id) {
-            let c = await channel.findOne({
-              channelname: member + "system"
-            });
-            let systemMessage = new ChatMessage({
-              sender: data.creater,
-              text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
-              textType: "addedToGroup",
-              unread: true,
-              channel: c._id,
-            });
-            let mes = "";
-            await systemMessage.save().then(message => {
-              mes = message._id;
-              messageDict[member] = mes;
-            })
-          }
+
+    if (data.type === "create group") {
+      let messageDict = {};
+      for (let member of data.newChannel.members) {
+        if (member !== user._id) {
+          let c = await channel.findOne({
+            channelname: member + "system"
+          });
+          let systemMessage = new ChatMessage({
+            sender: data.creater,
+            text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
+            textType: "addedToGroup",
+            unread: true,
+            channel: c._id,
+          });
+          let mes = "";
+          await systemMessage.save().then(message => {
+            mes = message._id;
+            messageDict[member] = mes;
+          })
         }
-  
-        let message = {
-          textType: "addedToGroup",
-          initiator: data.creater,
-          targetChannel: data.newChannel,
-          unread: true,
-          addedMembers: data.newChannel.members,
-          messageDict: messageDict,
-        }
-  
-        socket.broadcast.emit('group', message);
       }
-      
-    
+
+      let message = {
+        textType: "addedToGroup",
+        initiator: data.creater,
+        targetChannel: data.newChannel,
+        unread: true,
+        addedMembers: data.newChannel.members,
+        messageDict: messageDict,
+      }
+
+      socket.broadcast.emit('group', message);
+    }
+
+
 
     //contact channel invitation
 
@@ -368,10 +372,10 @@ io.on('connection', (socket) => {
       // removedMembers: removedUser,
       // type: "editMembersInGroup"}
       socket.join(data.targetChannel._id);
-      
+
       if (data.addedMembers.length > 0) {
         let messageDict = {};
-        
+
         for (let m of data.addedMembers) {
           let c = await channel.findOne({ channelname: m.toString() + "system" });
           //systemMessage
@@ -387,27 +391,27 @@ io.on('connection', (socket) => {
             mes = message._id;
             messageDict[m] = mes;
           })
-          
-          let name=""
+
+          let name = ""
           //save name of edit member
-          User.findById(m).then(user=>{
-            let gms =[];
-            name=user.nickname;
+          User.findById(m).then(user => {
+            let gms = [];
+            name = user.nickname;
             //broadcast in grup channel as groupInfo 
-           let groupMessage = new ChatMessage({
-            sender: data.initiator,
-            text: "Welcome "+ name + "!",
-            channel: data.targetChannel._id,
-            textType: "groupInfo", 
-            time: data.time,
+            let groupMessage = new ChatMessage({
+              sender: data.initiator,
+              text: "Welcome " + name + "!",
+              channel: data.targetChannel._id,
+              textType: "groupInfo",
+              time: data.time,
+            })
+
+            groupMessage.save();
+            gms.push(groupMessage);
+
+            io.to(data.targetChannel._id).emit('chat message', gms);
           })
-          
-          groupMessage.save();
-          gms.push(groupMessage);
-          
-          io.to(data.targetChannel._id).emit('chat message', gms);
-          })
-           
+
         }
         let message = {
           textType: "addedToGroup",
@@ -417,15 +421,15 @@ io.on('connection', (socket) => {
           addedMembers: data.addedMembers,
           messageDict: messageDict,
         }
-        
+
         socket.broadcast.emit('group', message);
-        
+
 
       }
 
       if (data.removedMembers.length > 0) {
         let messageDict = {};
-        
+
         for (let m of data.removedMembers) {
           let c = await channel.findOne({ channelname: m.toString() + "system" });
           let systemMessage = new ChatMessage({
@@ -441,26 +445,26 @@ io.on('connection', (socket) => {
             messageDict[m] = mes;
           })
 
-          let name="";
+          let name = "";
           // save name of deleted memeber
-          User.findById(m).then(user=>{
-            name= user.nickname;
-            let gms =[];
+          User.findById(m).then(user => {
+            name = user.nickname;
+            let gms = [];
             let groupMessage = new ChatMessage({
               sender: data.initiator,
               text: name + " has been removed from this group!",
               channel: data.targetChannel._id,
-              textType: "groupInfo", 
+              textType: "groupInfo",
               time: data.time,
             })
-            
+
             groupMessage.save();
             gms.push(groupMessage);
 
-        io.to(data.targetChannel._id).emit('chat message', gms);
+            io.to(data.targetChannel._id).emit('chat message', gms);
           })
-          
-          
+
+
         }
 
         let message = {
@@ -474,17 +478,17 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('group', message);
       }
 
-   
+
 
     }
 
-    if(data.type==="makeAdmin"){
+    if (data.type === "makeAdmin") {
       // data: targetChannel: whole channel, admin: id, sender:id, type:makeAdmin
-      let c= data.targetChannel._id;
+      let c = data.targetChannel._id;
       socket.join(c);
-      let m=[];
-      User.findById(data.admin).then(user=>{
-        let groupMessage=new ChatMessage({
+      let m = [];
+      User.findById(data.admin).then(user => {
+        let groupMessage = new ChatMessage({
           sender: data.sender,
           text: user.nickname + " is now admin.",
           textType: "groupInfo",
@@ -498,12 +502,12 @@ io.on('connection', (socket) => {
       })
     }
 
-    if(data.type==="removeAdmin"){
+    if (data.type === "removeAdmin") {
       let c = data.channel._id;
       socket.join(c);
-      let m=[];
-      User.findById(data.admin).then(user=>{
-        let groupMessage=new ChatMessage({
+      let m = [];
+      User.findById(data.admin).then(user => {
+        let groupMessage = new ChatMessage({
           sender: data.sender,
           text: user.nickname + " is no longer group admin.",
           textType: "groupInfo",
@@ -514,61 +518,57 @@ io.on('connection', (socket) => {
         m.push(groupMessage);
         socket.broadcast.emit('group', groupMessage);
         io.to(c).emit('chat message', m);
-    });
-  
-  }
+      });
 
-  if(data.type==="leaveGroup"){
-    let c = data.channel._id;
-    socket.join(c);
-    let m=[];
-    User.findById(data.sender).then(user=>{
-      let groupMessage=new ChatMessage({
+    }
+
+    if (data.type === "leaveGroup") {
+      let c = data.channel._id;
+      socket.join(c);
+      let m = [];
+      User.findById(data.sender).then(user => {
+        let groupMessage = new ChatMessage({
+          sender: data.sender,
+          text: user.nickname + " has left group",
+          textType: "groupInfo",
+          channel: c,
+          time: data.time,
+        })
+        groupMessage.save();
+        m.push(groupMessage);
+
+        io.to(c).emit('chat message', m);
+      });
+    }
+
+    if (data.type === "removeContact") {
+      let c = await channel.findOne({ channelname: data.target + "system" });
+      let user = await User.findById(data.sender);
+      let m = [];
+      let systemMessage = new ChatMessage({
         sender: data.sender,
         text: user.nickname + " has left group",
         textType: "groupInfo",
         channel: c,
         time: data.time,
       })
-      groupMessage.save();
-      m.push(groupMessage);
-      socket.broadcast.emit('group', groupMessage);
+      systemMessage.save();
+      m.push(systemMessage);
+      socket.broadcast.emit('group', systemMessage);
       io.to(c).emit('chat message', m);
-  });
-}
-
-  if(data.type==="removeContact"){
-    let c = await channel.findOne({channelname: data.target + "system"});
-    let user = await User.findById(data.sender);
-    let systemMessage= new ChatMessage({
-      sender: data.sender,
-      text: user.nickname,
-      textType: "removeContact",
-      unread: true,
-      channel:c._id,
-    });
-    let m = await systemMessage.save();
-    let message= {
-      textType: "removeContact",
-      sender: data.sender,
-      initiator: user.nickname,
-      target: data.target,
-      unread: true,
-      id: m._id,
-    }
-
-    socket.broadcast.emit('removeContact', message);
-  
-  }
+    };
+  })
 
 
-  
-  
-  
-  
-  });
 
- 
+
+
+
+
+
+
+
+
 
 
 
@@ -576,19 +576,39 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', async (messageFromClient) => {
 
+    let _id = messageFromClient._id;
+    let time = messageFromClient.time;
     let c = messageFromClient.channel;
     socket.join(c);
 
+    if (messageFromClient.isGif) {
+      messageFromClient.originalName = messageFromClient.originalName.split("GIF by")[0];
+      let newMessage = new ChatMessage({
+        sender: messageFromClient.sender,
+        channel: messageFromClient.channel,
+        filePath: messageFromClient.filePath,
+        contentType: messageFromClient.contentType,
+        originalName: messageFromClient.originalName,
+        star: false,
+        unread: true,
+      })
+      await newMessage.save();
+      _id = newMessage._id;
+      time = newMessage.time;
+    }
 
     // Create a mongoose ChatMessage and write to the db
     if (messageFromClient.contentType === 'text') {
       let message = new ChatMessage({
         ...messageFromClient,
       });
-     let msg= await message.save();
-
-       // Send the message to all the sockets in the channel
+      await message.save();
+      _id = message._id;
+      time = message.time;
+    }
+    // Send the message to all the sockets in the channel
     io.to(c).emit('chat message', [{
+      _id: _id,
       sender: messageFromClient.sender,
       text: messageFromClient.text,
       channel: messageFromClient.channel,
@@ -598,12 +618,10 @@ io.on('connection', (socket) => {
       originalName: messageFromClient.originalName,
       star: messageFromClient.star,
       unread: true,
-      time: msg.time,
+      time: time,
     }]);
 
-    }
 
-  
   });
 
 
@@ -1070,6 +1088,14 @@ app.put('/message/:id', (req, res) => {
     })
 });
 
+app.delete('/deletemessage/:messageId', (req, res) => {
+  console.log(req.params._id);
+  ChatMessage.findOneAndRemove({ _id: req.params.messageId })
+    .then(() => {
+      res.json({ success: true })
+    })
+})
+
 
 app.post('/upload', upload.single('file'), (req, res) => {
   User.findById(req.session.userId)
@@ -1116,7 +1142,14 @@ const fileStorage = multer.diskStorage({
     cb(null, Date.now() + pathTo.extname(file.originalname))
   }
 });
-const fileUpload = multer({ storage: fileStorage });
+const fileUpload = multer(
+  {
+    storage: fileStorage,
+    limits: {
+      // max size of files 10mb
+      fileSize: 10000000
+    }
+  });
 
 app.post('/fileUpload/:id', fileUpload.single('file'), async (req, res) => {
   if (!req.session.userId) {
@@ -1141,6 +1174,9 @@ app.post('/fileUpload/:id', fileUpload.single('file'), async (req, res) => {
 })
 
 const codeUpload = multer({
+  limits: {
+    fileSize: 2000000
+  },
   fileFilter: (req, file, cb) => {
     const approved = file.originalname.match(/\.(js|py|html|css|scss|sass|less|php|json|xml)$/)
     if (!approved) {
@@ -1155,8 +1191,21 @@ app.post('/codeUpload/:id', codeUpload.single('file'), async (req, res) => {
   if (!req.session.userId) {
     return res.status(403)
   }
+
+  if (req.body.isText) {
+
+    let message = new ChatMessage({
+      sender: req.session.userId,
+      contentType: 'code',
+      channel: req.params.id,
+      text: req.body.code
+    });
+    await message.save();
+    return res.json(message);
+  }
+
   if (!req.file) {
-    return res.status(400)
+    return res.status(400).json({ message: 'Fail' })
   }
 
   let message = new ChatMessage({

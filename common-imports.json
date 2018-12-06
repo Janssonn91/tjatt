@@ -27,7 +27,7 @@
   "  GitApps": "components/GitApps/GitApps",
   "  Spinner": "components/Spinner/Spinner",
   "  Loading": "components/Loading/Loading",
-  "  SystemMessagesModal" :"components/SystemMessagesModal/SystemMessagesModal",
+  "  SystemMessagesModal": "components/SystemMessagesModal/SystemMessagesModal",
   "  Infopage": "components/Infopage/Infopage",
   "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
   "  SnippetModal": "components/SnippetModal/SnippetModal",
@@ -166,7 +166,6 @@
   "{UncontrolledTooltip}": "reactstrap",
   "{Util}": "reactstrap",
   "/*9": "------------ Syntax highlighting -------------",
-  "SyntaxHighlighter": "react-syntax-highlighter/prism",
   "shstyle": "react-syntax-highlighter/styles/prism/duotone-light",
   "Iframe": "react-iframe",
   "ReactTooltip": "react-tooltip"

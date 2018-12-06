@@ -2,7 +2,7 @@
   <AddDeleteMemberModal {...this.sendToAddDeleteModal} />
   <ViewMembersModal {...this.sendToViewMembersModal} />
   <LeaveGroupModal {...this.sendToLeaveModal} />
-  <SnippetModal snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} />
+  <SnippetModal uploadError={this.fileUploadError} snippetVal={this.snippetModal} snippetToggle={this.toggleSnippet} codeFileMethod={this.codefileHandler} fileValueMethod={this.getFileValue} fileValue={this.codefileValue} textMethod={this.codeTextHandler} />
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
@@ -44,9 +44,9 @@
                           .viewMembersModalToggle
                           .bind(this)}>
                         View members
-                    </DropdownItem>
+                      </DropdownItem>
                       {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
-                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make members admin</DropdownItem>
                       }
                     </div>
                     <DropdownItem className="m-0" divider />
@@ -65,12 +65,13 @@
         <Col className="pr-0">
           <ul className="chat-history pl-2 mr-1">
             <ChatMessage />
+
           </ul>
         </Col>
       </Row>
       <Row className="formRow">
         <Col className="p-0">
-          <Form inline className="chat-message py-2 clearfix">
+          <Form inline className="chat-message py-2 clearfix" onSubmit={e => e.preventDefault()}>
             <Dropdown
               direction="up"
               isOpen={this.isOpen}
@@ -98,10 +99,8 @@
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                   </DropdownItem>
-                {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
                   <DropdownItem onClick={() => this.openSideDrawerHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Start app</DropdownItem>
-                }
               </DropdownMenu>
             </Dropdown>
             <FormGroup className="m-0 messageAreaForm">
@@ -119,6 +118,7 @@
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
               />
+
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
                   <div
@@ -131,6 +131,16 @@
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-left">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>
+                <DropdownToggle className="gif-container bg-light">
+                  <div>
+                    <img src="/images/gif.logo.jpg" className="gif-opener" />
+                  </div>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-left">
+                  <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />
                 </DropdownMenu>
               </Dropdown>
             </FormGroup>
