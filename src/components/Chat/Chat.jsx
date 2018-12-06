@@ -44,9 +44,9 @@
                           .viewMembersModalToggle
                           .bind(this)}>
                         View members
-                    </DropdownItem>
+                      </DropdownItem>
                       {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
-                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make member admin</DropdownItem>
+                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make members admin</DropdownItem>
                       }
                     </div>
                     <DropdownItem className="m-0" divider />

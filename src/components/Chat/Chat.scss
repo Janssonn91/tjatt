@@ -158,7 +158,7 @@ $fontSm: 12px;
     }
     .chat-history {
         height: 72vh;
-        overflow-y: auto;
+        // overflow-y: auto;
         position: relative;
         border-bottom:1px solid rgb(228, 228, 228);
         ul {
