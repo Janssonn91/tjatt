@@ -43,7 +43,7 @@
           </ListGroupItem>
           : message.textType === "removeContact" ?
           <ListGroupItem key={i}>
-          <span>You are nolonger contact with {message.initiator}.</span>
+          <span>You are no longer contact with {message.initiator}</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "makeAdmin" ?
