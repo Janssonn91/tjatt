@@ -544,6 +544,7 @@ io.on('connection', (socket) => {
     if (data.type === "removeContact") {
       let c = await channel.findOne({ channelname: data.target + "system" });
       let user = await User.findById(data.sender);
+      let m = [];
       let systemMessage = new ChatMessage({
         sender: data.sender,
         text: user.nickname + " has left group",
@@ -551,9 +552,9 @@ io.on('connection', (socket) => {
         channel: c,
         time: data.time,
       })
-      groupMessage.save();
-      m.push(groupMessage);
-      socket.broadcast.emit('group', groupMessage);
+      systemMessage.save();
+      m.push(systemMessage);
+      socket.broadcast.emit('group', systemMessage);
       io.to(c).emit('chat message', m);
     };
   })
