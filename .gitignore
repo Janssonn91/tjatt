@@ -4,6 +4,7 @@ node_modules/*
 !node_modules/htmlparser2
 .DS_Store
 public/images/uploads
+public/fileUploads
 repos/*
 !repos/.gitkeep
 docker/*

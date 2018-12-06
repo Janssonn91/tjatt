@@ -46,13 +46,12 @@ $text:#434651;
     }
     .group-name {
       color: $blue;
-      letter-spacing: 2px;
     }
   }
   .modal-body {
     @media (max-width: 767.5px){
       .selected-members{
-        height: 80px;
+        height: 100px;
         overflow-y: auto;
         @include scrollbar;
         div {
@@ -97,6 +96,17 @@ $text:#434651;
             }
           }
         }
+        .note {
+          font-size: 8px;
+          color: $red;
+          vertical-align: top;
+        }
+        i.admin.note {
+          padding: 0 3px 0 0;
+          margin: 0;
+          font-size: 6px;
+          vertical-align: middle;
+        }
       }
     }
 
@@ -111,7 +121,10 @@ $text:#434651;
             color: $gray;
           }
           .form-group {
-            max-height: 157px;
+            max-height: 160px;
+          }
+          .form-group.group-member {
+            max-height: 200px;
           }
         }
         .list-group-item {
@@ -177,6 +190,9 @@ $text:#434651;
           padding: 0 3px 0 15px;
           font-size: 6px;
           vertical-align: baseline;
+        }
+        .group-modal-text {
+          color: $gray;
         }
       }
     }

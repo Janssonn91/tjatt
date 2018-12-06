@@ -17,7 +17,6 @@
                   placeholder="image"
                   autoComplete="off"
                   onChange={e => this.onFileChange(e)}
-                  onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
                 />
                 <Label for="changeImage">
                   <i className="fas fa-pencil-alt edit-icon"></i>
@@ -39,10 +38,15 @@
               name="nickname"
               id="changeNickname"
               autoComplete="off"
-              placeholder={this.props.loginStore.user.nickname}
+              placeholder={this.props.userStore.user.nickname}
               value={this.nickname}
               onChange={e => this.handleNicknameChange(e)}
-              onKeyPress={e => e.key === 'Enter' && this.callUpdateSettings()}
+              onKeyPress={e => e.key === 'Enter' && this.updateSettings({
+                nickname: this.nickname,
+                password: this.newPassword,
+                imageFormData: this.image,
+                currentPassword: this.currentPasswordValue
+              })}
             />
           </td>
         </tr>
@@ -57,7 +61,7 @@
               id="currentPassword"
               placeholder="Current password"
               autoComplete="off"
-              value={this.props.loginStore.currentPasswordValue}
+              value={this.currentPasswordValue}
               onFocus={e => this.passwordFocus()}
               onChange={e => this.currentPassword(e)}
             />
@@ -74,7 +78,7 @@
               id="setNewPassword"
               placeholder="New password"
               autoComplete="off"
-              value={this.props.loginStore.setNewPasswordValue}
+              value={this.setNewPasswordValue}
               onClick={e => e.stopPropagation()}
               onChange={e => this.setNewPassword(e)}
             />
@@ -91,29 +95,34 @@
               id="confirmNewPassword"
               autoComplete="off"
               placeholder="Confirm new password"
-              value={this.props.loginStore.confirmNewPasswordValue}
+              value={this.confirmNewPasswordValue}
               onChange={e => this.confirmNewPassword(e)} />
           </td>
         </tr>
       </tbody>
     </Table>
-    {this.props.loginStore.isNotCorrectPass && <Alert color="danger" className="text-center">
+    {this.isNotCorrectPass && <Alert color="danger" className="text-center">
       Incorrect current password</Alert>}
     {this.isNotSamePass && <Alert color="danger" className="text-center">
       New passwords doesn't match</Alert>}
-    {this.props.loginStore.savedNickname && <Alert color="success" className="text-center">
+    {this.savedNickname && <Alert color="success" className="text-center">
       New nickname saved!</Alert>}
-    {this.props.loginStore.savedPassword && <Alert color="success" className="text-center">
+    {this.savedPassword && <Alert color="success" className="text-center">
       New password saved!</Alert>}
-    {this.props.loginStore.areAllEmpty && <Alert color="warning" className="text-center">
+    {this.areAllEmpty && <Alert color="warning" className="text-center">
       You must fill in one of the fields to save your data</Alert>}
   </ModalBody>
   <ModalFooter className="p-2">
     <Button className="btn btn-cancel" onClick={this.props.toggle}>Cancel</Button>
     <Button
-      disabled={this.props.loginStore.isNotCorrectPass || this.isNotSamePass}
+      disabled={this.isNotCorrectPass || this.isNotSamePass}
       className="btn btn-save"
-      onClick={() => this.callUpdateSettings()}
+      onClick={() => this.updateSettings({
+        nickname: this.nickname,
+        password: this.newPassword,
+        imageFormData: this.image,
+        currentPassword: this.currentPasswordValue
+      })}
     >
       Save changes
     </Button>

@@ -1,38 +1,48 @@
 import './AddUserModal.scss';
 
-@inject('loginStore', 'channelStore') @observer export default class AddUser extends Component {
+@inject('userStore', 'channelStore') @observer export default class AddUser extends Component {
 
-  @observable userCandidates = [];
+  @observable searchedCandidates = [];
 
-  start() {
-    this.props.loginStore.fetchContact()
-    // .then(() => {
-    //   this.userCandidates = this.props.loginStore.candidates;
-    // })
+
+  async start() {
+    await sleep(10);
+    // Show all candidates from beginning
+    this.searchedCandidates = this.props.userStore.candidates;
   }
 
   searchCandidates = (e) => {
-    this.userCandidates = [];
+    this.searchedCandidates = [];
     if (!e.target.value) {
-      return this.userCandidates = [];
+      // Show all candidates if input value is empty
+      return this.searchedCandidates = this.props.userStore.candidates;
     }
     const regex = new RegExp(e.target.value, 'i');
-    const result = this.props.loginStore.candidates.filter(user => {
-      if (regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email)) {
-        return this.userCandidates.push(user);
-      }
-      return false;
+    this.searchedCandidates = this.props.userStore.candidates.filter(user => {
+      return regex.test(user.nickname) || regex.test(user.username) || regex.test(user.email);
     })
   }
 
+  // remove added user in candidates in view
   userWasClicked = (userId) => {
-    this.userCandidates = this.userCandidates.filter(user => user._id !== userId)
-    console.log(toJS(this.userCandidates));
+    this.searchedCandidates = this.searchedCandidates.filter(user => user._id !== userId);
   }
 
-  addContact(userId) {
-    this.props.loginStore.addContact(userId);
-    this.props.toggle();
+  async addContact(userId) {
+    this.userWasClicked(userId);
+
+    const { user } = this.props.userStore;
+
+    const channelname = user._id + " and " + userId;
+    const admin = [user._id, userId];
+    const members = [user._id, userId];
+
+    this.props.channelStore.createChannel(channelname, admin, members, false, false);
+    await sleep(60);
+    Channel.find({ channelname: channelname }).then(channel => {
+      socket.emit('system', {newChannel: channel[0], invitee: userId, inviter: user._id, type:"inviation"})
+    
+    });
   }
 
 }

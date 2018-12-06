@@ -34,7 +34,7 @@ $text:#434651;
     .user-holder {
       padding-bottom: 0.5rem;
       .username {
-        letter-spacing: 2px;
+        font-size: 18px;
       }
     }
     .dropdown {
@@ -88,6 +88,14 @@ $text:#434651;
     display: inline-block;
     padding-right: 10px;
     padding-left: 8px;
+    .system-message.nav-link {
+      &:hover {
+        .system-message-link {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
     .nav-link {
       color: lightgray;
       font-weight: bold;
@@ -99,7 +107,7 @@ $text:#434651;
       &:hover {
         color: lightgray;
       }
-      .nav-item {
+      .nav-item{
         text-align: left;
         display: inline-block;
         &:hover {
@@ -120,11 +128,28 @@ $text:#434651;
 
     }
     .nav-link.contacts{
+      padding-left: 0.7rem;
       width: 100%;
       &:hover {
         cursor: pointer;
         color: #fff;
-        background-color: darken($backgroundColor, 10%);
+        background-color: darken($backgroundColor, 15%);
+        .fa-times-circle {
+          color: $gray;
+          &:hover {
+            color: white;
+          }
+        }
+      }
+      span.delete {
+        padding: 6px 5px 0 0!important;
+      }
+      span {
+        font-size: 14px!important;
+        vertical-align: middle;
+      }
+      .badge {
+        padding: 0.4rem;
       }
     }
 
@@ -137,11 +162,6 @@ $text:#434651;
     .fa-star {
       color: gold;
     }
-
-    /*.flexWrapper {
-      display: flex;
-      align-items: center;
-    }*/
 
     .fa-plus {
       color: white;
@@ -159,6 +179,11 @@ $text:#434651;
     .fas, .far {
       display: inline-block;
     }
+
+    .fa-times-circle {
+      font-size: 20px;
+      color: $backgroundColor;
+    }
   }
 
 }
@@ -170,7 +195,7 @@ hr {
 .dropdown-toggle::after {
   color: white;
   font-size: 20px;
-  vertical-align: middle;
+  vertical-align: baseline;
   margin-left: 10px;
 }
 
@@ -182,18 +207,39 @@ hr {
 
 .contactsCollapse, .groupCollapse{
   background: $backgroundColor;
-  height: 34vh;
+  max-height: 34vh;
+  min-height: 5vh;
   padding-top: 5px;
   padding-bottom:5px;
   box-shadow: inset 0 0 7px #000000;
   .card-body {
     overflow-y: auto;
     @include scrollbar;
+    h6 {
+      padding-left: 0.7rem!important;
+    }
   }
 
   @media (max-width:768px){
     &{
-      height: 34vh;
+      max-height: 34vh;
+      min-height: 5vh;
     }
   }
+}
+
+.arrow-down {
+  vertical-align: middle;
+  height: 20px;
+  padding-left: 2px;
+}
+
+.arrow-up{
+  vertical-align: middle;
+  padding-left: 2px;
+  height:10px;
+}
+
+.plus-text {
+  font-size: 20px;
 }

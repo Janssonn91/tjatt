@@ -70,11 +70,18 @@ module.exports = class ModelAndRoutes {
         .find(params)
         .populate(populate)
         .exec((err, data) => {
-          res.json({
-            query: params,
-            resultLength: data.length,
-            result: data
-          });
+
+          // Hui to Nana: data shows undifined occasionally by refresh page. 
+          //"length" shows undefined and backend breaks down
+          // if(data) is added only for avoid backend break down
+          if(data){
+            res.json({
+              query: params,
+              resultLength: data.length,
+              result: data
+            });
+          }
+          
         });
     });
   }
