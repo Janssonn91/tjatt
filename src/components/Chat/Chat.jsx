@@ -91,7 +91,7 @@
                     <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image</DropdownItem>
                   <DropdownItem>
                     <i className="fas fa-code"></i>&nbsp; Code or text snippet</DropdownItem>
-                  <DropdownItem onClick={()=> this.openSideDrawerHandler()}>
+                  <DropdownItem onClick={()=> this.openGitAppsSidebarHandler()}>
                     <i className="fas fa-code-branch"></i>&nbsp; &nbsp;Git repository</DropdownItem>
                 </DropdownMenu>
                 :
@@ -138,7 +138,7 @@
           </Form>
         </Col>
       </Row>
-      <GitApps open={this.openSideDrawer} onClose={() => this.openSideDrawerHandler()}/>
+      {/* <GitAppsSidebar open={this.openGitAppsSidebar} onClose={() => this.openGitAppsSidebarHandler()} /> */}
     </Fragment> :
     <Fragment>
       <Row className="chat-header m-0 p-0">

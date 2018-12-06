@@ -33,7 +33,8 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
-  @observable openSideDrawer = false;
+  @observable openGitAppsSidebar = false;
+  @observable openApp = {};
 
   @observable sendToAddDeleteModal = {
     isOpen: false,
@@ -164,9 +165,14 @@ export default class Chat extends Component {
     this.inputMessage = '';
   }
 
-  openSideDrawerHandler(){
-    this.openSideDrawer = !this.openSideDrawer;
+  openGitAppsSidebarHandler(){
+    this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
+
+  // openAppHandler(app){
+  //     this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+  //     console.log(this.openApp);
+  // }
 
 
   //  scrollToBottom = () => {
