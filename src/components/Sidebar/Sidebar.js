@@ -48,7 +48,7 @@ export const imgPath = '/images/placeholder.png';
       return contactChannel.channelname === this.props.match.params.id;
     });
 
-    if (matchingChannel) {
+    if (matchingChannel && this.props.userStore.isLoggedIn) {
       this.props.channelStore.changeChannel(matchingChannel);
     }
   }

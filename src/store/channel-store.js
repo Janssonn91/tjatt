@@ -458,6 +458,8 @@ class ChannelStore {
 
   @action resetCurrentChannel() {
     this.currentChannel = "";
+    this.channelChatHistory = [];
+    this.channelName = '';
   }
 
   // TODO: This function has warning (Nana)
