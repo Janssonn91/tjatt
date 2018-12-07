@@ -31,10 +31,10 @@
         </NavLink>
         : <span className="d-none"> 0</span>}
 
-      <NavLink className="pl-2 pt-0 pr-0">
+      <NavLink className="contacts-nav pl-2 pt-0 pr-0">
         <NavItem onClick={this.openContacts}>My Contacts {!this.contactsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
+        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus mr-1"></i>
       </NavLink>
-      <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
       {this.props.channelStore.unreadSystemMessage ?
         <Collapse className="pl-2" isOpen={this.systemMessageOpen}>
           <Card className="contactsCollapse border-0 m-0">
@@ -102,10 +102,10 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink className="pl-2 pr-0">
+      <NavLink className="contacts-nav pl-2 pr-0">
         <NavItem onClick={this.openGroups}>My Groups {!this.groupsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
+        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus mr-1"></i>
       </NavLink>
-      <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
       <Collapse className="pl-2" isOpen={this.groupsOpen}>
         <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">

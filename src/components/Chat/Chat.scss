@@ -159,6 +159,12 @@ $fontSm: 12px;
         height: 72vh;
         // overflow-y: auto;
         position: relative;
+        
+        @media only screen and(min-width: 768px) and (max-width: 1024px){
+            height: 82vh;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
         border-bottom:1px solid rgb(228, 228, 228);
         ul {
             list-style: none;
@@ -340,6 +346,14 @@ aside.emoji-picker{
         width: 100vw;
         bottom: 80px!important;
     }
+
+    @media only screen and(min-width: 768px) and (max-width: 1024px){
+        background-color:red;
+        position: relative;
+        right: -60px;
+        top:0;
+    }
+
 }
 
 .gif-container {
@@ -362,6 +376,10 @@ aside.emoji-picker{
     }
     @media only screen and(max-width: 768px){
         top: -55px;
+    }
+
+    @media only screen and(min-width: 768px) and (max-width: 1024px){
+        top: -22px;
     }
 }
 
