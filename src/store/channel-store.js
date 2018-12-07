@@ -70,8 +70,8 @@ class ChannelStore {
   }
 
   @action async getLoginStatus() {
-    if (userStore.onLineUsers) {
-      for (let id of userStore.onLineUsers) {
+    if (applicationStateStore.onLineUsers) {
+      for (let id of applicationStateStore.onLineUsers) {
         if (this.userDict[id]) {
           this.userDict[id].status = true;
         }
