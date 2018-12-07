@@ -10,11 +10,11 @@ module.exports = function (app) {
     console.log( path.join(__dirname, "../../docker/" + req.body.app.name))
         let payload = {
             localPath: path.join(__dirname, "../../docker/" + req.body.app.name),
+            name: req.body.app.name,
             branch: req.body.branch,
             res: res
         }
         git.git_checkout(payload);
-    
     });
 
 };

@@ -143,8 +143,8 @@ import './GitAppsSidebar.scss';
             method: 'POST' // or 'PUT'
         })
         .then(response => response.json())
-        .then(response => {
-            return response;
+        .then(response => {console.log(response)
+            return response; 
         })
         .catch(error=>console.log(error));
     }
