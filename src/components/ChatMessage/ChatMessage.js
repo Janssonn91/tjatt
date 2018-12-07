@@ -1,6 +1,6 @@
 import './ChatMessage.scss';
 import { vs2015 } from 'react-syntax-highlighter/dist/styles/hljs';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+// import SyntaxHighlighter from 'react-syntax-highlighter';
 import ScrollableFeed from 'react-scrollable-feed';
 
 @inject('userStore', 'channelStore') @observer
