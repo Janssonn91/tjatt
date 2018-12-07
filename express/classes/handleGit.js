@@ -35,7 +35,7 @@ static git_branch(payload) {
     //   .catch(err => { console.log("error", err); payload.res.json('err'); });
     // }
   }
-    static async git_checkout(payload) { console.log(payload.localPath, payload.branch)
+    static async git_checkout(payload) { 
       simplegit(payload.localPath) 
       .checkout(payload.branch, function (err, data){
         if (data){ 

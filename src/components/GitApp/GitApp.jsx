@@ -27,7 +27,12 @@
         onClick={() => this.openChatSidebarHandler()}>
         <i className="fas fa-arrow-left fa-2x py-2"></i>
     </Link>
-    <GitAppsSidebar open={this.openGitAppsSidebar} openApp={this.openApp} onClose={() => this.openGitAppsSidebarHandler()} onOpenApp={(app) => this.openAppHandler(app)}/>
+    <GitAppsSidebar 
+        open={this.openGitAppsSidebar} 
+        openApp={this.openApp} 
+        onClose={() => this.openGitAppsSidebarHandler()} 
+        onOpenApp={(app) => this.openAppHandler(app)}  
+        />
     <GitAppsChatSidebar open={this.chatSidebar} onClose={() => this.openChatSidebarHandler()} />
     {Object.keys(this.openApp).length ?
         <div

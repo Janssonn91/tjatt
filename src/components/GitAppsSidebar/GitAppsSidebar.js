@@ -76,7 +76,7 @@ import './GitAppsSidebar.scss';
 
     openAppHandler(app){
         this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
-        this.props.onOpenApp(app)
+        this.props.onOpenApp(app);
     }
 
     closeAppHandler(){
@@ -143,7 +143,8 @@ import './GitAppsSidebar.scss';
             method: 'POST' // or 'PUT'
         })
         .then(response => response.json())
-        .then(response => {console.log(response)
+        .then(async response => {
+            await this.props.onOpenApp(app);
             return response; 
         })
         .catch(error=>console.log(error));
