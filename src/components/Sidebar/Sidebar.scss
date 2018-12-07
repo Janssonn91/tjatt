@@ -89,6 +89,7 @@ $text:#434651;
     padding-right: 10px;
     padding-left: 8px;
     .system-message.nav-link {
+      width: 100%;
       &:hover {
         .system-message-link {
           cursor: pointer;
@@ -163,14 +164,17 @@ $text:#434651;
       color: gold;
     }
 
+    .contacts-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .fa-plus {
       color: white;
       font-size: small;
-      order: -1;
       padding-right: 15px;
-      @media (min-width: 768px){
-        order: 1;
-      }
       &:hover {
         cursor: pointer;
       }
