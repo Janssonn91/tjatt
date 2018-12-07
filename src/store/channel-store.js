@@ -89,6 +89,10 @@ class ChannelStore {
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
     });
+    console.log('myChannels', toJS(this.myChannels));
+
+    this.myChannels = await this.myChannels.sort((a, b) => b.latestUpdateTime - a.latestUpdateTime);
+    console.log('myChannels', toJS(this.myChannels));
 
     for (let i = 0; i < this.myChannels.length; i++) {
       const c = this.myChannels[i];
@@ -135,7 +139,7 @@ class ChannelStore {
         }
       }
     }
-    this.sortListByMessageNum();
+    // this.sortListByMessageNum();
     this.hasLoadedChannels = true;
   }
 

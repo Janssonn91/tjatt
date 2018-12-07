@@ -249,12 +249,13 @@ export default class Chat extends Component {
       'chat message',
       (messages) => {
         for (let message of messages) {
-          // let time = new Date(message.time);
-          // console.log(time)
-
+          // const time = Date.now(message.time);
           // When you get a message, move the channel to the top of the list
-          channelStore.moveLatestChannelToTop(message.channel);
-          channelStore.updateChannelLatestTime(message.channel, message.time);
+          // channelStore.moveLatestChannelToTop(message.channel);
+
+          // When you get a message or send a message, update the latestUpdateTime of the channel
+          const milliseconds = Date.now();
+          channelStore.updateChannelLatestTime(message.channel, milliseconds);
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
@@ -297,6 +298,7 @@ export default class Chat extends Component {
               }
             })
           }
+          channelStore.getChannelList();
         }
         let scroll = document.querySelector('._scrollable-div_1dj6m_1');
         if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {

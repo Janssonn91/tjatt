@@ -164,6 +164,7 @@ io.on('connection', (socket) => {
       channelname: user._id + "system",
       open: true,
       group: false,
+      latestUpdateTime: 315529200000 // set default date with milliseconds('1980/01/01')
     }).save().then((c) => {
       User.findOneAndUpdate(
         { _id: user._id },
