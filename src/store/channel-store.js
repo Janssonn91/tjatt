@@ -419,8 +419,19 @@ class ChannelStore {
     this.adminLeavingError = false;
   }
 
+  // splicing members from currentChannel when removing them from a group (from addDeleteMemberModal)
+  @action spliceCurrentChannel(member){
+    let index = this.currentChannel.members.indexOf(member);
+    this.currentChannel.members.splice(index,1);
+  }
+
+  // adding a member to the group in currentChannel (frm addDeleteMemberModal)
+  @action addToCurrentChannel(member){
+    this.currentChannel.members.push(member);
+  }
+
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(channelId) {
+   @action spliceChannel(channelId) {
     let index = 0;
     for (let channel of this.contactChannels) {
       if (channel._id === channelId) {

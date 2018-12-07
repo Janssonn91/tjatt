@@ -15,7 +15,7 @@
           </Button>
           {/* <span id="channelName"></span>  */}
           {/* <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span> */}
-          <span className ="chat-with">{this.props.channelStore.channelName}</span>
+          <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannel.group
             ? <div className="btn group-menu">
               <span className="dialog-icon p-0">
@@ -32,23 +32,30 @@
                     <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
                     <DropdownItem className="m-0" divider />
                     <div className="channel-manage">
+                    {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && 
                       <DropdownItem
                         className="py-2 px-3"
                         onClick={this
                           .addDeleteMemberModalToggle
                           .bind(this)}>
                         Add/Delete members
-                    </DropdownItem>
+                      </DropdownItem>
+                    }
                       <DropdownItem
                         className="py-2 px-3"
                         onClick={this
                           .viewMembersModalToggle
                           .bind(this)}>
-                        View members
+                        {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                        (this.props.channelStore.currentGroupMembers.length > 1) &&
+                        (this.props.channelStore.currentGroupMembers.length > this.props.channelStore.currentChannelAdmins.length) ?
+                        <Fragment>Appoint admin</Fragment> :
+                        <Fragment>View members</Fragment>
+                        }
                       </DropdownItem>
-                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
+                      {/* {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
                         <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make members admin</DropdownItem>
-                      }
+                      } */}
                     </div>
                     <DropdownItem className="m-0" divider />
                     <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group
@@ -93,12 +100,9 @@
                     onChange={e => this.textfileHandler(e)}
                   />
                   <label htmlFor="file" className="document-file float-left py-auto align-self-center">
-                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document
+                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document / Image
                   </label>
                 </div>
-                <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image
-                </DropdownItem>
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                 </DropdownItem>
