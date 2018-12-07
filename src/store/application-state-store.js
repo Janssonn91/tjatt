@@ -26,29 +26,28 @@ class ApplicationStateStore {
 
             this.systemId = data.systemUserId;
             console.log("systemId", this.systemId);
-            channelStore.getUserList();
+            //channelStore.getUserList();
           }).catch(err => console.log(err))
 
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
 
           socket.on('online', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getLoginStatus();
+            let ids = message.onlineUsers;
+            channelStore.getLoginStatus(ids);
           });
           socket.on('sign up', message => {
-            channelStore.getUserList();
+           // channelStore.getUserList();
             userStore.fetchContact();
           });
           socket.on('login', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getLoginStatus();
+            channelStore.getLoginStatus( message.loginUser);
           });
           socket.on('logout', message => {
-            this.onLineUsers = message.loginUser;
-            channelStore.getUserList().then(
-              channelStore.getLoginStatus()
-            )
+            channelStore.getLoginStatus(message.loginUser);
+            // channelStore.getUserList().then(
+            //   channelStore.getLoginStatus(message.loginUser)
+            // )
           });
           socket.on('delete message', message => {
             console.log(message)
