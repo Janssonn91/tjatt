@@ -145,11 +145,13 @@ io.on('connection', (socket) => {
 
   socket.on('online', (userId) => {
     onlineUsers = onlineUsers.filter(id => id !== userId);
+    console.log("online before push", onlineUsers)
     onlineUsers.push(userId)
+    console.log("online after push", onlineUsers)
     console.log("onlineuser", onlineUsers)
     console.log("online message received")
 
-    socket.broadcast.emit('online', {
+    socket.emit('online', {
       onlineUsers
     });
 
@@ -201,6 +203,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('login', {
         loginUser: onlineUsers
       })
+      socket.emit('online', onlineUsers )
     })
   })
 
