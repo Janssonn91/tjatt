@@ -23,10 +23,10 @@
       {this.props.channelStore.unreadSystemMessages.length > 0 ?
         <NavLink className="system-message pt-0 pl-2 pr-0">
           <NavItem onClick={this.openSystemMessageModal.bind(this)}>
-          <span className="system-message-link d-inline-block">System Message</span>
-          <span className="message-number float-right">
-            <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge>
-          </span>
+            <span className="system-message-link d-inline-block">System Message</span>
+            <span className="message-number float-right mr-2">
+              <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge>
+            </span>
           </NavItem>
         </NavLink>
         : <span className="d-none"> 0</span>}
@@ -53,7 +53,7 @@
                     <div className="nav-link pl-2 py-1 pr-0 contacts">
                       <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                       <span className="d-inline-block">{channel.channelname}</span>
-                      {this.props.currentChannel.messageNum > 0 ? <span className="message-number">
+                      {this.props.currentChannel.messageNum > 0 ? <span className="message-number float-right mr-1">
                         <Badge color="danger">{this.props.currentChannel.messageNum}</Badge>
                       </span> : <span className="d-inline-block float-right"><i className="far fa-times-circle align-middle"></i></span>}
                     </div>
@@ -85,7 +85,7 @@
                     <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ?
-                      <span className="message-number">
+                      <span className="message-number float-right mr-1">
                         <Badge color="danger">{channel.messageNum}</Badge>
                       </span>
                       :
@@ -118,7 +118,7 @@
                 >
                   <div className="nav-link py-1 pr-1 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
-                    {channel.messageNum > 0 ? <span className="message-number">
+                    {channel.messageNum > 0 ? <span className="message-number float-right mr-1">
                       <Badge color="danger">{channel.messageNum}</Badge>
                     </span> : <span key={i} className="d-none"> 0</span>}
                   </div>
