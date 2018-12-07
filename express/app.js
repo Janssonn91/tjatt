@@ -559,20 +559,30 @@ io.on('connection', (socket) => {
     }
 
     if (data.type === "removeContact") {
+      console.log("remove contact", data)
       let c = await channel.findOne({ channelname: data.target + "system" });
       let user = await User.findById(data.sender);
-      let m = [];
       let systemMessage = new ChatMessage({
         sender: data.sender,
-        text: user.nickname + " has left group",
-        textType: "groupInfo",
+        text: user.nickname,
+        textType: "removeContact",
         channel: c,
+        unread: true,
         time: data.time,
       })
-      systemMessage.save();
-      m.push(systemMessage);
-      socket.broadcast.emit('group', systemMessage);
-      io.to(c).emit('chat message', m);
+      let m = "";
+      systemMessage.save().then(message=>{
+        m= message.id;
+      })
+      let message= {
+        sender: data.sender,
+        initiator: user.nickname,
+        target: data.target,
+        textType: "removeContact",
+        id: m,
+      }
+      socket.broadcast.emit('removeContact',message);
+      //io.to(c).emit('chat message', m);
     };
   })
 
