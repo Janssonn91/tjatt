@@ -208,10 +208,7 @@ io.on('connection', (socket) => {
   })
 
 
-  // socket.on('newChannel', (channel) => {
-  //   console.log('new channel', channel._id);
-  //   socket.join(channel._id, () => console.log('received channel', socket.rooms));
-  // })
+ 
 
   socket.on('delete message', ({ channelId, messageId }) => {
     io.to(channelId).emit('delete message', messageId)
@@ -242,16 +239,20 @@ io.on('connection', (socket) => {
 
     //create group channel 
     // data: {newChannel: whole channel info includes id, creater:userId}
-    // socket.join(data.newChannel._id, async () => {
-    //   console.log("socket room", socket.rooms);
+    
 
     if (data.type === "create group") {
+      console.log("create group", data)
+      socket.join(data.newChannel._id);
+      // socket.join(data.newChannel._id, async () => {
+      //   console.log("socket room", socket.rooms);
       let messageDict = {};
       for (let member of data.newChannel.members) {
         if (member !== user._id) {
           let c = await channel.findOne({
             channelname: member + "system"
           });
+        
           let systemMessage = new ChatMessage({
             sender: data.creater,
             text: data.creater + "&inviteYouToChannel&" + data.newChannel.channelname,
