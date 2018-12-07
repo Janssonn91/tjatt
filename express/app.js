@@ -5,6 +5,7 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tjatt', { useNewUrlParser: true });
 const db = mongoose.connection;
+const bodyParser = require('body-parser');
 db.on('error', (e) => {
   console.error(e);
 });
@@ -22,7 +23,19 @@ const jo = require('jpeg-autorotate');
 const fs = require('fs');
 const pathTo = require('path');
 global.passwordSalt = "aasölkjadgöl\}]23%#¤#%(&";
-const apiRoutes = require('./routes/api');
+
+
+// Add requires of different routes here
+app.use(bodyParser.json({extended: false}));
+require('./routes/addRepo')(app);
+// add additional requires in the same style as the previous line here
+require('./routes/updateRepo')(app);
+require('./routes/getBranch')(app);
+require('./routes/startGitApp')(app);
+require('./routes/deleteGitApp')(app);
+
+
+
 const sharedsession = require("express-socket.io-session");
 const session = expressSession({
   secret: 'big fancy secret',
@@ -60,8 +73,6 @@ io.use(sharedsession(session, {
 }));
 
 
-
-app.use("/", apiRoutes)
 
 // Setting upp REST routes
 // (a Mongoose model + setting up routes)

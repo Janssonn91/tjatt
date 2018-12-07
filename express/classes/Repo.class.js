@@ -7,8 +7,10 @@ module.exports = class Repo extends ModelAndRoutes {
     return {
       name: String,
       url: String,
+      gitUrl: String,
       port: String,
-      running: Boolean
+      running: Boolean,
+      branches: Array
     }
   }
 }
