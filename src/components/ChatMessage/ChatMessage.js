@@ -63,13 +63,13 @@ export default class ChatMessage extends Component {
     let today = new Date();
     let hour = t.getHours();
     let min = t.getMinutes();
-    if(min<10){
-      min= "0"+ min;
+    if (min < 10) {
+      min = "0" + min;
     }
     let ampm = hour <= 12 ? "AM" : "PM";
     hour = hour % 12;
-    if(hour<10){
-      hour= "0" + hour;
+    if (hour < 10) {
+      hour = "0" + hour;
     }
     hour = hour ? hour : 12;
     if (today.setHours(0, 0, 0, 0) === t.setHours(0, 0, 0, 0)) {

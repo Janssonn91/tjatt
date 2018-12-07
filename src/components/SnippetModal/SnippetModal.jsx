@@ -7,7 +7,7 @@
       </Row>
       <Row>
         <Col lg="12" md="12">
-          {!this.uploadOrText ? <textarea value={this.codeMessage} onKeyDown={this.tabTextArea} onChange={e => this.codeMessage = e.target.value} className="w-100 text-value" rows="8"></textarea> :
+          {!this.uploadOrText ? <textarea value={this.codeMessage} onKeyDown={this.tabTextArea} onChange={e => this.codeMessage = e.target.value} className="w-100 text-value" rows="8" placeholder="Write/paste your code here"></textarea> :
             <div>
               <input
                 type="file"

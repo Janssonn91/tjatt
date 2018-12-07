@@ -23,18 +23,18 @@
       {this.props.channelStore.unreadSystemMessages.length > 0 ?
         <NavLink className="system-message pt-0 pl-2 pr-0">
           <NavItem onClick={this.openSystemMessageModal.bind(this)}>
-          <span className="system-message-link d-inline-block">System Message</span>
-          <span className="message-number float-right">
-            <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge>
-          </span>
+            <span className="system-message-link d-inline-block">System Message</span>
+            <span className="message-number float-right mr-2">
+              <Badge color="danger">{this.props.channelStore.unreadSystemMessageNum}</Badge>
+            </span>
           </NavItem>
         </NavLink>
         : <span className="d-none"> 0</span>}
 
-      <NavLink className="pl-2 pt-0 pr-0">
+      <NavLink className="contacts-nav pl-2 pt-0 pr-0">
         <NavItem onClick={this.openContacts}>My Contacts {!this.contactsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
+        <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus mr-1"></i>
       </NavLink>
-      <i onClick={this.openModalAddNewUser.bind(this)} className="fas fa-plus"></i>
       {this.props.channelStore.unreadSystemMessage ?
         <Collapse className="pl-2" isOpen={this.systemMessageOpen}>
           <Card className="contactsCollapse border-0 m-0">
@@ -53,7 +53,7 @@
                     <div className="nav-link pl-2 py-1 pr-0 contacts">
                       <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                       <span className="d-inline-block">{channel.channelname}</span>
-                      {this.props.currentChannel.messageNum > 0 ? <span className="message-number">
+                      {this.props.currentChannel.messageNum > 0 ? <span className="message-number float-right mr-1">
                         <Badge color="danger">{this.props.currentChannel.messageNum}</Badge>
                       </span> : <span className="d-inline-block float-right"><i className="far fa-times-circle align-middle"></i></span>}
                     </div>
@@ -85,7 +85,7 @@
                     <CardImg className="mr-2 d-inline-block" src={channel.image || "/images/placeholder.png"} alt="user's photo" />
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ?
-                      <span className="message-number">
+                      <span className="message-number float-right mr-1">
                         <Badge color="danger">{channel.messageNum}</Badge>
                       </span>
                       :
@@ -102,10 +102,10 @@
           </CardBody>
         </Card>
       </Collapse>
-      <NavLink className="pl-2 pr-0">
+      <NavLink className="contacts-nav pl-2 pr-0">
         <NavItem onClick={this.openGroups}>My Groups {!this.groupsOpen ? <i className="fas fa-sort-down arrow-down"></i> : <i className="fas fa-sort-up arrow-up"></i>}</NavItem>
+        <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus mr-1"></i>
       </NavLink>
-      <i onClick={this.openModalCreateGroup.bind(this)} className="fas fa-plus"></i>
       <Collapse className="pl-2" isOpen={this.groupsOpen}>
         <Card className="groupCollapse border-0 m-0">
           <CardBody className="p-0">
@@ -118,7 +118,7 @@
                 >
                   <div className="nav-link py-1 pr-1 contacts">
                     <span className="d-inline-block">{channel.channelname}</span>
-                    {channel.messageNum > 0 ? <span className="message-number">
+                    {channel.messageNum > 0 ? <span className="message-number float-right mr-1">
                       <Badge color="danger">{channel.messageNum}</Badge>
                     </span> : <span key={i} className="d-none"> 0</span>}
                   </div>

@@ -59,7 +59,7 @@ class ChannelStore {
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
-    this.setSystemMessagesFromDB();
+    //this.setSystemMessagesFromDB();
     user.map((u) => {
       return this.userDict[u._id] = {
         name: u.nickname,
@@ -69,14 +69,16 @@ class ChannelStore {
     });
   }
 
-  @action async getLoginStatus() {
-    if (userStore.onLineUsers) {
-      for (let id of userStore.onLineUsers) {
-        if (this.userDict[id]) {
+  @action async getLoginStatus(users) {
+    await this.getUserList();
+    this.userDict= toJS(this.userDict);
+     if(users){
+      for(let id of users){
+        id= id.toString();
           this.userDict[id].status = true;
-        }
+          console.log(toJS(this.userDict[id]))
       }
-    }
+     }
   }
 
   @action async getChannelList() {
@@ -195,11 +197,6 @@ class ChannelStore {
             let initiator = toJS(this.userDict[j[0]]).name;
             this.setSystemMessageFromDB(initiator, j[0], i[1], d);
           }
-          if (d.textType.toString() === "addedToGroup") {
-            let i = d.text.toString().split("&inviteYouToChannel&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
-          }
           if (d.textType.toString() === "removeFromGroup") {
             let i = d.text.toString().split("&hasRemovedYouFromChannel&");
             let initiator = toJS(this.userDict[i[0]]).name;
@@ -287,7 +284,6 @@ class ChannelStore {
       this.currentChannel.messageNum = 0;
       this.showChat();
       this.getChannelChatHistory(this.currentChannel._id);
-      this.getLoginStatus();
 
       this.currentChannelAdmins = [];
       this.ChannelChatHistory = [];
@@ -419,8 +415,19 @@ class ChannelStore {
     this.adminLeavingError = false;
   }
 
+  // splicing members from currentChannel when removing them from a group (from addDeleteMemberModal)
+  @action spliceCurrentChannel(member){
+    let index = this.currentChannel.members.indexOf(member);
+    this.currentChannel.members.splice(index,1);
+  }
+
+  // adding a member to the group in currentChannel (frm addDeleteMemberModal)
+  @action addToCurrentChannel(member){
+    this.currentChannel.members.push(member);
+  }
+
   // for splicing a channel from a user. Needs an index to start from
-  @action spliceChannel(channelId) {
+   @action spliceChannel(channelId) {
     let index = 0;
     for (let channel of this.contactChannels) {
       if (channel._id === channelId) {
@@ -451,6 +458,8 @@ class ChannelStore {
 
   @action resetCurrentChannel() {
     this.currentChannel = "";
+    this.channelChatHistory = [];
+    this.channelName = '';
   }
 
   // TODO: This function has warning (Nana)

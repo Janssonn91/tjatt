@@ -1,7 +1,12 @@
 <Fragment>
   <Modal className="viewMembers" isOpen={this.props.isOpen} toggle={this.props.toggle} keyboard={this.props.keyboard} >
     <ModalHeader tag="h4" toggle={this.props.toggle}>
-      View members
+      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+      (this.props.channelStore.currentGroupMembers.length > 1) &&
+      (this.props.channelStore.currentGroupMembers.length > this.props.channelStore.currentChannelAdmins.length) ?
+        <Fragment>Appoint admin</Fragment> :
+        <Fragment>View members</Fragment>
+      }
     </ModalHeader>
     <ModalBody>
       {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && this.props.channelStore.currentChannelAdmins.length < 2 && this.props.channelStore.adminLeavingError &&
