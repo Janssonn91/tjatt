@@ -214,6 +214,9 @@ li {
   background-color: unset !important;
   padding: 0!important;
   box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.2);
+  &::after {
+    display:none;
+  }
 }
 
 .removeBG pre, .code-snippet pre{
@@ -228,6 +231,9 @@ li {
   width: 90%;
   margin-left: 5px;
   position: relative;
+  &::after{
+    display:none;
+  }
 }
 
 .hljs{

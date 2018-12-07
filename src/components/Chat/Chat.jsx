@@ -15,7 +15,7 @@
           </Button>
           {/* <span id="channelName"></span>  */}
           {/* <span className="chat-with">{this.props.channelStore.currentChannel.channelname}</span> */}
-          <span className ="chat-with">{this.props.channelStore.channelName}</span>
+          <span className="chat-with">{this.props.channelStore.channelName}</span>
           {this.props.channelStore.currentChannel.group
             ? <div className="btn group-menu">
               <span className="dialog-icon p-0">
@@ -100,12 +100,9 @@
                     onChange={e => this.textfileHandler(e)}
                   />
                   <label htmlFor="file" className="document-file float-left py-auto align-self-center">
-                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document
+                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document / Image
                   </label>
                 </div>
-                <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image
-                </DropdownItem>
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                 </DropdownItem>
