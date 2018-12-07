@@ -43,7 +43,7 @@ export default class Chat extends Component {
   @observable fileUploadError = false;
   @observable codefileValue = '';
   @observable gifPicker = false;
-  @observable openGitAppsSidebar = true;
+  @observable openGitAppsSidebar = false;
 
 
   @observable sendToAddDeleteModal = {

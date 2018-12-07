@@ -1,10 +1,12 @@
 import './GitApp.scss';
+@inject('userStore', 'channelStore')
 @observer export default class GitApp extends Component{
 
 @observable importedApps = [];
 @observable openApp = {};
 @observable openGitAppsSidebar = true;
 @observable chatSidebar = false;
+
 
     async start(){
         this.createStoreConnectedProperties({

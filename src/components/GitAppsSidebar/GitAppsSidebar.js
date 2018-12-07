@@ -167,6 +167,7 @@ import './GitAppsSidebar.scss';
         app.running = !app.running;
         !app.running ? window.history.pushState({urlPath:'/git-app'},"",'/git-app') : null;
         !app.running ? this.props.onOpenApp({}) : null;
+        !app.running ? this.openBranches = null : null;
         this.openApp._id === appId ? this.openApp = {} : null;
         this.startingApp = appId;
         fetch('/api/startGitApp', { 
