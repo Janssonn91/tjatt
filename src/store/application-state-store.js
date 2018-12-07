@@ -27,6 +27,8 @@ class ApplicationStateStore {
             this.systemId = data.systemUserId;
             console.log("systemId", this.systemId);
             //channelStore.getUserList();
+            channelStore.cleanUpOldSystemMessages();
+            channelStore.setSystemMessagesFromDB();
           }).catch(err => console.log(err))
 
           socket.emit('login', userStore.user._id);
