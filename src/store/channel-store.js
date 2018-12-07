@@ -69,14 +69,16 @@ class ChannelStore {
     });
   }
 
-  @action async getLoginStatus() {
-    if (userStore.onLineUsers) {
-      for (let id of userStore.onLineUsers) {
-        if (this.userDict[id]) {
+  @action async getLoginStatus(users) {
+    await this.getUserList();
+    this.userDict= toJS(this.userDict);
+     if(users){
+      for(let id of users){
+        id= id.toString();
           this.userDict[id].status = true;
-        }
+          console.log(toJS(this.userDict[id]))
       }
-    }
+     }
   }
 
   @action async getChannelList() {
@@ -287,7 +289,6 @@ class ChannelStore {
       this.currentChannel.messageNum = 0;
       this.showChat();
       this.getChannelChatHistory(this.currentChannel._id);
-      this.getLoginStatus();
 
       this.currentChannelAdmins = [];
       this.ChannelChatHistory = [];

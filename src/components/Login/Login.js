@@ -46,7 +46,8 @@ import './Login.scss';
             
             this.props.applicationStateStore.systemId = data.systemUserId;
             console.log("systemId", this.props.applicationStateStore.systemId);
-            this.props.channelStore.getUserList();
+            socket.emit('online', res.user._id)
+            //this.props.channelStore.getUserList();
           }).catch(err=>console.log(err))
         }
         else {

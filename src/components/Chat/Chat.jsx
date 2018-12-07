@@ -32,25 +32,25 @@
                     <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
                     <DropdownItem className="m-0" divider />
                     <div className="channel-manage">
-                    {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && 
-                      <DropdownItem
-                        className="py-2 px-3"
-                        onClick={this
-                          .addDeleteMemberModalToggle
-                          .bind(this)}>
-                        Add/Delete members
+                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                        <DropdownItem
+                          className="py-2 px-3"
+                          onClick={this
+                            .addDeleteMemberModalToggle
+                            .bind(this)}>
+                          Add/Delete members
                       </DropdownItem>
-                    }
+                      }
                       <DropdownItem
                         className="py-2 px-3"
                         onClick={this
                           .viewMembersModalToggle
                           .bind(this)}>
                         {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
-                        (this.props.channelStore.currentGroupMembers.length > 1) &&
-                        (this.props.channelStore.currentGroupMembers.length > this.props.channelStore.currentChannelAdmins.length) ?
-                        <Fragment>Appoint admin</Fragment> :
-                        <Fragment>View members</Fragment>
+                          (this.props.channelStore.currentGroupMembers.length > 1) &&
+                          (this.props.channelStore.currentGroupMembers.length > this.props.channelStore.currentChannelAdmins.length) ?
+                          <Fragment>Appoint admin</Fragment> :
+                          <Fragment>View members</Fragment>
                         }
                       </DropdownItem>
                     </div>
@@ -117,7 +117,7 @@
                 type="textarea"
                 name="text"
                 id="messageArea"
-                placeholder="Write your message here"
+                placeholder="Write message"
                 value={this.inputMessage}
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}

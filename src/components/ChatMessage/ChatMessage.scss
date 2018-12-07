@@ -182,7 +182,7 @@ li {
   .other-message {
     background-color: lighten($gray, 30%);
     color: $text;
-    min-width: 30px;
+    min-width: 70px;
     float:left;
     &:after {
       border-bottom-color: lighten($gray, 30%);
