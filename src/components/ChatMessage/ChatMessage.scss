@@ -121,7 +121,7 @@ li {
       left:15px;
     }
   }
-  
+
   //Other users data on messages
   .message-data {
     margin-bottom: 15px;
@@ -262,4 +262,16 @@ li {
   width: 90%;
   height: 100%;
   width: 100%;
+}
+
+.far.fa-star {
+  color: lighten($gray, 8%);
+  cursor: pointer;
+  &:hover {
+    color: $blue;
+  }
+}
+
+.fas.fa-star {
+  color: gold;
 }

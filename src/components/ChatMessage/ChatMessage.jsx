@@ -11,7 +11,6 @@
               <span>{message.text}</span>
               <span> {this.formattedTime(message.time)}</span>
             </div>
-
           </li>
           :
           message.sender === (this.props.userStore.user._id) ?
@@ -20,10 +19,10 @@
                 <span>
                   <img alt="user-img" src={this.props.userStore.user.image || "/images/placeholder.png"} />
                 </span>&nbsp;&nbsp;
-            <span className="message-data-name">
+                <span className="message-data-name">
                   {this.props.userStore.user.nickname}
                 </span>&nbsp;
-             <span className="message-data-time">{this.formattedTime(message.time)}</span>
+                <span className="message-data-time">{this.formattedTime(message.time)}</span>
               </div>
               <div className={`message my-message clearfix ${message.contentType === 'image' ? 'removeBG' : ''} ${message.contentType === 'code' ? 'code-snippet' : ''}`}>
                 {message.contentType === 'text' && message.text}
@@ -42,7 +41,13 @@
                   </DropdownMenu>
                 </ButtonDropdown>
               </div>
+              <div className="float-right">
+                {message.star ?
+                  <i className="fas fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>
+                  : <i className="far fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>}
+              </div>
             </li> :
+
             <li key={i} className="clearfix">
               <div className="message-data">
                 {
@@ -54,10 +59,10 @@
                       <i className="fas fa-circle offline"></i>
                     </span>
                 }&nbsp; &nbsp;
-            <span>
+                <span>
                   <img alt="user-img" src={this.props.channelStore.userDict[message.sender].img || "/images/placeholder.png"} />
                 </span>&nbsp; &nbsp;
-              <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
+                <span className="message-data-name">{this.props.channelStore.userDict[message.sender].name}</span>
                 <span className="message-data-time">{this.formattedTime(message.time)}</span>
               </div>
               <div className={`message other-message ${message.contentType === 'image' ? 'removeBG' : ''} ${message.contentType === 'code' ? 'code-snippet' : ''}`}>
@@ -66,6 +71,11 @@
                 {message.contentType === 'image' && <div className="img-upload-holder"><img src={message.filePath} className="upload-image" alt="chat-img" onClick={() => { this.toggleChatModal(); this.currentImage = message.filePath; this.originalName = message.originalName }} /></div>}
                 {message.contentType === 'code' && <div data-index={i} className={`${!this.fullHeightSnippet.some(obj => obj.index === i) ? 'highlight-small' : 'highlight-big'}`}><SyntaxHighlighter style={vs2015} showLineNumbers={true}>{message.text}</SyntaxHighlighter>
                   <Button onClick={() => this.toggleSnippetHeight(i)} color="secondary" className="full-height-btn"><i className={`fas fa-arrow-${this.fullHeightSnippet.some(obj => obj.index === i) ? 'up' : 'down'}`}></i></Button></div>}
+              </div>
+              <div className="float-right">
+                {message.star ?
+                  <i className="fas fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>
+                  : <i className="far fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>}
               </div>
             </li>
       )
