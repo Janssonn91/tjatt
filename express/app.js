@@ -1113,6 +1113,17 @@ app.put('/message/:id', (req, res) => {
     })
 });
 
+app.put('/message/:id/star', (req, res) => {
+  ChatMessage.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { star: req.body.star } }
+  ).then(() =>
+    res.json({ success: true }
+    )).catch(err => {
+      throw err;
+    });
+});
+
 app.delete('/deletemessage/:messageId', (req, res) => {
   console.log(req.params._id);
   ChatMessage.findOneAndRemove({ _id: req.params.messageId })

@@ -21,10 +21,6 @@ export default class ChatMessage extends Component {
     selectedMessage: ''
   }
 
-  async start() {
-
-  }
-
   toggleSnippetHeight = (index) => {
     if (this.fullHeightSnippet.some(obj => obj.index === index)) {
       let scroll = document.querySelector('._scrollable-div_1dj6m_1');
@@ -82,6 +78,20 @@ export default class ChatMessage extends Component {
     }
   }
 
-
-
+  updateStar(messageId, currentStarValue) {
+    const star = !currentStarValue;
+    fetch(`/api/message/${messageId}/star`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ star }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated star');
+        }
+      })
+      .catch(err => console.log(err));
+  }
 }
