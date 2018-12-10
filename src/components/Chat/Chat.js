@@ -242,6 +242,22 @@ export default class Chat extends Component {
     this.inputMessage = '';
   }
 
+  updateChannelLatestTime(channelId, time) {
+    fetch(`/api/channel/${channelId}/updatetime`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ time }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated latest time');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   setupMessageListener() {
     const { channelStore } = this.props;
     socket.off('chat message');
@@ -249,11 +265,12 @@ export default class Chat extends Component {
       'chat message',
       (messages) => {
         for (let message of messages) {
-          // let time = new Date(message.time);
-          // console.log(time)
-
-          // When you get a message, move the channel to the top of the list
+          // When you get a message or send a message,
+          // 1) move the channel to the top of the list (frontend)
           channelStore.moveLatestChannelToTop(message.channel);
+          // 2) update the latestUpdateTime of the channel (backend)
+          const milliseconds = Date.now();
+          this.updateChannelLatestTime(message.channel, milliseconds);
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
@@ -303,8 +320,6 @@ export default class Chat extends Component {
         }
       })
   }
-
-
 
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;

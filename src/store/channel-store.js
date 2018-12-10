@@ -59,7 +59,7 @@ class ChannelStore {
   @action async getUserList() {
     let res = await fetch('/api/users');
     let user = await res.json();
-    this.setSystemMessagesFromDB();
+    //this.setSystemMessagesFromDB();
     user.map((u) => {
       return this.userDict[u._id] = {
         name: u.nickname,
@@ -71,14 +71,14 @@ class ChannelStore {
 
   @action async getLoginStatus(users) {
     await this.getUserList();
-    this.userDict= toJS(this.userDict);
-     if(users){
-      for(let id of users){
-        id= id.toString();
-          this.userDict[id].status = true;
-          console.log(toJS(this.userDict[id]))
+    this.userDict = toJS(this.userDict);
+    if (users) {
+      for (let id of users) {
+        id = id.toString();
+        this.userDict[id].status = true;
+        console.log(toJS(this.userDict[id]))
       }
-     }
+    }
   }
 
   @action async getChannelList() {
@@ -88,7 +88,14 @@ class ChannelStore {
 
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
-    }); // TODO: Added contact doesn't exist yet
+    });
+
+    // Sort myChannels by latestUpdateTime
+    const existLatestUpdateTime = this.myChannels.filter(c => c.latestUpdateTime && c);
+    const notExistLatestUpdateTime = this.myChannels.filter(c => !c.latestUpdateTime && c);
+    existLatestUpdateTime.sort((a, b) => b.latestUpdateTime - a.latestUpdateTime);
+    const sortedMyChannels = existLatestUpdateTime.concat(notExistLatestUpdateTime);
+    this.myChannels = sortedMyChannels;
 
     for (let i = 0; i < this.myChannels.length; i++) {
       const c = this.myChannels[i];
@@ -135,7 +142,6 @@ class ChannelStore {
         }
       }
     }
-    this.sortListByMessageNum();
     this.hasLoadedChannels = true;
   }
 
@@ -197,11 +203,6 @@ class ChannelStore {
             let initiator = toJS(this.userDict[j[0]]).name;
             this.setSystemMessageFromDB(initiator, j[0], i[1], d);
           }
-          if (d.textType.toString() === "addedToGroup") {
-            let i = d.text.toString().split("&inviteYouToChannel&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
-          }
           if (d.textType.toString() === "removeFromGroup") {
             let i = d.text.toString().split("&hasRemovedYouFromChannel&");
             let initiator = toJS(this.userDict[i[0]]).name;
@@ -224,7 +225,7 @@ class ChannelStore {
     message.textType = d.textType;
     message.initiator = initiator; //sender's name
     message.unread = true;
-    message.sender = sender; //sender's id 
+    message.sender = sender; //sender's id
     this.unreadSystemMessages.push(message);
     this.unreadSystemMessageNum++;
 
@@ -309,7 +310,7 @@ class ChannelStore {
         this.getGroupMembersData(channel.members);
         this.channelName = channel.channelname;
       }
-   })
+    })
 
   }
 
@@ -363,7 +364,7 @@ class ChannelStore {
     }
     // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
 
-    // res = 
+    // res =
     // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
     //  if(!group){
     //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
@@ -421,18 +422,18 @@ class ChannelStore {
   }
 
   // splicing members from currentChannel when removing them from a group (from addDeleteMemberModal)
-  @action spliceCurrentChannel(member){
+  @action spliceCurrentChannel(member) {
     let index = this.currentChannel.members.indexOf(member);
-    this.currentChannel.members.splice(index,1);
+    this.currentChannel.members.splice(index, 1);
   }
 
   // adding a member to the group in currentChannel (frm addDeleteMemberModal)
-  @action addToCurrentChannel(member){
+  @action addToCurrentChannel(member) {
     this.currentChannel.members.push(member);
   }
 
   // for splicing a channel from a user. Needs an index to start from
-   @action spliceChannel(channelId) {
+  @action spliceChannel(channelId) {
     let index = 0;
     for (let channel of this.contactChannels) {
       if (channel._id === channelId) {
@@ -446,14 +447,14 @@ class ChannelStore {
         this.myChannels.splice(myChannelIndex, 1)
       }
       myChannelIndex++;
-    } 
+    }
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
   }
 
-  @action spliceGroupChannel(channelId){
-    this.groupChannels.splice(channelId,1)
+  @action spliceGroupChannel(channelId) {
+    this.groupChannels.splice(channelId, 1)
   }
 
   // for splicing an admin from a group. Needs an index to start from
@@ -465,12 +466,6 @@ class ChannelStore {
     this.currentChannel = "";
     this.channelChatHistory = [];
     this.channelName = '';
-  }
-
-  // TODO: This function has warning (Nana)
-  @action sortListByMessageNum() {
-    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
-    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
   }
 
   @action moveLatestChannelToTop(channelID) {
