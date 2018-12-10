@@ -139,7 +139,6 @@ class ChannelStore {
         }
       }
     }
-    // this.sortListByMessageNum();
     this.hasLoadedChannels = true;
   }
 
@@ -465,13 +464,6 @@ class ChannelStore {
     this.channelChatHistory = [];
     this.channelName = '';
   }
-
-  // TODO: This function has warning (Nana)
-  @action sortListByMessageNum() {
-    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
-    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
-  }
-
 
   @action moveLatestChannelToTop(channelID) {
     // For contact list
