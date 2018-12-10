@@ -242,6 +242,22 @@ export default class Chat extends Component {
     this.inputMessage = '';
   }
 
+  updateChannelLatestTime(channelId, time) {
+    fetch(`/api/channel/${channelId}/updatetime`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ time }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated latest time');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   setupMessageListener() {
     const { channelStore } = this.props;
     socket.off('chat message');
@@ -255,7 +271,7 @@ export default class Chat extends Component {
 
           // When you get a message or send a message, update the latestUpdateTime of the channel
           const milliseconds = Date.now();
-          channelStore.updateChannelLatestTime(message.channel, milliseconds);
+          this.updateChannelLatestTime(message.channel, milliseconds);
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
