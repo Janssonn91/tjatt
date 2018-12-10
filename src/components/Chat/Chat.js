@@ -265,11 +265,10 @@ export default class Chat extends Component {
       'chat message',
       (messages) => {
         for (let message of messages) {
-          // const time = Date.now(message.time);
-          // When you get a message, move the channel to the top of the list
-          // channelStore.moveLatestChannelToTop(message.channel);
-
-          // When you get a message or send a message, update the latestUpdateTime of the channel
+          // When you get a message or send a message,
+          // 1) move the channel to the top of the list (frontend)
+          channelStore.moveLatestChannelToTop(message.channel);
+          // 2) update the latestUpdateTime of the channel (backend)
           const milliseconds = Date.now();
           this.updateChannelLatestTime(message.channel, milliseconds);
 
@@ -314,7 +313,6 @@ export default class Chat extends Component {
               }
             })
           }
-          channelStore.getChannelList();
         }
         let scroll = document.querySelector('._scrollable-div_1dj6m_1');
         if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {
@@ -322,8 +320,6 @@ export default class Chat extends Component {
         }
       })
   }
-
-
 
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;
