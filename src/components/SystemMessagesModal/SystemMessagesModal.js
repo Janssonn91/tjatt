@@ -2,10 +2,20 @@ import './SystemMessagesModal.scss';
 
 @inject('userStore', 'channelStore') @observer export default class SystemMessages extends Component {
 
-  invitationDeclined(id, mid, i){
+  invitationDeclined(id, targetChannel, mid, i){
     socket.emit('system', {rejecter: this.props.userStore.user._id, rejectee: id, type:"rejection"})
     this.props.channelStore.readSystemMessage(mid,i);
-    
+    console.log(targetChannel);
+    fetch(`/api/killChannel/${targetChannel}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(channel => console.log(channel))
+      .catch(err => {
+        console.log(err);
+      });
+
   }
 
   invitationAccepted(id, targetChannel, mid, i){

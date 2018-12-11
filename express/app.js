@@ -973,6 +973,14 @@ app.put('/users/:_id', async (req, res) => {
   };
 });
 
+app.delete('/killChannel/:id', (req, res) => {
+  channel.findOneAndRemove(
+    { _id: req.params.id}
+  ).then(channel => {
+    res.json(channel);
+  });
+});
+
 app.put('/channel/:_id', (req, res) => {
   channel.update(
     { _id: req.params._id },
