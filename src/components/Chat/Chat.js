@@ -90,8 +90,8 @@ export default class Chat extends Component {
   }
 
   getFileValue = () => {
-    let fileValue = document.querySelector('#codefile').files[0].name;
-    this.codefileValue = fileValue;
+    let fileValue = document.querySelector('#codefile').files[0];
+    this.codefileValue = fileValue.name;
   }
 
   toggleSnippet = () => {
