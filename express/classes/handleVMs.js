@@ -36,7 +36,7 @@ module.exports = class HandleVMs {
   }
 
   static async select_docker_port() {
-    let probePort = 49152;
+    let probePort = 49160;
     let found = false;
     let usedPorts = await this.get_used_ports();
     // Randomize a port between 49152-65535 (publicly available ports)

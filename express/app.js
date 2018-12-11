@@ -36,8 +36,6 @@ require('./routes/deleteGitApp')(app);
 require('./routes/changeBranch')(app);
 
 
-
-
 const sharedsession = require("express-socket.io-session");
 const session = expressSession({
   secret: 'big fancy secret',

@@ -24,6 +24,7 @@ import './GitAppsSidebar.scss';
         await Repo.create({
             name: name,
             url: `http://localhost:${port}/`,
+            // url: `${name}.tjatt.net`, // UNCOMMENT THIS LINE WHEN GO LIVE
             gitUrl: url,
             port: port,
             running: true,
@@ -31,7 +32,6 @@ import './GitAppsSidebar.scss';
         })
         .then(response=>{
             this.importingRepo = false;
-            // this.z();
         })
         .catch(
             error=>console.log(error)
@@ -204,5 +204,5 @@ import './GitAppsSidebar.scss';
         this.fetchRepos();
 
     }
-  
+    
 }
