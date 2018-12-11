@@ -8,3 +8,4 @@ public/fileUploads
 repos/*
 !repos/.gitkeep
 docker/*
+reverseProxy/*
