@@ -17,15 +17,15 @@ static async addReverseProxy(payload) {
       if (err) throw err;
     });
 
-    // exec(`pm2 start sub-domain.js --name ${payload.uniqueProjectName}`, {
-    //     cwd: pathToReverse
-    //     }, (err, stdout, stderr) => {
-    //         if (err) {
-    //             console.log(err, 'something when wrong on reversing the proxy');
-    //             return;
-    //         }
-    //     }
-    // );
+    exec(`pm2 start sub-domain.js --name ${payload.uniqueProjectName}`, {
+        cwd: pathToReverse
+        }, (err, stdout, stderr) => {
+            if (err) {
+                console.log(err, 'something when wrong on reversing the proxy');
+                return;
+            }
+        }
+    );
 }
 
 // this is not done!!!!!!!
