@@ -30,7 +30,8 @@ class UserStore {
   }
 
   @action checkState() {
-    this.checkedLoginState = true;
+    // this.checkedLoginState = true;
+    this.isLoggedIn = true;
   }
 
   @action updateMyContact(userId) {
