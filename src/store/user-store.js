@@ -8,6 +8,7 @@ class UserStore {
   @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable isLoading = true;
+  @observable myStars = [];
 
   constructor() {
     setTimeout(() => {
@@ -83,6 +84,22 @@ class UserStore {
     const addedUser = this.selectedGroupMember.find(u => u._id === user._id);
     const index = this.selectedGroupMember.indexOf(addedUser);
     this.selectedGroupMember.splice(index, 1);
+  }
+
+  @action fetchStars() {
+    this.user.channel.forEach(channel => {
+      fetch(`/api/message/${channel}`, {
+        method: 'GET'
+      })
+        .then(res => res.json())
+        .then(result => {
+          result.stars.forEach(star => {
+            if (!this.myStars.some(s => s._id === star._id)) {
+              this.myStars.push(star);
+            }
+          });
+        });
+    });
   }
 }
 
