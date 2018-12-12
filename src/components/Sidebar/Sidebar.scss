@@ -160,8 +160,16 @@ $text:#434651;
       border-radius: 5px;
     }
 
-    .fa-star {
-      color: gold;
+    .star-nav {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      .fa-star {
+        color: white;
+        &:hover {
+          color: gold;
+        }
+      }
     }
 
     .contacts-nav {

@@ -17,9 +17,12 @@
     </div>
     <hr className="mt-0" />
     <Nav vertical className="menu">
-      {/* <NavLink to="#" className="p-0"><i className="fas fa-star pr-3 pr-md-2"></i>
-        <NavItem className="pl-1">Starred</NavItem>
-      </NavLink> */}
+      <NavLink className="star-nav pl-2 pt-0 pr-0">
+        <i className="fas fa-star pr-3 pr-md-2" id="starred"></i>
+        <Tooltip placement="right" isOpen={this.tooltipOpen} target="starred" toggle={() => this.toggleTooltip()}>
+          Show starred items
+        </Tooltip>
+      </NavLink>
       {this.props.channelStore.unreadSystemMessages.length > 0 ?
         <NavLink className="system-message pt-0 pl-2 pr-0">
           <NavItem onClick={this.openSystemMessageModal.bind(this)}>

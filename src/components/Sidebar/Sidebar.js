@@ -35,6 +35,7 @@ export const imgPath = '/images/placeholder.png';
   @observable collapseOpen = false;
   @observable contactsOpen = true;
   @observable groupsOpen = true;
+  @observable tooltipOpen = false;
 
   start() {
     this.setupSystemMessage();
@@ -100,6 +101,10 @@ export const imgPath = '/images/placeholder.png';
 
   openSystemMessageModal(){
     this.systemMessagesModalOpen.isOpen = !this.systemMessagesModalOpen.isOpen;
+  }
+
+  toggleTooltip() {
+    this.tooltipOpen = !this.tooltipOpen;
   }
 
   logout() {
