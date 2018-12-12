@@ -164,6 +164,7 @@ io.on('connection', (socket) => {
       channelname: user._id + "system",
       open: true,
       group: false,
+      latestUpdateTime: 315529200000 // set default date with milliseconds('1980/01/01')
     }).save().then((c) => {
       User.findOneAndUpdate(
         { _id: user._id },
@@ -972,6 +973,14 @@ app.put('/users/:_id', async (req, res) => {
   };
 });
 
+app.delete('/killChannel/:id', (req, res) => {
+  channel.findOneAndRemove(
+    { _id: req.params.id}
+  ).then(channel => {
+    res.json(channel);
+  });
+});
+
 app.put('/channel/:_id', (req, res) => {
   channel.update(
     { _id: req.params._id },
@@ -979,6 +988,21 @@ app.put('/channel/:_id', (req, res) => {
   )
     .then(() => {
       res.json({ success: true })
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/channel/:_id/updatetime', (req, res) => {
+  console.log("request", req)
+  channel.update(
+    { _id: req.params._id },
+    { $set: { latestUpdateTime: req.body.time } }
+  )
+    .then(() => {
+      res.json({ success: true })
+      console.log("ooooooo", res)
     })
     .catch(err => {
       throw err;
