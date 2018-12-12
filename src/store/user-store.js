@@ -2,9 +2,8 @@ import channelStore from './channel-store';
 import { applicationStateStore } from "./application-state-store";
 
 class UserStore {
-  @observable user = {_id:"", channel: [], contact: [] };
+  @observable user = { _id: "", channel: [], contact: [] };
   @observable isLoggedIn = false;
-  @observable checkedLoginState = false;
   @observable candidates = []; // AddUserModal
   @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
@@ -29,11 +28,6 @@ class UserStore {
     this.isLoggedIn = isLoggedIn;
   }
 
-  @action checkState() {
-    // this.checkedLoginState = true;
-    this.isLoggedIn = true;
-  }
-
   @action updateMyContact(userId) {
     const addedUser = this.candidates.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
@@ -41,7 +35,7 @@ class UserStore {
     this.groupCandidates.push(addedUser);
   }
 
-  @action async moveContactToCandidates(id){
+  @action async moveContactToCandidates(id) {
     let res = await fetch(`/api/users/${id}`);
     let user = await res.json();
     this.candidates.push(user);
@@ -61,7 +55,7 @@ class UserStore {
       .then(res => res.json())
       .then(users => {
         let withoutMe = users.filter(user => user._id !== this.user._id);
-        withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
+        withoutMe = withoutMe.filter(user => user._id !== applicationStateStore.systemId.toString());
 
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);

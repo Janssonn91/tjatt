@@ -55,7 +55,6 @@ class ApplicationStateStore {
             console.log(message)
             channelStore.channelChatHistory = channelStore.channelChatHistory.filter(msg => msg._id !== message)
           })
-          userStore.checkState();
         }
         else { console.log("login false") }
 
