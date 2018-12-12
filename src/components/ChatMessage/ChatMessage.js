@@ -78,9 +78,11 @@ export default class ChatMessage extends Component {
     }
   }
 
-  updateStar(messageId, currentStarValue) {
-    const star = !currentStarValue;
-    fetch(`/api/message/${messageId}/star`, {
+  updateStar(message, currentStar) {
+    const star = !currentStar;
+
+    // update star of message in backend
+    fetch(`/api/message/${message._id}/star`, {
       credentials: 'include',
       method: 'PUT',
       body: JSON.stringify({ star }),
@@ -90,6 +92,8 @@ export default class ChatMessage extends Component {
       .then(result => {
         if (result.success) {
           console.log('updated star');
+          // update myStars array in frontend
+          this.props.userStore.updateMyStars(message, star);
         }
       })
       .catch(err => console.log(err));

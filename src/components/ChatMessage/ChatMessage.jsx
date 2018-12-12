@@ -42,9 +42,14 @@
                 </ButtonDropdown>
               </div>
               <div className="float-right">
-                {message.star ?
-                  <i className="fas fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>
-                  : <i className="far fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>}
+                {this.props.userStore.myStars.some(s => s._id === message._id) ?
+                  <i className="fas fa-star"
+                    onClick={() => this.updateStar(message, true)}>
+                  </i> :
+                  <i className="far fa-star"
+                    onClick={() => this.updateStar(message, false)}>
+                  </i>
+                }
               </div>
             </li> :
 
@@ -73,9 +78,14 @@
                   <Button onClick={() => this.toggleSnippetHeight(i)} color="secondary" className="full-height-btn"><i className={`fas fa-arrow-${this.fullHeightSnippet.some(obj => obj.index === i) ? 'up' : 'down'}`}></i></Button></div>}
               </div>
               <div className="float-right">
-                {message.star ?
-                  <i className="fas fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>
-                  : <i className="far fa-star" onClick={() => this.updateStar(message._id, message.star)}></i>}
+                {this.props.userStore.myStars.some(s => s._id === message._id) ?
+                  <i className="fas fa-star"
+                    onClick={() => this.updateStar(message, true)}>
+                  </i> :
+                  <i className="far fa-star"
+                    onClick={() => this.updateStar(message, false)}>
+                  </i>
+                }
               </div>
             </li>
       )

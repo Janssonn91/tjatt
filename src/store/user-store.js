@@ -101,6 +101,16 @@ class UserStore {
         });
     });
   }
+
+  @action updateMyStars(message, star) {
+    if (star) {
+      this.myStars.push(message);
+    } else {
+      const index = this.myStars.indexOf(this.myStars.find(s => s._id === message._id));
+      this.myStars.splice(index, 1);
+    }
+  }
+
 }
 
 export const userStore = new UserStore();
