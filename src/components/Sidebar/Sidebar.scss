@@ -30,7 +30,7 @@ $text:#434651;
   background-color: $backgroundColor;
   height: 100vh;
   .profile {
-    height: 12vh;
+    height: 85px;
     .user-holder {
       padding-bottom: 0.5rem;
       .username {
@@ -160,16 +160,8 @@ $text:#434651;
       border-radius: 5px;
     }
 
-    .star-nav {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      .fa-star {
-        color: white;
-        &:hover {
-          color: gold;
-        }
-      }
+    .fa-star {
+      color: gold;
     }
 
     .contacts-nav {

@@ -35,13 +35,13 @@ $fontSm: 12px;
 
 .infopage {
   .introduction {
-    height: 12vh;
     h4 {
       @media only screen and(max-width: 767.5px){
         padding-top: 0px!important;
       }
       padding-top: calc(1.5rem + 5px)!important;
       color: darken($gray, 20%);
+      height: 77px;
       vertical-align: middle;
       padding-left: 15px;
       @media only screen and(max-width: 767.5px){
@@ -53,7 +53,7 @@ $fontSm: 12px;
   }
   .main-info {
     overflow: auto!important;
-    max-height: 88vh !important;
+    max-height: 81vh !important;
     @include scrollbar;
     .chat-management {
       margin-bottom: 1rem!important;
