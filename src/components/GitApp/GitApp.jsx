@@ -38,7 +38,7 @@
         <div
             style={{width:'100%'}} >
                 <div>
-                    <Iframe url={this.openApp.url}
+                    <Iframe url={`https://${this.openApp.url}`}
                         className="gitApps-app-frame"
                         display="initial"
                         allowFullScreen/> 
