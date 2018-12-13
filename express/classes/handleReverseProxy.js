@@ -30,6 +30,7 @@ static async addReverseProxy(payload) {
 
 // this is not done!!!!!!!
 static async removeReverseProxy(payload) {
+    console.log('remove reverse-proxy', payload);
     // routing[`${payload.uniqueProjectName}.tjatt.net`] = `${payload.dockerPort}`;
     // let routingJSON = JSON.stringify(routing, null, 2);
     
@@ -39,11 +40,12 @@ static async removeReverseProxy(payload) {
     // await fs.writeFile(pathToRouting, routingJSON, err => {
     //   if (err) throw err;
     // });
-
-    exec(`pm2 stop sub-domain.js --name ${payload.uniqueProjectName}`, {
+    exec('cwd ' + pathToReverse);
+    console.log(exec('pwd'))
+    return exec(`pm2 stop ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
-            console.log ('To have stopped',stdout | stderr);            
+            console.log ('To have stopped', stdout | stderr);            
             if (err) { 
                 console.log(err, 'something when wrong on reversing the proxy');
                 return err;

@@ -10,7 +10,6 @@ const docker = new Docker({
   socketPath: '/var/run/docker.sock'
   // socketPath: '//./pipe/docker_engine'
 });
-const rp = require('./handleReverseProxy');
 
 
 module.exports = class HandleVMs {
@@ -131,9 +130,6 @@ services:
         })
         if(!toBeRemoved){
           payload.res.json(response);
-        } else { 
-          console.log('To call reverse proxy', payload)
-          rp.removeReverseProxy(payload);
         }
         resolve();
       });
