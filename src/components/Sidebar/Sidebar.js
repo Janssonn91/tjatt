@@ -161,6 +161,7 @@ export const imgPath = '/images/placeholder.png';
             }
       }
     }
+  }
 
     if(message.textType.toString() === "removeFromGroup"){
       // message data structuer: {
@@ -171,13 +172,14 @@ export const imgPath = '/images/placeholder.png';
       //   addedMembers: data.newChannel.members, || data.addedMembers
       // }
       let c= message.targetChannel;
-      let id= userStore.user._id.toString();
+      let id= userStore.user._id;
+      console.log(id)
+      console.log(c)
 
-    for(let i of message.removedMembers) {
-      console.log("delete")
-      if(i.toString()===id ){
+    message.removedMembers.forEach((i)=> {
+      
+      if(i ===id.toString() ){
         if(c.group){
-
           channelStore.deleteGroupChannel(c);
           let m = {
             sender: message.initiator,
@@ -195,11 +197,11 @@ export const imgPath = '/images/placeholder.png';
           }
         }
   }
-}
+})
     }
 
     
-  }
+  
     })
 
 

@@ -248,8 +248,18 @@ class ChannelStore {
   }
 
   //when user is removed from a group frontend only
-  deleteGroupChannel(id) {
-    this.groupChannels.filter(id);
+  deleteGroupChannel(channel) {
+    let channels= toJS(this.groupChannels);
+    let cs=[];
+    for(let c of channels){
+      if(c._id!==channel._id){
+        cs.push(c);
+      }
+    }
+    this.groupChannels= cs;
+    // toJS(this.groupChannels).filter(c=>{
+    //   c._id===channel._id});
+    console.log(this.groupChannels);
     console.log("removed!!!!!!");
   }
 
