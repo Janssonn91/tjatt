@@ -121,8 +121,8 @@ services:
   static stop_container(payload, toBeRemoved = false) {
     return new Promise((resolve, reject) => {
       exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
+        console.log(stdout || stderr);        
         if (err) {
-          console.log(stdout || stderr);
           reject(err);
         }
         let response = Object.assign({}, payload, {
@@ -130,11 +130,12 @@ services:
         })
         if(!toBeRemoved){
           payload.res.json(response);
+        } else {
+          rp.removeReverseProxy(payload);
         }
-        console.log(stdout || stderr);
         resolve();
       });
-      rp.removeReverseProxy(payload);
+      
     }); 
     
   }
