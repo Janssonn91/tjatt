@@ -133,7 +133,8 @@ export const imgPath = '/images/placeholder.png';
         //   initiator: userId
         //   targetChannel: data.newChannel
         //   unread: true,
-        //   addedMembers: data.newChannel.members, || data.addedMembers
+        //   addedMembers: data.newChannel.members, || data.addedMembers,
+        //   messageDict: messageDict,
         // }
        
         let c= message.targetChannel;
@@ -169,7 +170,6 @@ export const imgPath = '/images/placeholder.png';
       //   unread: true,
       //   addedMembers: data.newChannel.members, || data.addedMembers
       // }
-     
       let c= message.targetChannel;
       let id= userStore.user._id.toString();
 
