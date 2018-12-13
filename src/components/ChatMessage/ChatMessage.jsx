@@ -14,7 +14,7 @@
           </li>
           :
           message.sender === (this.props.userStore.user._id) ?
-            <li key={i} className="clearfix">
+            <li key={i} className="clearfix pt-2">
               <div className="me">
                 <span>
                   <img alt="user-img" src={this.props.userStore.user.image || "/images/placeholder.png"} />
@@ -53,7 +53,7 @@
               </div>
             </li> :
 
-            <li key={i} className="clearfix">
+            <li key={i} className="clearfix pt-2">
               <div className="message-data">
                 {
                   this.props.channelStore.userDict[message.sender].status ?
