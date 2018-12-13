@@ -7,7 +7,6 @@ const rp = require('../classes/handleReverseProxy');
 
 
 module.exports = function (app) {
-
     app.post('/startGitApp', async (req, res) => {
         let payload = {
             localPath: path.join(__dirname, "../../docker/" + req.body.name),
@@ -15,13 +14,6 @@ module.exports = function (app) {
             name: req.body.name,
             res: res
         };
-        console.log(payload.localPath)
-        console.log(payload.appRunning)
-
-
         !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
-        // !payload.appRunning ? rp.removeReverseProxy(payload) : ''; 
-        
-        
     }); 
 };
