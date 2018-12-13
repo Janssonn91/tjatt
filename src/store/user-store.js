@@ -86,7 +86,7 @@ class UserStore {
     this.selectedGroupMember.splice(index, 1);
   }
 
-  @action fetchStars() {
+  @action async fetchStars() {
     this.user.channel.forEach(channel => {
       fetch(`/api/message/${channel}`, {
         method: 'GET'
@@ -100,6 +100,12 @@ class UserStore {
           });
         });
     });
+    await sleep(100);
+    this.sortMyStars();
+  }
+
+  @action sortMyStars() {
+    this.myStars = this.myStars.sort((a, b) => Date.parse(a.time) - Date.parse(b.time));
   }
 
   @action updateMyStars(message, star) {
