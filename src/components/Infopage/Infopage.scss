@@ -52,11 +52,12 @@ $fontSm: 12px;
     }
   }
   .main-info {
-    overflow: auto!important;
-    max-height: calc(100vh - 111px) !important;
+    overflow-y: auto!important;
     @include scrollbar;
+    max-height: calc(100vh - 111px) !important;
     @media (max-width: 767.5px) {
-      overflow-y: auto;
+      overflow-y: auto!important;
+      -webkit-overflow-scrolling: touch;
       margin-top: 72px;
       max-height: calc(100vh - 90px) !important;
     }
