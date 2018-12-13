@@ -66,6 +66,7 @@ module.exports = class HandleVMs {
             EXPOSE ${payload.webPort}
             CMD [ "npm", "start" ]`);
         };
+        rp.addReverseProxy(payload);
         promiseResult(true);
       });
     });
@@ -113,6 +114,7 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
+        rp.startReverseProxy(payload);
         resolve();
       });
     });
@@ -130,7 +132,7 @@ services:
           res: null
         })
         if(!toBeRemoved){
-          rp.removeReverseProxy(payload);
+          rp.stopReverseProxy(payload);
           payload.res.json(response);
         }
         resolve();
@@ -151,6 +153,7 @@ services:
         })
         payload.res.json(response);
         console.log(stdout || stderr);
+        rp.removeReverseProxy(payload);
         resolve();
       });
     });
