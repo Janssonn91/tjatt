@@ -3,6 +3,8 @@ const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const rp = require('../classes/handleReverseProxy');
+
 
 module.exports = function (app) {
 
@@ -17,7 +19,9 @@ module.exports = function (app) {
         console.log(payload.appRunning)
 
 
-        !payload.appRunning ? vms.stop_container(payload) : vms.start_containers_composer(payload); 
+        !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
+        !payload.appRunning ? rp.removeReverseProxy(payload) : ''; 
+        
         
     }); 
 };
