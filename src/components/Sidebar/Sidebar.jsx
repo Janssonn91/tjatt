@@ -1,7 +1,7 @@
 <Fragment>
   <div className="sidebar">
     <div className="profile">
-      <div className="user-holder pl-3 pt-4">
+      <div className="user-holder pl-3 pb-0">
         <CardImg src={this.props.userStore.user.image || imgPath} alt="user's photo" />
         <Dropdown isOpen={this.collapseOpen} toggle={e => this.toggle()}>
           <DropdownToggle tag="div" caret>
