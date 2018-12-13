@@ -16,10 +16,9 @@ module.exports = function (app) {
             uniqueProjectname: req.body.uniqueProjectname,
             res: res
         };
-        await vms.stop_container(payload, true);
-        await vms.remove_container(payload);
-        await vms.remove_docker_directory(payload, true);
         await rp.removeReverseProxy(payload);
-
+        // await vms.stop_container(payload, true);
+        // await vms.remove_container(payload);
+        // await vms.remove_docker_directory(payload, true);
     }); 
 };
