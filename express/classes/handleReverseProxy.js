@@ -25,9 +25,11 @@ static async addReverseProxy(payload) {
                 console.log(err, 'something when wrong on adding reverse the proxy');
                 return;
             }
+            if(stdout){
+                stopReverseProxy(payload);
+            }
         }
     );
-    stopReverseProxy(payload);
 }
 
 // this is not done!!!!!!!
