@@ -119,6 +119,7 @@ services:
   }
 
   static stop_container(payload, toBeRemoved = false) {
+    console.log('Container stop', payload, toBeRemoved)
     return new Promise((resolve, reject) => {
       exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
         console.log(stdout || stderr);        
