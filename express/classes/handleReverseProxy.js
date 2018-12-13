@@ -7,6 +7,7 @@ const routing = require('../../../reverse-proxy/routing.json');
 module.exports = class handleGit {
 
 static async addReverseProxy(payload) {
+    console.log('adding reverse proxy');
     routing[`${payload.uniqueProjectName}.tjatt.net`] = payload.dockerPort;
     let routingJSON = JSON.stringify(routing, null, 2);
     
@@ -23,6 +24,8 @@ static async addReverseProxy(payload) {
             if (err) {
                 console.log(err, 'something when wrong on adding reverse the proxy');
                 return;
+            } else{
+                stopReverseProxy(payload);
             }
         }
     );
@@ -53,6 +56,7 @@ static async removeReverseProxy(payload) {
 }
 
 static async startReverseProxy(payload) {
+    console.log('starting reverse proxy');
     const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
     exec(`pm2 start ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
