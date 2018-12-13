@@ -43,8 +43,6 @@
                 </ButtonDropdown>
               </div>
             </li> :
-
-
             <li key={i} className="clearfix">
               <div className="message-data">
                 {
