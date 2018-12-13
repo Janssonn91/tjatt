@@ -43,8 +43,8 @@ static async removeReverseProxy(payload) {
     exec(`pm2 stop ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
+            console.log ('To have stopped',stdout | stderr);            
             if (err) { 
-                console.log (stdout | stderr);
                 console.log(err, 'something when wrong on reversing the proxy');
                 return err;
             }

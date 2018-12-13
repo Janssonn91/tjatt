@@ -130,7 +130,8 @@ services:
         })
         if(!toBeRemoved){
           payload.res.json(response);
-        } else {
+        } else { 
+          console.log('To call reverse proxy', payload)
           rp.removeReverseProxy(payload);
         }
         resolve();
