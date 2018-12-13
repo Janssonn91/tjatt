@@ -17,7 +17,7 @@
     </div>
     <hr className="mt-0" />
     <Nav vertical className="menu">
-      <NavLink className="star-nav pl-2 pt-0 pr-0" to="stars">
+      <NavLink className="star-nav pl-2 pt-0 pr-0" to={this.props.match.params.id === undefined ? this.props.userStore.user.username + "/stars" : "stars"}>
         <i className="fas fa-star pr-3 pr-md-2" id="starred"></i>
         <Tooltip placement="right" isOpen={this.tooltipOpen} target="starred" toggle={() => this.toggleTooltip()}>
           Show starred items
