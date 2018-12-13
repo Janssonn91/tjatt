@@ -4,9 +4,9 @@
       <div className="introduction">
         <h4 className="m-0">Introduction</h4>
       </div>
-      <hr className="m-0" />
+      <hr className="mt-2 mb-4"/>
     </Col>
-    <Col className="col-12 main-info pt-4">
+    <Col className="col-12 main-info">
       <Row className="settings-info">
         <Col className="col-12">
           <h6 className="text-center mb-3">User settings</h6>
