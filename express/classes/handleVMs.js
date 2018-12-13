@@ -38,13 +38,13 @@ module.exports = class HandleVMs {
 
   static async select_docker_port() {
     let probePort = 49160;
-    let found = false;
-    let usedPorts = await this.get_used_ports();
-    // Randomize a port between 49152-65535 (publicly available ports)
-    while (!found) {
-      usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
-    }
-    return probePort;
+    // let found = false;
+    // let usedPorts = await this.get_used_ports();
+    // // Randomize a port between 49152-65535 (publicly available ports)
+    // while (!found) {
+    //   usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
+    // }
+    return probePort += Math.floor(Math.random() * 16382);
   }
 
   static create_docker_dockerfile(payload) {
