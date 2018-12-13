@@ -255,7 +255,7 @@ class ChannelStore {
   //when user is removed from a group frontend only
   deleteGroupChannel(id) {
     this.groupChannels.filter(id);
-    console.log("removed!!!!!!");
+    console.log("removed in deleteGroupChannel!!!!!!", id);
   }
 
   getGroupMembersData(memberIds) {
@@ -362,10 +362,10 @@ class ChannelStore {
       open: open,
       group: group
     }
-     if(!group){
-      const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
-      console.log(checkIfChannelExits);
-    }
+    //  if(!group){
+    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
+    //   console.log(checkIfChannelExits);
+    // }
     Channel.create(newChannel);
   }
 
