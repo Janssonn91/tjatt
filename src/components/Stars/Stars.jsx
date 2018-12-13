@@ -14,7 +14,7 @@
     <hr className="mt-0 mb-2" />
     <Row className="chat-row">
       <Col className="pr-0">
-        <ul className="chat-history pl-2 mr-1">
+        <ul className="chat-history pl-2 mr-1 list-unstyled">
           {this.props.userStore.myStars.map((starMessage, i) => {
             return <StarMessage message={starMessage} key={i} />
           })}
