@@ -7,9 +7,10 @@ const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  // socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
+const rp = require('./handleReverseProxy');
 
 
 module.exports = class HandleVMs {
@@ -121,18 +122,22 @@ services:
     return new Promise((resolve, reject) => {
       exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
         if (err) {
+          console.log(stdout || stderr);
           reject(err);
-        }
-        let response = Object.assign({}, payload, {
-          res: null
-        })
-        if(!toBeRemoved){
-          payload.res.json(response);
-        }
-        console.log(stdout || stderr);
-        resolve();
-      });
-    });
+        } else {
+            let response = Object.assign({}, payload, {
+              res: null
+            })
+            if(!toBeRemoved){
+              payload.res.json(response);
+            } else {
+              rp.removeReverseProxy(payload);
+            }
+            resolve();
+          }
+      }); 
+    }); 
+    
   }
 
   static async remove_container(payload) {

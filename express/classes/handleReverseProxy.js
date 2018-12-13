@@ -40,12 +40,13 @@ static async removeReverseProxy(payload) {
     //   if (err) throw err;
     // });
 
-    exec(`pm2 delete ${payload.uniqueProjectName}`, {
+    exec(`pm2 stop ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
-            if (err) {
+            if (err) { 
+                console.log (stdout | stderr);
                 console.log(err, 'something when wrong on reversing the proxy');
-                return;
+                return err;
             }
         }
     );
