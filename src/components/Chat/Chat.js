@@ -90,8 +90,8 @@ export default class Chat extends Component {
   }
 
   getFileValue = () => {
-    let fileValue = document.querySelector('#codefile').files[0].name;
-    this.codefileValue = fileValue;
+    let fileValue = document.querySelector('#codefile').files[0];
+    this.codefileValue = fileValue.name;
   }
 
   toggleSnippet = () => {
@@ -288,7 +288,10 @@ export default class Chat extends Component {
             };
             console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
-            channelStore.channelChatHistory.push(m)
+            channelStore.channelChatHistory.push(m);
+            if(message.textType ==="groupInfo"){
+              channelStore.changeChannel
+            }
           }
           if (message.sender) {
             channelStore.userDict[message.sender].status = true;

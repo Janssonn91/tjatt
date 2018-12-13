@@ -16,7 +16,7 @@
             <span>{message.initiator} wants to add you as a contact.</span> 
             <span>
               <ButtonGroup size="sm" className = "d-inline-block float-right">
-                <Button className="btn btn-cancel mr-2" onClick={()=>this.invitationDeclined(message.sender,message.id, i)}>Reject</Button>
+                <Button className="btn btn-cancel mr-2" onClick={()=>this.invitationDeclined(message.sender, message.targetChannel, message.id, i)}>Reject</Button>
                 <Button className="btn btn-save mr-2" onClick={()=>this.invitationAccepted(message.sender, message.targetChannel, message.id, i)}>Accept</Button>
               </ButtonGroup>
             </span>
