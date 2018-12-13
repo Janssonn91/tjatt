@@ -21,7 +21,7 @@ static async addReverseProxy(payload) {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             if (err) {
-                console.log(err, 'something when wrong on reversing the proxy');
+                console.log(err, 'something when wrong on adding reverse the proxy');
                 return;
             }
         }
@@ -54,11 +54,11 @@ static async removeReverseProxy(payload) {
 
 static async startReverseProxy(payload) {
     const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
-    exec(`pm2 start ${payload.name}`, {
+    exec(`pm2 start ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             if (err) {
-                console.log(err, 'something when wrong on reversing the proxy');
+                console.log(err, 'something when wrong on start reverse the proxy');
                 return;
             }
         }
