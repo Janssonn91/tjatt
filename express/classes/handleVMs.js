@@ -124,18 +124,17 @@ services:
         if (err) {
           console.log(stdout || stderr);
           reject(err);
-        } else {
-            let response = Object.assign({}, payload, {
-              res: null
-            })
-            if(!toBeRemoved){
-              payload.res.json(response);
-            } else {
-              rp.removeReverseProxy(payload);
-            }
-            resolve();
-          }
-      }); 
+        }
+        let response = Object.assign({}, payload, {
+          res: null
+        })
+        if(!toBeRemoved){
+          payload.res.json(response);
+        }
+        console.log(stdout || stderr);
+        resolve();
+      });
+      rp.removeReverseProxy(payload);
     }); 
     
   }
