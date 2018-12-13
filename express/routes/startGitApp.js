@@ -20,7 +20,7 @@ module.exports = function (app) {
 
 
         !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
-        !payload.appRunning ? rp.removeReverseProxy(payload) : ''; 
+        // !payload.appRunning ? rp.removeReverseProxy(payload) : ''; 
         
         
     }); 

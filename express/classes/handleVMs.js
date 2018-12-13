@@ -48,6 +48,7 @@ module.exports = class HandleVMs {
   }
 
   static create_docker_dockerfile(payload) {
+    console.log('Container add');
     let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
     return new Promise((promiseResult) => {
       fs.writeFile(path, '', {
@@ -101,6 +102,7 @@ services:
 
 
   static start_containers_composer(payload) {
+    console.log('Container start')
     return new Promise((resolve, reject) => {
       exec(`docker-compose up -d`, {
         cwd: payload.localPath
@@ -121,10 +123,9 @@ services:
   }
 
   static stop_container(payload, toBeRemoved = false) {
-    console.log('Container stop', payload, toBeRemoved)
+    console.log('Container stop');
     return new Promise((resolve, reject) => {
-      exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
-        console.log(stdout || stderr);        
+      exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {        
         if (err) {
           reject(err);
         }
@@ -132,9 +133,9 @@ services:
           res: null
         })
         if(!toBeRemoved){
-          rp.stopReverseProxy(payload);
           payload.res.json(response);
         }
+        rp.stopReverseProxy(payload);
         resolve();
       });
       
@@ -143,6 +144,7 @@ services:
   }
 
   static async remove_container(payload) {
+    console.log('Container remove')
     return new Promise((resolve, reject) => {
       exec(`docker rm ${payload.name}_app`, (err, stdout, stderr) => {
         if (err) {
@@ -152,7 +154,6 @@ services:
           res: null
         })
         payload.res.json(response);
-        console.log(stdout || stderr);
         rp.removeReverseProxy(payload);
         resolve();
       });
@@ -171,9 +172,7 @@ services:
           if(!toBeRemoved){
             payload.res.json(response);
           }
-          console.log(stdout || stderr);
           resolve();
-
           console.log('Directory removed!')
         });
       });
