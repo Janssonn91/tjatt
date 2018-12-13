@@ -1,4 +1,4 @@
-<li key={this.props.index} className="clearfix">
+<li key={this.props.key} className="clearfix">
   <div className="message-data">
     <span>
       <img alt="user-img" src={this.props.channelStore.userDict[this.props.message.sender].img || "/images/placeholder.png"} />
