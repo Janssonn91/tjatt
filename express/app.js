@@ -373,7 +373,7 @@ io.on('connection', (socket) => {
           let p = systemMessage.save()
           promises.push(p);
 
-          p.then(message => {
+          p.then((message) => {
             mes = message._id;
             messageDict[m] = mes;
           })
