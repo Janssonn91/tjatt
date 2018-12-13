@@ -6,6 +6,7 @@ const simplegitPromise = require("simple-git/promise");
 const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
+const rp = require('./handleReverseProxy');
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
   // socketPath: '//./pipe/docker_engine'
@@ -129,6 +130,7 @@ services:
           res: null
         })
         if(!toBeRemoved){
+          rp.removeReverseProxy(payload);
           payload.res.json(response);
         }
         resolve();
