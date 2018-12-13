@@ -40,7 +40,7 @@ static async removeReverseProxy(payload) {
     //   if (err) throw err;
     // });
 
-    exec(`pm2 stop ${payload.uniqueProjectName}`, {
+    exec(`pm2 stop sub-domain.js --name ${payload.uniqueProjectName}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             console.log ('To have stopped',stdout | stderr);            
