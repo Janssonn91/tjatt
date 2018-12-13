@@ -16,7 +16,7 @@
       <Col className="pr-0">
         <ul className="chat-history pl-2 mr-1">
           {this.props.userStore.myStars.map((starMessage, i) => {
-            return <StarMessage message={starMessage} index={i} />
+            return <StarMessage message={starMessage} key={i} />
           })}
         </ul>
       </Col>
