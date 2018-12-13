@@ -76,4 +76,13 @@ $fontSm: 12px;
         }
     }
   }
+  .chat-row {
+    position: relative;
+    height: calc(100vh - 85px);
+    margin-top: 95px!important;
+    overflow-y: auto;
+    @media (max-width: 767.5px) {
+      height: calc(100vh - 85px);
+    }
+  }
 }
