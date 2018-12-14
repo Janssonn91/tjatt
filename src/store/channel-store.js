@@ -249,14 +249,14 @@ class ChannelStore {
 
   //when user is removed from a group frontend only
   deleteGroupChannel(channel) {
-    let channels= toJS(this.groupChannels);
-    let cs=[];
-    for(let c of channels){
-      if(c._id!==channel._id){
+    let channels = toJS(this.groupChannels);
+    let cs = [];
+    for (let c of channels) {
+      if (c._id !== channel._id) {
         cs.push(c);
       }
     }
-    this.groupChannels= cs;
+    this.groupChannels = cs;
     // toJS(this.groupChannels).filter(c=>{
     //   c._id===channel._id});
     console.log(this.groupChannels);
@@ -295,7 +295,6 @@ class ChannelStore {
       this.currentChannel.messageNum = 0;
       this.showChat();
       this.getChannelChatHistory(this.currentChannel._id);
-
       this.currentChannelAdmins = [];
       this.ChannelChatHistory = [];
 
@@ -343,6 +342,8 @@ class ChannelStore {
     this.channelChatHistory = await Message.find({
       channel: id
     });
+    let scroll = document.querySelector('.chat-row');
+    scroll.scrollTop = scroll.scrollHeight;
     this.channelChatHistory.forEach(message => {
       if (message.unread) {
         fetch(`/api/message/${message._id}`, {
@@ -353,10 +354,6 @@ class ChannelStore {
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then(res => res.json())
-        .then(() => {
-          let scroll = document.querySelector('._scrollable-div_1dj6m_1');
-          scroll.scrollTop = scroll.scrollHeight;
         })
       }
     })

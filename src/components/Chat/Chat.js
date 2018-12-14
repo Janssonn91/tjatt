@@ -289,7 +289,7 @@ export default class Chat extends Component {
             console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
             channelStore.channelChatHistory.push(m);
-            if(message.textType ==="groupInfo"){
+            if (message.textType === "groupInfo") {
               channelStore.changeChannel(channelStore.currentChannel);
             }
           }
@@ -317,9 +317,11 @@ export default class Chat extends Component {
             })
           }
         }
-        let scroll = document.querySelector('._scrollable-div_1dj6m_1');
-        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {
-          scroll.scrollTop = scroll.scrollHeight;
+        let scroll = document.querySelector('.chat-row');
+        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 600))) {
+          setTimeout(() => {
+            scroll.scrollTop = scroll.scrollHeight;
+          }, 500)
         }
       })
   }
