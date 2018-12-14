@@ -191,6 +191,12 @@ export const imgPath = '/images/placeholder.png';
             textType: message.textType,
             id: message.messageDict[id],
           }
+          if (channelStore.unreadSystemMessages.includes(m)) {
+            return;
+          } else {
+            channelStore.unreadSystemMessages.push(m);
+            channelStore.unreadSystemMessageNum++;
+          }
         }
   }
 })
