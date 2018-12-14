@@ -63,9 +63,10 @@ const io = require('socket.io')(
   global.httpServer,
   {
     path: global.production ? '/api/socket' : '/socket',
-    serveClient: false
+    serveClient: false,
   }
 );
+
 
 // Use shared session middleware for socket.io
 io.use(sharedsession(session, {
@@ -95,42 +96,7 @@ let ai = "";
 
 let onlineUsers = [];
 
-// setSystemMessageToDB(data){
-//   let id = "";
-//   let messageText = "";
-//   switch(data.type) {
-//     case "invitation":
-//         id = data.invitee.toString();
-//         messageText = data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id;
-//         break;
-//     case "acceptance":
-//         id = data.acceptee.toString();
-//         messageText = data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel;
-//         break;
-//     case "rejection":
-//         id = data.rejectee.toString();
-//         messageText = data.rejecter +"&reject&" + data.rejectee;
-//         break;
-//     default: 
-//     break;
-//   };
 
-//   let c = await channel.findOne({
-//     channelname: id + "system"
-//   });
-
-//   let systemMessage = new ChatMessage({
-//     sender: id,
-//     text: messageText,
-//     textType: data.type,
-//     unread: true,
-//     channel: c._id,
-//   });
-
-//   await systemMessage.save().then(message=>{
-//     return message._id;
-//   })
-// }
 
 io.on('connection', (socket) => {
 
@@ -390,9 +356,10 @@ io.on('connection', (socket) => {
       socket.join(data.targetChannel._id);
 
       if (data.addedMembers.length > 0) {
+        let promises=[];
         let messageDict = {};
 
-        for (let m of data.addedMembers) {
+       for (let m of data.addedMembers) {
           let c = await channel.findOne({ channelname: m.toString() + "system" });
           //systemMessage
           let systemMessage = new ChatMessage({
@@ -402,8 +369,11 @@ io.on('connection', (socket) => {
             unread: true,
             channel: c._id,
           });
-          let mes = "";
-          systemMessage.save().then(message => {
+
+          let p = systemMessage.save()
+          promises.push(p);
+
+          p.then(message => {
             mes = message._id;
             messageDict[m] = mes;
           })
@@ -421,24 +391,30 @@ io.on('connection', (socket) => {
               textType: "groupInfo",
               time: data.time,
             })
-
             groupMessage.save();
             gms.push(groupMessage);
 
             io.to(data.targetChannel._id).emit('chat message', gms);
           })
 
-        }
-        let message = {
-          textType: "addedToGroup",
-          initiator: data.initiator,
-          targetChannel: data.targetChannel,
-          unread: true,
-          addedMembers: data.addedMembers,
-          messageDict: messageDict,
-        }
 
-        socket.broadcast.emit('group', message);
+
+        }
+        Promise.all(promises).then(()=>{
+          let message = {
+            textType: "addedToGroup",
+            initiator: data.initiator,
+            targetChannel: data.targetChannel,
+            unread: true,
+            addedMembers: data.addedMembers,
+            messageDict: messageDict,
+          }
+  
+          socket.broadcast.emit('group', message);
+        }
+          
+        )
+        
 
 
       }
@@ -1125,6 +1101,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.get('/message/:channel', (req, res) => {
+  ChatMessage.find({ channel: req.params.channel, star: true })
+    .then(result => {
+      res.json({ success: true, stars: result })
+    })
+    .catch(err => {
+      throw err;
+    })
+})
+
 app.put('/message/:id', (req, res) => {
 
   ChatMessage.findOneAndUpdate(
@@ -1135,6 +1121,17 @@ app.put('/message/:id', (req, res) => {
     )).catch(err => {
       throw err;
     })
+});
+
+app.put('/message/:id/star', (req, res) => {
+  ChatMessage.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { star: req.body.star } }
+  ).then(() =>
+    res.json({ success: true }
+    )).catch(err => {
+      throw err;
+    });
 });
 
 app.delete('/deletemessage/:messageId', (req, res) => {

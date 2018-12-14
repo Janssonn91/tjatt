@@ -33,6 +33,8 @@
   "  Infopage": "components/Infopage/Infopage",
   "  ChatImgModal": "components/ChatImgModal/ChatImgModal",
   "  SnippetModal": "components/SnippetModal/SnippetModal",
+  "  Stars": "components/Stars/Stars",
+  "  StarMessage": "components/StarMessage/StarMessage",
   "/*3": "--------  Utilities (Component based) --------",
   "  NavLink": "utilities/NavLink/NavLink",
   "  NavbarBrand": "utilities/NavbarBrand/NavbarBrand",

@@ -203,11 +203,6 @@ class ChannelStore {
             let initiator = toJS(this.userDict[j[0]]).name;
             this.setSystemMessageFromDB(initiator, j[0], i[1], d);
           }
-          if (d.textType.toString() === "removeFromGroup") {
-            let i = d.text.toString().split("&hasRemovedYouFromChannel&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
-          }
         }
       })
       console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
@@ -255,7 +250,7 @@ class ChannelStore {
   //when user is removed from a group frontend only
   deleteGroupChannel(id) {
     this.groupChannels.filter(id);
-    console.log("removed!!!!!!");
+    console.log("removed in deleteGroupChannel!!!!!!", id);
   }
 
   getGroupMembersData(memberIds) {
@@ -366,10 +361,10 @@ class ChannelStore {
       open: open,
       group: group
     }
-     if(!group){
-      const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
-      console.log(checkIfChannelExits);
-    }
+    //  if(!group){
+    //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
+    //   console.log(checkIfChannelExits);
+    // }
     Channel.create(newChannel);
   }
 
