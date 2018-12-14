@@ -23,8 +23,8 @@ import './GitAppsSidebar.scss';
     async addRepo(name, url, port, branches){
         await Repo.create({
             name: name,
-            url: `http://localhost:${port}/`,
-            // url: `${name}.tjatt.net`, // UNCOMMENT THIS LINE WHEN GO LIVE
+            // url: `http://localhost:${port}/`,
+            url: `${name}.tjatt.net`, // UNCOMMENT THIS LINE WHEN GO LIVE
             gitUrl: url,
             port: port,
             running: true,
