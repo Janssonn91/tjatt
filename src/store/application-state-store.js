@@ -20,16 +20,7 @@ class ApplicationStateStore {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
 
 
-          fetch('/api/system').then(res => res.json()).then(data => {
-            this.systemChannel = data.systemChannel;
-            console.log("systemChannel", data.systemChannel)
-
-            this.systemId = data.systemUserId;
-            console.log("systemId", this.systemId);
-            //channelStore.getUserList();
-            channelStore.cleanUpOldSystemMessages();
-            channelStore.setSystemMessagesFromDB();
-          }).catch(err => console.log(err))
+         
 
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
@@ -61,6 +52,20 @@ class ApplicationStateStore {
       }).catch(err => {
         console.log("err", err)
       });
+  }
+
+  @action setSystemInfo(){
+    fetch('/api/system').then(res => res.json()).then(data => {
+      this.systemChannel = data.systemChannel;
+      console.log("systemChannel", data.systemChannel)
+
+      this.systemId = data.systemUserId;
+      console.log("systemId", this.systemId);
+      userStore.fetchContact();
+      //channelStore.getUserList();
+      channelStore.cleanUpOldSystemMessages();
+      channelStore.setSystemMessagesFromDB();
+    }).catch(err => console.log(err))
   }
 }
 
