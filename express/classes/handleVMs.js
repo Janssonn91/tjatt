@@ -8,8 +8,8 @@ const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
 const rp = require('./handleReverseProxy');
 const docker = new Docker({
-  socketPath: '/var/run/docker.sock'
-  // socketPath: '//./pipe/docker_engine'
+  // socketPath: '/var/run/docker.sock'
+  socketPath: '//./pipe/docker_engine'
 });
 
 
@@ -38,6 +38,12 @@ module.exports = class HandleVMs {
 
   static async select_docker_port() {
     let probePort = 49160;
+    // let found = false;
+    // let usedPorts = await this.get_used_ports();
+    // // Randomize a port between 49152-65535 (publicly available ports)
+    // while (!found) {
+    //   usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
+    // }
     return probePort += Math.floor(Math.random() * 16382);
   }
 
@@ -68,7 +74,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-    
+    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
@@ -107,6 +113,7 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
+        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
     });
@@ -125,6 +132,7 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
+        rp.stopReverseProxy(name);
         resolve();
       });
       
@@ -143,6 +151,7 @@ services:
           res: null
         })
         payload.res.json(response);
+        rp.removeReverseProxy(payload);
         resolve();
       });
     });
@@ -180,4 +189,15 @@ services:
       this.start_containers_composer(payload)
     });
   }
+
+  static restart_docker_container(payload) {
+    docker.container.list()
+      .then(containers => {
+        let containerToRestart = containers.map(containers => {
+          console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
+          //get correct container by name or id?
+        })
+      });
+  }
+
 }
