@@ -316,6 +316,7 @@ $fontSm: 12px;
     margin-right: 280px;
     transform: translate3d(-350px, -450px, 0px)!important;
 }
+
 .emoji {
     margin:4.5px;
 }
@@ -328,28 +329,26 @@ aside.emoji-picker{
     color:#919192;
 }
 
-.gifcomponent{
-    position: absolute;
-    right: 0px;
-    bottom: 40px;
-    background-color:black;
-    border: 2px solid black;
-
-    @media only screen and(max-width: 768px){
-        right: 0;
-        left: 0;
-        width: 100vw;
-        bottom: 80px!important;
+.dropdown-menu-gif {
+    left: -55px!important;
+    @media only screen and(max-width: 767.5px){
+     left: -245px!important;
     }
-
-    @media only screen and(min-width: 768px) and (max-width: 1024px){
-        background-color:red;
-        position: relative;
-        right: 0px;
-        top:0;
-        padding: 0!important;
+    .gifcomponent{
+        position: absolute;
+        background-color:black;
+        border: 2px solid black;
+        @media only screen and(max-width: 767.5px){
+            left: 0;
+            width: unset;
+            bottom: 40px!important;
+        }
+        @media only screen and(min-width: 768px){
+            position: relative;
+            bottom: 0;
+            padding: 0!important;
+        }
     }
-
 }
 
 .gif-container {
@@ -385,6 +384,3 @@ button.bg-light:hover, button.bg-light:active, button.bg-light:focus{
     border: none!important;
     box-shadow: none!important;
 }
-
-
-

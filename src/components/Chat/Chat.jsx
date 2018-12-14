@@ -69,7 +69,7 @@
       {/* <hr className="mt-0 mb-2" /> */}
       <Row className="chat-row">
         <Col className="pr-0">
-          <ul className="chat-history pl-2 mr-1 mb-0">
+          <ul className="chat-history pl-2 mr-1 mb-0 list-unstyled">
             <ChatMessage />
 
           </ul>
@@ -133,7 +133,7 @@
                   </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-emoji">
-                  <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                  <EmojiPicker className="emoji" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
               <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>

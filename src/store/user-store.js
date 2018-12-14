@@ -116,6 +116,7 @@ class UserStore {
       const index = this.myStars.indexOf(this.myStars.find(s => s._id === message._id));
       this.myStars.splice(index, 1);
     }
+    this.sortMyStars();
   }
 
 }
