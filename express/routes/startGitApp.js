@@ -14,9 +14,19 @@ module.exports = function (app) {
             name: req.body.name,
             res: res
         };
-        !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
+
+        if (!payload.apprunning){
+            await vms.stop_container(payload, true);
+            await rp.stopReverseProxy(payload.name);
+        } else {
+            await vms.start_containers_composer(payload);
+            await rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        };
+    
+
+        // !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
         
-        !payload.appRunning ? rp.stopReverseProxy(payload.name) : rp.startReverseProxy(payload.uniqueProjectName || payload.name); 
+        // !payload.appRunning ? rp.stopReverseProxy(payload.name) : rp.startReverseProxy(payload.uniqueProjectName || payload.name); 
 
     }); 
 };
