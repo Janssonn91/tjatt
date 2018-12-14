@@ -113,7 +113,7 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
-        // rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
     });
@@ -132,7 +132,7 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        // rp.restartReverseProxy();
+        rp.stopReverseProxy(name);
         resolve();
       });
       
