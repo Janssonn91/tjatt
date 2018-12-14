@@ -68,7 +68,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
+    
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
@@ -107,7 +107,6 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
-        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
     });
@@ -144,7 +143,6 @@ services:
           res: null
         })
         payload.res.json(response);
-        rp.removeReverseProxy(payload);
         resolve();
       });
     });

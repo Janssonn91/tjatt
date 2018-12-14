@@ -75,10 +75,10 @@ static async startReverseProxy(name) {
     );
 }
 
-static async stopReverseProxy(payload) {
-    console.log('stop reverse proxy', payload.name);
+static async stopReverseProxy(name) {
+    console.log('stop reverse proxy', name);
     const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
-    exec(`pm2 stop ${payload.name}`, {
+    exec(`pm2 stop ${name}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             if (err) {
