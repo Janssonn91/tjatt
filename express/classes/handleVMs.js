@@ -65,7 +65,6 @@ module.exports = class HandleVMs {
             COPY . .
             EXPOSE ${payload.webPort}
             CMD [ "npm", "start" ]`);
-          rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
         };
         promiseResult(true);
       });
@@ -75,7 +74,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-
+    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
