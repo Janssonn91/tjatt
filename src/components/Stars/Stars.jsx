@@ -12,12 +12,12 @@
         <span style={{ width: 30 }}>{null}</span>
       </Col>
     </Row>
-    <hr className="mt-0 mb-2" />
+    <hr className="m-0" />
 
     {this.props.userStore.myStars.length > 0 ?
-      <Row className="chat-row">
+      <Row className="chat-row-starpage">
         <Col className="pr-0">
-          <ul className="chat-history pl-2 mr-1 list-unstyled">
+          <ul className="chat-history p-2 list-unstyled">
             {this.props.userStore.myStars.map((starMessage, i) => {
               return <StarMessage message={starMessage} key={i} />
             })}
@@ -25,7 +25,7 @@
         </Col>
       </Row>
       :
-      <Row className="chat-row">
+      <Row className="chat-row-starpage">
         <Col className="pr-0">
           <h6 className="pl-2 pt-3">You haven't starred any texts or files yet</h6>
         </Col>
