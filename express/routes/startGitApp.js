@@ -15,10 +15,10 @@ module.exports = function (app) {
             res: res
         };
 
-        if (!payload.apprunning){
+        if (!payload.apprunning){ console.log('not running or to stop?');
             await vms.stop_container(payload, true);
             await rp.stopReverseProxy(payload.name);
-        } else {
+        } else { console.log('running or to start?');
             await vms.start_containers_composer(payload);
             await rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         };
