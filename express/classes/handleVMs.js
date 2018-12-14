@@ -126,7 +126,6 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        rp.stopReverseProxy(payload.name);
         resolve();
       });
       
