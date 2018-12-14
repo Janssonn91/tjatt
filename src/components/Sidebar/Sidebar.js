@@ -28,13 +28,14 @@ export const imgPath = '/images/placeholder.png';
 
   @observable systemMessagesModalOpen = {
     isOpen: false,
-    keyboard:true,
-    toggle:this.openSystemMessageModal.bind(this),
+    keyboard: true,
+    toggle: this.openSystemMessageModal.bind(this),
   }
 
   @observable collapseOpen = false;
   @observable contactsOpen = true;
   @observable groupsOpen = true;
+  @observable tooltipOpen = false;
 
   start() {
     this.setupSystemMessage();
@@ -91,15 +92,19 @@ export const imgPath = '/images/placeholder.png';
 
   openModalDeleteContact(channel) {
     this.deleteContactModalOpen.isOpen = !this.deleteContactModalOpen.isOpen;
-    if(this.deleteContactModalOpen.isOpen){
+    if (this.deleteContactModalOpen.isOpen) {
       this.deleteContactModalOpen.channel = channel;
       this.deleteContactModalOpen.members = channel.members;
       this.deleteContactModalOpen.channelId = channel._id;
     }
   }
 
-  openSystemMessageModal(){
+  openSystemMessageModal() {
     this.systemMessagesModalOpen.isOpen = !this.systemMessagesModalOpen.isOpen;
+  }
+
+  toggleTooltip() {
+    this.tooltipOpen = !this.tooltipOpen;
   }
 
   logout() {
@@ -111,23 +116,20 @@ export const imgPath = '/images/placeholder.png';
     });
   }
 
-  setupSystemMessage(){
-    const {userStore, channelStore} = this.props;
+  setupSystemMessage() {
+    const { userStore, channelStore } = this.props;
     socket.off('system');
-    socket.on('system', async (data)=>{
-
-
-
+    socket.on('system', async (data) => {
     });
 
     socket.off('group');
-    socket.on('group', message=>{
-      if(message.textType.toString()==="groupInfo"){
-        if(message.channel.toString()===channelStore.currentChannel._id){
+    socket.on('group', message => {
+      if (message.textType.toString() === "groupInfo") {
+        if (message.channel.toString() === channelStore.currentChannel._id) {
           channelStore.changeChannel(channelStore.currentChannel);
         }
       }
-      if(message.textType.toString() === "addedToGroup"){
+      if (message.textType.toString() === "addedToGroup") {
         // message data structuer: {
         //   textType: "addedToGroup",
         //   initiator: userId
@@ -136,13 +138,13 @@ export const imgPath = '/images/placeholder.png';
         //   addedMembers: data.newChannel.members, || data.addedMembers,
         //   messageDict: messageDict,
         // }
-       
-        let c= message.targetChannel;
-        let id= userStore.user._id.toString();
-        for(let i of message.addedMembers) {
-          if(i.toString()===id ){
+
+        let c = message.targetChannel;
+        let id = userStore.user._id.toString();
+        for (let i of message.addedMembers) {
+          if (i.toString() === id) {
             socket.emit('join channel', c._id);
-            if(c.group){
+            if (c.group) {
               channelStore.groupChannels.push(c);
               let m = {
                 sender: message.initiator,
@@ -152,9 +154,9 @@ export const imgPath = '/images/placeholder.png';
                 textType: message.textType,
                 id: message.messageDict[id],
               }
-              if(channelStore.unreadSystemMessages.includes(m)){
+              if (channelStore.unreadSystemMessages.includes(m)) {
                 return;
-              }else{
+              } else {
                 channelStore.unreadSystemMessages.push(m);
                 channelStore.unreadSystemMessageNum++;
               }
@@ -189,9 +191,9 @@ export const imgPath = '/images/placeholder.png';
             textType: message.textType,
             id: message.messageDict[id],
           }
-          if(channelStore.unreadSystemMessages.includes(m)){
+          if (channelStore.unreadSystemMessages.includes(m)) {
             return;
-          }else{
+          } else {
             channelStore.unreadSystemMessages.push(m);
             channelStore.unreadSystemMessageNum++;
           }
@@ -204,48 +206,47 @@ export const imgPath = '/images/placeholder.png';
   
     })
 
-
     socket.off('invitation');
-    socket.on('invitation', data=>{
-          if(data.invitee===userStore.user._id){
-            console.log("invitation")
-          let message= {
-            sender: data.initiator,
-            initiator: channelStore.userDict[data.initiator].name,
-            targetChannel: data.targetChannel,
-            unread: true,
-            textType: data.textType,
-            id:data.id,
-          }
-          channelStore.unreadSystemMessages.push(message);
-          channelStore.unreadSystemMessageNum++;
-          console.log(toJS(channelStore.unreadSystemMessages))
+    socket.on('invitation', data => {
+      if (data.invitee === userStore.user._id) {
+        console.log("invitation")
+        let message = {
+          sender: data.initiator,
+          initiator: channelStore.userDict[data.initiator].name,
+          targetChannel: data.targetChannel,
+          unread: true,
+          textType: data.textType,
+          id: data.id,
         }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+        console.log(toJS(channelStore.unreadSystemMessages))
+      }
     })
 
     socket.off('rejection');
-    socket.on('rejection', data=>{
+    socket.on('rejection', data => {
       console.log(data)
-          if(data.rejectee===userStore.user._id){
-            console.log("rejection")
-          let message= {
-            sender: data.initiator,
-            initiator: channelStore.userDict[data.initiator].name,
-            unread: true,
-            textType: data.textType,
-            id:data.id,
-          }
-          channelStore.unreadSystemMessages.push(message);
-          channelStore.unreadSystemMessageNum++;
-          console.log(toJS(channelStore.unreadSystemMessages))
+      if (data.rejectee === userStore.user._id) {
+        console.log("rejection")
+        let message = {
+          sender: data.initiator,
+          initiator: channelStore.userDict[data.initiator].name,
+          unread: true,
+          textType: data.textType,
+          id: data.id,
         }
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+        console.log(toJS(channelStore.unreadSystemMessages))
+      }
     })
 
     socket.off('acceptance');
-    socket.on('acceptance', data=>{
+    socket.on('acceptance', data => {
       console.log(data)
-      if(data.acceptee === userStore.user._id){
-        let message={
+      if (data.acceptee === userStore.user._id) {
+        let message = {
           sender: data.sender,
           initiator: this.props.channelStore.userDict[data.sender].name,
           unread: true,
@@ -256,15 +257,14 @@ export const imgPath = '/images/placeholder.png';
         channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
       }
-
-       this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
-       this.props.userStore.updateMyContact(data.sender);
+      this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
+      this.props.userStore.updateMyContact(data.sender);
     })
 
     socket.off('removeContact');
-    socket.on('removeContact', data=>{
-      if(data.target[0]=== userStore.user._id){
-        let message={
+    socket.on('removeContact', data => {
+      if (data.target[0] === userStore.user._id) {
+        let message = {
           sender: data.sender,
           initiator: data.initiator,
           unread: true,
@@ -275,20 +275,15 @@ export const imgPath = '/images/placeholder.png';
         channelStore.unreadSystemMessageNum++;
       }
     })
-
-   
-
-
-    
-
     // socket.off('system message');
     // socket.on('system message', message => {
     //   console.log('Message from server ', message);
     // });
     // socket.off('newChannel');
     // socket.on('newChannel', (data)=>{
-        
+
     // });
+
   }
 
   changeLogStatus() {

@@ -10,6 +10,7 @@ export default class Tjatt extends Component {
     this.props.channelStore.getChannelList();
     //this.props.channelStore.getUserList();
     this.props.userStore.fetchContact();
+    this.props.userStore.fetchStars();
     await sleep(60);
   }
 
@@ -22,8 +23,6 @@ export default class Tjatt extends Component {
     this.hideMenu = true;
     this.hideChat = false;
   }
-
-
 
   // @observable sendToChat = this.showMenu.bind(this);
 }

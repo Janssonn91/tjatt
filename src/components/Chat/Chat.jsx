@@ -66,10 +66,10 @@
           }
         </Col>
       </Row>
-      <hr className="mt-0 mb-2" />
-      <Row>
+      {/* <hr className="mt-0 mb-2" /> */}
+      <Row className="chat-row">
         <Col className="pr-0">
-          <ul className="chat-history pl-2 mr-1">
+          <ul className="chat-history pl-2 mr-1 mb-0">
             <ChatMessage />
 
           </ul>
@@ -77,7 +77,7 @@
       </Row>
       <Row className="formRow">
         <Col className="p-0">
-          <Form inline className="chat-message py-2 clearfix" onSubmit={e => e.preventDefault()}>
+          <Form inline className="chat-message p-0 clearfix" onSubmit={e => e.preventDefault()}>
             <Dropdown
               direction="up"
               isOpen={this.isOpen}
@@ -122,7 +122,6 @@
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
               />
-
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
                   <div
@@ -143,7 +142,7 @@
                     <img src="/images/gif.logo.jpg" className="gif-opener" alt="open-gif" />
                   </div>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-left">
+                <DropdownMenu className="dropdown-menu-left p-0">
                   <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />
                 </DropdownMenu>
               </Dropdown>
