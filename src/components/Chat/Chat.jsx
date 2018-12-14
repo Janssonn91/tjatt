@@ -132,7 +132,7 @@
                     {this.buttonIsHovered ? <i className="hover fas fa-grin emojiOpener"></i> : <i className="far fa-smile emojiOpener"></i>}
                   </div>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-left">
+                <DropdownMenu className="dropdown-menu-emoji">
                   <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
@@ -142,7 +142,7 @@
                     <img src="/images/gif.logo.jpg" className="gif-opener" alt="open-gif" />
                   </div>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-left p-0">
+                <DropdownMenu className="dropdown-menu-gif p-0">
                   <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />
                 </DropdownMenu>
               </Dropdown>

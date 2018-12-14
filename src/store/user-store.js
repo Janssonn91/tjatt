@@ -87,7 +87,8 @@ class UserStore {
   }
 
   @action async fetchStars() {
-    this.user.channel.forEach(channel => {
+    this.myStars = [];
+    await this.user.channel.forEach(channel => {
       fetch(`/api/message/${channel}`, {
         method: 'GET'
       })

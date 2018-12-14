@@ -47,12 +47,12 @@ $fontSm: 12px;
         height: 30px;
     }
     .chat-header {
-      position: fixed;
+      position: relative;
       top: 0;
-      left: 25%;
+    //   left: 25%;
       background-color: white;
       height: 86px!important;
-      width: 75%;
+    //   width: 75%;
       @media (max-width: 767.5px) {
           width: 100%;
           left: 0;
@@ -164,11 +164,11 @@ $fontSm: 12px;
     .chat-row {
         position: relative;
         height: calc(100vh - 80px - 85px);
-        margin-top: 95px!important;
+        // margin-top: 95px!important;
         overflow-y: auto;
         // border-bottom:1px solid rgb(228, 228, 228);
         @media (max-width: 767.5px) {
-            height: calc(100vh - 78.3px - 85px);
+            height: calc(100vh - 69px - 85px);
         }
         @include scrollbar;
         .chat-history {
@@ -310,10 +310,10 @@ $fontSm: 12px;
         display: none;
     }
 }
-.dropdown-menu-left{
+.dropdown-menu-emoji{
+    top: 80px !important;
     position: relative;
     margin-right: 280px;
-    top: -10px !important;
     transform: translate3d(-350px, -450px, 0px)!important;
 }
 .emoji {
@@ -330,8 +330,8 @@ aside.emoji-picker{
 
 .gifcomponent{
     position: absolute;
-    right: -223px;
-    bottom: -17px;
+    right: 0px;
+    bottom: 40px;
     background-color:black;
     border: 2px solid black;
 
