@@ -38,12 +38,6 @@ module.exports = class HandleVMs {
 
   static async select_docker_port() {
     let probePort = 49160;
-    // let found = false;
-    // let usedPorts = await this.get_used_ports();
-    // // Randomize a port between 49152-65535 (publicly available ports)
-    // while (!found) {
-    //   usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
-    // }
     return probePort += Math.floor(Math.random() * 16382);
   }
 
@@ -189,15 +183,4 @@ services:
       this.start_containers_composer(payload)
     });
   }
-
-  static restart_docker_container(payload) {
-    docker.container.list()
-      .then(containers => {
-        let containerToRestart = containers.map(containers => {
-          console.log("Container name: " + containers.data.Names, "\nContainer id: " + containers.data.Id + "\n");
-          //get correct container by name or id?
-        })
-      });
-  }
-
 }
