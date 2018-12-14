@@ -1,4 +1,9 @@
-<li key={this.props.key} className="clearfix">
+<li key={this.props.key} className="clearfix py-1">
+  <div
+    className="posted-channelname"
+    style={{ fontSize: 12, color: "gray" }}>
+    posted in <strong>{this.props.channelStore.channelDict[this.props.message.channel].channelname}</strong>
+  </div>
   <div className="message-data">
     <span>
       <img alt="user-img" src={this.props.channelStore.userDict[this.props.message.sender].img || "/images/placeholder.png"} />

@@ -69,7 +69,7 @@
       {/* <hr className="mt-0 mb-2" /> */}
       <Row className="chat-row">
         <Col className="pr-0">
-          <ul className="chat-history pl-2 mr-1 mb-0">
+          <ul className="chat-history pl-2 mr-1 mb-0 list-unstyled">
             <ChatMessage />
 
           </ul>
