@@ -89,17 +89,17 @@ static async stopReverseProxy(name) {
     );
 }
 
-static async restartReverseProxy(){
-   const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
-   exec(`pm2 stop reverse-proxy`, {
-    cwd: pathToReverse
-    }, (err, stdout, stderr) => {
-        if (err) {
-            console.log(err, 'something when wrong on reversing the proxy');
-            return;
-            }
-        }
-   );
-}
+// static async restartReverseProxy(){
+//    const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
+//    exec(`pm2 stop reverse-proxy`, {
+//     cwd: pathToReverse
+//     }, (err, stdout, stderr) => {
+//         if (err) {
+//             console.log(err, 'something when wrong on reversing the proxy');
+//             return;
+//             }
+//         }
+//    );
+// }
 
 }
