@@ -354,6 +354,10 @@ class ChannelStore {
             'Content-Type': 'application/json'
           }
         }).then(res => res.json())
+        .then(() => {
+          let scroll = document.querySelector('._scrollable-div_1dj6m_1');
+          scroll.scrollTop = scroll.scrollHeight;
+        })
       }
     })
   }
