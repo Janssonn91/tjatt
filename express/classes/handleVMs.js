@@ -132,8 +132,7 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        // rp.stopReverseProxy(name);
-        rp.restartReverseProxy();
+        // rp.restartReverseProxy();
         resolve();
       });
       
