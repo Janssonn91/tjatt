@@ -48,7 +48,6 @@ module.exports = class HandleVMs {
   }
 
   static create_docker_dockerfile(payload) {
-    console.log('Container add');
     let path = `./docker/${payload.uniqueProjectName}/Dockerfile`;
     return new Promise((promiseResult) => {
       fs.writeFile(path, '', {
@@ -66,8 +65,8 @@ module.exports = class HandleVMs {
             COPY . .
             EXPOSE ${payload.webPort}
             CMD [ "npm", "start" ]`);
+          rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
         };
-        rp.addReverseProxy(payload.uniqueProjectName, payload.webPort);
         promiseResult(true);
       });
     });

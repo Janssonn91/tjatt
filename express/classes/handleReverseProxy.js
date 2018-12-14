@@ -27,15 +27,15 @@ static async addReverseProxy(name, port) {
             }
         }
     );
-    exec(`pm2 stop ${name}`, {
-        cwd: pathToReverse
-        }, (err, stdout, stderr) => {
-            if (err) {
-                console.log(err, 'something when wrong on reversing the proxy');
-                return;
-            }
-        }
-    );
+    // exec(`pm2 stop ${name}`, {
+    //     cwd: pathToReverse
+    //     }, (err, stdout, stderr) => {
+    //         if (err) {
+    //             console.log(err, 'something when wrong on reversing the proxy');
+    //             return;
+    //         }
+    //     }
+    // );
 }
 
 // this is not done!!!!!!!
@@ -47,9 +47,9 @@ static async removeReverseProxy(name, port) {
     const pathToRouting = path.join(__dirname, "../../../reverse-proxy/routing.json");
     const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
 
-    await fs.writeFile(pathToRouting, routingJSON, err => {
-      if (err) throw err;
-    });
+    // await fs.writeFile(pathToRouting, routingJSON, err => {
+    //   if (err) throw err;
+    // });
     exec(`pm2 delete ${name}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
