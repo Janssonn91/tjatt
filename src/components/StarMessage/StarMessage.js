@@ -1,9 +1,5 @@
 @inject('userStore', 'channelStore') export default class StarMessage extends Component {
 
-  componentDidUpdate() {
-    console.log(this.props);
-  }
-
   toggleSnippetHeight = (index) => {
     if (this.fullHeightSnippet.some(obj => obj.index === index)) {
       let scroll = document.querySelector('.chat-row');

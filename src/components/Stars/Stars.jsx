@@ -1,6 +1,6 @@
 <Fragment>
   <ScrollableFeed>
-    <Row className="chat-header m-0 p-0">
+    <Row className="chat-header-starpage m-0 p-0">
       <Col sm="12" className="chat-about pl-3 pl-md-4">
         <Button
           className="mobil-menu d-inline-block d-md-none"
@@ -9,6 +9,7 @@
           <i className="fas fa-ellipsis-v"></i>
         </Button>
         <span className="starpage-title">Sterred items</span>
+        <span style={{ width: 30 }}>{null}</span>
       </Col>
     </Row>
     <hr className="mt-0 mb-2" />
