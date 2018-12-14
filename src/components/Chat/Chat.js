@@ -290,7 +290,7 @@ export default class Chat extends Component {
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
             channelStore.channelChatHistory.push(m);
             if(message.textType ==="groupInfo"){
-              channelStore.changeChannel
+              channelStore.changeChannel(channelStore.currentChannel);
             }
           }
           if (message.sender) {

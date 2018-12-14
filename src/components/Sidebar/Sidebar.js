@@ -124,11 +124,7 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('group');
     socket.on('group', message => {
-      if (message.textType.toString() === "groupInfo") {
-        if (message.channel.toString() === channelStore.currentChannel._id) {
-          channelStore.changeChannel(channelStore.currentChannel);
-        }
-      }
+     
       if (message.textType.toString() === "addedToGroup") {
         // message data structuer: {
         //   textType: "addedToGroup",
