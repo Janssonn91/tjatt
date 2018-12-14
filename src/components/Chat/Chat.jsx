@@ -133,7 +133,7 @@
                   </div>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-emoji">
-                  <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                  <EmojiPicker className="emoji" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
               <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>
