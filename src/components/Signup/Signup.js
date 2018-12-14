@@ -1,6 +1,7 @@
 import './Signup.scss';
+import { applicationStateStore } from '../../store/application-state-store';
 
-@inject('userStore', 'channelStore') @withRouter @observer export default class Signup extends Component {
+@inject('userStore', 'channelStore', 'applicationStateStore') @withRouter @observer export default class Signup extends Component {
 
   @observable usernameToSet = '';
   @observable useremailToSet = '';
@@ -66,7 +67,8 @@ import './Signup.scss';
         if (res.success) {
           console.log('created user: ' + username + ' med mail ' + useremail)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          this.props.userStore.fetchContact();
+          this.props.applicationStateStore.setSystemInfo();
+          //this.props.userStore.fetchContact();
           this.props.history.push(`/${this.props.userStore.user.username}/info`);
           this.usernameExist = false;
           socket.emit('sign up', res.user);
