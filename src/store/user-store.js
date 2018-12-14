@@ -2,13 +2,13 @@ import channelStore from './channel-store';
 import { applicationStateStore } from "./application-state-store";
 
 class UserStore {
-  @observable user = {_id:"", channel: [], contact: [] };
+  @observable user = { _id: "", channel: [], contact: [] };
   @observable isLoggedIn = false;
-  @observable checkedLoginState = false;
   @observable candidates = []; // AddUserModal
   @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable isLoading = true;
+  @observable myStars = [];
 
   constructor() {
     setTimeout(() => {
@@ -29,11 +29,6 @@ class UserStore {
     this.isLoggedIn = isLoggedIn;
   }
 
-  @action checkState() {
-    // this.checkedLoginState = true;
-    this.isLoggedIn = true;
-  }
-
   @action updateMyContact(userId) {
     const addedUser = this.candidates.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
@@ -41,7 +36,7 @@ class UserStore {
     this.groupCandidates.push(addedUser);
   }
 
-  @action async moveContactToCandidates(id){
+  @action async moveContactToCandidates(id) {
     let res = await fetch(`/api/users/${id}`);
     let user = await res.json();
     this.candidates.push(user);
@@ -61,7 +56,7 @@ class UserStore {
       .then(res => res.json())
       .then(users => {
         let withoutMe = users.filter(user => user._id !== this.user._id);
-        withoutMe = withoutMe.filter(user=> user._id !== applicationStateStore.systemId.toString());
+        withoutMe = withoutMe.filter(user => user._id !== applicationStateStore.systemId.toString());
 
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);
@@ -90,6 +85,38 @@ class UserStore {
     const index = this.selectedGroupMember.indexOf(addedUser);
     this.selectedGroupMember.splice(index, 1);
   }
+
+  @action async fetchStars() {
+    this.user.channel.forEach(channel => {
+      fetch(`/api/message/${channel}`, {
+        method: 'GET'
+      })
+        .then(res => res.json())
+        .then(result => {
+          result.stars.forEach(star => {
+            if (!this.myStars.some(s => s._id === star._id)) {
+              this.myStars.push(star);
+            }
+          });
+        });
+    });
+    await sleep(100);
+    this.sortMyStars();
+  }
+
+  @action sortMyStars() {
+    this.myStars = this.myStars.sort((a, b) => Date.parse(a.time) - Date.parse(b.time));
+  }
+
+  @action updateMyStars(message, star) {
+    if (star) {
+      this.myStars.push(message);
+    } else {
+      const index = this.myStars.indexOf(this.myStars.find(s => s._id === message._id));
+      this.myStars.splice(index, 1);
+    }
+  }
+
 }
 
 export const userStore = new UserStore();

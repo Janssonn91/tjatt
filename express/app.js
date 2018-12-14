@@ -1101,6 +1101,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.get('/message/:channel', (req, res) => {
+  ChatMessage.find({ channel: req.params.channel, star: true })
+    .then(result => {
+      res.json({ success: true, stars: result })
+    })
+    .catch(err => {
+      throw err;
+    })
+})
+
 app.put('/message/:id', (req, res) => {
 
   ChatMessage.findOneAndUpdate(
@@ -1111,6 +1121,17 @@ app.put('/message/:id', (req, res) => {
     )).catch(err => {
       throw err;
     })
+});
+
+app.put('/message/:id/star', (req, res) => {
+  ChatMessage.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { star: req.body.star } }
+  ).then(() =>
+    res.json({ success: true }
+    )).catch(err => {
+      throw err;
+    });
 });
 
 app.delete('/deletemessage/:messageId', (req, res) => {
