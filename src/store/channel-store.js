@@ -343,7 +343,9 @@ class ChannelStore {
       channel: id
     });
     let scroll = document.querySelector('.chat-row');
-    scroll.scrollTop = scroll.scrollHeight;
+    if (scroll) {
+      scroll.scrollTop = scroll.scrollHeight;
+    }
     this.channelChatHistory.forEach(message => {
       if (message.unread) {
         fetch(`/api/message/${message._id}`, {
