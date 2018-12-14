@@ -67,7 +67,7 @@ module.exports = class HandleVMs {
             EXPOSE ${payload.webPort}
             CMD [ "npm", "start" ]`);
         };
-        rp.addReverseProxy(payload);
+        rp.addReverseProxy(payload.uniqueProjectName, payload.webPort);
         promiseResult(true);
       });
     });
@@ -102,7 +102,6 @@ services:
 
 
   static start_containers_composer(payload) {
-    console.log('Container start')
     return new Promise((resolve, reject) => {
       exec(`docker-compose up -d`, {
         cwd: payload.localPath
@@ -116,7 +115,7 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
-        rp.startReverseProxy(payload);
+        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
     });
@@ -135,7 +134,7 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        rp.stopReverseProxy(payload);
+        rp.stopReverseProxy(payload.name);
         resolve();
       });
       
