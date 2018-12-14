@@ -12,14 +12,24 @@
       </Col>
     </Row>
     <hr className="mt-0 mb-2" />
-    <Row className="chat-row">
-      <Col className="pr-0">
-        <ul className="chat-history pl-2 mr-1 list-unstyled">
-          {this.props.userStore.myStars.map((starMessage, i) => {
-            return <StarMessage message={starMessage} key={i} />
-          })}
-        </ul>
-      </Col>
-    </Row>
+
+    {this.props.userStore.myStars.length > 0 ?
+      <Row className="chat-row">
+        <Col className="pr-0">
+          <ul className="chat-history pl-2 mr-1 list-unstyled">
+            {this.props.userStore.myStars.map((starMessage, i) => {
+              return <StarMessage message={starMessage} key={i} />
+            })}
+          </ul>
+        </Col>
+      </Row>
+      :
+      <Row className="chat-row">
+        <Col className="pr-0">
+          <h6 className="pl-2 pt-3">You haven't starred any texts or files yet</h6>
+        </Col>
+      </Row>
+    }
   </ScrollableFeed>
+
 </Fragment>

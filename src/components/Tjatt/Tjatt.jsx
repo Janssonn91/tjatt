@@ -8,7 +8,7 @@
     {/* {if(this.props.channelStore.currentChannel)} */}
     <Col xs="12" md="9" className={this.props.channelStore.hideChat === true ? "hide-chat main-view" : "pr-0 pl-0 main-view"}>
       <div className="dialog">
-        {this.props.match.params.id === "stars" && this.props.userStore.myStars.length > 0 ? <Stars /> : < Chat />}
+        {this.props.match.params.id === "stars" && this.props.userStore.myStars ? <Stars /> : < Chat />}
       </div>
     </Col>
   </Row>
