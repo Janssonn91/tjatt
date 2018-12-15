@@ -44,10 +44,10 @@
             <div className="float-right">
               {this.props.userStore.myStars.some(s => s._id === message._id) ?
                 <i className="fas fa-star"
-                  onClick={() => this.updateStar(message, true)}>
+                  onClick={() => this.props.userStore.updateMyStars(message, true)}>
                 </i> :
                 <i className="far fa-star"
-                  onClick={() => this.updateStar(message, false)}>
+                  onClick={() => this.props.userStore.updateMyStars(message, false)}>
                 </i>
               }
             </div>
@@ -80,10 +80,10 @@
             <div className="float-right">
               {this.props.userStore.myStars.some(s => s._id === message._id) ?
                 <i className="fas fa-star"
-                  onClick={() => this.updateStar(message, true)}>
+                  onClick={() => this.props.userStore.updateMyStars(message, true)}>
                 </i> :
                 <i className="far fa-star"
-                  onClick={() => this.updateStar(message, false)}>
+                  onClick={() => this.props.userStore.updateMyStars(message, false)}>
                 </i>
               }
             </div>

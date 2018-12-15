@@ -591,7 +591,6 @@ io.on('connection', (socket) => {
         filePath: messageFromClient.filePath,
         contentType: messageFromClient.contentType,
         originalName: messageFromClient.originalName,
-        star: false,
         unread: true,
       })
       await newMessage.save();
@@ -618,7 +617,6 @@ io.on('connection', (socket) => {
       contentType: messageFromClient.contentType,
       filePath: messageFromClient.filePath,
       originalName: messageFromClient.originalName,
-      star: messageFromClient.star,
       unread: true,
       time: time,
     }]);
@@ -807,16 +805,15 @@ app.get('/users/:_id', (req, res) => {
   User.findOne({ _id: req.params._id })
     .then(user => {
       if (!user) {
-        res.json({ success: false })
+        res.json({ success: false });
       }
       else { res.json(user) }
     }).catch(
       err => {
-        console.log("find one user", err)
+        console.log("find one user", err);
       }
-    )
-
-})
+    );
+});
 
 app.put('/removeContact/:_id', async (req, res) => {
   const contactId = req.body.contId.toString();
@@ -991,13 +988,6 @@ app.get('/channel/:_id', (req, res) => {
   }).catch(err => console.log(err))
 })
 
-
-
-
-
-
-
-
 app.put('/users/:_id/add', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.params._id },
@@ -1020,6 +1010,17 @@ app.put('/users/:_id/remove', (req, res) => {
       res.json({ success: true })
     })
     .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/star', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { star: req.body.star } }
+  ).then(() =>
+    res.json({ success: true }
+    )).catch(err => {
       throw err;
     });
 });
@@ -1101,18 +1102,18 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-app.get('/message/:channel', (req, res) => {
-  ChatMessage.find({ channel: req.params.channel, star: true })
-    .then(result => {
-      res.json({ success: true, stars: result })
-    })
-    .catch(err => {
-      throw err;
-    })
+app.get('/message/:id', (req, res) => {
+  ChatMessage.findOne({ _id: req.params.id })
+    .then(message => {
+      if (!message) {
+        res.json({ success: false });
+      }
+      res.json(message);
 })
+    .catch(err => console.log(err));
+});
 
 app.put('/message/:id', (req, res) => {
-
   ChatMessage.findOneAndUpdate(
     { _id: req.params.id },
     { $set: { unread: false } }
@@ -1121,17 +1122,6 @@ app.put('/message/:id', (req, res) => {
     )).catch(err => {
       throw err;
     })
-});
-
-app.put('/message/:id/star', (req, res) => {
-  ChatMessage.findOneAndUpdate(
-    { _id: req.params.id },
-    { $set: { star: req.body.star } }
-  ).then(() =>
-    res.json({ success: true }
-    )).catch(err => {
-      throw err;
-    });
 });
 
 app.delete('/deletemessage/:messageId', (req, res) => {

@@ -26,10 +26,10 @@
   <div className="float-right">
     {this.props.userStore.myStars.some(s => s._id === this.props.message._id) ?
       <i className="fas fa-star"
-        onClick={() => this.updateStar(this.props.message, true)}>
+        onClick={() => this.props.userStore.updateMyStars(this.props.message, true)}>
       </i> :
       <i className="far fa-star"
-        onClick={() => this.updateStar(this.props.message, false)}>
+        onClick={() => this.props.userStore.updateMyStars(this.props.message, false)}>
       </i>
     }
   </div>
