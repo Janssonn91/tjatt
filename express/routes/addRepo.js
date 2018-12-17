@@ -3,6 +3,8 @@ const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const rp = require('../classes/handleReverseProxy');
+
 
 module.exports = function (app) {
 
@@ -22,9 +24,10 @@ module.exports = function (app) {
             res: res
         }
 
-        fs.existsSync(payload.localPath) ?
+        await fs.existsSync(payload.localPath) ?
            del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
-
+        await rp.addReverseProxy(name, port);
+        // await rp.startReverseProxy(name);
     });
 
 };
