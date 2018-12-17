@@ -26,7 +26,7 @@ module.exports = function (app) {
 
         await fs.existsSync(payload.localPath) ?
            del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
-        await rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
+        await rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort); console.log(payload)
         // await rp.startReverseProxy(name);
     });
 
