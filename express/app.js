@@ -975,6 +975,18 @@ app.delete('/killChannel/:id', (req, res) => {
   });
 });
 
+app.delete('/invalidInvitation/:text',(req,res)=>{
+  ChatMessage.findOneAndRemove(
+    {
+      "textType": "my invitation", 
+      "text": req.params.text
+    }).then(()=>{
+      res.json({ success: true })
+    }).catch(err=>{
+      throw err;
+    })
+})
+
 app.put('/channel/:_id', (req, res) => {
   channel.update(
     { _id: req.params._id },

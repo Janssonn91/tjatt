@@ -192,18 +192,6 @@ class ChannelStore {
             let initiator = d.text;
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
-          if (d.textType.toString() === "rejection") {
-            let i = d.text.toString().split("&reject&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-
-            this.setSystemMessageFromDB(initiator, i[0], "", d);
-          }
-          if (d.textType.toString() === "acceptance") {
-            let j = d.text.toString().split("&accept&");
-            let i = j[1].split("&toJoin&");
-            let initiator = toJS(this.userDict[j[0]]).name;
-            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
-          }
           if (d.textType.toString() === "my invitation") {
             if(d.unread){
             this.pendingUsers.push(d.text);
@@ -394,6 +382,7 @@ class ChannelStore {
   }
 
   @action async updateContactChannels(c, id) {
+    await sleep(1000);
     let channel = {};
     let user = this.userDict[id];
     fetch(`/api/channel/${c}`).then(res => res.json()).then(data => {

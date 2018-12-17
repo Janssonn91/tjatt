@@ -5,7 +5,6 @@ import './SystemMessagesModal.scss';
   invitationDeclined(id, targetChannel, mid, i){
     socket.emit('system', {rejecter: this.props.userStore.user._id, rejectee: id, type:"rejection"})
     this.props.channelStore.readSystemMessage(mid,i);
-    console.log(targetChannel);
     fetch(`/api/killChannel/${targetChannel}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
