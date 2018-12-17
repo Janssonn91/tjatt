@@ -274,8 +274,29 @@ io.on('connection', (socket) => {
         unread: true,
         id: m,
       }
+      socket.broadcast.emit('invitation', message);//system message to invitee
 
-      socket.broadcast.emit('invitation', message);
+      //system message to my self
+      let mySystem = await channel.findOne({channelname: data.inviter + "system"});
+      let myInvitation = new ChatMessage({
+        sender: data.inviter,
+        text: data.invitee,
+        textType:"my invitation",
+        unread: true,
+        channel: mySystem._id,
+      });
+      let mySystemMessageID="";
+      await myInvitation.save().then(message=>{
+        mySystemMessageID = message._id;
+      });
+      let mySocketMessage={
+        textType:"my invitation",
+        initiator: data.inviter,
+        invitee: data.invitee,
+        unread: true,
+        id: mySystemMessageID,
+      }
+      socket.emit('my invitation', mySocketMessage);
     }
 
 

@@ -43,6 +43,7 @@ import './AddUserModal.scss';
       socket.emit('system', {newChannel: channel[0], invitee: userId, inviter: user._id, type:"inviation"})
     
     });
+  
   }
 
 }

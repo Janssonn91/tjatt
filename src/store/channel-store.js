@@ -151,7 +151,6 @@ class ChannelStore {
   }
 
   setSystemMessagesFromDB() {
-    console.log("systemChannel", applicationStateStore.systemChannel)
     this.cleanUpOldSystemMessages();
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
@@ -202,6 +201,19 @@ class ChannelStore {
             let i = j[1].split("&toJoin&");
             let initiator = toJS(this.userDict[j[0]]).name;
             this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+          }
+          if (d.textType.toString() === "my invitation") {
+            let i = toJS(this.userDict[d.text]);
+            console.log("invitee", i)
+            let message = {
+              textType:d.textType,
+              invitee: i.name,
+              unread: true,
+              id: d._id,
+            }
+            console.log(message)
+            this.unreadSystemMessages.push(message);
+            this.unreadSystemMessageNum++;
           }
         }
       })

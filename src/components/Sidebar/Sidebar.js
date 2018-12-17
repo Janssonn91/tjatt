@@ -271,6 +271,22 @@ export const imgPath = '/images/placeholder.png';
         channelStore.unreadSystemMessageNum++;
       }
     })
+
+    socket.off('my invitation');
+    socket.on('my invitation', data=>{
+      if(data.initiator === userStore.user._id){
+        let message ={
+          sender: data.initiator,
+          invitee: this.props.channelStore.userDict[data.invitee].name,
+          unread: true,
+          id: data.id,
+          textType: 'my invitation',
+        }
+        console.log("my invitation", message.invitee)
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+      }
+    })
     // socket.off('system message');
     // socket.on('system message', message => {
     //   console.log('Message from server ', message);

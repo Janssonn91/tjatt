@@ -51,6 +51,10 @@
           <span>You are now contact of {message.initiator}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
+          :message.textType === "my invitation" ?
+          <ListGroupItem key={i}>
+          <span>You've invite {message.invitee} as your contact.</span>
+          </ListGroupItem>
           :
            <div key={i}></div>
           : 
