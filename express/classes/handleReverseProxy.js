@@ -26,7 +26,7 @@ static async addReverseProxy(name, port) {
     //             return;
     //         }
     //     }
-    );
+    // );
     // exec(`pm2 stop ${name}`, {
     //     cwd: pathToReverse
     //     }, (err, stdout, stderr) => {
@@ -88,5 +88,18 @@ static async stopReverseProxy(name) {
         }
     );
 }
+
+// static async restartReverseProxy(){
+//    const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
+//    exec(`pm2 stop reverse-proxy`, {
+//     cwd: pathToReverse
+//     }, (err, stdout, stderr) => {
+//         if (err) {
+//             console.log(err, 'something when wrong on reversing the proxy');
+//             return;
+//             }
+//         }
+//    );
+// }
 
 }
