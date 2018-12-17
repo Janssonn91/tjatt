@@ -134,7 +134,7 @@
                                     className="gitApps-sideDrawer-appsList-app-controls-branch-wrapper"
                                     isOpen={this.openBranches === app._id ? true : false}>
                                     <div className="gitApps-sideDrawer-appsList-app-controls-branch">
-                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Remote</p>                                        
+                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Branches</p>                                        
                                         {app.branches && app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
                                             <button 
                                                 onClick = {() => this.changeBranch(branch, app)}
@@ -144,7 +144,7 @@
                                             </button>
                                         ))}
                                     </div>
-                                    <div className="gitApps-sideDrawer-appsList-app-controls-branch">
+                                    {/* <div className="gitApps-sideDrawer-appsList-app-controls-branch">
                                         <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Local</p>                                        
                                         {app.branches && app.branches.filter(item => !item.includes('origin/')).map((branch, index) => (
                                             <button 
@@ -153,7 +153,7 @@
                                                     {branch}
                                             </button>
                                         ))}
-                                    </div>
+                                    </div> */}
 
                                 </Collapse>
                         </li>
