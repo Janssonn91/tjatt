@@ -74,7 +74,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
+    // rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
