@@ -18,15 +18,15 @@ static async addReverseProxy(name, port) {
       if (err) throw err;
     });
 
-    // await exec(`pm2 start sub-domain.js --name ${name}`, {
-    //     cwd: pathToReverse
-    //     }, (err, stdout, stderr) => {
-    //         if (err) {
-    //             console.log(err, 'something when wrong on adding reverse the proxy');
-    //             return;
-    //         }
-    //     }
-    // );
+    await exec(`pm2 start ${name}`, {
+        cwd: pathToReverse
+        }, (err, stdout, stderr) => {
+            if (err) {
+                console.log(err, 'something when wrong on adding reverse the proxy');
+                return;
+            }
+        }
+    );
     // exec(`pm2 stop ${name}`, {
     //     cwd: pathToReverse
     //     }, (err, stdout, stderr) => {

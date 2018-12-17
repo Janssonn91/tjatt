@@ -99,7 +99,7 @@ services:
   }
 
 
-  static async start_containers_composer(payload) {
+  static start_containers_composer(payload) {
     return new Promise((resolve, reject) => {
       exec(`docker-compose up -d`, {
         cwd: payload.localPath
@@ -113,10 +113,10 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
-         await rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        // rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
-    });
+    }); 
   }
 
   static stop_container(payload, toBeRemoved = false) {
