@@ -78,6 +78,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalAddNewUser() {
+    this.props.userStore.fetchContact();
     this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
   }
 

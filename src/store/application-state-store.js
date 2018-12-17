@@ -61,7 +61,7 @@ class ApplicationStateStore {
 
       this.systemId = data.systemUserId;
       console.log("systemId", this.systemId);
-      userStore.fetchContact();
+      //userStore.fetchContact();
       //channelStore.getUserList();
       await sleep(1000);
       channelStore.cleanUpOldSystemMessages();

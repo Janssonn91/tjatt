@@ -11,7 +11,7 @@ import './AddUserModal.scss';
     this.searchedCandidates = this.props.userStore.candidates;
   }
 
-  searchCandidates = (e) => {
+  searchCandidates = async (e) => {
     this.searchedCandidates = [];
     if (!e.target.value) {
       // Show all candidates if input value is empty

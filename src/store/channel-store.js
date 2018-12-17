@@ -31,6 +31,7 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessages = [];
   @observable unreadSystemMessageNum = "";
+  @observable pendingUsers=[];
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -152,6 +153,7 @@ class ChannelStore {
 
   setSystemMessagesFromDB() {
     this.cleanUpOldSystemMessages();
+    this.pendingUsers=[];
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
       data.forEach(d => {
@@ -203,6 +205,9 @@ class ChannelStore {
             this.setSystemMessageFromDB(initiator, j[0], i[1], d);
           }
           if (d.textType.toString() === "my invitation") {
+            if(d.unread){
+            this.pendingUsers.push(d.text);
+            }
             let i = toJS(this.userDict[d.text]);
             console.log("invitee", i)
             let message = {
@@ -211,7 +216,6 @@ class ChannelStore {
               unread: true,
               id: d._id,
             }
-            console.log(message)
             this.unreadSystemMessages.push(message);
             this.unreadSystemMessageNum++;
           }
