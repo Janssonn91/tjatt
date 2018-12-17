@@ -288,6 +288,7 @@ export const imgPath = '/images/placeholder.png';
         console.log("my invitation", message.invitee)
         channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
+        channelStore.updatePendingUsers(data.invitee);
       }
     })
     // socket.off('system message');

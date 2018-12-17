@@ -193,9 +193,8 @@ class ChannelStore {
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
           if (d.textType.toString() === "my invitation") {
-            if(d.unread){
+            if(!toJS(userStore.user.contact).includes(d.text.toString())){
             this.pendingUsers.push(d.text);
-            }
             let i = toJS(this.userDict[d.text]);
             console.log("invitee", i)
             let message = {
@@ -206,6 +205,8 @@ class ChannelStore {
             }
             this.unreadSystemMessages.push(message);
             this.unreadSystemMessageNum++;
+            }
+            
           }
         }
       })
@@ -214,6 +215,11 @@ class ChannelStore {
 
 
     console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+  }
+
+  updatePendingUsers(id){
+    console.log("pendinginginging",id)
+    this.pendingUsers.push(id);
   }
 
 

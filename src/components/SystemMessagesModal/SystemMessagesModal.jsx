@@ -53,7 +53,7 @@
           </ListGroupItem>
           :message.textType === "my invitation" ?
           <ListGroupItem key={i}>
-          <span>You've invite {message.invitee} as your contact.</span>
+          <span>You've invited {message.invitee} as your contact.</span>
           </ListGroupItem>
           :
            <div key={i}></div>
