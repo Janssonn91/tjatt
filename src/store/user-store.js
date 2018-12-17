@@ -88,20 +88,24 @@ class UserStore {
 
   @action async fetchStars() {
     this.myStars = [];
-    await this.user.channel.forEach(channel => {
-      fetch(`/api/message/${channel}`, {
-        method: 'GET'
-      })
-        .then(res => res.json())
-        .then(result => {
-          result.stars.forEach(star => {
-            if (!this.myStars.some(s => s._id === star._id)) {
-              this.myStars.push(star);
-            }
+    fetch(`/api/users/${this.user._id}`, {
+      method: 'GET'
+    })
+      .then(res => res.json())
+      .then(user => {
+        if (user.star) {
+          user.star.forEach(starId => {
+            fetch(`/api/message/${starId}`, {
+              method: 'GET'
+            })
+              .then(res => res.json())
+              .then(message => {
+                this.myStars.push(message);
+              });
           });
-        });
-    });
-    await sleep(100);
+        }
+      });
+    await sleep(1000);
     this.sortMyStars();
   }
 
@@ -109,14 +113,36 @@ class UserStore {
     this.myStars = this.myStars.sort((a, b) => Date.parse(a.time) - Date.parse(b.time));
   }
 
+  // update star of user in backend
+  updateStar() {
+    let starIds = [];
+    starIds = this.myStars.map(star => star._id);
+
+    fetch(`/api/users/${this.user._id}/star`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ star: starIds }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated star');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  // update myStars array in frontend
   @action updateMyStars(message, star) {
-    if (star) {
+    if (!star) {
       this.myStars.push(message);
     } else {
       const index = this.myStars.indexOf(this.myStars.find(s => s._id === message._id));
       this.myStars.splice(index, 1);
     }
     this.sortMyStars();
+    this.updateStar();
   }
 
 }

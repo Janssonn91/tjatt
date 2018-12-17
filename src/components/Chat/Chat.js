@@ -225,7 +225,6 @@ export default class Chat extends Component {
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
       contentType: 'text',
-      star: false,
       unread: true,
     }
     if (this.inputMessage.length > 0) {
@@ -277,7 +276,6 @@ export default class Chat extends Component {
               _id: message._id,
               channel: message.channel,
               sender: message.sender,
-              star: false,
               text: message.text,
               textType: message.textType,
               contentType: message.contentType,

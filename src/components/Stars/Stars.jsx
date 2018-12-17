@@ -12,7 +12,6 @@
         <span style={{ width: 30 }}>{null}</span>
       </Col>
     </Row>
-    <hr className="m-0" />
 
     {this.props.userStore.myStars.length > 0 ?
       <Row className="chat-row-starpage">

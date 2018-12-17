@@ -1,4 +1,15 @@
-@inject('userStore', 'channelStore') export default class StarMessage extends Component {
+import SyntaxHighlighter from 'react-syntax-highlighter';
+
+@inject('userStore', 'channelStore') @observer export default class StarMessage extends Component {
+
+  @observable chatImageModal = false;
+  @observable fullHeightSnippet = [];
+  @observable currentImage = '';
+  @observable originalName = '';
+
+  toggleChatModal = () => {
+    this.chatImageModal = !this.chatImageModal;
+  }
 
   toggleSnippetHeight = (index) => {
     if (this.fullHeightSnippet.some(obj => obj.index === index)) {
@@ -38,26 +49,5 @@
         + " " + hour + ":" + min + " " + ampm;
       return result;
     }
-  }
-
-  updateStar(message, currentStar) {
-    const star = !currentStar;
-
-    // update star of message in backend
-    fetch(`/api/message/${message._id}/star`, {
-      credentials: 'include',
-      method: 'PUT',
-      body: JSON.stringify({ star }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(result => {
-        if (result.success) {
-          console.log('updated star');
-          // update myStars array in frontend
-          this.props.userStore.updateMyStars(message, star);
-        }
-      })
-      .catch(err => console.log(err));
   }
 }
