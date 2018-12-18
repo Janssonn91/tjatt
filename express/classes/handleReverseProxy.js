@@ -17,7 +17,16 @@ static async addReverseProxy(payload) {
     await fs.writeFile(pathToRouting, routingJSON, err => {
       if (err) throw err;
     });
-    this.restartReverseProxy();
+    // this.restartReverseProxy();
+    await exec(`pm2 restart reverse-proxy`, {
+        cwd: pathToReverse
+        }, (err, stdout, stderr) => {
+            if (err) {
+                console.log(err, 'something when wrong on adding reverse the proxy');
+                return;
+            }
+        }
+    );
 }
 
 // this is not done!!!!!!!
@@ -28,6 +37,7 @@ static async removeReverseProxy(name, port) {
     
     const pathToRouting = path.join(__dirname, "../../../reverse-proxy/routing.json");
     const pathToReverse = path.join(__dirname, "../../../reverse-proxy/");
+
 
 }
 
