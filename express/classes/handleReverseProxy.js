@@ -17,8 +17,8 @@ static async addReverseProxy(payload) {
     await fs.writeFile(pathToRouting, routingJSON, err => {
       if (err) throw err;
     });
-    // this.restartReverseProxy();
-    await exec(`pm2 restart reverse-proxy`, {
+    console.log('Will restart reverse proxy now');
+    exec(`pm2 restart reverse-proxy`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             if (err) {

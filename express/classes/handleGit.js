@@ -38,8 +38,6 @@ static git_branch(payload) {
         console.log("Downloaded repo from: " + payload.gitUrl);
         console.log("Proceeding with building Docker")
         vms.prepare_docker_files(payload);
-      })
-      .then(err => {
         rp.addReverseProxy(payload);
       })
       .catch(err => { console.log("error", err); payload.res.json('err'); });
