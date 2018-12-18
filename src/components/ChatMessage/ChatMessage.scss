@@ -18,9 +18,9 @@ $fontSm: 12px;
 li {
   width: 98%;
   // Last message on page has less margin
-  &:nth-last-child(2) {
+  &:nth-last-child(1) {
       .message {
-        margin-bottom: 5px!important;
+        margin-bottom: 0px!important;
       }
   }
   .group-message{
