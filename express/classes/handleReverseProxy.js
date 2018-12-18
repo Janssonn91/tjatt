@@ -18,15 +18,6 @@ static async addReverseProxy(payload) {
       if (err) throw err;
     });
     this.restartReverseProxy();
-    await exec(`pm2 restart reverse-proxy`, {
-        cwd: pathToReverse
-        }, (err, stdout, stderr) => {
-            if (err) {
-                console.log(err, 'something when wrong on adding reverse the proxy');
-                return;
-            }
-        }
-    );
 }
 
 // this is not done!!!!!!!
