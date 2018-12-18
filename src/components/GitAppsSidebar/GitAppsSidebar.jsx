@@ -44,7 +44,7 @@
                     </FormGroup>
                     <InputGroupAddon addonType="append">
                         <Button 
-                            className="gitApps-sideDrawer-submit-button ml-1 float-right"
+                            className="gitApps-sideDrawer-submit-button float-right"
                             onClick={()=> this.onSubmitClickHandler()}>
                             Import
                         </Button>
