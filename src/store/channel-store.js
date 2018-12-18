@@ -287,6 +287,12 @@ class ChannelStore {
     // toJS(this.groupChannels).filter(c=>{
     //   c._id===channel._id});
     console.log(this.groupChannels);
+    if(window.location.href.endsWith(channel.channelname)){
+      window.history.pushState(null, null, '/' + userStore.user.username);
+      this.currentChannel = '';
+      this.ChannelChatHistory = [];
+      this.channelName = '';
+    }
     console.log("removed!!!!!!");
   }
 

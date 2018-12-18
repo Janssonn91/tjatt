@@ -215,7 +215,7 @@ io.on('connection', (socket) => {
       //   console.log("socket room", socket.rooms);
       let messageDict = {};
       for (let member of data.newChannel.members) {
-        if (member !== user._id) {
+        if (member !== user._id || socket.handshake.session.userId) {
           let c = await channel.findOne({
             channelname: member + "system"
           });
@@ -368,7 +368,7 @@ io.on('connection', (socket) => {
     }
 
     if (data.type === "editMembersInGroup") {
-      console.log("edit", data);
+      // console.log("edit", data);
       //data:  { targetChannel: whole channel info
       // initiator: this.props.userStore.user._id,
       // addedMembers: addedUser,
@@ -555,7 +555,7 @@ io.on('connection', (socket) => {
     }
 
     if (data.type === "removeContact") {
-      console.log("remove contact", data)
+      // console.log("remove contact", data)
       let c = await channel.findOne({ channelname: data.target + "system" });
       let user = await User.findById(data.sender);
       let systemMessage = new ChatMessage({
