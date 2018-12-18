@@ -6,9 +6,9 @@ const routing = require('../../../reverse-proxy/routing.json');
 
 module.exports = class handleGit {
 
-static async addReverseProxy(name, port) {
-    console.log('adding reverse proxy', name);
-    routing[`${name}.tjatt.net`] = port;
+static async addReverseProxy(payload) {
+    console.log('adding reverse proxy', payload.uniqueProjectName, payload.webPort);
+    routing[`${payload.uniqueProjectName}.tjatt.net`] = payload.webPort;
     let routingJSON = JSON.stringify(routing, null, 2);
     
     const pathToRouting = path.join(__dirname, "../../../reverse-proxy/routing.json");
