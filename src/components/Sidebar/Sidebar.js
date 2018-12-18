@@ -83,6 +83,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalCreateGroup() {
+    this.props.userStore.fetchContact();
     this.createGroupModalOpen.isOpen = !this.createGroupModalOpen.isOpen;
   }
 
