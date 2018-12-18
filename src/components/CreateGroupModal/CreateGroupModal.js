@@ -9,7 +9,7 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable searchContact = this.props.userStore.groupCandidates;
 
   async start() {
-    await sleep(10);
+    await sleep(100);
     // Show all contacts from beginning
     this.searchContact = [];
   }

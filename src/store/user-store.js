@@ -52,6 +52,7 @@ class UserStore {
   }
 
   @action fetchContact() {
+    this.candidates=[];
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
@@ -61,9 +62,15 @@ class UserStore {
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);
         }
-        this.candidates = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
-        console.log("groupCandidates", this.groupCandidates);
+        let withPending = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
+        
+        withPending.forEach(u=>{
+          if(!toJS(channelStore.pendingUsers).includes(u._id)){
+            this.candidates.push(u);
+          }
+        })
+        
       });
   }
 

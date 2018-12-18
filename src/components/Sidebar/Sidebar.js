@@ -78,6 +78,7 @@ export const imgPath = '/images/placeholder.png';
   }
 
   openModalAddNewUser() {
+    this.props.userStore.fetchContact();
     this.addUserModalOpen.isOpen = !this.addUserModalOpen.isOpen
   }
 
@@ -222,9 +223,8 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('rejection');
     socket.on('rejection', data => {
-      console.log(data)
+      channelStore.readMyInvitation(data.initiator);
       if (data.rejectee === userStore.user._id) {
-        console.log("rejection")
         let message = {
           sender: data.initiator,
           initiator: channelStore.userDict[data.initiator].name,
@@ -234,13 +234,13 @@ export const imgPath = '/images/placeholder.png';
         }
         channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
-        console.log(toJS(channelStore.unreadSystemMessages))
       }
     })
 
     socket.off('acceptance');
     socket.on('acceptance', data => {
       console.log(data)
+      channelStore.readMyInvitation(data.sender);
       if (data.acceptee === userStore.user._id) {
         let message = {
           sender: data.sender,
@@ -271,6 +271,23 @@ export const imgPath = '/images/placeholder.png';
         channelStore.unreadSystemMessageNum++;
       }
     })
+
+    socket.off('my invitation');
+    socket.on('my invitation', data=>{
+      if(data.initiator === userStore.user._id){
+        let message ={
+          sender: data.initiator,
+          invitee: this.props.channelStore.userDict[data.invitee].name,
+          unread: true,
+          id: data.id,
+          textType: 'my invitation',
+        }
+        console.log("my invitation", message.invitee)
+        channelStore.unreadSystemMessages.push(message);
+        channelStore.unreadSystemMessageNum++;
+        channelStore.updatePendingUsers(data.invitee);
+      }
+    })
     // socket.off('system message');
     // socket.on('system message', message => {
     //   console.log('Message from server ', message);
@@ -285,6 +302,8 @@ export const imgPath = '/images/placeholder.png';
   changeLogStatus() {
     return false;
   }
+
+  
 
 
 }

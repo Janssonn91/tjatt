@@ -24,12 +24,12 @@
           : message.textType==="acceptance" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has accepted your contact invitation.</span>
-          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i, message.sender)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType==="rejection" ?
           <ListGroupItem key={i}>
           <span>{message.initiator} has rejected your invitation.</span>
-          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i, message.sender)}><i className="far fa-times-circle"></i></span>
           </ListGroupItem>
           : message.textType === "addedToGroup" ?
           <ListGroupItem key={i}>
@@ -50,6 +50,10 @@
           <ListGroupItem key={i}>
           <span>You are now contact of {message.initiator}.</span>
           <span className = "d-inline-block float-right icon" onClick={()=>this.closeSystemMessage(message.id, i)}><i className="far fa-times-circle"></i></span>
+          </ListGroupItem>
+          :message.textType === "my invitation" ?
+          <ListGroupItem key={i}>
+          <span>You've invited {message.invitee} as your contact.</span>
           </ListGroupItem>
           :
            <div key={i}></div>

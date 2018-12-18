@@ -55,14 +55,15 @@ class ApplicationStateStore {
   }
 
   @action setSystemInfo(){
-    fetch('/api/system').then(res => res.json()).then(data => {
+    fetch('/api/system').then(res => res.json()).then(async (data) => {
       this.systemChannel = data.systemChannel;
       console.log("systemChannel", data.systemChannel)
 
       this.systemId = data.systemUserId;
       console.log("systemId", this.systemId);
-      userStore.fetchContact();
+      //userStore.fetchContact();
       //channelStore.getUserList();
+      await sleep(1000);
       channelStore.cleanUpOldSystemMessages();
       channelStore.setSystemMessagesFromDB();
     }).catch(err => console.log(err))
