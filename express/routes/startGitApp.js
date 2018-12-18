@@ -17,8 +17,8 @@ module.exports = function (app) {
         !payload.appRunning ? vms.stop_container(payload, true) : vms.start_containers_composer(payload); 
     
         
-        !payload.appRunning ?rp.stopReverseProxy(payload.name)
-         : rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        // !payload.appRunning ?rp.stopReverseProxy(payload.name)
+        //  : rp.startReverseProxy(payload.uniqueProjectName || payload.name);
     
     }); 
 };
