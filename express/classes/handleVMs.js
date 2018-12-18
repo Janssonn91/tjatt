@@ -18,6 +18,8 @@ module.exports = class HandleVMs {
   static async prepare_docker_files(payload) {
     let did = await this.create_docker_dockerfile(payload);
     did && this.create_docker_compose_file(payload);
+    await rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
+
   }
 
   static async get_used_ports() {
