@@ -31,6 +31,7 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessages = [];
   @observable unreadSystemMessageNum = "";
+  @observable pendingUsers=[];
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -151,14 +152,13 @@ class ChannelStore {
   }
 
   setSystemMessagesFromDB() {
-    console.log("systemChannel", applicationStateStore.systemChannel)
     this.cleanUpOldSystemMessages();
+    this.pendingUsers=[];
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
       data.forEach(d => {
         if (d.unread) {
           if (d.textType.toString() === "invitation") {
-            console.log(d._id)
             let j = d.text.toString().split("&ask&");
             let i = j[1].split("&toJoin&");
             let initiator = toJS(this.userDict[j[0]]).name; //sender's name
@@ -168,7 +168,7 @@ class ChannelStore {
           if (d.textType.toString() === "rejection") {
             let i = d.text.toString().split("&reject&");
             let initiator = toJS(this.userDict[i[0]]).name;
-
+            //this.readMyInvitation(d.sender);
             this.setSystemMessageFromDB(initiator, i[0], "", d);
           }
           if (d.textType.toString() === "acceptance") {
@@ -191,25 +191,35 @@ class ChannelStore {
             let initiator = d.text;
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
-          if (d.textType.toString() === "rejection") {
-            let i = d.text.toString().split("&reject&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-
-            this.setSystemMessageFromDB(initiator, i[0], "", d);
-          }
-          if (d.textType.toString() === "acceptance") {
-            let j = d.text.toString().split("&accept&");
-            let i = j[1].split("&toJoin&");
-            let initiator = toJS(this.userDict[j[0]]).name;
-            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
+          if (d.textType.toString() === "my invitation") {
+            if(!toJS(userStore.user.contact).includes(d.text.toString())) {
+            this.pendingUsers.push(d.text);
+            
+            let i = toJS(this.userDict[d.text]);
+            let message = {
+              textType:d.textType,
+              invitee: i.name,
+              unread: d.unread,
+              id: d._id,
+            }
+            this.unreadSystemMessages.push(message);
+            this.unreadSystemMessageNum++;
+            }
+            
           }
         }
       })
+      
       console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
     });
 
 
     console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+  }
+
+  updatePendingUsers(id){
+    console.log("pendinginginging",id)
+    this.pendingUsers.push(id);
   }
 
 
@@ -243,6 +253,23 @@ class ChannelStore {
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
+    }
+
+  }
+
+
+  readMyInvitation(sender){
+    if(sender){
+      fetch(`/api/invalidInvitation/${sender}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(()=>{
+        res=> res.json();
+        this.setSystemMessagesFromDB();
+      } 
+        ).catch(err=>{
+        console.log("invalidInvitation delete err", err);
+      })
     }
 
   }
@@ -384,6 +411,7 @@ class ChannelStore {
   }
 
   @action async updateContactChannels(c, id) {
+    await sleep(1000);
     let channel = {};
     let user = this.userDict[id];
     fetch(`/api/channel/${c}`).then(res => res.json()).then(data => {
