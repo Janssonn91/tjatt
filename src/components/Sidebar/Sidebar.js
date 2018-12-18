@@ -223,10 +223,8 @@ export const imgPath = '/images/placeholder.png';
 
     socket.off('rejection');
     socket.on('rejection', data => {
-      console.log(data)
-      this.readMyInvitation(data.initiator);
+      channelStore.readMyInvitation(data.initiator);
       if (data.rejectee === userStore.user._id) {
-        console.log("rejection")
         let message = {
           sender: data.initiator,
           initiator: channelStore.userDict[data.initiator].name,
@@ -236,14 +234,13 @@ export const imgPath = '/images/placeholder.png';
         }
         channelStore.unreadSystemMessages.push(message);
         channelStore.unreadSystemMessageNum++;
-        console.log(toJS(channelStore.unreadSystemMessages))
       }
     })
 
     socket.off('acceptance');
     socket.on('acceptance', data => {
       console.log(data)
-      this.readMyInvitation(data.sender);
+      channelStore.readMyInvitation(data.sender);
       if (data.acceptee === userStore.user._id) {
         let message = {
           sender: data.sender,
@@ -306,24 +303,7 @@ export const imgPath = '/images/placeholder.png';
     return false;
   }
 
-  readMyInvitation(sender){
-    if(sender){
-      fetch(`/api/invalidInvitation/${sender}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
-      }).then(()=>{
-        res=> res.json();
-        this.props.channelStore.setSystemMessagesFromDB();
-      } 
-        ).catch(err=>{
-        console.log("invalidInvitation delete err", err);
-      })
-    }
-   
-    
-
-
-  }
+  
 
 
 }

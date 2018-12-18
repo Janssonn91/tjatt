@@ -983,7 +983,7 @@ app.delete('/invalidInvitation/:text',(req,res)=>{
     }).then(()=>{
       res.json({ success: true })
     }).catch(err=>{
-      throw err;
+      throw err
     })
 })
 

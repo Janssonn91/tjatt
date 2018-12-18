@@ -20,7 +20,6 @@ import './SystemMessagesModal.scss';
   invitationAccepted(id, targetChannel, mid, i){
     socket.emit('system', {accepter: this.props.userStore.user._id, acceptee: id, targetChannel: targetChannel, type:"acceptance" })
     this.props.channelStore.readSystemMessage(mid,i);
-
     this.props.channelStore.updateContactChannels(targetChannel, id);
     let myId = this.props.userStore.user._id;
      // add contact into my contact
@@ -55,8 +54,15 @@ import './SystemMessagesModal.scss';
 
 
   
-  closeSystemMessage(id,i){
+  closeSystemMessage(id,i,uid){
     this.props.channelStore.readSystemMessage(id, i);
+    this.props.channelStore.readMyInvitation(uid);
+
+
+
+
+
+    
   }
 
 }

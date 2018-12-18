@@ -159,7 +159,6 @@ class ChannelStore {
       data.forEach(d => {
         if (d.unread) {
           if (d.textType.toString() === "invitation") {
-            console.log(d._id)
             let j = d.text.toString().split("&ask&");
             let i = j[1].split("&toJoin&");
             let initiator = toJS(this.userDict[j[0]]).name; //sender's name
@@ -169,7 +168,7 @@ class ChannelStore {
           if (d.textType.toString() === "rejection") {
             let i = d.text.toString().split("&reject&");
             let initiator = toJS(this.userDict[i[0]]).name;
-
+            //this.readMyInvitation(d.sender);
             this.setSystemMessageFromDB(initiator, i[0], "", d);
           }
           if (d.textType.toString() === "acceptance") {
@@ -193,14 +192,14 @@ class ChannelStore {
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
           if (d.textType.toString() === "my invitation") {
-            if(!toJS(userStore.user.contact).includes(d.text.toString())){
+            if(!toJS(userStore.user.contact).includes(d.text.toString())) {
             this.pendingUsers.push(d.text);
+            
             let i = toJS(this.userDict[d.text]);
-            console.log("invitee", i)
             let message = {
               textType:d.textType,
               invitee: i.name,
-              unread: true,
+              unread: d.unread,
               id: d._id,
             }
             this.unreadSystemMessages.push(message);
@@ -210,6 +209,7 @@ class ChannelStore {
           }
         }
       })
+      
       console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
     });
 
@@ -253,6 +253,23 @@ class ChannelStore {
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
+    }
+
+  }
+
+
+  readMyInvitation(sender){
+    if(sender){
+      fetch(`/api/invalidInvitation/${sender}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(()=>{
+        res=> res.json();
+        this.setSystemMessagesFromDB();
+      } 
+        ).catch(err=>{
+        console.log("invalidInvitation delete err", err);
+      })
     }
 
   }
