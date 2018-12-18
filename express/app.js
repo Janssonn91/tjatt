@@ -867,6 +867,19 @@ app.get('/checkChannel/:_id', async (req, res) => {
   res.json({ checkChannelResult });
 })
 
+//check if groupname is available
+app.post('/checkChannelname/:channelname', async (req, res)=>{
+
+  const channelResult = await channel.findOne({
+    channelname: req.body.channelname
+  });
+  if(channelResult){
+    res.json({success: false, channelResult: channelResult});
+  }else{
+    res.json({success: true});
+  }
+})
+
 app.get('/logout', (req, res) => {
   delete req.session.userId;
   res.json({ success: 'Successfully logged out' })
