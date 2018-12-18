@@ -18,7 +18,7 @@ static async addReverseProxy(name, port) {
       if (err) throw err;
     });
 
-    await exec(`pm2 start sub-domain.js --name ${name}`, {
+    await exec(`pm2 start ${name}`, {
         cwd: pathToReverse
         }, (err, stdout, stderr) => {
             if (err) {
