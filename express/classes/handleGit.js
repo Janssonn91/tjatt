@@ -31,7 +31,7 @@ static git_branch(payload) {
     }
   
   static git_clone(payload) {
-    simplegitPromise()
+    simplegitPromise()  
       .silent(true)
       .clone(payload.gitUrl, payload.localPath)
       .then(err => {
