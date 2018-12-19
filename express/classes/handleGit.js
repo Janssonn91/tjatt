@@ -31,14 +31,13 @@ static git_branch(payload) {
     }
   
   static git_clone(payload) {
-    simplegitPromise()
+    simplegitPromise()  
       .silent(true)
       .clone(payload.gitUrl, payload.localPath)
       .then(err => {
         console.log("Downloaded repo from: " + payload.gitUrl);
         console.log("Proceeding with building Docker")
         vms.prepare_docker_files(payload);
-        // rp.addReverseProxy(payload)
       })
       .catch(err => { console.log("error", err); payload.res.json('err'); });
   }
