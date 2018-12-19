@@ -44,7 +44,7 @@
                     </FormGroup>
                     <InputGroupAddon addonType="append">
                         <Button 
-                            className="gitApps-sideDrawer-submit-button ml-1 float-right"
+                            className="gitApps-sideDrawer-submit-button float-right"
                             onClick={()=> this.onSubmitClickHandler()}>
                             Import
                         </Button>
@@ -134,7 +134,7 @@
                                     className="gitApps-sideDrawer-appsList-app-controls-branch-wrapper"
                                     isOpen={this.openBranches === app._id ? true : false}>
                                     <div className="gitApps-sideDrawer-appsList-app-controls-branch">
-                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Remote</p>                                        
+                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Branches</p>                                        
                                         {app.branches && app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
                                             <button 
                                                 onClick = {() => this.changeBranch(branch, app)}

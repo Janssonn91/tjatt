@@ -339,9 +339,6 @@ export default class Chat extends Component {
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;
   }
-  openGitAppsSidebarHandler() {
-    this.openGitAppsSidebar = !this.openGitAppsSidebar;
-  }
 
   // openAppHandler(app){
   //     this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;

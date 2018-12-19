@@ -3,6 +3,7 @@ const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const rp = require('../classes/handleReverseProxy');
 
 
 module.exports = function (app) {
@@ -18,5 +19,6 @@ module.exports = function (app) {
         await vms.stop_container(payload, true);
         await vms.remove_container(payload);
         await vms.remove_docker_directory(payload, true);
+        // await rp.removeReverseProxy(name, port);
     }); 
 };
