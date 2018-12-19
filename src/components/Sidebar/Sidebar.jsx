@@ -93,6 +93,7 @@
                     <span className="d-inline-block">{channel.channelname}</span>
                     {channel.messageNum > 0 ?
                       <span className="message-number float-right mr-1">
+                      
                         <Badge color="danger">{channel.messageNum}</Badge>
                       </span>
                       :

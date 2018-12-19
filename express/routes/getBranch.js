@@ -16,7 +16,7 @@ module.exports = function (app) {
             res: res
         }
         git.git_branch(payload);
-        git.git_checkout(payload)
+        // git.git_checkout(payload)
     });
 
 };

@@ -20,7 +20,7 @@ class ApplicationStateStore {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
 
 
-         
+
 
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
@@ -30,11 +30,11 @@ class ApplicationStateStore {
             channelStore.getLoginStatus(ids);
           });
           socket.on('sign up', message => {
-           // channelStore.getUserList();
+            channelStore.getUserList();
             userStore.fetchContact();
           });
           socket.on('login', message => {
-            channelStore.getLoginStatus( message.loginUser);
+            channelStore.getLoginStatus(message.loginUser);
           });
           socket.on('logout', message => {
             channelStore.getLoginStatus(message.loginUser);
@@ -43,7 +43,6 @@ class ApplicationStateStore {
             // )
           });
           socket.on('delete message', message => {
-            console.log(message)
             channelStore.channelChatHistory = channelStore.channelChatHistory.filter(msg => msg._id !== message)
           })
         }
@@ -54,13 +53,10 @@ class ApplicationStateStore {
       });
   }
 
-  @action setSystemInfo(){
+  @action setSystemInfo() {
     fetch('/api/system').then(res => res.json()).then(async (data) => {
       this.systemChannel = data.systemChannel;
-      console.log("systemChannel", data.systemChannel)
-
       this.systemId = data.systemUserId;
-      console.log("systemId", this.systemId);
       //userStore.fetchContact();
       //channelStore.getUserList();
       await sleep(1000);

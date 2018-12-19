@@ -18,7 +18,8 @@ import './SystemMessagesModal.scss';
   }
 
   invitationAccepted(id, targetChannel, mid, i){
-    socket.emit('system', {accepter: this.props.userStore.user._id, acceptee: id, targetChannel: targetChannel, type:"acceptance" })
+    socket.emit('system', {accepter: this.props.userStore.user._id, acceptee: id, targetChannel: targetChannel, type:"acceptance" });
+    socket.emit('join channel', targetChannel);
     this.props.channelStore.readSystemMessage(mid,i);
     this.props.channelStore.updateContactChannels(targetChannel, id);
     let myId = this.props.userStore.user._id;

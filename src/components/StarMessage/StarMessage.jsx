@@ -1,12 +1,22 @@
 <li key={this.props.key} className="clearfix py-1">
+{this.props.channelStore.channelDict[this.props.message.channel] ? 
   <div
     className="posted-channelname"
     style={{ fontSize: 12, color: "gray" }}>
+    
     posted in <strong>{this.props.channelStore.channelDict[this.props.message.channel].channelname}</strong>
-  </div>
+    </div>
+      : <div
+      className="posted-channelname"
+      style={{ fontSize: 12, color: "gray" }}>
+      posted in <strong>"Deleted contact"</strong>
+      </div>
+  }
+   
+  
   <div className="message-data">
     <span>
-      <img alt="user-img" src={this.props.channelStore.userDict[this.props.message.sender].img || "/images/placeholder.png"} />
+      <img alt="user-img" src={toJS(this.props.channelStore.userDict[this.props.message.sender]).img || "/images/placeholder.png"} />
     </span>&nbsp; &nbsp;
     <span className="message-data-name">{this.props.channelStore.userDict[this.props.message.sender].name}</span>
     <span className="message-data-time">{this.formattedTime(this.props.message.time)}</span>

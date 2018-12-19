@@ -10,7 +10,7 @@
     right: -500px;
     height: 100vh;
     max-width: 500px;
-    width: 100%;
+    width: 0;
     transition: all 0.5s;
     overflow-y: scroll;
     z-index: 10;
@@ -18,6 +18,7 @@
 
 .gitApps-sideDrawer-open{
     right: 0;
+    width: 100%;
 }
 
 .gitApps-sideDrawer-close-button{
@@ -96,6 +97,7 @@
     box-shadow: none !important;
     background-color: #366AC8;
     color: #fff;
+    margin-left: 1px !important;
 }
 
 .gitApps-sideDrawer-submit-button:hover{

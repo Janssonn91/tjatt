@@ -31,7 +31,7 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessages = [];
   @observable unreadSystemMessageNum = "";
-  @observable pendingUsers=[];
+  @observable pendingUsers = [];
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -77,7 +77,6 @@ class ChannelStore {
       for (let id of users) {
         id = id.toString();
         this.userDict[id].status = true;
-        console.log(toJS(this.userDict[id]))
       }
     }
   }
@@ -153,7 +152,7 @@ class ChannelStore {
 
   setSystemMessagesFromDB() {
     this.cleanUpOldSystemMessages();
-    this.pendingUsers=[];
+    this.pendingUsers = [];
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
       data.forEach(d => {
@@ -192,33 +191,27 @@ class ChannelStore {
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
           if (d.textType.toString() === "my invitation") {
-            if(!toJS(userStore.user.contact).includes(d.text.toString())) {
-            this.pendingUsers.push(d.text);
-            
-            let i = toJS(this.userDict[d.text]);
-            let message = {
-              textType:d.textType,
-              invitee: i.name,
-              unread: d.unread,
-              id: d._id,
+            if (!toJS(userStore.user.contact).includes(d.text.toString())) {
+              this.pendingUsers.push(d.text);
+
+              let i = toJS(this.userDict[d.text]);
+              let message = {
+                textType: d.textType,
+                invitee: i.name,
+                unread: d.unread,
+                id: d._id,
+              }
+              this.unreadSystemMessages.push(message);
+              this.unreadSystemMessageNum++;
             }
-            this.unreadSystemMessages.push(message);
-            this.unreadSystemMessageNum++;
-            }
-            
+
           }
         }
-      })
-      
-      console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+      });
     });
-
-
-    console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
   }
 
-  updatePendingUsers(id){
-    console.log("pendinginginging",id)
+  updatePendingUsers(id) {
     this.pendingUsers.push(id);
   }
 
@@ -258,16 +251,16 @@ class ChannelStore {
   }
 
 
-  readMyInvitation(sender){
-    if(sender){
+  readMyInvitation(sender) {
+    if (sender) {
       fetch(`/api/invalidInvitation/${sender}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
-      }).then(()=>{
-        res=> res.json();
+      }).then(() => {
+        res => res.json();
         this.setSystemMessagesFromDB();
-      } 
-        ).catch(err=>{
+      }
+      ).catch(err => {
         console.log("invalidInvitation delete err", err);
       })
     }
@@ -286,8 +279,7 @@ class ChannelStore {
     this.groupChannels = cs;
     // toJS(this.groupChannels).filter(c=>{
     //   c._id===channel._id});
-    console.log(this.groupChannels);
-    if(window.location.href.endsWith(channel.channelname)){
+    if (window.location.href.endsWith(channel.channelname)) {
       window.history.pushState(null, null, '/' + userStore.user.username);
       this.currentChannel = '';
       this.ChannelChatHistory = [];
@@ -352,14 +344,12 @@ class ChannelStore {
   }
 
   deleteMessage = (message) => {
-    console.log(message)
     fetch(`/api/deletemessage/${message}`, {
       method: 'DELETE',
       credentials: 'include'
     })
       .then(res => res.json())
       .then(res => {
-        console.log('OOOODUUUUUUU')
         if (res.success) {
           socket.emit('delete message', {
             channelId: this.currentChannel._id,
@@ -370,7 +360,6 @@ class ChannelStore {
   }
 
   async getChannelChatHistory(id) {
-    // console.log("changeChannel", id)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: id
@@ -418,8 +407,12 @@ class ChannelStore {
       channel = data;
       channel.channelname = user.name;
       channel.image = user.img;
+      for(let contactChannel of this.contactChannels){
+        if(contactChannel.members.includes(id)){
+          return;
+        }
+      }
       this.contactChannels.push(channel);
-
     })
 
 

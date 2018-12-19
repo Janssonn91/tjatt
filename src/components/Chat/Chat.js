@@ -35,7 +35,7 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
-  @observable openGitAppsSidebar = false;
+  @observable importedApps = [];
   @observable openApp = {};
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
@@ -43,6 +43,7 @@ export default class Chat extends Component {
   @observable fileUploadError = false;
   @observable codefileValue = '';
   @observable gifPicker = false;
+  @observable openGitAppsSidebar = false;
 
 
   @observable sendToAddDeleteModal = {
@@ -76,8 +77,20 @@ export default class Chat extends Component {
     //     console.log("observing login")
     //   }
     // })
+    this.importedApps = await Repo.find();
+    const appName = window.location.href.split('/').pop();
+    this.openApp === this.importedApps.find(app => app.name === appName);
+  }
+  
+  openGitAppsSidebarHandler(){
+    this.chatSidebar ? this.chatSidebar = false : null;
+    this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
 
+  openAppHandler(app){
+    this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+    this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
+  }
 
   gifToggler = () => {
     this.gifPicker = !this.gifPicker;
@@ -170,7 +183,7 @@ export default class Chat extends Component {
   }
 
   addDeleteMemberModalToggle() {
-    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
+    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen;
   }
 
   viewMembersModalToggle() {
@@ -284,7 +297,6 @@ export default class Chat extends Component {
               time: message.time,
               unread: true,
             };
-            console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
             channelStore.channelChatHistory.push(m);
             if (message.textType === "groupInfo") {
@@ -326,9 +338,6 @@ export default class Chat extends Component {
 
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;
-  }
-  openGitAppsSidebarHandler() {
-    this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
 
   // openAppHandler(app){
