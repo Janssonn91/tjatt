@@ -107,8 +107,11 @@ class UserStore {
             })
               .then(res => res.json())
               .then(message => {
-                this.myStars.push(message);
-                console.log("my star", this.myStars)
+                if(message.success){
+                  this.myStars.push(message.message);
+                  console.log("my star", this.myStars)
+                }
+                
               });
           });
         }

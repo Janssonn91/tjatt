@@ -1154,7 +1154,7 @@ app.get('/message/:id', (req, res) => {
       if (!message) {
         res.json({ success: false });
       }
-      res.json(message);
+      res.json({success: true, message:message});
 })
     .catch(err => console.log(err));
 });
