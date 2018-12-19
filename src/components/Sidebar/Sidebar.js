@@ -207,18 +207,35 @@ export const imgPath = '/images/placeholder.png';
     socket.off('invitation');
     socket.on('invitation', data => {
       if (data.invitee === userStore.user._id) {
-        console.log("invitation")
-        let message = {
-          sender: data.initiator,
-          initiator: channelStore.userDict[data.initiator].name,
-          targetChannel: data.targetChannel,
-          unread: true,
-          textType: data.textType,
-          id: data.id,
+        if(channelStore.userDict[data.initiator]){
+          console.log("invitation")
+          let message = {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            targetChannel: data.targetChannel,
+            unread: true,
+            textType: data.textType,
+            id: data.id,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
+        }else{
+          channelStore.getUserList();
+          let message = {
+            sender: data.initiator,
+            initiator: channelStore.userDict[data.initiator].name,
+            targetChannel: data.targetChannel,
+            unread: true,
+            textType: data.textType,
+            id: data.id,
+          }
+          channelStore.unreadSystemMessages.push(message);
+          channelStore.unreadSystemMessageNum++;
+          console.log(toJS(channelStore.unreadSystemMessages))
+
         }
-        channelStore.unreadSystemMessages.push(message);
-        channelStore.unreadSystemMessageNum++;
-        console.log(toJS(channelStore.unreadSystemMessages))
+        
       }
     })
 
@@ -256,6 +273,7 @@ export const imgPath = '/images/placeholder.png';
       }
       this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
       this.props.userStore.updateMyContact(data.sender);
+      this.props.channelStore.getChannelList();
 
     })
 
