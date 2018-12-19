@@ -23,7 +23,7 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-        await rp.addReverseProxy(payload);
+        // await rp.addReverseProxy(payload);
         fs.existsSync(payload.localPath) ?
            del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
     });

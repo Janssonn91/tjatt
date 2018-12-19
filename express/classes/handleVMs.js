@@ -115,6 +115,7 @@ services:
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
         // rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        rp.addReverseProxy(payload);
         resolve();
       });
     }); 
