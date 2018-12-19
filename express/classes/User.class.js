@@ -21,6 +21,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
+  star: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Message'
+  }],
   systemUser: Boolean,
 });
 

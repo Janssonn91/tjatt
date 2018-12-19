@@ -25,7 +25,6 @@ module.exports = class Message extends ModelAndRoutes {
       },
       originalName: String,
       filePath: String,
-      star: Boolean,
       unread: Boolean,
     }
   }

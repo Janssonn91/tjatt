@@ -64,9 +64,10 @@ const io = require('socket.io')(
   global.httpServer,
   {
     path: global.production ? '/api/socket' : '/socket',
-    serveClient: false
+    serveClient: false,
   }
 );
+
 
 // Use shared session middleware for socket.io
 io.use(sharedsession(session, {
@@ -96,42 +97,7 @@ let ai = "";
 
 let onlineUsers = [];
 
-// setSystemMessageToDB(data){
-//   let id = "";
-//   let messageText = "";
-//   switch(data.type) {
-//     case "invitation":
-//         id = data.invitee.toString();
-//         messageText = data.inviter + "&ask&"+ data.invitee + "&toJoin&" + data.newChannel._id;
-//         break;
-//     case "acceptance":
-//         id = data.acceptee.toString();
-//         messageText = data.accepter+ "&accept&" + data.acceptee +"&toJoin&" + data.targetChannel;
-//         break;
-//     case "rejection":
-//         id = data.rejectee.toString();
-//         messageText = data.rejecter +"&reject&" + data.rejectee;
-//         break;
-//     default: 
-//     break;
-//   };
 
-//   let c = await channel.findOne({
-//     channelname: id + "system"
-//   });
-
-//   let systemMessage = new ChatMessage({
-//     sender: id,
-//     text: messageText,
-//     textType: data.type,
-//     unread: true,
-//     channel: c._id,
-//   });
-
-//   await systemMessage.save().then(message=>{
-//     return message._id;
-//   })
-// }
 
 io.on('connection', (socket) => {
 
@@ -165,6 +131,7 @@ io.on('connection', (socket) => {
       channelname: user._id + "system",
       open: true,
       group: false,
+      latestUpdateTime: 315529200000 // set default date with milliseconds('1980/01/01')
     }).save().then((c) => {
       User.findOneAndUpdate(
         { _id: user._id },
@@ -249,7 +216,8 @@ io.on('connection', (socket) => {
       //   console.log("socket room", socket.rooms);
       let messageDict = {};
       for (let member of data.newChannel.members) {
-        if (member !== user._id) {
+        console.log("user", user)
+        if (member !== user._id || socket.handshake.session.userId) {
           let c = await channel.findOne({
             channelname: member + "system"
           });
@@ -308,8 +276,29 @@ io.on('connection', (socket) => {
         unread: true,
         id: m,
       }
+      socket.broadcast.emit('invitation', message);//system message to invitee
 
-      socket.broadcast.emit('invitation', message);
+      //system message to my self
+      let mySystem = await channel.findOne({channelname: data.inviter + "system"});
+      let myInvitation = new ChatMessage({
+        sender: data.inviter,
+        text: data.invitee,
+        textType:"my invitation",
+        unread: true,
+        channel: mySystem._id,
+      });
+      let mySystemMessageID="";
+      await myInvitation.save().then(message=>{
+        mySystemMessageID = message._id;
+      });
+      let mySocketMessage={
+        textType:"my invitation",
+        initiator: data.inviter,
+        invitee: data.invitee,
+        unread: true,
+        id: mySystemMessageID,
+      }
+      socket.emit('my invitation', mySocketMessage);
     }
 
 
@@ -381,7 +370,7 @@ io.on('connection', (socket) => {
     }
 
     if (data.type === "editMembersInGroup") {
-      console.log("edit", data);
+      // console.log("edit", data);
       //data:  { targetChannel: whole channel info
       // initiator: this.props.userStore.user._id,
       // addedMembers: addedUser,
@@ -390,9 +379,10 @@ io.on('connection', (socket) => {
       socket.join(data.targetChannel._id);
 
       if (data.addedMembers.length > 0) {
+        let promises=[];
         let messageDict = {};
 
-        for (let m of data.addedMembers) {
+       for (let m of data.addedMembers) {
           let c = await channel.findOne({ channelname: m.toString() + "system" });
           //systemMessage
           let systemMessage = new ChatMessage({
@@ -402,8 +392,11 @@ io.on('connection', (socket) => {
             unread: true,
             channel: c._id,
           });
-          let mes = "";
-          systemMessage.save().then(message => {
+
+          let p = systemMessage.save()
+          promises.push(p);
+
+          p.then((message) => {
             mes = message._id;
             messageDict[m] = mes;
           })
@@ -421,24 +414,30 @@ io.on('connection', (socket) => {
               textType: "groupInfo",
               time: data.time,
             })
-
             groupMessage.save();
             gms.push(groupMessage);
 
             io.to(data.targetChannel._id).emit('chat message', gms);
           })
 
-        }
-        let message = {
-          textType: "addedToGroup",
-          initiator: data.initiator,
-          targetChannel: data.targetChannel,
-          unread: true,
-          addedMembers: data.addedMembers,
-          messageDict: messageDict,
-        }
 
-        socket.broadcast.emit('group', message);
+
+        }
+        Promise.all(promises).then(()=>{
+          let message = {
+            textType: "addedToGroup",
+            initiator: data.initiator,
+            targetChannel: data.targetChannel,
+            unread: true,
+            addedMembers: data.addedMembers,
+            messageDict: messageDict,
+          }
+  
+          socket.broadcast.emit('group', message);
+        }
+          
+        )
+        
 
 
       }
@@ -558,7 +557,7 @@ io.on('connection', (socket) => {
     }
 
     if (data.type === "removeContact") {
-      console.log("remove contact", data)
+      // console.log("remove contact", data)
       let c = await channel.findOne({ channelname: data.target + "system" });
       let user = await User.findById(data.sender);
       let systemMessage = new ChatMessage({
@@ -615,7 +614,6 @@ io.on('connection', (socket) => {
         filePath: messageFromClient.filePath,
         contentType: messageFromClient.contentType,
         originalName: messageFromClient.originalName,
-        star: false,
         unread: true,
       })
       await newMessage.save();
@@ -642,7 +640,6 @@ io.on('connection', (socket) => {
       contentType: messageFromClient.contentType,
       filePath: messageFromClient.filePath,
       originalName: messageFromClient.originalName,
-      star: messageFromClient.star,
       unread: true,
       time: time,
     }]);
@@ -831,16 +828,15 @@ app.get('/users/:_id', (req, res) => {
   User.findOne({ _id: req.params._id })
     .then(user => {
       if (!user) {
-        res.json({ success: false })
+        res.json({ success: false });
       }
       else { res.json(user) }
     }).catch(
       err => {
-        console.log("find one user", err)
+        console.log("find one user", err);
       }
-    )
-
-})
+    );
+});
 
 app.put('/removeContact/:_id', async (req, res) => {
   const contactId = req.body.contId.toString();
@@ -871,6 +867,19 @@ app.get('/checkChannel/:_id', async (req, res) => {
   )
     .catch((err) => console.log("check channel member err", err));
   res.json({ checkChannelResult });
+})
+
+//check if groupname is available
+app.post('/checkChannelname/:channelname', async (req, res)=>{
+
+  const channelResult = await channel.findOne({
+    channelname: req.body.channelname
+  });
+  if(channelResult){
+    res.json({success: false, channelResult: channelResult});
+  }else{
+    res.json({success: true});
+  }
 })
 
 app.get('/logout', (req, res) => {
@@ -973,6 +982,26 @@ app.put('/users/:_id', async (req, res) => {
   };
 });
 
+app.delete('/killChannel/:id', (req, res) => {
+  channel.findOneAndRemove(
+    { _id: req.params.id}
+  ).then(channel => {
+    res.json(channel);
+  });
+});
+
+app.delete('/invalidInvitation/:text',(req,res)=>{
+  ChatMessage.findOneAndRemove(
+    {
+      "textType": "my invitation", 
+      "text": req.params.text
+    }).then(()=>{
+      res.json({ success: true })
+    }).catch(err=>{
+      throw err
+    })
+})
+
 app.put('/channel/:_id', (req, res) => {
   channel.update(
     { _id: req.params._id },
@@ -986,18 +1015,26 @@ app.put('/channel/:_id', (req, res) => {
     });
 });
 
+app.put('/channel/:_id/updatetime', (req, res) => {
+  console.log("request", req)
+  channel.update(
+    { _id: req.params._id },
+    { $set: { latestUpdateTime: req.body.time } }
+  )
+    .then(() => {
+      res.json({ success: true })
+      console.log("ooooooo", res)
+    })
+    .catch(err => {
+      throw err;
+    });
+});
+
 app.get('/channel/:_id', (req, res) => {
   channel.findById(req.params._id).then(data => {
     res.json(data)
   }).catch(err => console.log(err))
 })
-
-
-
-
-
-
-
 
 app.put('/users/:_id/add', (req, res) => {
   User.findOneAndUpdate(
@@ -1021,6 +1058,17 @@ app.put('/users/:_id/remove', (req, res) => {
       res.json({ success: true })
     })
     .catch(err => {
+      throw err;
+    });
+});
+
+app.put('/users/:_id/star', (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    { $set: { star: req.body.star } }
+  ).then(() =>
+    res.json({ success: true }
+    )).catch(err => {
       throw err;
     });
 });
@@ -1102,8 +1150,18 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-app.put('/message/:id', (req, res) => {
+app.get('/message/:id', (req, res) => {
+  ChatMessage.findOne({ _id: req.params.id })
+    .then(message => {
+      if (!message) {
+        res.json({ success: false });
+      }
+      res.json({success: true, message:message});
+})
+    .catch(err => console.log(err));
+});
 
+app.put('/message/:id', (req, res) => {
   ChatMessage.findOneAndUpdate(
     { _id: req.params.id },
     { $set: { unread: false } }

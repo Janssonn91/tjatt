@@ -31,6 +31,7 @@ class ChannelStore {
   @observable channelDict = {};
   @observable unreadSystemMessages = [];
   @observable unreadSystemMessageNum = "";
+  @observable pendingUsers = [];
 
   //TODO: as a new user, introduction page shows instead of chat page
 
@@ -71,14 +72,13 @@ class ChannelStore {
 
   @action async getLoginStatus(users) {
     await this.getUserList();
-    this.userDict= toJS(this.userDict);
-     if(users){
-      for(let id of users){
-        id= id.toString();
-          this.userDict[id].status = true;
-          console.log(toJS(this.userDict[id]))
+    this.userDict = toJS(this.userDict);
+    if (users) {
+      for (let id of users) {
+        id = id.toString();
+        this.userDict[id].status = true;
       }
-     }
+    }
   }
 
   @action async getChannelList() {
@@ -88,7 +88,14 @@ class ChannelStore {
 
     this.myChannels = await Channel.find({
       _id: userStore.user.channel,
-    }); // TODO: Added contact doesn't exist yet
+    });
+
+    // Sort myChannels by latestUpdateTime
+    const existLatestUpdateTime = this.myChannels.filter(c => c.latestUpdateTime && c);
+    const notExistLatestUpdateTime = this.myChannels.filter(c => !c.latestUpdateTime && c);
+    existLatestUpdateTime.sort((a, b) => b.latestUpdateTime - a.latestUpdateTime);
+    const sortedMyChannels = existLatestUpdateTime.concat(notExistLatestUpdateTime);
+    this.myChannels = sortedMyChannels;
 
     for (let i = 0; i < this.myChannels.length; i++) {
       const c = this.myChannels[i];
@@ -135,7 +142,6 @@ class ChannelStore {
         }
       }
     }
-    this.sortListByMessageNum();
     this.hasLoadedChannels = true;
   }
 
@@ -145,14 +151,13 @@ class ChannelStore {
   }
 
   setSystemMessagesFromDB() {
-    console.log("systemChannel", applicationStateStore.systemChannel)
     this.cleanUpOldSystemMessages();
+    this.pendingUsers = [];
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
       data.forEach(d => {
         if (d.unread) {
           if (d.textType.toString() === "invitation") {
-            console.log(d._id)
             let j = d.text.toString().split("&ask&");
             let i = j[1].split("&toJoin&");
             let initiator = toJS(this.userDict[j[0]]).name; //sender's name
@@ -162,7 +167,7 @@ class ChannelStore {
           if (d.textType.toString() === "rejection") {
             let i = d.text.toString().split("&reject&");
             let initiator = toJS(this.userDict[i[0]]).name;
-
+            //this.readMyInvitation(d.sender);
             this.setSystemMessageFromDB(initiator, i[0], "", d);
           }
           if (d.textType.toString() === "acceptance") {
@@ -185,30 +190,29 @@ class ChannelStore {
             let initiator = d.text;
             this.setSystemMessageFromDB(initiator, initiator, "", d);
           }
-          if (d.textType.toString() === "rejection") {
-            let i = d.text.toString().split("&reject&");
-            let initiator = toJS(this.userDict[i[0]]).name;
+          if (d.textType.toString() === "my invitation") {
+            if (!toJS(userStore.user.contact).includes(d.text.toString())) {
+              this.pendingUsers.push(d.text);
 
-            this.setSystemMessageFromDB(initiator, i[0], "", d);
-          }
-          if (d.textType.toString() === "acceptance") {
-            let j = d.text.toString().split("&accept&");
-            let i = j[1].split("&toJoin&");
-            let initiator = toJS(this.userDict[j[0]]).name;
-            this.setSystemMessageFromDB(initiator, j[0], i[1], d);
-          }
-          if (d.textType.toString() === "removeFromGroup") {
-            let i = d.text.toString().split("&hasRemovedYouFromChannel&");
-            let initiator = toJS(this.userDict[i[0]]).name;
-            this.setSystemMessageFromDB(initiator, i[0], i[1], d);
+              let i = toJS(this.userDict[d.text]);
+              let message = {
+                textType: d.textType,
+                invitee: i.name,
+                unread: d.unread,
+                id: d._id,
+              }
+              this.unreadSystemMessages.push(message);
+              this.unreadSystemMessageNum++;
+            }
+
           }
         }
-      })
-      console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+      });
     });
+  }
 
-
-    console.log(toJS(this.unreadSystemMessages), this.unreadSystemMessageNum)
+  updatePendingUsers(id) {
+    this.pendingUsers.push(id);
   }
 
 
@@ -219,7 +223,7 @@ class ChannelStore {
     message.textType = d.textType;
     message.initiator = initiator; //sender's name
     message.unread = true;
-    message.sender = sender; //sender's id 
+    message.sender = sender; //sender's id
     this.unreadSystemMessages.push(message);
     this.unreadSystemMessageNum++;
 
@@ -246,9 +250,41 @@ class ChannelStore {
 
   }
 
+
+  readMyInvitation(sender) {
+    if (sender) {
+      fetch(`/api/invalidInvitation/${sender}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }).then(() => {
+        res => res.json();
+        this.setSystemMessagesFromDB();
+      }
+      ).catch(err => {
+        console.log("invalidInvitation delete err", err);
+      })
+    }
+
+  }
+
   //when user is removed from a group frontend only
-  deleteGroupChannel(id) {
-    this.groupChannels.filter(id);
+  deleteGroupChannel(channel) {
+    let channels = toJS(this.groupChannels);
+    let cs = [];
+    for (let c of channels) {
+      if (c._id !== channel._id) {
+        cs.push(c);
+      }
+    }
+    this.groupChannels = cs;
+    // toJS(this.groupChannels).filter(c=>{
+    //   c._id===channel._id});
+    if (window.location.href.endsWith(channel.channelname)) {
+      window.history.pushState(null, null, '/' + userStore.user.username);
+      this.currentChannel = '';
+      this.ChannelChatHistory = [];
+      this.channelName = '';
+    }
     console.log("removed!!!!!!");
   }
 
@@ -284,7 +320,6 @@ class ChannelStore {
       this.currentChannel.messageNum = 0;
       this.showChat();
       this.getChannelChatHistory(this.currentChannel._id);
-
       this.currentChannelAdmins = [];
       this.ChannelChatHistory = [];
 
@@ -304,19 +339,17 @@ class ChannelStore {
         this.getGroupMembersData(channel.members);
         this.channelName = channel.channelname;
       }
-   })
+    })
 
   }
 
   deleteMessage = (message) => {
-    console.log(message)
     fetch(`/api/deletemessage/${message}`, {
       method: 'DELETE',
       credentials: 'include'
     })
       .then(res => res.json())
       .then(res => {
-        console.log('OOOODUUUUUUU')
         if (res.success) {
           socket.emit('delete message', {
             channelId: this.currentChannel._id,
@@ -327,11 +360,14 @@ class ChannelStore {
   }
 
   async getChannelChatHistory(id) {
-    // console.log("changeChannel", id)
     this.channelChatHistory = [];
     this.channelChatHistory = await Message.find({
       channel: id
     });
+    let scroll = document.querySelector('.chat-row');
+    if (scroll) {
+      scroll.scrollTop = scroll.scrollHeight;
+    }
     this.channelChatHistory.forEach(message => {
       if (message.unread) {
         fetch(`/api/message/${message._id}`, {
@@ -342,7 +378,7 @@ class ChannelStore {
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then(res => res.json())
+        })
       }
     })
   }
@@ -356,10 +392,6 @@ class ChannelStore {
       open: open,
       group: group
     }
-    // preparing for checking if a channel with those exact two members already exists so we don't create a new channel for them
-
-    // res = 
-    // {type: "basic", url: "http://localhost:3000/api/checkChannel/5bfe751d3e85090c38953248,5bfe75273e85090c3895324a", redirected: false, status: 200, ok: true, …}
     //  if(!group){
     //   const checkIfChannelExits = await fetch(`api/checkChannel/${members}`);
     //   console.log(checkIfChannelExits);
@@ -368,6 +400,7 @@ class ChannelStore {
   }
 
   @action async updateContactChannels(c, id) {
+    await sleep(1000);
     let channel = {};
     let user = this.userDict[id];
     fetch(`/api/channel/${c}`).then(res => res.json()).then(data => {
@@ -375,7 +408,6 @@ class ChannelStore {
       channel.channelname = user.name;
       channel.image = user.img;
       this.contactChannels.push(channel);
-
     })
 
 
@@ -416,18 +448,18 @@ class ChannelStore {
   }
 
   // splicing members from currentChannel when removing them from a group (from addDeleteMemberModal)
-  @action spliceCurrentChannel(member){
+  @action spliceCurrentChannel(member) {
     let index = this.currentChannel.members.indexOf(member);
-    this.currentChannel.members.splice(index,1);
+    this.currentChannel.members.splice(index, 1);
   }
 
   // adding a member to the group in currentChannel (frm addDeleteMemberModal)
-  @action addToCurrentChannel(member){
+  @action addToCurrentChannel(member) {
     this.currentChannel.members.push(member);
   }
 
   // for splicing a channel from a user. Needs an index to start from
-   @action spliceChannel(channelId) {
+  @action spliceChannel(channelId) {
     let index = 0;
     for (let channel of this.contactChannels) {
       if (channel._id === channelId) {
@@ -441,14 +473,14 @@ class ChannelStore {
         this.myChannels.splice(myChannelIndex, 1)
       }
       myChannelIndex++;
-    } 
+    }
     this.ChannelChatHistory = [];
     this.currentChannel = '';
     this.channelName = '';
   }
 
-  @action spliceGroupChannel(channelId){
-    this.groupChannels.splice(channelId,1)
+  @action spliceGroupChannel(channelId) {
+    this.groupChannels.splice(channelId, 1)
   }
 
   // for splicing an admin from a group. Needs an index to start from
@@ -460,12 +492,6 @@ class ChannelStore {
     this.currentChannel = "";
     this.channelChatHistory = [];
     this.channelName = '';
-  }
-
-  // TODO: This function has warning (Nana)
-  @action sortListByMessageNum() {
-    this.groupChannels = this.groupChannels.sort((a, b) => b.messageNum - a.messageNum);
-    this.contactChannels = this.contactChannels.sort((a, b) => b.messageNum - a.messageNum);
   }
 
   @action moveLatestChannelToTop(channelID) {
