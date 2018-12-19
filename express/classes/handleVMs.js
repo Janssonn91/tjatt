@@ -18,6 +18,7 @@ module.exports = class HandleVMs {
   static async prepare_docker_files(payload) {
     let did = await this.create_docker_dockerfile(payload);
     did && this.create_docker_compose_file(payload);
+    
   }
 
   static async get_used_ports() {
@@ -74,7 +75,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
+    // rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
@@ -113,10 +114,11 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
-        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        // rp.startReverseProxy(payload.uniqueProjectName || payload.name);
+        rp.addReverseProxy(payload);
         resolve();
       });
-    });
+    }); 
   }
 
   static stop_container(payload, toBeRemoved = false) {
@@ -132,7 +134,7 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        rp.stopReverseProxy(payload.name);
+        // rp.stopReverseProxy(payload.name);
         resolve();
       });
       
