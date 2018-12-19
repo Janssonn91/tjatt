@@ -52,7 +52,7 @@ class UserStore {
   }
 
   @action fetchContact() {
-    this.candidates=[];
+    this.candidates = [];
     fetch('/api/users')
       .then(res => res.json())
       .then(users => {
@@ -64,13 +64,13 @@ class UserStore {
         }
         this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
         let withPending = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
-        
-        withPending.forEach(u=>{
-          if(!toJS(channelStore.pendingUsers).includes(u._id)){
+
+        withPending.forEach(u => {
+          if (!toJS(channelStore.pendingUsers).includes(u._id)) {
             this.candidates.push(u);
           }
         })
-        
+
       });
   }
 
@@ -117,7 +117,7 @@ class UserStore {
   }
 
   @action sortMyStars() {
-    this.myStars = this.myStars.sort((a, b) => Date.parse(a.time) - Date.parse(b.time));
+    this.myStars = this.myStars.slice().sort((a, b) => Date.parse(a.time) - Date.parse(b.time));
   }
 
   // update star of user in backend
