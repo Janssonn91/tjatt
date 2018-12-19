@@ -108,6 +108,7 @@ class UserStore {
               .then(res => res.json())
               .then(message => {
                 this.myStars.push(message);
+                console.log("my star", this.myStars)
               });
           });
         }
