@@ -407,6 +407,11 @@ class ChannelStore {
       channel = data;
       channel.channelname = user.name;
       channel.image = user.img;
+      for(let contactChannel of this.contactChannels){
+        if(contactChannel.members.includes(id)){
+          return;
+        }
+      }
       this.contactChannels.push(channel);
     })
 
