@@ -120,13 +120,6 @@ $text:#434651;
         width: 80%;
         order: 0;
       }
-
-      //TODO: Starred styling
-      /*&.nav-link:first-child {
-         width: 100% !important;
-         padding-left: 0;
-      } */
-
     }
     .nav-link.contacts{
       padding-left: 0.7rem;
@@ -161,7 +154,13 @@ $text:#434651;
     }
 
     .fa-star {
-      color: gold;
+      color: white;
+      &:hover {
+        color: gold;
+      }
+      &.active {
+        color: gold;
+      }
     }
 
     .contacts-nav {

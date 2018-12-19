@@ -9,6 +9,11 @@
         <div className={this.myAttr} >
           <p className="feedback ml-1">Oh noes! You forget your group name!</p>
         </div>
+        {this.groupnameExist &&
+            < Alert className="my-3 alert-color">
+              Groupname already in use, please choose another!
+            </Alert>
+          }
       </InputGroup>
     </ModalHeader>
     <ModalBody>
@@ -91,6 +96,7 @@
     <ModalFooter className="p-2">
       <Button className="btn btn-cancel" onClick={e => this.props.toggle()}>Cancel</Button>&nbsp;
       <Button className="btn btn-create" onClick={e => this.createGroup(e)}>Create Group</Button>
+    
     </ModalFooter>
   </Modal>
 </Fragment>

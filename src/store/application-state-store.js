@@ -20,16 +20,7 @@ class ApplicationStateStore {
           userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
 
 
-          fetch('/api/system').then(res => res.json()).then(data => {
-            this.systemChannel = data.systemChannel;
-            console.log("systemChannel", data.systemChannel)
 
-            this.systemId = data.systemUserId;
-            console.log("systemId", this.systemId);
-            //channelStore.getUserList();
-            channelStore.cleanUpOldSystemMessages();
-            channelStore.setSystemMessagesFromDB();
-          }).catch(err => console.log(err))
 
           socket.emit('login', userStore.user._id);
           socket.emit('online', userStore.user._id);
@@ -39,11 +30,11 @@ class ApplicationStateStore {
             channelStore.getLoginStatus(ids);
           });
           socket.on('sign up', message => {
-           // channelStore.getUserList();
+            channelStore.getUserList();
             userStore.fetchContact();
           });
           socket.on('login', message => {
-            channelStore.getLoginStatus( message.loginUser);
+            channelStore.getLoginStatus(message.loginUser);
           });
           socket.on('logout', message => {
             channelStore.getLoginStatus(message.loginUser);
@@ -52,16 +43,26 @@ class ApplicationStateStore {
             // )
           });
           socket.on('delete message', message => {
-            console.log(message)
             channelStore.channelChatHistory = channelStore.channelChatHistory.filter(msg => msg._id !== message)
           })
-          userStore.checkState();
         }
         else { console.log("login false") }
 
       }).catch(err => {
         console.log("err", err)
       });
+  }
+
+  @action setSystemInfo() {
+    fetch('/api/system').then(res => res.json()).then(async (data) => {
+      this.systemChannel = data.systemChannel;
+      this.systemId = data.systemUserId;
+      //userStore.fetchContact();
+      //channelStore.getUserList();
+      await sleep(1000);
+      channelStore.cleanUpOldSystemMessages();
+      channelStore.setSystemMessagesFromDB();
+    }).catch(err => console.log(err))
   }
 }
 
