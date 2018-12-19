@@ -3,8 +3,8 @@
   It can respond on all routes under /api
 */
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/tjatt', { useNewUrlParser: true });
-mongoose.connect('mongodb://tjatt.net/tjatt', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/tjatt', { useNewUrlParser: true });
+// mongoose.connect('mongodb://tjatt.net/tjatt', { useNewUrlParser: true });
 const db = mongoose.connection;
 const bodyParser = require('body-parser');
 db.on('error', (e) => {
