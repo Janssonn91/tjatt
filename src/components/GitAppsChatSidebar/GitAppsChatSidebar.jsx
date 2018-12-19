@@ -4,7 +4,7 @@
         className="gitAppsChat-sidebar-close-button">
             <i className="fas fa-times"></i>
     </Button>
-    <Iframe url='http://localhost:3000'
+    <Iframe url={this.props.userStore.user ? `/${this.props.userStore.user.username}` : '/'}
         className="gitApps-app-frame"
         display="initial"
         allowFullScreen/> 

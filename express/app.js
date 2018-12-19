@@ -33,7 +33,7 @@ require('./routes/updateRepo')(app);
 require('./routes/getBranch')(app);
 require('./routes/startGitApp')(app);
 require('./routes/deleteGitApp')(app);
-
+require('./routes/changeBranch')(app);
 
 
 const sharedsession = require("express-socket.io-session");
@@ -215,6 +215,7 @@ io.on('connection', (socket) => {
       //   console.log("socket room", socket.rooms);
       let messageDict = {};
       for (let member of data.newChannel.members) {
+        console.log("user", user)
         if (member !== user._id || socket.handshake.session.userId) {
           let c = await channel.findOne({
             channelname: member + "system"

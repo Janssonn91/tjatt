@@ -16,10 +16,10 @@ import ScrollableFeed from 'react-scrollable-feed';
   }
 
   searchContacts = (e) => {
+    console.log("e", this.props.userStore.groupCandidates)
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
-      console.log(toJS(this.searchContact));
       // return this.searchContact = this.props.userStore.groupCandidates.slice(0, 5);
       return this.searchContact = [];
     }

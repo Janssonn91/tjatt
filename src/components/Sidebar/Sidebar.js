@@ -256,6 +256,7 @@ export const imgPath = '/images/placeholder.png';
       }
       this.props.channelStore.updateContactChannels(data.targetChannel, data.sender);
       this.props.userStore.updateMyContact(data.sender);
+
     })
 
     socket.off('removeContact');

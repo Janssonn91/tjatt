@@ -6,6 +6,7 @@ const simplegitPromise = require("simple-git/promise");
 const simplegit = require('simple-git');
 const { Docker } = require('node-docker-api');
 const { exec } = require('child_process');
+const rp = require('./handleReverseProxy');
 const docker = new Docker({
   socketPath: '/var/run/docker.sock'
   // socketPath: '//./pipe/docker_engine'
@@ -36,14 +37,14 @@ module.exports = class HandleVMs {
   }
 
   static async select_docker_port() {
-    let probePort = 49152;
-    let found = false;
-    let usedPorts = await this.get_used_ports();
-    // Randomize a port between 49152-65535 (publicly available ports)
-    while (!found) {
-      usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
-    }
-    return probePort;
+    let probePort = 49160;
+    // let found = false;
+    // let usedPorts = await this.get_used_ports();
+    // // Randomize a port between 49152-65535 (publicly available ports)
+    // while (!found) {
+    //   usedPorts.includes(probePort) ? probePort += Math.floor(Math.random() * 16382) : (found = true);
+    // }
+    return probePort += Math.floor(Math.random() * 16382);
   }
 
   static create_docker_dockerfile(payload) {
@@ -73,7 +74,7 @@ module.exports = class HandleVMs {
 
   static create_docker_compose_file(payload) {
     let path = `./docker/${payload.uniqueProjectName}/docker-compose.yml`;
-
+    rp.addReverseProxy(payload.uniqueProjectName, payload.dockerPort);
     // DO NOT INDENT THESE LINES
     let data =
       `version: "2"
@@ -112,14 +113,16 @@ services:
         payload.res.json(response);
         console.log(stdout || stderr);
         docker.container.list().then(containers => containers[0].status());
+        rp.startReverseProxy(payload.uniqueProjectName || payload.name);
         resolve();
       });
     });
   }
 
   static stop_container(payload, toBeRemoved = false) {
+    console.log('Container stop');
     return new Promise((resolve, reject) => {
-      exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {
+      exec(`docker stop ${payload.name}_app`, (err, stdout, stderr) => {        
         if (err) {
           reject(err);
         }
@@ -129,13 +132,16 @@ services:
         if(!toBeRemoved){
           payload.res.json(response);
         }
-        console.log(stdout || stderr);
+        rp.stopReverseProxy(payload.name);
         resolve();
       });
-    });
+      
+    }); 
+    
   }
 
   static async remove_container(payload) {
+    console.log('Container remove')
     return new Promise((resolve, reject) => {
       exec(`docker rm ${payload.name}_app`, (err, stdout, stderr) => {
         if (err) {
@@ -145,7 +151,7 @@ services:
           res: null
         })
         payload.res.json(response);
-        console.log(stdout || stderr);
+        rp.removeReverseProxy(payload);
         resolve();
       });
     });
@@ -163,9 +169,7 @@ services:
           if(!toBeRemoved){
             payload.res.json(response);
           }
-          console.log(stdout || stderr);
           resolve();
-
           console.log('Directory removed!')
         });
       });

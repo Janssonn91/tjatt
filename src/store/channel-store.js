@@ -408,7 +408,6 @@ class ChannelStore {
       channel.channelname = user.name;
       channel.image = user.img;
       this.contactChannels.push(channel);
-
     })
 
 

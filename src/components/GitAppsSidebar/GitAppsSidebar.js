@@ -23,7 +23,8 @@ import './GitAppsSidebar.scss';
     async addRepo(name, url, port, branches){
         await Repo.create({
             name: name,
-            url: `http://localhost:${port}/`,
+            // url: `http://localhost:${port}/`,
+            url: `${name}.tjatt.net`, // UNCOMMENT THIS LINE WHEN GO LIVE
             gitUrl: url,
             port: port,
             running: true,
@@ -31,7 +32,6 @@ import './GitAppsSidebar.scss';
         })
         .then(response=>{
             this.importingRepo = false;
-            // this.z();
         })
         .catch(
             error=>console.log(error)
@@ -76,7 +76,7 @@ import './GitAppsSidebar.scss';
 
     openAppHandler(app){
         this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
-        this.props.onOpenApp(app)
+        this.props.onOpenApp(app);
     }
 
     closeAppHandler(){
@@ -135,6 +135,21 @@ import './GitAppsSidebar.scss';
         return branches;
     }
 
+
+    async changeBranch(branch, app){ console.log(app)
+        await fetch('/api/changeBranch', {
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({branch: branch, app: app}), // data can be `string` or {object}!
+            method: 'POST' // or 'PUT'
+        })
+        .then(response => response.json())
+        .then(async response => {
+            await this.props.onOpenApp(app);
+            return response; 
+        })
+        .catch(error=>console.log(error));
+    }
+
     onPullApp(appId){ 
         const appToupdate = this.importedApps.find(app => app._id === appId);
         fetch('/api/updateRepo', { 
@@ -153,6 +168,7 @@ import './GitAppsSidebar.scss';
         app.running = !app.running;
         !app.running ? window.history.pushState({urlPath:'/git-app'},"",'/git-app') : null;
         !app.running ? this.props.onOpenApp({}) : null;
+        !app.running ? this.openBranches = null : null;
         this.openApp._id === appId ? this.openApp = {} : null;
         this.startingApp = appId;
         fetch('/api/startGitApp', { 
@@ -188,5 +204,5 @@ import './GitAppsSidebar.scss';
         this.fetchRepos();
 
     }
-  
+    
 }

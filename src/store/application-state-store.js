@@ -30,7 +30,7 @@ class ApplicationStateStore {
             channelStore.getLoginStatus(ids);
           });
           socket.on('sign up', message => {
-            // channelStore.getUserList();
+            channelStore.getUserList();
             userStore.fetchContact();
           });
           socket.on('login', message => {

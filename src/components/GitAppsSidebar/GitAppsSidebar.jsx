@@ -137,6 +137,7 @@
                                         <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Remote</p>                                        
                                         {app.branches && app.branches.filter(item => item.includes('origin/')).map((branch, index) => (
                                             <button 
+                                                onClick = {() => this.changeBranch(branch, app)}
                                                 key={index} 
                                                 className="gitApps-sideDrawer-appsList-app-controls-button-branch">
                                                     {branch.split('origin/')[1]}
