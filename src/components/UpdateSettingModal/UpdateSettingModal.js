@@ -175,6 +175,7 @@ const defaultImg = "/images/placeholder.png";
     if (imageFormData) {
       fetch('/api/upload', {
         method: 'POST',
+        credentials: 'include',
         body: imageFormData
       })
         .then(res => res.json())
