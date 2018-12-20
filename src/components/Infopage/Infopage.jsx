@@ -1,6 +1,20 @@
 <Fragment>
   <Row className="infopage">
     <Col className="col-12 m-0 p-0">
+      <Row className="chat-header m-0 p-0">
+        <Col className="chat-about pl-3 col-12">
+          <Button
+            className="mobil-menu d-inline-block d-md-none"
+            onClick={e => this.props.channelStore.showMenu()}>
+            <h2 className="sr-only">Show sidebar</h2>
+            <i className="fas fa-ellipsis-v"></i>
+          </Button>
+          <div className="introduction">
+            <h4 className="m-0">Introduction</h4>
+          </div>
+          <span style={{ width: 30 }}>{null}</span>
+        </Col>
+      </Row>
       <Row>
         <Col className="col-12 main-info">
           <Row className="settings-info">
