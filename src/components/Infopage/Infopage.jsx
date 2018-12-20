@@ -18,7 +18,7 @@
       <Row>
         <Col className="col-12 main-info">
           <Row className="settings-info">
-            <Col className="col-12">
+            <Col className="col-12 pt-2">
               <h6 className="text-center mb-3">User settings</h6>
             </Col>
             <Col className="col-6">
