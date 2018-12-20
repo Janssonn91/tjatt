@@ -1,5 +1,5 @@
 {
-  "name": "med-exempel-4",
+  "name": "Tjatt",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -156,5 +156,8 @@
       },
       "ws": true
     }
+  },
+  "devDependencies": {
+    "electron": "^3.0.13"
   }
 }
