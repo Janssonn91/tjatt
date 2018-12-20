@@ -5,6 +5,7 @@ class UserStore {
   @observable user = { _id: "", channel: [], contact: [] };
   @observable isLoggedIn = false;
   @observable candidates = []; // AddUserModal
+  @observable notYetMyContact =[];
   @observable groupCandidates = []; //CreateGroupModal (groupCandidates mean myContacts)
   @observable selectedGroupMember = []; // CreateGroupModal, channel-store
   @observable isLoading = true;
@@ -30,7 +31,7 @@ class UserStore {
   }
 
   @action updateMyContact(userId) {
-    const addedUser = this.candidates.find(user => user._id === userId);
+    const addedUser = this.notYetMyContact.find(user => user._id === userId);
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
     this.groupCandidates.push(addedUser);
@@ -57,13 +58,13 @@ class UserStore {
       .then(res => res.json())
       .then(users => {
         let withoutMe = users.filter(user => user._id !== this.user._id);
-        withoutMe = withoutMe.filter(user => user._id !== applicationStateStore.systemId.toString());
+        this.notYetMyContact = withoutMe.filter(user => user._id !== applicationStateStore.systemId.toString());
 
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);
         }
-        this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
-        let withPending = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
+        this.groupCandidates = this.notYetMyContact.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
+        let withPending = this.notYetMyContact.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
 
         withPending.forEach(u => {
           if (!toJS(channelStore.pendingUsers).includes(u._id)) {

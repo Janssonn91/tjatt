@@ -150,9 +150,10 @@ class ChannelStore {
     this.unreadSystemMessageNum = 0;
   }
 
-  setSystemMessagesFromDB() {
+  async setSystemMessagesFromDB() {
     this.cleanUpOldSystemMessages();
     this.pendingUsers = [];
+    await this.getUserList();
     Message.find({ channel: applicationStateStore.systemChannel }).then(data => {
 
       data.forEach(d => {
@@ -208,7 +209,7 @@ class ChannelStore {
           }
         }
       });
-    });
+    }).catch(err=>console.log("system message", err));
   }
 
   updatePendingUsers(id) {

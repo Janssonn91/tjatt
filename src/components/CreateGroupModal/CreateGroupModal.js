@@ -6,17 +6,17 @@ import ScrollableFeed from 'react-scrollable-feed';
   @observable groupName = '';
   @observable myAttr = 'd-none';
   @observable check = 'false';
-  @observable searchContact = this.props.userStore.groupCandidates;
+  @observable searchContact = [];
   @observable groupnameExist = false;
 
   async start() {
-    await sleep(100);
+    // await sleep(100);
+    await this.props.channelStore.getUserList();
     // Show all contacts from beginning
     this.searchContact = [];
   }
 
   searchContacts = (e) => {
-    console.log("e", this.props.userStore.groupCandidates)
     this.searchContact = [];
     if (!e.target.value) {
       // only show first 5 contacts in the array
@@ -30,6 +30,8 @@ import ScrollableFeed from 'react-scrollable-feed';
   }
 
   checkboxHandler = (e) => {
+
+    console.log("e", this.props.userStore.groupCandidates)
     if (e.target.checked) {
       this.searchContact = this.props.userStore.groupCandidates;
     } else {
