@@ -80,7 +80,8 @@ $text:#434651;
 
     img {
       width: 40px;
-      height: auto;
+      height: 40px;
+      object-fit: cover;
     }
   }
   .menu {
@@ -151,6 +152,7 @@ $text:#434651;
       width: 30px;
       height: 30px;
       border-radius: 5px;
+      object-fit: cover;
     }
 
     .fa-star {
@@ -207,7 +209,7 @@ hr {
     display:none;
   }
 }
-
+  
 .contactsCollapse, .groupCollapse{
   background: $backgroundColor;
   max-height: 34vh;

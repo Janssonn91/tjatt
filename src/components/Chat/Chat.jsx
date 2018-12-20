@@ -6,7 +6,7 @@
   {this.props.channelStore.currentChannel ?
     <Fragment>
       <Row className="chat-header m-0 p-0">
-        <Col sm="12" className="chat-about pl-3 pl-md-4">
+        <Col sm="12" className="chat-about pl-3 pl-md-4 d-none d-md-inline-block">
           <Button
             className="mobil-menu d-inline-block d-md-none"
             onClick={e => this.props.channelStore.showMenu()}>
@@ -160,16 +160,6 @@
       <GitAppsSidebar open={this.openGitAppsSidebar} openApp={this.openApp} onClose={() => this.openGitAppsSidebarHandler()} onOpenApp={(app) => this.openAppHandler(app)} />
     </Fragment> :
     <Fragment>
-      <Row className="chat-header m-0 p-0">
-        <Col className="chat-about pl-3 col-12 d-md-none">
-          <Button
-            className="mobil-menu d-inline-block d-md-none"
-            onClick={e => this.props.channelStore.showMenu()}>
-            <h2 className="sr-only">Show sidebar</h2>
-            <i className="fas fa-ellipsis-v"></i>
-          </Button>
-        </Col>
-      </Row>
       <Row>
         <Infopage />
       </Row>
