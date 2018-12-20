@@ -32,7 +32,6 @@ class UserStore {
 
   @action updateMyContact(userId) {
     const addedUser = this.notYetMyContact.find(user => user._id === userId);
-    console.log("addeduser", addedUser);
     const index = this.candidates.indexOf(addedUser);
     this.candidates.splice(index, 1);
     this.groupCandidates.push(addedUser);
@@ -64,8 +63,8 @@ class UserStore {
         const isIncludedInContact = (userId) => {
           return this.user.contact.some(contactId => userId === contactId);
         }
-        this.groupCandidates = withoutMe.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
-        let withPending = withoutMe.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
+        this.groupCandidates = this.notYetMyContact.filter(user => isIncludedInContact(user._id)); //use in CreateGroupModal
+        let withPending = this.notYetMyContact.filter(user => !isIncludedInContact(user._id)); //use in AddUserModal
 
         withPending.forEach(u => {
           if (!toJS(channelStore.pendingUsers).includes(u._id)) {
