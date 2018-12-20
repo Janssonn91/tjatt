@@ -53,7 +53,7 @@ $fontSm: 12px;
     @media (max-width: 767.5px) {
       overflow-y: auto!important;
       -webkit-overflow-scrolling: touch;
-      margin-top: 72px;
+      // margin-top: 72px;
       max-height: calc(100vh - 90px) !important;
     }
     .chat-management {

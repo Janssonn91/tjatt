@@ -150,7 +150,7 @@
   },
   "proxy": {
     "/api$|/api/": {
-      "target": "https://tjatt.net/",
+      "target": "http://localhost:3101",
       "pathRewrite": {
         "^/api": "/"
       },
