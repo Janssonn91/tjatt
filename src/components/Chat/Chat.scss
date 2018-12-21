@@ -223,9 +223,12 @@ $fontSm: 12px;
                 display: none;
             }
             .dropdown-item {
-                color: $gray;
+                color: $text;
                 height: 35px;
                 font-size: $fontSm;
+                &:hover{
+                    color: $blue;
+                }
             }
             .messageAreaForm {
                 position: relative;
@@ -323,7 +326,10 @@ aside.emoji-picker{
 }
 
 .document-file{
-    color:#919192;
+    color:#434651;
+    &:hover{
+     color: #1976D1;   
+    }
 }
 
 .dropdown-menu-gif {
