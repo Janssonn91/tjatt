@@ -334,6 +334,11 @@ aside.emoji-picker{
 
 .dropdown-menu-gif {
     left: -55px!important;
+
+    .react-giphy-select__src-components-GiphySelect-styles__selectInput___18Wcj{
+        margin-top: 15px;
+    }
+    
     @media only screen and(max-width: 767.5px){
      left: -245px!important;
     }
@@ -342,7 +347,7 @@ aside.emoji-picker{
         background-color:black;
         border: 2px solid black;
         @media only screen and(max-width: 767.5px){
-            left: 0;
+            left: 50px;
             width: unset;
             bottom: 40px!important;
         }
