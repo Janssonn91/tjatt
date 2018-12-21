@@ -144,16 +144,7 @@
                                             </button>
                                         ))}
                                     </div>
-                                    <div className="gitApps-sideDrawer-appsList-app-controls-branch">
-                                        <p className="gitApps-sideDrawer-appsList-app-controls-label-branch">Local</p>                                        
-                                        {app.branches && app.branches.filter(item => !item.includes('origin/')).map((branch, index) => (
-                                            <button 
-                                                key={index} 
-                                                className="gitApps-sideDrawer-appsList-app-controls-button-branch">
-                                                    {branch}
-                                            </button>
-                                        ))}
-                                    </div>
+                                 
 
                                 </Collapse>
                         </li>
