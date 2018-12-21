@@ -227,7 +227,7 @@ $fontSm: 12px;
                 height: 35px;
                 font-size: $fontSm;
                 &:hover{
-                    background-color: $gray;
+                    background-color: #dedede;
                 }
             }
             .messageAreaForm {
@@ -328,7 +328,7 @@ aside.emoji-picker{
 .document-file{
     color:#434651;
     &:hover{
-     background-color: #919192;   
+     background-color: #dedede;   
     }
 }
 
