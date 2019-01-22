@@ -2,16 +2,25 @@ import './SystemMessagesModal.scss';
 
 @inject('userStore', 'channelStore') @observer export default class SystemMessages extends Component {
 
-  invitationDeclined(id, mid, i){
+  invitationDeclined(id, targetChannel, mid, i){
     socket.emit('system', {rejecter: this.props.userStore.user._id, rejectee: id, type:"rejection"})
     this.props.channelStore.readSystemMessage(mid,i);
-    
+    fetch(`/api/killChannel/${targetChannel}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(channel => console.log(channel))
+      .catch(err => {
+        console.log(err);
+      });
+
   }
 
   invitationAccepted(id, targetChannel, mid, i){
-    socket.emit('system', {accepter: this.props.userStore.user._id, acceptee: id, targetChannel: targetChannel, type:"acceptance" })
+    socket.emit('system', {accepter: this.props.userStore.user._id, acceptee: id, targetChannel: targetChannel, type:"acceptance" });
+    socket.emit('join channel', targetChannel);
     this.props.channelStore.readSystemMessage(mid,i);
-
     this.props.channelStore.updateContactChannels(targetChannel, id);
     let myId = this.props.userStore.user._id;
      // add contact into my contact
@@ -46,8 +55,15 @@ import './SystemMessagesModal.scss';
 
 
   
-  closeSystemMessage(id,i){
+  closeSystemMessage(id,i,uid){
     this.props.channelStore.readSystemMessage(id, i);
+    this.props.channelStore.readMyInvitation(uid);
+
+
+
+
+
+    
   }
 
 }

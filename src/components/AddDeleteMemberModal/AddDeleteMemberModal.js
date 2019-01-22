@@ -49,8 +49,8 @@ export default class AddDeleteMemberModal extends Component {
   updateUserChannel(channelId, newMemberIds, previousMemberIds) {
     const wasMember = user => previousMemberIds.some(id => id === user);
     const isMember = user => newMemberIds.some(id => id === user);
-    const addedUser = newMemberIds.filter(user => !wasMember(user));
-    const removedUser = previousMemberIds.filter(user => !isMember(user));
+    let addedUser = newMemberIds.filter(user => !wasMember(user));
+    let removedUser = previousMemberIds.filter(user => !isMember(user));
     // Update view
     this.props.channelStore.getGroupMembersData(newMemberIds);
 
@@ -67,6 +67,7 @@ export default class AddDeleteMemberModal extends Component {
 
     if (addedUser.length > 0) {
       addedUser.forEach(id => {
+        this.props.channelStore.addToCurrentChannel(id);
         fetch(`/api/users/${id}/add`, {
           method: 'PUT',
           body: JSON.stringify({
@@ -93,6 +94,7 @@ export default class AddDeleteMemberModal extends Component {
 
     if (removedUser.length > 0) {
       removedUser.forEach(id => {
+        this.props.channelStore.spliceCurrentChannel(id);
         fetch(`/api/users/${id}/remove`, {
           method: 'PUT',
           body: JSON.stringify({
@@ -122,8 +124,8 @@ export default class AddDeleteMemberModal extends Component {
     this.showConfirmation = false;
 
     const { channelStore } = this.props;
-    const { _id, members: previousMemberIds } = channelStore.currentChannel;
-    const newMemberIds = this.groupMembers.map(user => user._id);
+    let { _id, members: previousMemberIds } = channelStore.currentChannel;
+    let newMemberIds = this.groupMembers.map(user => user._id);
 
     fetch(`/api/channel/${_id}`, {
       method: 'PUT',

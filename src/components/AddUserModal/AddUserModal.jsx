@@ -21,7 +21,7 @@
                 </p>
               </div>
               <span className="d-inline-block float-right">
-                <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.addContact(user._id) }}>Add user</Button>
+                <Button className="btn btn-add-user border-0 d-inline-block float-right" onClick={() => { this.addContact(user._id) }}>Send request</Button>
               </span>
             </ListGroupItem>
           )}

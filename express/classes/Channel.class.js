@@ -21,6 +21,7 @@ module.exports = class Channel extends ModelAndRoutes {
       favorite: Boolean,
       open: Boolean,
       group: Boolean,
+      latestUpdateTime: Number,
     }
   }
 }

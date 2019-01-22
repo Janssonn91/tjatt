@@ -34,27 +34,28 @@ $fontSm: 12px;
 }
 
 .infopage {
-  .introduction {
-    h4 {
-      @media only screen and(max-width: 767.5px){
-        padding-top: 0px!important;
-      }
-      padding-top: calc(1.5rem + 5px)!important;
-      color: darken($gray, 20%);
-      height: 77px;
-      vertical-align: middle;
-      padding-left: 15px;
-      @media only screen and(max-width: 767.5px){
-        margin-top: -50px!important;
-        padding-left: 75px;
-        height: 35px;
-      }
+  .chat-header {
+    color: darken($gray, 20%);
+    height: 85px;
+    vertical-align: middle;
+    padding-left: 15px;
+    .chat-about {
+      border-bottom: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
   .main-info {
-    overflow: auto!important;
-    max-height: 81vh !important;
+    overflow-y: auto!important;
     @include scrollbar;
+    max-height: calc(100vh - 111px) !important;
+    @media (max-width: 767.5px) {
+      overflow-y: auto!important;
+      -webkit-overflow-scrolling: touch;
+      // margin-top: 72px;
+      max-height: calc(100vh - 90px) !important;
+    }
     .chat-management {
       margin-bottom: 1rem!important;
     }

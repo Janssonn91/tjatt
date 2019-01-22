@@ -35,7 +35,7 @@ export default class Chat extends Component {
   @observable addMemberModal = false;
   @observable viewMembersModal = false;
   @observable emojiDropdownOpen = false;
-  @observable openGitAppsSidebar = false;
+  @observable importedApps = [];
   @observable openApp = {};
   @observable openSideDrawer = false;
   @observable buttonIsHovered = false;
@@ -43,6 +43,7 @@ export default class Chat extends Component {
   @observable fileUploadError = false;
   @observable codefileValue = '';
   @observable gifPicker = false;
+  @observable openGitAppsSidebar = false;
 
 
   @observable sendToAddDeleteModal = {
@@ -76,8 +77,20 @@ export default class Chat extends Component {
     //     console.log("observing login")
     //   }
     // })
+    this.importedApps = await Repo.find();
+    const appName = window.location.href.split('/').pop();
+    this.openApp === this.importedApps.find(app => app.name === appName);
+  }
+  
+  openGitAppsSidebarHandler(){
+    this.chatSidebar ? this.chatSidebar = false : null;
+    this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
 
+  openAppHandler(app){
+    this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
+    this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
+  }
 
   gifToggler = () => {
     this.gifPicker = !this.gifPicker;
@@ -90,8 +103,8 @@ export default class Chat extends Component {
   }
 
   getFileValue = () => {
-    let fileValue = document.querySelector('#codefile').files[0].name;
-    this.codefileValue = fileValue;
+    let fileValue = document.querySelector('#codefile').files[0];
+    this.codefileValue = fileValue.name;
   }
 
   toggleSnippet = () => {
@@ -170,7 +183,7 @@ export default class Chat extends Component {
   }
 
   addDeleteMemberModalToggle() {
-    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen
+    this.sendToAddDeleteModal.isOpen = !this.sendToAddDeleteModal.isOpen;
   }
 
   viewMembersModalToggle() {
@@ -225,7 +238,6 @@ export default class Chat extends Component {
       channel: this.props.channelStore.currentChannel._id,
       textType: "text",
       contentType: 'text',
-      star: false,
       unread: true,
     }
     if (this.inputMessage.length > 0) {
@@ -242,6 +254,22 @@ export default class Chat extends Component {
     this.inputMessage = '';
   }
 
+  updateChannelLatestTime(channelId, time) {
+    fetch(`/api/channel/${channelId}/updatetime`, {
+      credentials: 'include',
+      method: 'PUT',
+      body: JSON.stringify({ time }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          console.log('updated latest time');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   setupMessageListener() {
     const { channelStore } = this.props;
     socket.off('chat message');
@@ -249,18 +277,18 @@ export default class Chat extends Component {
       'chat message',
       (messages) => {
         for (let message of messages) {
-          // let time = new Date(message.time);
-          // console.log(time)
-
-          // When you get a message, move the channel to the top of the list
+          // When you get a message or send a message,
+          // 1) move the channel to the top of the list (frontend)
           channelStore.moveLatestChannelToTop(message.channel);
+          // 2) update the latestUpdateTime of the channel (backend)
+          const milliseconds = Date.now();
+          this.updateChannelLatestTime(message.channel, milliseconds);
 
           if (message.channel === channelStore.currentChannel._id) {
             let m = {
               _id: message._id,
               channel: message.channel,
               sender: message.sender,
-              star: false,
               text: message.text,
               textType: message.textType,
               contentType: message.contentType,
@@ -269,9 +297,11 @@ export default class Chat extends Component {
               time: message.time,
               unread: true,
             };
-            console.log(m)
             // time: time.toLocaleDateString() + ' ' + time.toLocaleTimeString(),
-            channelStore.channelChatHistory.push(m)
+            channelStore.channelChatHistory.push(m);
+            if (message.textType === "groupInfo") {
+              channelStore.changeChannel(channelStore.currentChannel);
+            }
           }
           if (message.sender) {
             channelStore.userDict[message.sender].status = true;
@@ -297,20 +327,17 @@ export default class Chat extends Component {
             })
           }
         }
-        let scroll = document.querySelector('._scrollable-div_1dj6m_1');
-        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 200))) {
-          scroll.scrollTop = scroll.scrollHeight;
+        let scroll = document.querySelector('.chat-row');
+        if (scroll && (scroll.scrollTop > (scroll.scrollHeight - scroll.clientHeight - 600))) {
+          setTimeout(() => {
+            scroll.scrollTop = scroll.scrollHeight;
+          }, 500)
         }
       })
   }
 
-
-
   openSideDrawerHandler() {
     this.openSideDrawer = !this.openSideDrawer;
-  }
-  openGitAppsSidebarHandler() {
-    this.openGitAppsSidebar = !this.openGitAppsSidebar;
   }
 
   // openAppHandler(app){

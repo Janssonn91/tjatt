@@ -32,23 +32,27 @@
                     <DropdownItem className="py-2 px-3 dropdown-header" header>{this.props.channelStore.currentChannel.channelname}</DropdownItem>
                     <DropdownItem className="m-0" divider />
                     <div className="channel-manage">
-                      <DropdownItem
-                        className="py-2 px-3"
-                        onClick={this
-                          .addDeleteMemberModalToggle
-                          .bind(this)}>
-                        Add/Delete members
-                    </DropdownItem>
+                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                        <DropdownItem
+                          className="py-2 px-3"
+                          onClick={this
+                            .addDeleteMemberModalToggle
+                            .bind(this)}>
+                          Add/Delete members
+                      </DropdownItem>
+                      }
                       <DropdownItem
                         className="py-2 px-3"
                         onClick={this
                           .viewMembersModalToggle
                           .bind(this)}>
-                        View members
+                        {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) &&
+                          (this.props.channelStore.currentGroupMembers.length > 1) &&
+                          (this.props.channelStore.currentGroupMembers.length > this.props.channelStore.currentChannelAdmins.length) ?
+                          <Fragment>Appoint admin</Fragment> :
+                          <Fragment>View members</Fragment>
+                        }
                       </DropdownItem>
-                      {this.props.channelStore.currentChannelAdmins.includes(this.props.userStore.user._id) && (this.props.channelStore.currentChannelAdmins.length < this.props.channelStore.currentGroupMembers.length) &&
-                        <DropdownItem className="leave-group py-2 px-3" onClick={this.viewMembersModalToggle.bind(this)}>Make members admin</DropdownItem>
-                      }
                     </div>
                     <DropdownItem className="m-0" divider />
                     <DropdownItem className="leave-group py-2 px-3" onClick={this.leaveGroupModalToggle.bind(this)}>Leave group
@@ -62,10 +66,10 @@
           }
         </Col>
       </Row>
-      <hr className="mt-0 mb-2" />
-      <Row>
+      {/* <hr className="mt-0 mb-2" /> */}
+      <Row className="chat-row">
         <Col className="pr-0">
-          <ul className="chat-history pl-2 mr-1">
+          <ul className="chat-history pl-2 mr-1 mb-0 list-unstyled">
             <ChatMessage />
 
           </ul>
@@ -73,7 +77,7 @@
       </Row>
       <Row className="formRow">
         <Col className="p-0">
-          <Form inline className="chat-message py-2 clearfix" onSubmit={e => e.preventDefault()}>
+          <Form inline className="chat-message p-0 clearfix" onSubmit={e => e.preventDefault()}>
             <Dropdown
               direction="up"
               isOpen={this.isOpen}
@@ -93,12 +97,9 @@
                     onChange={e => this.textfileHandler(e)}
                   />
                   <label htmlFor="file" className="document-file float-left py-auto align-self-center">
-                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document
+                    <i name="file" className="fas fa-file"></i>&nbsp; &nbsp; Document / Image
                   </label>
                 </div>
-                <DropdownItem>
-                  <i className="fas fa-file-image"></i>&nbsp; &nbsp; Image
-                </DropdownItem>
                 <DropdownItem onClick={() => this.toggleSnippet()}>
                   <i className="fas fa-code"></i>&nbsp; Code or text snippet
                 </DropdownItem>
@@ -116,12 +117,11 @@
                 type="textarea"
                 name="text"
                 id="messageArea"
-                placeholder="Write your message here"
+                placeholder="Write message"
                 value={this.inputMessage}
                 onChange={e => this.inputMessage = e.currentTarget.value}
                 onKeyPress={e => e.key === 'Enter' && this.sendMessage(e.preventDefault())}
               />
-
               <Dropdown isOpen={this.emojiDropdownOpen} toggle={this.emojiDropdownToggle}>
                 <DropdownToggle className="emoji-container bg-light">
                   <div
@@ -132,8 +132,8 @@
                     {this.buttonIsHovered ? <i className="hover fas fa-grin emojiOpener"></i> : <i className="far fa-smile emojiOpener"></i>}
                   </div>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-left">
-                  <EmojiPicker className="emojies" onEmojiClick={this.getEmoji} />
+                <DropdownMenu className="dropdown-menu-emoji">
+                  <EmojiPicker className="emoji" onEmojiClick={this.getEmoji} />
                 </DropdownMenu>
               </Dropdown>
               <Dropdown isOpen={this.gifPicker} toggle={this.gifToggler}>
@@ -142,7 +142,7 @@
                     <img src="/images/gif.logo.jpg" className="gif-opener" alt="open-gif" />
                   </div>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-left">
+                <DropdownMenu className="dropdown-menu-gif p-0">
                   <GiphySelect onEntrySelect={(entry) => this.sendGif(entry)} theme={{ select: 'gifcomponent', listItem: 'gifItem' }} />
                 </DropdownMenu>
               </Dropdown>
@@ -158,23 +158,9 @@
         </Col>
       </Row>
       <GitAppsSidebar open={this.openGitAppsSidebar} openApp={this.openApp} onClose={() => this.openGitAppsSidebarHandler()} onOpenApp={(app) => this.openAppHandler(app)} />
-    </Fragment> :
-    <Fragment>
-      <Row className="chat-header m-0 p-0">
-        <Col className="chat-about pl-3 col-12 d-md-none">
-          <Button
-            className="mobil-menu d-inline-block d-md-none"
-            onClick={e => this.props.channelStore.showMenu()}>
-            <h2 className="sr-only">Show sidebar</h2>
-            <i className="fas fa-ellipsis-v"></i>
-          </Button>
-        </Col>
-      </Row>
-      <Row>
-        <Infopage />
-      </Row>
     </Fragment>
-
+    :
+    <Infopage />
   }
 
 </Fragment>

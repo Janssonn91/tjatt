@@ -3,6 +3,8 @@ const git = require('../classes/handleGit');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const rp = require('../classes/handleReverseProxy');
+
 
 module.exports = function (app) {
 
@@ -21,10 +23,9 @@ module.exports = function (app) {
             localPath: path.join(__dirname, "../../docker/" + uniqueProjectName),
             res: res
         }
-
+        // await rp.addReverseProxy(payload);
         fs.existsSync(payload.localPath) ?
            del(payload.localPath).then(() => git.git_clone(payload)) : git.git_clone(payload);
-
     });
 
 };

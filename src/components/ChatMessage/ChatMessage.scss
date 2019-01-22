@@ -18,9 +18,9 @@ $fontSm: 12px;
 li {
   width: 98%;
   // Last message on page has less margin
-  &:nth-last-child(2) {
+  &:nth-last-child(1) {
       .message {
-        margin-bottom: 5px!important;
+        margin-bottom: 0px!important;
       }
   }
   .group-message{
@@ -121,7 +121,7 @@ li {
       left:15px;
     }
   }
-  
+
   //Other users data on messages
   .message-data {
     margin-bottom: 15px;
@@ -182,7 +182,7 @@ li {
   .other-message {
     background-color: lighten($gray, 30%);
     color: $text;
-    min-width: 30px;
+    min-width: 70px;
     float:left;
     &:after {
       border-bottom-color: lighten($gray, 30%);
@@ -214,6 +214,9 @@ li {
   background-color: unset !important;
   padding: 0!important;
   box-shadow: 1px 1px 20px 5px rgba(0,0,0,0.2);
+  &::after {
+    display:none;
+  }
 }
 
 .removeBG pre, .code-snippet pre{
@@ -228,6 +231,9 @@ li {
   width: 90%;
   margin-left: 5px;
   position: relative;
+  &::after{
+    display:none;
+  }
 }
 
 .hljs{
@@ -256,4 +262,17 @@ li {
   width: 90%;
   height: 100%;
   width: 100%;
+}
+
+.far.fa-star {
+  color: lighten($gray, 8%);
+  cursor: pointer;
+  &:hover {
+    color: $blue;
+  }
+}
+
+.fas.fa-star {
+  color: gold;
+  cursor: pointer;
 }

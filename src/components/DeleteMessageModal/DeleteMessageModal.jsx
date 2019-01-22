@@ -2,7 +2,7 @@
   <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} className="delete-message-modal">
     <ModalHeader tag="h4" toggle={this.props.toggle}>Delete Message?</ModalHeader>
     <ModalBody>
-      <p>Are you sure you want to delete following message:</p>
+      <p>Are you sure you want to delete this message? This can't be undone!</p>
       {/* <Message/> */}
     </ModalBody>
     <ModalFooter>

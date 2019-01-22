@@ -1,24 +1,14 @@
-import './ChatMessage.scss';
-import { vs2015 } from 'react-syntax-highlighter/dist/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import ScrollableFeed from 'react-scrollable-feed';
 
-@inject('userStore', 'channelStore') @observer
-export default class ChatMessage extends Component {
+@inject('userStore', 'channelStore') @observer export default class StarMessage extends Component {
 
-  @observable iconShow = false;
-  @observable iconDisappear = false;
-  @observable isOpen = false;
-  @observable dropdownOpen = false;
-  @observable deleteMessageModal = false;
   @observable chatImageModal = false;
+  @observable fullHeightSnippet = [];
   @observable currentImage = '';
   @observable originalName = '';
-  @observable fullHeightSnippet = [];
-  @observable sendToDeleteMessageModal = {
-    isOpen: false,
-    toggle: this.deleteMessageModalToggle.bind(this),
-    selectedMessage: ''
+
+  toggleChatModal = () => {
+    this.chatImageModal = !this.chatImageModal;
   }
 
   toggleSnippetHeight = (index) => {
@@ -34,23 +24,6 @@ export default class ChatMessage extends Component {
       this.fullHeightSnippet.push({ index, scroll });
     }
     console.log(this.fullHeightSnippet);
-  }
-
-  toggleChatModal = () => {
-    this.chatImageModal = !this.chatImageModal;
-  }
-
-  toggle() {
-    this.isOpen = !this.isOpen;
-  }
-
-  dropdownToggle() {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
-
-  deleteMessageModalToggle = (id) => {
-    this.sendToDeleteMessageModal.isOpen = !this.sendToDeleteMessageModal.isOpen
-    this.sendToDeleteMessageModal.selectedMessage = id;
   }
 
   formattedTime(t) {

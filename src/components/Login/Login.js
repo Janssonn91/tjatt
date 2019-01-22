@@ -36,7 +36,8 @@ import './Login.scss';
         if (res.success) {
           console.log("login user", res)
           this.props.userStore.setUserAndIsLoggedIn({ user: res.user, isLoggedIn: true });
-          this.props.userStore.fetchContact();
+          //this.props.userStore.fetchContact();
+          this.props.applicationStateStore.checkIfLoggedIn();
           this.props.history.push(`/${this.props.userStore.user.username}/info`);
           socket.emit("login", this.props.userStore.user._id);
 
@@ -46,7 +47,8 @@ import './Login.scss';
             
             this.props.applicationStateStore.systemId = data.systemUserId;
             console.log("systemId", this.props.applicationStateStore.systemId);
-            this.props.channelStore.getUserList();
+            socket.emit('online', res.user._id)
+            //this.props.channelStore.getUserList();
           }).catch(err=>console.log(err))
         }
         else {

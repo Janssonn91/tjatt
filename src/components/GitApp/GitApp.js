@@ -1,10 +1,12 @@
 import './GitApp.scss';
+@inject('userStore', 'channelStore')
 @observer export default class GitApp extends Component{
 
 @observable importedApps = [];
 @observable openApp = {};
 @observable openGitAppsSidebar = true;
 @observable chatSidebar = false;
+
 
     async start(){
         this.createStoreConnectedProperties({
@@ -27,7 +29,6 @@ import './GitApp.scss';
     openAppHandler(app){
         this.openApp._id === app._id ? this.openApp = {} : this.openApp = app;
         this.openGitAppsSidebar && !Object.keys(this.openApp).length ? this.openGitAppsSidebar = true : this.openGitAppsSidebar = false;
-        
     }
-  
+
 }
